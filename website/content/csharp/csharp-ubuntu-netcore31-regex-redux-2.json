@@ -1,0 +1,11 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "netcore",
+  "compilerVersion": "3.1",
+  "test": "regex-redux",
+  "code": "regex-redux #1",
+  "timeMS": 1000,
+  "memBytes": 100000,
+  "cpuTimeMS": 100
+}

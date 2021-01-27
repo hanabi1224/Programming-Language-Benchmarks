@@ -1,0 +1,11 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "netcore",
+  "compilerVersion": "3.1",
+  "test": "binarytree",
+  "code": "binarytree #2",
+  "timeMS": 1001,
+  "memBytes": 100000,
+  "cpuTimeMS": 100
+}

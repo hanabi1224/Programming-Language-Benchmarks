@@ -1,0 +1,24 @@
+<template>
+  <div
+    class="text-gray-700 text-base font-mono subpixel-antialiased text-lg tracking-wide .leading-relaxed py-5 container mx-auto min-h-screen shadow-lg bg-gray-100 p-5"
+  >
+    <div class="bg-pink-800 text-white p-5 mb-5 text-3xl rounded">
+      <a href="/"
+        >Another <small class="text-lg">Computer Language</small> <br />
+        Benchmarks Game</a
+      >
+    </div>
+    <Nuxt />
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { Component } from 'vue-property-decorator'
+@Component({
+  components: {},
+})
+export default class DefaultLayout extends Vue {
+  header() {}
+}
+</script>
