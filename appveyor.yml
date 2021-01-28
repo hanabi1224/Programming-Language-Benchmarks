@@ -34,6 +34,9 @@ install:
     - clang-10 --version
     - clang-9 --version
     - clang --version
+    - gcc --version
+    - gcc-9 --version
+    - gcc-8 --version
     # - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     # - docker pull golang:1.15
 build_script:
