@@ -6,10 +6,12 @@ branches:
     only:
         - main
 build: off
+install:
+    - docker info
+    - docker pull golang:1.15
+    - ls /var/lib/docker
+    - curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh"
+    - nvm
+    - gvm
 build_script:
-    - cmd: docker info
-    - cmd: docker pull golang:1.15
-    - cmd: ls /var/lib/docker
-    - cmd: curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh"
-    - cmd: nvm
-    - cmd: gvm
+    - docker info
