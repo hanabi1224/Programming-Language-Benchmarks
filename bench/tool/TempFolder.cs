@@ -16,7 +16,7 @@ namespace BenchTool
         public TempFolder()
         {
             RootDirName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            FullPath = Path.Combine(Path.GetTempPath(), RootDirName);
+            FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", RootDirName);
         }
 
         public void CreateIfNotExist()
