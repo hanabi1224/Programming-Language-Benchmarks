@@ -11,7 +11,9 @@ cache:
     - /home/appveyor/.cache/yarn/v6
     - /home/appveyor/.nuget/packages
 install:
-    - yarn --version
+    - nvm use 14
+    - cd website
+    - yarn
 build_script:
     - cd bench
     - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
