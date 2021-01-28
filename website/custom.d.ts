@@ -18,6 +18,7 @@ type BenchResult = {
   compiler: string,
   compilerVersion: string,
   test: string,
+  input: string,
   code: string,
   timeMS: number,
   memBytes: number,

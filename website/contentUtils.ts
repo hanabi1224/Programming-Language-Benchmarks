@@ -4,6 +4,7 @@ import _ from 'lodash';
 const lang2Display: { [key: string]: string } = {
   'csharp': 'C#',
   'java': 'Java',
+  'go': 'Golang',
 };
 
 export async function getLangBenchResults($content: contentFunc) {

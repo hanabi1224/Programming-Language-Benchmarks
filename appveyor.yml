@@ -10,35 +10,16 @@ cache:
     - /var/lib/docker
     - /home/appveyor/.cache/yarn/v6
     - /home/appveyor/.nuget/packages
-install:
-    - yarn cache dir
-    # - docker info
-    - nvm use 12
-    - node -v
-    - nvm use 15
-    - node -v
-    - nvm use 14
-    - node -v
-    - rvm
-    - rvm use 2.7
-    - ruby -v
-    - which javac
-    - javac -version
-    - which java
-    - java -version
-    - csc -version
-    - which csc
-    - mono -V
-    - which mono
-    - clang-11 --version
-    - clang-10 --version
-    - clang-9 --version
-    - clang --version
-    - gcc --version
-    - gcc-9 --version
-    - gcc-8 --version
-    # - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # - docker pull golang:1.15
 build_script:
-    - nvm use 14
-    - node -v
+    - cd bench
+    - dotnet run -c Release -p tool -- --task build
+    - dotnet run -c Release -p tool -- --task test
+    - dotnet run -c Release -p tool -- --task bench
+    - cd ../website
+    - yarn content
+    - yarn generate
+artifacts:
+    - path: bench/build
+      name: benchmark
+    - path: website/dist
+      name: website
