@@ -1,0 +1,33 @@
+version: 1.0.{build}
+image: Ubuntu2004
+pull_requests:
+    do_not_increment_build_number: true
+branches:
+    only:
+        - main
+build: off
+cache:
+    - /var/lib/docker
+    - /home/appveyor/.cache/yarn/v6
+    - /home/appveyor/.nuget/packages
+install:
+    - nvm use 14
+    - pushd website
+    - yarn
+    - popd
+build_script:
+    - pushd bench
+    - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
+    - sudo dotnet run -c Release -p tool -- --task test
+    - sudo dotnet run -c Release -p tool -- --task bench
+    - popd
+    - pushd website
+    - yarn
+    - yarn content
+    - yarn generate
+    - popd
+artifacts:
+    - path: bench/build
+      name: benchmark
+    - path: website/dist
+      name: website

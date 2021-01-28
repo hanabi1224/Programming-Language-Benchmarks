@@ -1,0 +1,12 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "netcore",
+  "compilerVersion": "3.1",
+  "test": "binarytrees",
+  "code": "7.cs",
+  "input": "14",
+  "timeMS": 216.0093,
+  "memBytes": 26579763,
+  "cpuTimeMS": 318.0
+}
