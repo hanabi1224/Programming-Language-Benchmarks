@@ -10,14 +10,16 @@ cache:
     - /var/lib/docker
     - /home/appveyor/.cache/yarn/v6
     - /home/appveyor/.nuget/packages
+install:
+    - yarn --version
 build_script:
     - cd bench
     - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
     - sudo dotnet run -c Release -p tool -- --task test
     - sudo dotnet run -c Release -p tool -- --task bench
     - cd ../website
-    - sudo yarn content
-    - sudo yarn generate
+    - yarn content
+    - yarn generate
 artifacts:
     - path: bench/build
       name: benchmark

@@ -140,7 +140,7 @@ namespace BenchTool
             srcCodePath.EnsureFileExists();
 
             // Setup tmp build folder
-            var tmpDir = new TempFolder();
+            using var tmpDir = new TempFolder();
 
             Console.WriteLine($"Temp build folder: {tmpDir.FullPath}");
 
