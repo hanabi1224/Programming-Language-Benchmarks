@@ -16,7 +16,8 @@ namespace BenchTool
         public TempFolder()
         {
             RootDirName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", RootDirName);
+            //FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", RootDirName);
+            FullPath = Path.Combine(Path.GetTempPath(), RootDirName);
         }
 
         public void CreateIfNotExist()
@@ -44,7 +45,8 @@ namespace BenchTool
         public TempFile()
         {
             var fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", fileName);
+            //FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", fileName);
+            FullPath = Path.Combine(Path.GetTempPath(), fileName);
         }
 
         public void Dispose()
