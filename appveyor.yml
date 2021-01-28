@@ -12,17 +12,20 @@ cache:
     - /home/appveyor/.nuget/packages
 install:
     - nvm use 14
-    - cd website
+    - pushd website
     - yarn
+    - popd
 build_script:
-    - cd bench
+    - pushd bench
     - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
     - sudo dotnet run -c Release -p tool -- --task test
     - sudo dotnet run -c Release -p tool -- --task bench
-    - cd ../website
+    - popd
+    - pushd website
     - yarn
     - yarn content
     - yarn generate
+    - popd
 artifacts:
     - path: bench/build
       name: benchmark
