@@ -18,6 +18,7 @@ build_script:
     - sudo dotnet run -c Release -p tool -- --task test
     - sudo dotnet run -c Release -p tool -- --task bench
     - cd ../website
+    - yarn
     - yarn content
     - yarn generate
 artifacts:
