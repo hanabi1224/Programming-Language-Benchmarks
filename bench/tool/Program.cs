@@ -195,7 +195,7 @@ namespace BenchTool
 
             if (Directory.Exists(buildOutput))
             {
-                Directory.Delete(buildOutput);
+                Directory.Delete(buildOutput, recursive: true);
             }
 
             Directory.Move($"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}", buildOutput);
