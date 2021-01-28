@@ -8,12 +8,27 @@ branches:
 build: off
 cache:
     - /var/lib/docker
+    - /home/appveyor/.cache/yarn/v6
+    - /home/appveyor/.nuget/packages
 install:
     - yarn cache dir
     - docker info
-    - nvm
-    - gvm
-    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    - docker pull golang:1.15
+    - nvm use 12
+    - node -v
+    - nvm use 15
+    - node -v
+    - nvm use 14
+    - node -v
+    - gvm use 1.14
+    - go version
+    - gvm use 1.15
+    - go version
+    - which javac
+    - javac -version
+    - which java
+    - java -version
+    # - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # - docker pull golang:1.15
 build_script:
-    - docker info
+    - nvm use 14
+    - node -v
