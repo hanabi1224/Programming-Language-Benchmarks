@@ -12,21 +12,24 @@ cache:
     - /home/appveyor/.nuget/packages
 install:
     - yarn cache dir
-    - docker info
+    # - docker info
     - nvm use 12
     - node -v
     - nvm use 15
     - node -v
     - nvm use 14
     - node -v
-    - gvm use 1.14
-    - go version
-    - gvm use 1.15
-    - go version
+    - rvm
+    - rvm use 2.7
+    - ruby -v
     - which javac
     - javac -version
     - which java
     - java -version
+    - csc -version
+    - which csc
+    - mono -V
+    - which mono
     # - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     # - docker pull golang:1.15
 build_script:
