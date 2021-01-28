@@ -44,7 +44,7 @@ namespace BenchTool
         public TempFile()
         {
             var fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            FullPath = Path.Combine(Path.GetTempPath(), fileName);
+            FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", fileName);
         }
 
         public void Dispose()

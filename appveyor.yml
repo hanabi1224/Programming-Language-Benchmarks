@@ -12,12 +12,12 @@ cache:
     - /home/appveyor/.nuget/packages
 build_script:
     - cd bench
-    - dotnet run -c Release -p tool -- --task build
-    - dotnet run -c Release -p tool -- --task test
-    - dotnet run -c Release -p tool -- --task bench
+    - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
+    - sudo dotnet run -c Release -p tool -- --task test
+    - sudo dotnet run -c Release -p tool -- --task bench
     - cd ../website
-    - yarn content
-    - yarn generate
+    - sudo yarn content
+    - sudo yarn generate
 artifacts:
     - path: bench/build
       name: benchmark
