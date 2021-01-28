@@ -1,0 +1,15 @@
+version: 1.0.{build}
+image: Ubuntu2004
+pull_requests:
+    do_not_increment_build_number: true
+branches:
+    only:
+        - main
+build: off
+build_script:
+    - cmd: docker info
+    - cmd: docker pull golang:1.15
+    - cmd: ls /var/lib/docker
+    - cmd: curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh"
+    - cmd: nvm
+    - cmd: gvm
