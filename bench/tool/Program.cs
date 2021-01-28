@@ -140,71 +140,71 @@ namespace BenchTool
             srcCodePath.EnsureFileExists();
 
             // Setup tmp build folder
-            using (var tmpDir = new TempFolder())
+            var tmpDir = new TempFolder();
+
+            Console.WriteLine($"Temp build folder: {tmpDir.FullPath}");
+
+            // Copy Include folder
+            if (!langEnvConfig.Include.IsEmptyOrWhiteSpace())
             {
-                Console.WriteLine($"Temp build folder: {tmpDir.FullPath}");
+                var fromDir = Path.Combine(includeDir, langEnvConfig.Include);
+                fromDir.EnsureDirectoryExists();
 
-                // Copy Include folder
-                if (!langEnvConfig.Include.IsEmptyOrWhiteSpace())
-                {
-                    var fromDir = Path.Combine(includeDir, langEnvConfig.Include);
-                    fromDir.EnsureDirectoryExists();
-
-                    await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"").ConfigureAwait(false);
-                }
-
-                var srcCodeDestDir = langEnvConfig.IncludeSubDir.IsEmptyOrWhiteSpace() ? tmpDir.FullPath : Path.Combine(tmpDir.FullPath, langEnvConfig.IncludeSubDir);
-                srcCodeDestDir.CreateDirectoryIfNotExist();
-                var srcCodeDestFileName = langEnvConfig.SourceRenameTo
-                    .FallBackTo(langConfig.SourceRenameTo)
-                    .FallBackTo(Path.GetFileName(srcCodePath));
-                File.Copy(srcCodePath, Path.Combine(srcCodeDestDir, srcCodeDestFileName));
-
-                // Docker setup
-                var docker = langEnvConfig.Docker;
-                var useDocker = !docker.IsEmptyOrWhiteSpace();
-                if (useDocker && forcePullDocker)
-                {
-                    await ProcessUtils.RunCommandAsync($"docker pull {docker}").ConfigureAwait(false);
-                }
-
-                // Before Build
-                var beforeBuild = langEnvConfig.BeforeBuild;
-                if (!beforeBuild.IsEmptyOrWhiteSpace())
-                {
-                    await ProcessUtils.RunCommandAsync(beforeBuild, workingDir: tmpDir.FullPath).ConfigureAwait(false);
-                }
-
-                // Check compiler version and save output
-                var compilerVersionCommand = langEnvConfig.CompilerVersionCommand.FallBackTo(langConfig.CompilerVersionCommand);
-                if (useDocker)
-                {
-                    compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
-                }
-
-                await ProcessUtils.RunCommandAsync(compilerVersionCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
-
-                // Build
-                var buildCommand = langEnvConfig.Build;
-                if (useDocker)
-                {
-                    const string DockerTmpCodeDir = "/tmp/code";
-                    buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} sh -c \"{buildCommand}\"";
-                }
-
-                await ProcessUtils.RunCommandAsync(buildCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
-
-                if (Directory.Exists(buildOutput))
-                {
-                    Directory.Delete(buildOutput, recursive: true);
-                }
-
-                var tmpBuildOutput = $"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}";
-                Directory.Move(tmpBuildOutput, buildOutput);
-                Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
-                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
-                //await ProcessUtils.RunAsync($"cp -a \"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}\" \"{buildOutput}\"").ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"").ConfigureAwait(false);
             }
+
+            var srcCodeDestDir = langEnvConfig.IncludeSubDir.IsEmptyOrWhiteSpace() ? tmpDir.FullPath : Path.Combine(tmpDir.FullPath, langEnvConfig.IncludeSubDir);
+            srcCodeDestDir.CreateDirectoryIfNotExist();
+            var srcCodeDestFileName = langEnvConfig.SourceRenameTo
+                .FallBackTo(langConfig.SourceRenameTo)
+                .FallBackTo(Path.GetFileName(srcCodePath));
+            File.Copy(srcCodePath, Path.Combine(srcCodeDestDir, srcCodeDestFileName));
+
+            // Docker setup
+            var docker = langEnvConfig.Docker;
+            var useDocker = !docker.IsEmptyOrWhiteSpace();
+            if (useDocker && forcePullDocker)
+            {
+                await ProcessUtils.RunCommandAsync($"docker pull {docker}").ConfigureAwait(false);
+            }
+
+            // Before Build
+            var beforeBuild = langEnvConfig.BeforeBuild;
+            if (!beforeBuild.IsEmptyOrWhiteSpace())
+            {
+                await ProcessUtils.RunCommandAsync(beforeBuild, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+            }
+
+            // Check compiler version and save output
+            var compilerVersionCommand = langEnvConfig.CompilerVersionCommand.FallBackTo(langConfig.CompilerVersionCommand);
+            if (useDocker)
+            {
+                compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
+            }
+
+            await ProcessUtils.RunCommandAsync(compilerVersionCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+
+            // Build
+            var buildCommand = langEnvConfig.Build;
+            if (useDocker)
+            {
+                const string DockerTmpCodeDir = "/tmp/code";
+                buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} sh -c \"{buildCommand}\"";
+            }
+
+            await ProcessUtils.RunCommandAsync(buildCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+
+            if (Directory.Exists(buildOutput))
+            {
+                Directory.Delete(buildOutput, recursive: true);
+            }
+
+            var tmpBuildOutput = $"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}";
+            Console.WriteLine($"Copying from {tmpBuildOutput} to {buildOutput}");
+            Directory.Move(tmpBuildOutput, buildOutput);
+            Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
+            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            //await ProcessUtils.RunAsync($"cp -a \"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}\" \"{buildOutput}\"").ConfigureAwait(false);
         }
 
         private static async Task TestAsync(
