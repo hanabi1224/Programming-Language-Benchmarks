@@ -9,10 +9,11 @@ build: off
 cache:
     - /var/lib/docker
 install:
+    - yarn cache dir
     - docker info
-    - docker pull golang:1.15
-    - curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh"
     - nvm
     - gvm
+    - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - docker pull golang:1.15
 build_script:
     - docker info
