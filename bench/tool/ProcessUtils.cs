@@ -280,13 +280,20 @@ namespace BenchTool
                 onStart?.Invoke();
                 if (asyncRead)
                 {
-                    if (p.StartInfo.RedirectStandardOutput)
+                    try
                     {
-                        p.BeginOutputReadLine();
+                        if (p.StartInfo.RedirectStandardOutput)
+                        {
+                            p.BeginOutputReadLine();
+                        }
+                        if (p.StartInfo.RedirectStandardError)
+                        {
+                            p.BeginErrorReadLine();
+                        }
                     }
-                    if (p.StartInfo.RedirectStandardError)
+                    catch (Exception e)
                     {
-                        p.BeginErrorReadLine();
+                        Logger.Error(e.Message);
                     }
                 }
 
