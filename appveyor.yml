@@ -5,11 +5,16 @@ pull_requests:
 branches:
     only:
         - main
+environment:
+    VERCEL_TOKEN:
+        secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
 build: off
 cache:
     - /var/lib/docker
     - /home/appveyor/.cache/yarn/v6
     - /home/appveyor/.nuget/packages
+    - /home/appveyor/.npm
+    - /home/appveyor/.yarn
 install:
     - nvm use 14
     - pushd website
@@ -27,7 +32,9 @@ build_script:
     - yarn generate
     - popd
 artifacts:
-    - path: bench/build
-      name: benchmark
+    - path: bench/build/_results
+      name: benchmark_results
     - path: website/dist
       name: website
+on_success:
+    - ps: if ($env:VERCEL_TOKEN) { $a = vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }

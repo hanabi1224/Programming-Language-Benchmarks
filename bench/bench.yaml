@@ -21,18 +21,18 @@ langs:
     runtime_version_command:
     runtime_version_regex:
     environments:
-      # - os: linux
-      #   compiler: dotnet
-      #   version: 5.0
-      #   docker: mcr.microsoft.com/dotnet/sdk:5.0
-      #   include: dotnet
-      #   build: dotnet publish -c Release -f net5.0 -o out
-      #   out_dir: out
-      #   out_exe: _dotnet
+      - os: linux
+        compiler: dotnet
+        version: 5.0
+        # docker: mcr.microsoft.com/dotnet/sdk:5.0
+        include: dotnet
+        build: dotnet publish -c Release -f net5.0 -o out
+        out_dir: out
+        run_cmd: _dotnet
       - os: linux
         compiler: netcore
         version: 3.1
-        docker: mcr.microsoft.com/dotnet/sdk:3.1
+        # docker: mcr.microsoft.com/dotnet/sdk:3.1
         include: dotnet
         build: dotnet publish -c Release -f netcoreapp3.1 -o out
         out_dir: out
@@ -74,5 +74,14 @@ langs:
         include:
         build: javac c.java -d out && cp -r /opt/java/openjdk ./out
         after_build: docker run --rm adoptopenjdk:11 cp -r.
+        out_dir: out
+        run_cmd: openjdk/bin/java binarytrees
+      - os: linux
+        compiler: adoptopenjdk
+        version: 15
+        docker: adoptopenjdk:15
+        include:
+        build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+        after_build: docker run --rm adoptopenjdk:15 cp -r.
         out_dir: out
         run_cmd: openjdk/bin/java binarytrees

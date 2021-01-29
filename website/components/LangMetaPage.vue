@@ -48,7 +48,7 @@
           <tr class="border-b-2 border-dotted">
             <th v-show="other" class="text-left">lang</th>
             <th class="text-left">code</th>
-            <th class="text-left">N</th>
+            <th class="text-right">N</th>
             <th class="text-right">time</th>
             <th class="text-right">mem</th>
             <th class="text-right">cpu-time</th>
@@ -65,12 +65,13 @@
               <td v-show="other" class="text-left">{{ i.lang }}</td>
               <td class="text-left">
                 <a
-                  :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/tree/bench/algorithm/${test}/${i.code}`"
+                  :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
                   target="_blank"
+                  class="underline text-blue-500"
                   >{{ i.code }}</a
                 >
               </td>
-              <td class="text-left">{{ i.input }}</td>
+              <td class="text-right">{{ i.input }}</td>
               <td class="text-right">{{ i.timeMS.toFixed(2) }}</td>
               <td class="text-right">
                 {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB

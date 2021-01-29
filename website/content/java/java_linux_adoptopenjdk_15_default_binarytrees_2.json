@@ -2,11 +2,11 @@
   "lang": "java",
   "os": "linux",
   "compiler": "adoptopenjdk",
-  "compilerVersion": "11",
+  "compilerVersion": "15",
   "test": "binarytrees",
   "code": "2.java",
   "input": "14",
-  "timeMS": 256.4905,
-  "memBytes": 94642995,
-  "cpuTimeMS": 346.0
+  "timeMS": 158.9648,
+  "memBytes": 99501670,
+  "cpuTimeMS": 196.0
 }
