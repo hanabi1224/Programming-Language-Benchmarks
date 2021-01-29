@@ -1,4 +1,4 @@
-udocker: true
+udocker: false
 problems:
   - name: binarytrees
     unittests:
