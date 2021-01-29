@@ -28,6 +28,7 @@ namespace BenchTool
         /// <param name="buildOutput">Output folder of build step</param>
         /// <param name="task">Benchmark task to run, valid values: build, test, bench</param>
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
+        /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
@@ -38,6 +39,7 @@ namespace BenchTool
             string buildOutput = "build",
             string task = "build",
             bool forcePullDocker = false,
+            bool forceRebuild = false,
             bool failFast = false,
             string[] langs = null,
             string[] environments = null)
@@ -72,7 +74,7 @@ namespace BenchTool
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
             var aggregatedExceptions = new List<Exception>();
-            foreach (var c in langConfigs)
+            foreach (var c in langConfigs.OrderBy(i => i.Lang))
             {
                 if (includedLanguages.Count > 0
                     && !includedLanguages.Contains(c.Lang))
@@ -100,7 +102,7 @@ namespace BenchTool
                                 switch (task)
                                 {
                                     case TaskBuild:
-                                        await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker).ConfigureAwait(false);
+                                        await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild).ConfigureAwait(false);
                                         break;
                                     case TaskTest:
                                         await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
@@ -142,10 +144,11 @@ namespace BenchTool
             string algorithmDir,
             string buildOutputDir,
             string includeDir,
-            bool forcePullDocker)
+            bool forcePullDocker,
+            bool forceRebuild)
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
-            if (Directory.Exists(buildOutput))
+            if (!forceRebuild && Directory.Exists(buildOutput))
             {
                 Console.WriteLine($"Build cache hit.");
                 return;
@@ -178,7 +181,9 @@ namespace BenchTool
             var srcCodeDestFileName = langEnvConfig.SourceRenameTo
                 .FallBackTo(langConfig.SourceRenameTo)
                 .FallBackTo(Path.GetFileName(srcCodePath));
-            File.Copy(srcCodePath, Path.Combine(srcCodeDestDir, srcCodeDestFileName), overwrite: true);
+            var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
+            Console.WriteLine($"Copying {srcCodePath} to {srcCodeDestPath}");
+            File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
 
             // Docker setup
             var docker = langEnvConfig.Docker;
