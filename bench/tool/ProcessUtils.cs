@@ -251,7 +251,7 @@ namespace BenchTool
                         {
                             if (e.Data.IsEmptyOrWhiteSpace())
                             {
-                                Console.Error.WriteLine(e);
+                                Console.Error.WriteLine(e.Data);
                             }
                             else
                             {
