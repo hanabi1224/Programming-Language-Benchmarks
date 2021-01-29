@@ -18,6 +18,7 @@ cache:
     - /home/appveyor/.cargo
 install:
     - nvm use 14
+    - export PATH="$(yarn global bin):$PATH"
     - yarn global add vercel
     - vercel -v
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
