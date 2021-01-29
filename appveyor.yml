@@ -19,7 +19,7 @@ cache:
 install:
     - nvm use 14
     - yarn global add vercel
-    - if [[ -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel
+    - if [[ -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;
     # - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel && vercel -v }
     # - ps: export PATH="$(yarn global bin):$PATH"
     - vercel -v
@@ -43,5 +43,5 @@ artifacts:
     - path: website/dist
       name: website
 on_success:
-    - if [[ -z "${VERCEL_TOKEN}" ]]; then vercel website --prod -c -C -t $VERCEL_TOKEN
+    - if [[ -z "${VERCEL_TOKEN}" ]]; then vercel website --prod -c -C -t $VERCEL_TOKEN;
     # - ps: if ($env:VERCEL_TOKEN) { $a = vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }
