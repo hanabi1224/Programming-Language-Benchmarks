@@ -244,8 +244,7 @@ namespace BenchTool
             }
 
             Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
-            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
-            //await ProcessUtils.RunAsync($"cp -a \"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}\" \"{buildOutput}\"").ConfigureAwait(false);
+            await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}").ConfigureAwait(false);
         }
 
         private static async Task TestAsync(

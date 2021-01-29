@@ -3,7 +3,7 @@ problems:
   - name: helloworld
     source:
       - 1.ts
-compiler_version_command: deno --version
+compiler_version_command: bin/deno --version
 compiler_version_regex:
 runtime_version_command:
 runtime_version_regex:
@@ -15,8 +15,11 @@ environments:
     include:
     # include_sub_dir: out
     before_build:
-      - sh -c "curl -fsSL https://deno.land/x/install/install.sh | sh && export PATH=$HOME/.deno/bin:$PATH"
+      - sh -c "curl -fsSL https://deno.land/x/install/install.sh | sh"
+      - cp PATH=$HOME/.deno/bin .
+      - chmod +x bin/deno
+      - ls -al
     # build: cp /usr/local/bin/node ./out && cp -a $HOME/.deno/bin ./out
-    build: deno compile --unstable -o out/_app c.ts
+    build: bin/deno compile --unstable -o out/_app c.ts
     out_dir: out
     run_cmd: _app
