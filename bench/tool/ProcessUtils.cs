@@ -229,7 +229,14 @@ namespace BenchTool
                         stdOutBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Logger.Trace(e.Data);
+                            if (e.Data.IsEmptyOrWhiteSpace())
+                            {
+                                Console.WriteLine(e.Data);
+                            }
+                            else
+                            {
+                                Logger.Trace(e.Data);
+                            }
                         }
                     };
                 }
@@ -240,10 +247,16 @@ namespace BenchTool
                     p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);
-                        if (printOnConsole
-                            && !e.Data.IsEmptyOrWhiteSpace())
+                        if (printOnConsole)
                         {
-                            Logger.Error(e.Data);
+                            if (e.Data.IsEmptyOrWhiteSpace())
+                            {
+                                Console.Error.WriteLine(e);
+                            }
+                            else
+                            {
+                                Logger.Error(e.Data);
+                            }
                         }
                     };
                 }
