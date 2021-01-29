@@ -67,6 +67,7 @@
                 <a
                   :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
                   target="_blank"
+                  class="underline text-blue-500"
                   >{{ i.code }}</a
                 >
               </td>

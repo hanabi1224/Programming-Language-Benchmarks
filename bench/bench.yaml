@@ -76,3 +76,12 @@ langs:
         after_build: docker run --rm adoptopenjdk:11 cp -r.
         out_dir: out
         run_cmd: openjdk/bin/java binarytrees
+      - os: linux
+        compiler: adoptopenjdk
+        version: 15
+        docker: adoptopenjdk:15
+        include:
+        build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+        after_build: docker run --rm adoptopenjdk:15 cp -r.
+        out_dir: out
+        run_cmd: openjdk/bin/java binarytrees
