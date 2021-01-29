@@ -15,11 +15,13 @@ cache:
     - /home/appveyor/.nuget/packages
     - /home/appveyor/.npm
     - /home/appveyor/.yarn
+    - /home/appveyor/.cargo
 install:
     - nvm use 14
     - pushd website
     - yarn
     - popd
+    - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel }
 build_script:
     - pushd bench
     - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true

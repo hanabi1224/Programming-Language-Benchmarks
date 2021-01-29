@@ -85,3 +85,24 @@ langs:
         after_build: docker run --rm adoptopenjdk:15 cp -r.
         out_dir: out
         run_cmd: openjdk/bin/java binarytrees
+  - lang: rust
+    problems:
+      - name: binarytrees
+        source:
+          - 1.rs
+          - 2.rs
+    source_rename_to: main.rs
+    compiler_version_command: rustc -V
+    compiler_version_regex:
+    runtime_version_command:
+    runtime_version_regex:
+    environments:
+      - os: linux
+        compiler: rustc
+        version: 1.49
+        docker: rust:1.49
+        include: rust
+        include_sub_dir: src
+        build: cargo build --release
+        out_dir: target/release
+        run_cmd: _app
