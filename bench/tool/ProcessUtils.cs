@@ -117,7 +117,7 @@ namespace BenchTool
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            return RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            return RunProcess(psi, useShellExecute: true, printOnConsole: false, stdErrorBuilder: null, stdOutBuilder: null, token: token);
         }
 
         public static int RunProcess(
@@ -169,9 +169,7 @@ namespace BenchTool
         {
             startInfo.UseShellExecute = useShellExecute;
             startInfo.RedirectStandardOutput = !useShellExecute;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.RedirectStandardError = !useShellExecute;
-            startInfo.StandardErrorEncoding = Encoding.UTF8;
 
             var p = new Process
             {
@@ -195,6 +193,7 @@ namespace BenchTool
                 var useShellExecute = p.StartInfo.UseShellExecute;
                 if (p.StartInfo.RedirectStandardOutput)
                 {
+                    p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
                     p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdOutBuilder?.AppendLine(e.Data);
@@ -207,6 +206,7 @@ namespace BenchTool
 
                 if (p.StartInfo.RedirectStandardError)
                 {
+                    p.StartInfo.StandardErrorEncoding = Encoding.UTF8;
                     p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);

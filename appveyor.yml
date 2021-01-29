@@ -22,6 +22,8 @@ install:
     - nvm use 14
     - python -V
     - export PATH="$(yarn global bin):$PATH"
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+    - export PATH=$HOME/.deno/bin/:$PATH
     # - yarn global add vercel
     # - vercel -v
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
