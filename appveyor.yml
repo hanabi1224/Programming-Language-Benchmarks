@@ -20,7 +20,8 @@ install:
     - nvm use 14
     # - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel && vercel -v }
     - ps: yarn global add vercel
-    - ps: ./vercel -v
+    - ps: export PATH="$(yarn global bin):$PATH
+    - ps: vercel -v
     - pushd website
     - yarn
     - popd
@@ -41,5 +42,5 @@ artifacts:
     - path: website/dist
       name: website
 on_success:
-    - ps: ./vercel -h
-    - ps: if ($env:VERCEL_TOKEN) { $a = ./vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }
+    - ps: vercel -h
+    - ps: if ($env:VERCEL_TOKEN) { $a = vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }
