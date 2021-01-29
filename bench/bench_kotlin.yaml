@@ -14,6 +14,6 @@ environments:
     version: 1.4.21
     include: kotlin-native
     include_sub_dir: src/nativeMain/kotlin
-    build: gradle nativeBinaries
+    build: ./gradlew nativeBinaries
     out_dir: build/bin/native/_appReleaseExecutable
     run_cmd: _app.kexe
