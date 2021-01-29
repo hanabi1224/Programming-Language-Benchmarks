@@ -1,5 +1,14 @@
 udocker: false
 problems:
+  - name: helloworld
+    unittests:
+      - input: T_T
+        output: T_T_out
+      - input: QwQ
+        output: QwQ_out
+    tests:
+      - input: QwQ
+        repeat: 3
   - name: binarytrees
     unittests:
       - input: 10
@@ -10,56 +19,16 @@ problems:
       - input: 14
         repeat: 5
 langs:
-  - lang: csharp
-    problems:
-      - name: binarytrees
-        source:
-          - 3.cs
-          - 6.cs
-          - 7.cs
-    compiler_version_command: dotnet --version
-    compiler_version_regex:
-    runtime_version_command:
-    runtime_version_regex:
-    environments:
-      - os: linux
-        compiler: dotnet
-        version: 5.0
-        # docker: mcr.microsoft.com/dotnet/sdk:5.0
-        include: dotnet
-        build: dotnet publish -c Release -f net5.0 -o out
-        out_dir: out
-        run_cmd: _dotnet
-      - os: linux
-        compiler: netcore
-        version: 3.1
-        docker: mcr.microsoft.com/dotnet/sdk:3.1
-        include: dotnet
-        build: dotnet publish -c Release -f netcoreapp3.1 -o out
-        out_dir: out
-        run_cmd: _dotnet
-  - lang: javascript
-    problems:
-      - name: binarytrees
-        source:
-          - 1.js
-    compiler_version_command:
-    compiler_version_regex:
-    runtime_version_command: node -v
-    runtime_version_regex:
-    source_rename_to: c.js
-    environments:
-      - os: linux
-        compiler: node
-        version: 14
-        docker: node:14
-        include:
-        include_sub_dir: out
-        build: cp /usr/local/bin/node ./out
-        out_dir: out
-        run_cmd: node c.js
+  # - lang: csharp: bench_csharp.yaml
+  # - lang: javascript: bench_javascript.yaml
+  # - lang: typescript: bench_typescript.yaml
+  # - lang: java: bench_java.yaml
+  # - lang: rust: bench_rust.yaml
   - lang: go
     problems:
+      - name: helloworld
+        source:
+          - 1.go
       - name: binarytrees
         source:
           - 1.go
@@ -77,52 +46,3 @@ langs:
         build: go build -o out/_go
         out_dir: out
         run_cmd: _go
-  - lang: java
-    problems:
-      - name: binarytrees
-        source:
-          - 2.java
-    compiler_version_command: javac -version
-    compiler_version_regex:
-    runtime_version_command: java -version
-    runtime_version_regex:
-    source_rename_to: c.java
-    environments:
-      - os: linux
-        compiler: adoptopenjdk
-        version: 11
-        docker: adoptopenjdk:11
-        include:
-        build: javac c.java -d out && cp -r /opt/java/openjdk ./out
-        out_dir: out
-        run_cmd: openjdk/bin/java binarytrees
-      - os: linux
-        compiler: adoptopenjdk
-        version: 15
-        docker: adoptopenjdk:15
-        include:
-        build: javac c.java -d out && cp -r /opt/java/openjdk ./out
-        after_build: docker run --rm adoptopenjdk:15 cp -r.
-        out_dir: out
-        run_cmd: openjdk/bin/java binarytrees
-  - lang: rust
-    problems:
-      - name: binarytrees
-        source:
-          - 1.rs
-          - 2.rs
-    source_rename_to: main.rs
-    compiler_version_command: rustc -V
-    compiler_version_regex:
-    runtime_version_command:
-    runtime_version_regex:
-    environments:
-      - os: linux
-        compiler: rustc
-        version: 1.49
-        docker: rust:1.49
-        include: rust
-        include_sub_dir: src
-        build: cargo build --release
-        out_dir: target/release
-        run_cmd: _app

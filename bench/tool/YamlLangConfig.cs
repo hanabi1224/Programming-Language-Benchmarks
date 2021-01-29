@@ -10,9 +10,9 @@ namespace BenchTool
     {
         public bool Udocker { get; set; }
 
-        public YamlBenchmarkProblemConfig[] Problems { get; set; }
+        public List<YamlBenchmarkProblemConfig> Problems { get; set; }
 
-        public YamlLangConfig[] Langs { get; set; }
+        public List<YamlLangConfig> Langs { get; set; }
     }
 
     public class YamlBenchmarkProblemConfig
@@ -85,15 +85,15 @@ namespace BenchTool
 
         public string IncludeSubDir { get; set; }
 
-        public string BeforeBuild { get; set; }
+        public string[] BeforeBuild { get; set; }
 
         public string Build { get; set; }
 
-        public string AfterBuild { get; set; }
+        public string[] AfterBuild { get; set; }
 
         public string OutDir { get; set; } = "out";
 
-        public string BeforeRun { get; set; }
+        public string[] BeforeRun { get; set; }
 
         public string RunCmd { get; set; }
     }

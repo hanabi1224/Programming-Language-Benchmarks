@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
+using NLog;
 
 namespace BenchTool
 {
@@ -47,6 +48,8 @@ namespace BenchTool
 
     public static class ProcessUtils
     {
+        private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
         public static async Task<ProcessMeasurement> MeasureAsync(
             ProcessStartInfo startInfo,
             int sampleIntervalMS = 5,
@@ -90,23 +93,49 @@ namespace BenchTool
                     }
                     catch (Exception e)
                     {
-                        Console.Error.WriteLine(e);
+                        Logger.Error(e);
                         return;
                     }
                 }
             }, TaskCreationOptions.LongRunning);
 
             var sw = Stopwatch.StartNew();
-            RunProcess(p, printOnConsole: false, null, null, token, onStart: () => started = true);
+            RunProcess(p, printOnConsole: false, asyncRead: false, null, null, token, onStart: () => started = true);
             sw.Stop();
             await t.ConfigureAwait(false);
             m.Elapsed = sw.Elapsed;
             return m;
         }
 
-        public static async Task<int> RunCommandAsync(
+        public static async Task RunCommandsAsync(
+            IEnumerable<string> commands,
+            string workingDir = null,
+            bool asyncRead = true,
+            bool ensureZeroExitCode = false,
+            CancellationToken token = default
+            )
+        {
+            if (commands == null)
+            {
+                return;
+            }
+
+            foreach (var command in commands)
+            {
+                await RunCommandAsync(
+                    command: command,
+                    workingDir: workingDir,
+                    asyncRead: asyncRead,
+                    ensureZeroExitCode: ensureZeroExitCode,
+                    token: token).ConfigureAwait(false);
+            }
+        }
+
+        public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
+            bool asyncRead = true,
+            bool ensureZeroExitCode = false,
             CancellationToken token = default)
         {
             if (workingDir.IsEmptyOrWhiteSpace())
@@ -117,12 +146,17 @@ namespace BenchTool
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            return RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, asyncRead: asyncRead, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            if (ensureZeroExitCode && ret != 0)
+            {
+                throw new InvalidOperationException($"[Non zero exit code {ret}] {command}");
+            }
         }
 
         public static int RunProcess(
                 ProcessStartInfo startInfo,
                 bool printOnConsole,
+                bool asyncRead,
                 out string stdOut,
                 out string stdError,
                 CancellationToken token)
@@ -133,6 +167,7 @@ namespace BenchTool
             var ret = RunProcess(
                 startInfo: startInfo,
                 printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
                 token: token);
@@ -148,12 +183,14 @@ namespace BenchTool
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             bool printOnConsole,
+            bool asyncRead,
             CancellationToken token)
         {
             return RunProcess(
                 startInfo: startInfo,
                 useShellExecute: false,
                 printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
                 token: token);
@@ -163,6 +200,7 @@ namespace BenchTool
             ProcessStartInfo startInfo,
             bool useShellExecute,
             bool printOnConsole,
+            bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             CancellationToken token)
@@ -176,77 +214,19 @@ namespace BenchTool
                 StartInfo = startInfo,
             };
 
-            return RunProcess(p: p, printOnConsole: printOnConsole, stdOutBuilder: stdOutBuilder, stdErrorBuilder: stdErrorBuilder, token: token);
-            //using (var p = new Process
-            //{
-            //    StartInfo = startInfo,
-            //})
-            //{
-            //    if (!useShellExecute)
-            //    {
-            //        p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
-            //        {
-            //            stdOutBuilder?.AppendLine(e.Data);
-            //            if (printOnConsole)
-            //            {
-            //                Console.WriteLine(e.Data);
-            //            }
-            //        };
-
-            //        p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
-            //        {
-            //            stdErrorBuilder?.AppendLine(e.Data);
-            //            if (printOnConsole)
-            //            {
-            //                Console.Error.WriteLine(e.Data);
-            //            }
-            //        };
-            //    }
-
-            //    p.Start();
-            //    if (!useShellExecute)
-            //    {
-            //        p.BeginOutputReadLine();
-            //        p.BeginErrorReadLine();
-            //    }
-
-            //    using (var processEnded = new ManualResetEvent(false))
-            //    {
-            //        using var safeWaitHandle = new SafeWaitHandle(p.Handle, false);
-
-            //        processEnded.SetSafeWaitHandle(safeWaitHandle);
-
-            //        var index = WaitHandle.WaitAny(new[] { processEnded, token.WaitHandle });
-
-            //        //If the signal came from the caller cancellation token close the window
-            //        if (index == 1
-            //            && !p.HasExited)
-            //        {
-            //            p.CloseMainWindow();
-            //            p.Kill();
-            //            return -1;
-            //        }
-            //        else if (index == 0 && !p.HasExited)
-            //        {
-            //            // Workaround for linux: https://github.com/dotnet/corefx/issues/35544
-            //            p.WaitForExit();
-            //        }
-            //    }
-
-            //    try
-            //    {
-            //        return p.ExitCode;
-            //    }
-            //    catch (InvalidOperationException)
-            //    {
-            //        return -1;
-            //    }
-            //}
+            return RunProcess(
+                p: p,
+                printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
+                stdOutBuilder: stdOutBuilder,
+                stdErrorBuilder: stdErrorBuilder,
+                token: token);
         }
 
         public static int RunProcess(
             Process p,
             bool printOnConsole,
+            bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             CancellationToken token,
@@ -254,35 +234,67 @@ namespace BenchTool
         {
             using (p)
             {
-                Console.WriteLine($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
+                Logger.Debug($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
                 var useShellExecute = p.StartInfo.UseShellExecute;
-                if (!useShellExecute)
+                if (p.StartInfo.RedirectStandardOutput)
                 {
+                    p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
                     p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdOutBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Console.WriteLine(e.Data);
+                            if (e.Data.IsEmptyOrWhiteSpace())
+                            {
+                                Console.WriteLine(e.Data);
+                            }
+                            else
+                            {
+                                Logger.Trace(e.Data);
+                            }
                         }
                     };
+                }
 
+                if (p.StartInfo.RedirectStandardError)
+                {
+                    p.StartInfo.StandardErrorEncoding = Encoding.UTF8;
                     p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Console.Error.WriteLine(e.Data);
+                            if (e.Data.IsEmptyOrWhiteSpace())
+                            {
+                                Console.Error.WriteLine(e.Data);
+                            }
+                            else
+                            {
+                                Logger.Error(e.Data);
+                            }
                         }
                     };
                 }
 
                 p.Start();
                 onStart?.Invoke();
-                if (!useShellExecute)
+                if (asyncRead)
                 {
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
+                    try
+                    {
+                        if (p.StartInfo.RedirectStandardOutput)
+                        {
+                            p.BeginOutputReadLine();
+                        }
+                        if (p.StartInfo.RedirectStandardError)
+                        {
+                            p.BeginErrorReadLine();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e.Message);
+                    }
                 }
 
                 using (var processEnded = new ManualResetEvent(false))
@@ -310,6 +322,33 @@ namespace BenchTool
 
                 try
                 {
+                    if (p.StartInfo.RedirectStandardOutput)
+                    {
+                        p.StandardOutput.BaseStream.Flush();
+                        var outRm = p.StandardOutput.ReadToEnd();
+                        if (!outRm.IsEmptyOrWhiteSpace())
+                        {
+                            stdOutBuilder?.Append(outRm);
+                            if (printOnConsole)
+                            {
+                                Logger.Trace(outRm);
+                            }
+                        }
+                    }
+                    if (p.StartInfo.RedirectStandardError)
+                    {
+                        p.StandardError.BaseStream.Flush();
+                        var errRm = p.StandardError.ReadToEnd();
+                        if (!errRm.IsEmptyOrWhiteSpace())
+                        {
+                            stdErrorBuilder?.Append(errRm);
+                            if (printOnConsole)
+                            {
+                                Logger.Error(errRm);
+                            }
+                        }
+                    }
+
                     return p.ExitCode;
                 }
                 catch (InvalidOperationException)

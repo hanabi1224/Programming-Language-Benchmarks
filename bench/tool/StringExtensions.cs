@@ -58,5 +58,10 @@ namespace System
                 Arguments = array.Length > 1 ? array[1] : null,
             };
         }
+
+        public static string WrapCommandWithSh(this string command)
+        {
+            return $"sh -c \"{command}\"";
+        }
     }
 }

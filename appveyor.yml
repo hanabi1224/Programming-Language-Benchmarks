@@ -17,22 +17,30 @@ cache:
     - /home/appveyor/.yarn
     - /home/appveyor/.cargo
     - /home/appveyor/.udocker
+    - /home/appveyor/.gradle
+    - /home/appveyor/.konan
 install:
     - docker info
     - nvm use 14
     - python -V
+    - update-alternatives --list java
+    - echo $JAVA_HOME
+    - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+    - echo $JAVA_HOME
+    - java -version
+    - gradle -v
     - export PATH="$(yarn global bin):$PATH"
     # - yarn global add vercel
     # - vercel -v
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
-    - pushd website
-    - yarn
-    - popd
+    # - pushd website
+    # - yarn
+    # - popd
 build_script:
     - pushd bench
-    - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
-    - sudo dotnet run -c Release -p tool -- --task test
-    - sudo dotnet run -c Release -p tool -- --task bench
+    - dotnet run -c Release -p tool -- --task build --force-pull-docker true
+    - dotnet run -c Release -p tool -- --task test
+    - dotnet run -c Release -p tool -- --task bench
     - popd
     - pushd website
     - yarn

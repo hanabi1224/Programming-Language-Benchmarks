@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using NLog;
 
 namespace BenchTool
 {
     public class TempFolder : IDisposable
     {
+        private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
         public string FullPath { get; private set; }
 
         public string RootDirName { get; set; }
@@ -32,7 +35,14 @@ namespace BenchTool
         {
             if (Directory.Exists(FullPath))
             {
-                Directory.Delete(FullPath, recursive: true);
+                try
+                {
+                    Directory.Delete(FullPath, recursive: true);
+                }
+                catch (IOException e)
+                {
+                    Logger.Warn($"{e.Message} {FullPath}");
+                }
             }
 
             FullPath = null;
@@ -41,6 +51,8 @@ namespace BenchTool
 
     public class TempFile : IDisposable
     {
+        private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
         public string FullPath { get; private set; }
         public TempFile()
         {
@@ -53,7 +65,14 @@ namespace BenchTool
         {
             if (File.Exists(FullPath))
             {
-                File.Delete(FullPath);
+                try
+                {
+                    File.Delete(FullPath);
+                }
+                catch (IOException e)
+                {
+                    Logger.Warn($"{e.Message} {FullPath}");
+                }
             }
 
             FullPath = null;
