@@ -3,8 +3,6 @@ import _ from 'lodash';
 
 const lang2Display: { [key: string]: string } = {
   'csharp': 'C#',
-  'java': 'Java',
-  'go': 'Golang',
 };
 
 export async function getLangBenchResults($content: contentFunc) {
@@ -12,7 +10,7 @@ export async function getLangBenchResults($content: contentFunc) {
   var groupsByLang = _.chain(pages as unknown as BenchResult[]).filter(i => !!i.lang).groupBy(i => i.lang).value();
   var r: LangBenchResults[] = [];
   for (var k in groupsByLang) {
-    r.push({ lang: k, langDisplay: lang2Display[k] ?? k, benchmarks: groupsByLang[k] });
+    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: groupsByLang[k] });
   }
   return r;
 }

@@ -158,7 +158,7 @@ namespace BenchTool
             var srcCodeDestFileName = langEnvConfig.SourceRenameTo
                 .FallBackTo(langConfig.SourceRenameTo)
                 .FallBackTo(Path.GetFileName(srcCodePath));
-            File.Copy(srcCodePath, Path.Combine(srcCodeDestDir, srcCodeDestFileName));
+            File.Copy(srcCodePath, Path.Combine(srcCodeDestDir, srcCodeDestFileName), overwrite: true);
 
             // Docker setup
             var docker = langEnvConfig.Docker;
