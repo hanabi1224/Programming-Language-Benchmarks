@@ -245,6 +245,8 @@ namespace BenchTool
 
             Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
             await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}").ConfigureAwait(false);
+            await Task.Delay(1000).ConfigureAwait(false);
+            Console.WriteLine($"Deleting {tmpDir.FullPath}");
         }
 
         private static async Task TestAsync(

@@ -18,6 +18,7 @@ cache:
     - /home/appveyor/.cargo
     - /home/appveyor/.udocker
     - /home/appveyor/.gradle
+    - /home/appveyor/.konan
 install:
     - docker info
     - nvm use 14
