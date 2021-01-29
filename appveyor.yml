@@ -19,8 +19,8 @@ cache:
 install:
     - nvm use 14
     # - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel && vercel -v }
-    - ps: yarn global add vercel && vercel -v
-    - ps: ./vercel
+    - ps: yarn global add vercel
+    - ps: ./vercel -v
     - pushd website
     - yarn
     - popd
