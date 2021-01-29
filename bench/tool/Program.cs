@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
+using NLog;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -15,6 +16,13 @@ namespace BenchTool
 {
     public static class Program
     {
+        private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
+        static Program()
+        {
+            NLogUtils.Configure();
+        }
+
         const string TaskBuild = "build";
         const string TaskTest = "test";
         const string TaskBench = "bench";
@@ -64,7 +72,7 @@ namespace BenchTool
             var configDir = Path.GetDirectoryName(config);
             foreach (var lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
             {
-                Console.WriteLine($"Loading {lcPath}");
+                Logger.Info($"Loading {lcPath}");
                 var lc = yamlDeserializer.Deserialize<YamlLangConfig>(File.ReadAllText(lcPath));
                 benchConfig.Langs.Add(lc);
             }
@@ -97,7 +105,7 @@ namespace BenchTool
                             try
                             {
                                 var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
-                                Console.WriteLine($"{task}: {buildId}");
+                                Logger.Info($"{task}: {buildId}");
 
                                 switch (task)
                                 {
@@ -121,7 +129,7 @@ namespace BenchTool
                                 else
                                 {
                                     aggregatedExceptions.Add(e);
-                                    Console.Error.WriteLine(e);
+                                    Logger.Error(e);
                                 }
                             }
                         }
@@ -150,7 +158,7 @@ namespace BenchTool
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild && Directory.Exists(buildOutput))
             {
-                Console.WriteLine($"Build cache hit.");
+                Logger.Info($"Build cache hit.");
                 return;
             }
 
@@ -161,7 +169,7 @@ namespace BenchTool
             // Setup tmp build folder
             using var tmpDir = new TempFolder();
 
-            Console.WriteLine($"Temp build folder: {tmpDir.FullPath}");
+            Logger.Debug($"Temp build folder: {tmpDir.FullPath}");
 
             // Copy Include folder
             if (!langEnvConfig.Include.IsEmptyOrWhiteSpace())
@@ -182,7 +190,7 @@ namespace BenchTool
                 .FallBackTo(langConfig.SourceRenameTo)
                 .FallBackTo(Path.GetFileName(srcCodePath));
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
-            Console.WriteLine($"Copying {srcCodePath} to {srcCodeDestPath}");
+            Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
             await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"").ConfigureAwait(false);
 
@@ -235,14 +243,14 @@ namespace BenchTool
 
             try
             {
-                Console.WriteLine($"Moving from {tmpBuildOutput} to {buildOutput}");
+                Logger.Debug($"Moving from {tmpBuildOutput} to {buildOutput}");
                 Directory.Move(tmpBuildOutput, buildOutput);
-                Console.WriteLine($"Moved from {tmpBuildOutput} to {buildOutput}");
+                Logger.Debug($"Moved from {tmpBuildOutput} to {buildOutput}");
             }
             catch (IOException ioe) when (ioe.Message.Contains("Invalid cross-device link", StringComparison.OrdinalIgnoreCase))
             {
                 await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"").ConfigureAwait(false);
-                Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
+                Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
 
             await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}").ConfigureAwait(false);
@@ -257,6 +265,8 @@ namespace BenchTool
             string algorithmDir,
             string buildOutputDir)
         {
+            Console.WriteLine("\n\n-------------------------\n\n");
+
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             buildOutput.EnsureDirectoryExists();
 
@@ -281,7 +291,7 @@ namespace BenchTool
                 ProcessUtils.RunProcess(runPsi, printOnConsole: false, out var stdOut, out var stdErr, default);
                 if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                 {
-                    Console.WriteLine($"Test Passed: {buildId}");
+                    Logger.Info($"Test Passed: {buildId}");
                 }
                 else
                 {
@@ -291,8 +301,6 @@ namespace BenchTool
                         + $"\n Output: {stdOut}"
                         + $"\n Expected output: {expectedOutput}");
                 }
-
-                Console.WriteLine();
             }
         }
 
@@ -330,14 +338,12 @@ namespace BenchTool
                 for (var i = 0; i < repeat; i++)
                 {
                     var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
-                    Console.WriteLine($"{buildId} {measurement}");
+                    Logger.Debug($"{buildId} {measurement}");
                     measurements.Add(measurement);
                 }
 
                 var avgMeasurement = measurements.GetAverage();
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"\n\n[AVG] {buildId} {avgMeasurement}\n\n");
-                Console.ForegroundColor = ConsoleColor.White;
+                Logger.Info($"\n\n[AVG] {buildId} {avgMeasurement}\n\n");
 
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
                 {

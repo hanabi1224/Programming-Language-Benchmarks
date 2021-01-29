@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
+using NLog;
 
 namespace BenchTool
 {
@@ -47,6 +48,8 @@ namespace BenchTool
 
     public static class ProcessUtils
     {
+        private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
         public static async Task<ProcessMeasurement> MeasureAsync(
             ProcessStartInfo startInfo,
             int sampleIntervalMS = 5,
@@ -90,7 +93,7 @@ namespace BenchTool
                     }
                     catch (Exception e)
                     {
-                        Console.Error.WriteLine(e);
+                        Logger.Error(e);
                         return;
                     }
                 }
@@ -216,7 +219,7 @@ namespace BenchTool
         {
             using (p)
             {
-                Console.WriteLine($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
+                Logger.Debug($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
                 var useShellExecute = p.StartInfo.UseShellExecute;
                 if (p.StartInfo.RedirectStandardOutput)
                 {
@@ -226,7 +229,7 @@ namespace BenchTool
                         stdOutBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Console.WriteLine(e.Data);
+                            Logger.Debug(e.Data);
                         }
                     };
                 }
@@ -239,7 +242,7 @@ namespace BenchTool
                         stdErrorBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Console.Error.WriteLine(e.Data);
+                            Logger.Error(e.Data);
                         }
                     };
                 }
@@ -289,7 +292,7 @@ namespace BenchTool
                             stdOutBuilder?.Append(outRm);
                             if (printOnConsole)
                             {
-                                Console.WriteLine(outRm);
+                                Logger.Debug(outRm);
                             }
                         }
                     }
@@ -302,7 +305,7 @@ namespace BenchTool
                             stdErrorBuilder?.Append(errRm);
                             if (printOnConsole)
                             {
-                                Console.Error.WriteLine(errRm);
+                                Logger.Error(errRm);
                             }
                         }
                     }

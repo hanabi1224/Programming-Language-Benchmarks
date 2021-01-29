@@ -7,6 +7,13 @@
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
+      <PackageReference Include="NLog" Version="4.7.2" />
+      <PackageReference Include="NLog.Schema" Version="4.7.2" PrivateAssets="all" />
       <PackageReference Include="YamlDotNet" Version="9.1.4" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="nlog.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>
