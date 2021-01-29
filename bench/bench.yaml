@@ -25,7 +25,7 @@ langs:
       - os: linux
         compiler: dotnet
         version: 5.0
-        docker: mcr.microsoft.com/dotnet/sdk:5.0
+        # docker: mcr.microsoft.com/dotnet/sdk:5.0
         include: dotnet
         build: dotnet publish -c Release -f net5.0 -o out
         out_dir: out
