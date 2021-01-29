@@ -8,7 +8,7 @@ problems:
         output: QwQ_out
     tests:
       - input: QwQ
-      - repeat: 3
+        repeat: 3
   - name: binarytrees
     unittests:
       - input: 10
