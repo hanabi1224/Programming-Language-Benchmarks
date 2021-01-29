@@ -18,10 +18,12 @@ cache:
     - /home/appveyor/.cargo
 install:
     - nvm use 14
+    # - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel && vercel -v }
+    - ps: yarn global add vercel && vercel -v
+    - ps: ./vercel
     - pushd website
     - yarn
     - popd
-    - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel }
 build_script:
     - pushd bench
     - sudo dotnet run -c Release -p tool -- --task build --force-pull-docker true
@@ -39,4 +41,5 @@ artifacts:
     - path: website/dist
       name: website
 on_success:
-    - ps: if ($env:VERCEL_TOKEN) { $a = vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }
+    - ps: ./vercel -h
+    - ps: if ($env:VERCEL_TOKEN) { $a = ./vercel website --prod -c -C -t $env:VERCEL_TOKEN 2>&1 | out-null }
