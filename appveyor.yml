@@ -8,6 +8,7 @@ branches:
 environment:
     VERCEL_TOKEN:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
+stack: java 11
 build: off
 cache:
     - /var/lib/docker/overlay2
