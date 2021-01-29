@@ -286,6 +286,10 @@ namespace BenchTool
                         if (!outRm.IsEmptyOrWhiteSpace())
                         {
                             stdOutBuilder?.Append(outRm);
+                            if (printOnConsole)
+                            {
+                                Console.WriteLine(outRm);
+                            }
                         }
                     }
                     if (p.StartInfo.RedirectStandardError)
@@ -294,6 +298,10 @@ namespace BenchTool
                         if (!errRm.IsEmptyOrWhiteSpace())
                         {
                             stdErrorBuilder?.Append(errRm);
+                            if (printOnConsole)
+                            {
+                                Console.Error.WriteLine(errRm);
+                            }
                         }
                     }
 
