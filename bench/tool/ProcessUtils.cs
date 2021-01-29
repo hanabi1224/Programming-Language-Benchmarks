@@ -100,7 +100,7 @@ namespace BenchTool
             }, TaskCreationOptions.LongRunning);
 
             var sw = Stopwatch.StartNew();
-            RunProcess(p, printOnConsole: false, null, null, token, onStart: () => started = true);
+            RunProcess(p, printOnConsole: false, asyncRead: false, null, null, token, onStart: () => started = true);
             sw.Stop();
             await t.ConfigureAwait(false);
             m.Elapsed = sw.Elapsed;
@@ -110,6 +110,7 @@ namespace BenchTool
         public static async Task RunCommandsAsync(
             IEnumerable<string> commands,
             string workingDir = null,
+            bool asyncRead = true,
             bool ensureZeroExitCode = false,
             CancellationToken token = default
             )
@@ -124,6 +125,7 @@ namespace BenchTool
                 await RunCommandAsync(
                     command: command,
                     workingDir: workingDir,
+                    asyncRead: asyncRead,
                     ensureZeroExitCode: ensureZeroExitCode,
                     token: token).ConfigureAwait(false);
             }
@@ -132,6 +134,7 @@ namespace BenchTool
         public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
+            bool asyncRead = true,
             bool ensureZeroExitCode = false,
             CancellationToken token = default)
         {
@@ -143,7 +146,7 @@ namespace BenchTool
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, asyncRead: asyncRead, stdErrorBuilder: null, stdOutBuilder: null, token: token);
             if (ensureZeroExitCode && ret != 0)
             {
                 throw new InvalidOperationException($"[Non zero exit code {ret}] {command}");
@@ -153,6 +156,7 @@ namespace BenchTool
         public static int RunProcess(
                 ProcessStartInfo startInfo,
                 bool printOnConsole,
+                bool asyncRead,
                 out string stdOut,
                 out string stdError,
                 CancellationToken token)
@@ -163,6 +167,7 @@ namespace BenchTool
             var ret = RunProcess(
                 startInfo: startInfo,
                 printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
                 token: token);
@@ -178,12 +183,14 @@ namespace BenchTool
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             bool printOnConsole,
+            bool asyncRead,
             CancellationToken token)
         {
             return RunProcess(
                 startInfo: startInfo,
                 useShellExecute: false,
                 printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
                 token: token);
@@ -193,6 +200,7 @@ namespace BenchTool
             ProcessStartInfo startInfo,
             bool useShellExecute,
             bool printOnConsole,
+            bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             CancellationToken token)
@@ -206,12 +214,19 @@ namespace BenchTool
                 StartInfo = startInfo,
             };
 
-            return RunProcess(p: p, printOnConsole: printOnConsole, stdOutBuilder: stdOutBuilder, stdErrorBuilder: stdErrorBuilder, token: token);
+            return RunProcess(
+                p: p,
+                printOnConsole: printOnConsole,
+                asyncRead: asyncRead,
+                stdOutBuilder: stdOutBuilder,
+                stdErrorBuilder: stdErrorBuilder,
+                token: token);
         }
 
         public static int RunProcess(
             Process p,
             bool printOnConsole,
+            bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
             CancellationToken token,
@@ -263,13 +278,16 @@ namespace BenchTool
 
                 p.Start();
                 onStart?.Invoke();
-                if (p.StartInfo.RedirectStandardOutput)
+                if (asyncRead)
                 {
-                    p.BeginOutputReadLine();
-                }
-                if (p.StartInfo.RedirectStandardError)
-                {
-                    p.BeginErrorReadLine();
+                    if (p.StartInfo.RedirectStandardOutput)
+                    {
+                        p.BeginOutputReadLine();
+                    }
+                    if (p.StartInfo.RedirectStandardError)
+                    {
+                        p.BeginErrorReadLine();
+                    }
                 }
 
                 using (var processEnded = new ManualResetEvent(false))

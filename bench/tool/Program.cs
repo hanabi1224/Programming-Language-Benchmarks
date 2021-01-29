@@ -177,7 +177,7 @@ namespace BenchTool
                 var fromDir = Path.Combine(includeDir, langEnvConfig.Include);
                 fromDir.EnsureDirectoryExists();
 
-                await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"").ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
             }
 
             var tmpBuildOutput = Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir ?? string.Empty);
@@ -192,7 +192,7 @@ namespace BenchTool
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
-            await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"").ConfigureAwait(false);
+            await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
 
             // Docker setup
             var docker = langEnvConfig.Docker;
@@ -249,11 +249,11 @@ namespace BenchTool
             }
             catch (IOException ioe) when (ioe.Message.Contains("Invalid cross-device link", StringComparison.OrdinalIgnoreCase))
             {
-                await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"").ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"", asyncRead: false).ConfigureAwait(false);
                 Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
 
-            await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}").ConfigureAwait(false);
+            await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
         }
 
         private static async Task TestAsync(
@@ -273,7 +273,7 @@ namespace BenchTool
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
-            await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", workingDir: buildOutput).ConfigureAwait(false);
+            await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
 
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Unittests)
@@ -288,7 +288,7 @@ namespace BenchTool
                 var runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
                 runPsi.WorkingDirectory = buildOutput;
-                ProcessUtils.RunProcess(runPsi, printOnConsole: false, out var stdOut, out var stdErr, default);
+                ProcessUtils.RunProcess(runPsi, printOnConsole: false, asyncRead: false, out var stdOut, out var stdErr, default);
                 if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                 {
                     Logger.Info($"Test Passed: {buildId}");
