@@ -17,6 +17,7 @@ cache:
     - /home/appveyor/.yarn
     - /home/appveyor/.cargo
     - /home/appveyor/.udocker
+    - /home/appveyor/.gradle
 install:
     - docker info
     - nvm use 14

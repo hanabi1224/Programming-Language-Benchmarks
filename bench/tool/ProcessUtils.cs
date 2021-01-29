@@ -116,7 +116,8 @@ namespace BenchTool
             }
 
             ProcessStartInfo psi;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT
+                || command.Contains("sh -c "))
             {
                 psi = command.ConvertToCommand();
             }
