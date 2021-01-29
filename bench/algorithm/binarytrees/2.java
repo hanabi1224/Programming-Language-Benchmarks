@@ -5,7 +5,8 @@
    *reset*
 */
 
-class binarytrees {
+// binarytrees
+class app {
 
    private final static int minDepth = 4;
    

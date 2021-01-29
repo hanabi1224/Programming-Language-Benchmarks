@@ -156,7 +156,9 @@ namespace BenchTool
             bool forceRebuild)
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
-            if (!forceRebuild && Directory.Exists(buildOutput))
+            if (!forceRebuild 
+                && Directory.Exists(buildOutput)
+                && Directory.EnumerateFiles(buildOutput).Any())
             {
                 Logger.Debug($"Build cache hit.");
                 return;
@@ -243,9 +245,13 @@ namespace BenchTool
 
             try
             {
-                Logger.Debug($"Moving from {tmpBuildOutput} to {buildOutput}");
-                Directory.Move(tmpBuildOutput, buildOutput);
-                Logger.Debug($"Moved from {tmpBuildOutput} to {buildOutput}");
+                if (Directory.Exists(tmpBuildOutput)
+                    && Directory.EnumerateFiles(tmpBuildOutput).Any())
+                {
+                    Logger.Debug($"Moving from {tmpBuildOutput} to {buildOutput}");
+                    Directory.Move(tmpBuildOutput, buildOutput);
+                    Logger.Debug($"Moved from {tmpBuildOutput} to {buildOutput}");
+                }
             }
             catch (IOException ioe) when (ioe.Message.Contains("Invalid cross-device link", StringComparison.OrdinalIgnoreCase))
             {

@@ -3,6 +3,9 @@ problems:
   - name: binarytrees
     source:
       - 2.java
+  - name: nbody
+    source:
+      - 1.java
 compiler_version_command: javac -version
 compiler_version_regex:
 runtime_version_command: java -version
@@ -16,7 +19,7 @@ environments:
     include:
     build: javac c.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
-    run_cmd: openjdk/bin/java binarytrees
+    run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
     version: 15
@@ -24,4 +27,4 @@ environments:
     include:
     build: javac c.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
-    run_cmd: openjdk/bin/java binarytrees
+    run_cmd: openjdk/bin/java app

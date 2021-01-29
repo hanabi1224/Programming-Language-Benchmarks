@@ -7,8 +7,8 @@ problems:
       - input: QwQ
         output: QwQ_out
     tests:
-      - input: QwQ
-        repeat: 3
+      - input: T_T
+        repeat: 1
   - name: binarytrees
     unittests:
       - input: 10
@@ -17,6 +17,17 @@ problems:
       - input: 7
         repeat: 5
       - input: 14
+        repeat: 5
+  - name: nbody
+    unittests:
+      - input: 1000
+        output: 1000_out
+      - input: 10000
+        output: 10000_out
+    tests:
+      - input: 500000
+        repeat: 5
+      - input: 5000000
         repeat: 5
 langs:
   # - lang: csharp: bench_csharp.yaml
@@ -33,6 +44,9 @@ langs:
         source:
           - 1.go
           - 2.go
+      - name: nbody
+        source:
+          - 1.go
     compiler_version_command: go version
     compiler_version_regex:
     runtime_version_command:
