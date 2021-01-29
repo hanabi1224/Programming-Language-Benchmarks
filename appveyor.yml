@@ -22,6 +22,7 @@ install:
     - docker info
     - nvm use 14
     - python -V
+    - java -version
     - gradle -v
     - export PATH="$(yarn global bin):$PATH"
     # - yarn global add vercel
@@ -32,8 +33,8 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build --force-pull-docker true --langs kotlin typescript
-    - dotnet run -c Release -p tool -- --task test --langs typescript kotlin
+    - dotnet run -c Release -p tool -- --task build --force-pull-docker true --langs kotlin,typescript
+    - dotnet run -c Release -p tool -- --task test --langs kotlin,typescript
     - dotnet run -c Release -p tool -- --task bench
     - popd
     - pushd website
