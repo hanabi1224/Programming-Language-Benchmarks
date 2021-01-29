@@ -18,6 +18,7 @@ cache:
     - /home/appveyor/.cargo
 install:
     - nvm use 14
+    - python -V
     - export PATH="$(yarn global bin):$PATH"
     - yarn global add vercel
     - vercel -v

@@ -8,6 +8,8 @@ namespace BenchTool
 {
     public class YamlBenchmarkConfig
     {
+        public bool Udocker { get; set; }
+
         public YamlBenchmarkProblemConfig[] Problems { get; set; }
 
         public YamlLangConfig[] Langs { get; set; }
