@@ -27,9 +27,9 @@ install:
     # - yarn global add vercel
     # - vercel -v
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
-    - pushd website
-    - yarn
-    - popd
+    # - pushd website
+    # - yarn
+    # - popd
 build_script:
     - pushd bench
     - dotnet run -c Release -p tool -- --task build --force-pull-docker true --langs kotlin typescript
