@@ -25,7 +25,7 @@ langs:
       - os: linux
         compiler: dotnet
         version: 5.0
-        docker: mcr.microsoft.com/dotnet/sdk:5.0
+        # docker: mcr.microsoft.com/dotnet/sdk:5.0
         include: dotnet
         build: dotnet publish -c Release -f net5.0 -o out
         out_dir: out
@@ -38,6 +38,27 @@ langs:
         build: dotnet publish -c Release -f netcoreapp3.1 -o out
         out_dir: out
         run_cmd: _dotnet
+  - lang: javascript
+    problems:
+      - name: binarytrees
+        source:
+          - 1.js
+    compiler_version_command:
+    compiler_version_regex:
+    runtime_version_command: node -v
+    runtime_version_regex:
+    source_rename_to: c.js
+    environments:
+      - os: linux
+        compiler: node
+        version: 14
+        docker: node:14
+        include:
+        include_sub_dir: out
+        build: cp /usr/local/bin/node ./out
+        out_dir: out
+        # before_run: nvm use 14
+        run_cmd: node c.js
   - lang: go
     problems:
       - name: binarytrees
@@ -74,7 +95,6 @@ langs:
         docker: adoptopenjdk:11
         include:
         build: javac c.java -d out && cp -r /opt/java/openjdk ./out
-        after_build: docker run --rm adoptopenjdk:11 cp -r.
         out_dir: out
         run_cmd: openjdk/bin/java binarytrees
       - os: linux
