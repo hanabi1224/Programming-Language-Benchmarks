@@ -38,6 +38,26 @@ langs:
         build: dotnet publish -c Release -f netcoreapp3.1 -o out
         out_dir: out
         run_cmd: _dotnet
+  - lang: javascript
+    problems:
+      - name: binarytrees
+        source:
+          - 1.js
+    compiler_version_command:
+    compiler_version_regex:
+    runtime_version_command: node -v
+    runtime_version_regex:
+    source_rename_to: c.js
+    environments:
+      - os: linux
+        compiler: node
+        version: 14
+        include:
+        include_sub_dir: out
+        build:
+        out_dir: out
+        before_run: nvm use 14
+        run_cmd: node c.js
   - lang: go
     problems:
       - name: binarytrees
