@@ -229,7 +229,7 @@ namespace BenchTool
                         stdOutBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
-                            Logger.Debug(e.Data);
+                            Logger.Trace(e.Data);
                         }
                     };
                 }
@@ -293,7 +293,7 @@ namespace BenchTool
                             stdOutBuilder?.Append(outRm);
                             if (printOnConsole)
                             {
-                                Logger.Debug(outRm);
+                                Logger.Trace(outRm);
                             }
                         }
                     }
