@@ -184,6 +184,7 @@ namespace BenchTool
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Console.WriteLine($"Copying {srcCodePath} to {srcCodeDestPath}");
             File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
+            await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"").ConfigureAwait(false);
 
             // Docker setup
             var docker = langEnvConfig.Docker;
