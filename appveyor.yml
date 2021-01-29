@@ -20,7 +20,7 @@ install:
     - nvm use 14
     # - ps: if ($env:VERCEL_TOKEN) { yarn global add vercel && vercel -v }
     - ps: yarn global add vercel
-    - ps: export PATH="$(yarn global bin):$PATH
+    - ps: export PATH="$(yarn global bin):$PATH"
     - ps: vercel -v
     - pushd website
     - yarn
