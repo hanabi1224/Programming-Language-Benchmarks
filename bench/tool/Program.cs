@@ -233,20 +233,19 @@ namespace BenchTool
                 Directory.Delete(buildOutput, recursive: true);
             }
 
-            Console.WriteLine($"Copying from {tmpBuildOutput} to {buildOutput}");
             try
             {
+                Console.WriteLine($"Moving from {tmpBuildOutput} to {buildOutput}");
                 Directory.Move(tmpBuildOutput, buildOutput);
+                Console.WriteLine($"Moved from {tmpBuildOutput} to {buildOutput}");
             }
             catch (IOException ioe) when (ioe.Message.Contains("Invalid cross-device link", StringComparison.OrdinalIgnoreCase))
             {
                 await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"").ConfigureAwait(false);
+                Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
 
-            Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
             await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}").ConfigureAwait(false);
-            await Task.Delay(1000).ConfigureAwait(false);
-            Console.WriteLine($"Deleting {tmpDir.FullPath}");
         }
 
         private static async Task TestAsync(
