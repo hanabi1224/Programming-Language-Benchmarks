@@ -62,6 +62,8 @@ namespace BenchTool
             var langConfigs = benchConfig.Langs;
             var includedLanguages = new HashSet<string>(langs ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
+
+            var aggregatedExceptions = new List<Exception>();
             foreach (var c in langConfigs)
             {
                 if (includedLanguages.Count > 0
@@ -108,12 +110,18 @@ namespace BenchTool
                                 }
                                 else
                                 {
+                                    aggregatedExceptions.Add(e);
                                     Console.Error.WriteLine(e);
                                 }
                             }
                         }
                     }
                 }
+            }
+
+            if (aggregatedExceptions?.Count > 0)
+            {
+                throw new AggregateException(aggregatedExceptions);
             }
         }
 
