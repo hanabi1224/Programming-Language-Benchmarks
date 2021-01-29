@@ -72,7 +72,7 @@ namespace BenchTool
             var configDir = Path.GetDirectoryName(config);
             foreach (var lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
             {
-                Logger.Info($"Loading {lcPath}");
+                Logger.Debug($"Loading {lcPath}");
                 var lc = yamlDeserializer.Deserialize<YamlLangConfig>(File.ReadAllText(lcPath));
                 benchConfig.Langs.Add(lc);
             }
@@ -158,7 +158,7 @@ namespace BenchTool
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild && Directory.Exists(buildOutput))
             {
-                Logger.Info($"Build cache hit.");
+                Logger.Debug($"Build cache hit.");
                 return;
             }
 

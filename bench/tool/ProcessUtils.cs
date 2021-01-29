@@ -240,7 +240,8 @@ namespace BenchTool
                     p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);
-                        if (printOnConsole)
+                        if (printOnConsole
+                            && !e.Data.IsEmptyOrWhiteSpace())
                         {
                             Logger.Error(e.Data);
                         }
