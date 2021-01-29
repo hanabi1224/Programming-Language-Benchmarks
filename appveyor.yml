@@ -10,6 +10,8 @@ cache:
     - /var/lib/docker
     - /home/appveyor/.cache/yarn/v6
     - /home/appveyor/.nuget/packages
+    - /home/appveyor/.npm
+    - /home/appveyor/.yarn
 install:
     - nvm use 14
     - pushd website
