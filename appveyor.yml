@@ -27,7 +27,7 @@ build_script:
     - yarn generate
     - popd
 artifacts:
-    - path: bench/build
-      name: benchmark
+    - path: bench/build/_results
+      name: benchmark_results
     - path: website/dist
       name: website
