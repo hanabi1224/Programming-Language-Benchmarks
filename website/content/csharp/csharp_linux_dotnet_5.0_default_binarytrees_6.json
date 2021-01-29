@@ -1,0 +1,12 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5.0",
+  "test": "binarytrees",
+  "code": "6.cs",
+  "input": "14",
+  "timeMS": 120.1479,
+  "memBytes": 49772134,
+  "cpuTimeMS": 150.0
+}
