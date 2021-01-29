@@ -282,6 +282,7 @@ namespace BenchTool
                 {
                     if (p.StartInfo.RedirectStandardOutput)
                     {
+                        p.StandardOutput.BaseStream.Flush();
                         var outRm = p.StandardOutput.ReadToEnd();
                         if (!outRm.IsEmptyOrWhiteSpace())
                         {
@@ -294,6 +295,7 @@ namespace BenchTool
                     }
                     if (p.StartInfo.RedirectStandardError)
                     {
+                        p.StandardError.BaseStream.Flush();
                         var errRm = p.StandardError.ReadToEnd();
                         if (!errRm.IsEmptyOrWhiteSpace())
                         {

@@ -53,7 +53,14 @@ namespace BenchTool
         {
             if (File.Exists(FullPath))
             {
-                File.Delete(FullPath);
+                try
+                {
+                    File.Delete(FullPath);
+                }
+                catch (IOException e)
+                {
+                    Console.Error.WriteLine(e);
+                }
             }
 
             FullPath = null;
