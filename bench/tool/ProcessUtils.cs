@@ -114,10 +114,22 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
-            var psi = command.ConvertToCommand();
-            psi.WorkingDirectory = workingDir;
+            ProcessStartInfo psi;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                psi = command.ConvertToCommand();
+            }
+            else
+            {
+                psi = new ProcessStartInfo
+                {
+                    FileName = "sh",
+                    Arguments = $"-c \"{command}\"",
+                };
+            }
 
-            return RunProcess(psi, useShellExecute: true, printOnConsole: false, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            psi.WorkingDirectory = workingDir;
+            return RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
         }
 
         public static int RunProcess(
