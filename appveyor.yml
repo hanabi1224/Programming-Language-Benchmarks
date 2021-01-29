@@ -16,9 +16,14 @@ cache:
     - /home/appveyor/.npm
     - /home/appveyor/.yarn
     - /home/appveyor/.cargo
+    - /home/appveyor/.udocker
 install:
     - nvm use 14
     - python -V
+    - curl https://raw.githubusercontent.com/indigo-dc/udocker/master/udocker.py > udocker
+    - chmod u+rx ./udocker
+    - ./udocker install
+    - udocker
     - export PATH="$(yarn global bin):$PATH"
     - yarn global add vercel
     - vercel -v
