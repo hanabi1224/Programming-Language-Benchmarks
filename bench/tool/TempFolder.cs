@@ -32,7 +32,14 @@ namespace BenchTool
         {
             if (Directory.Exists(FullPath))
             {
-                Directory.Delete(FullPath, recursive: true);
+                try
+                {
+                    Directory.Delete(FullPath, recursive: true);
+                }
+                catch (IOException e)
+                {
+                    Console.Error.WriteLine(e);
+                }
             }
 
             FullPath = null;
