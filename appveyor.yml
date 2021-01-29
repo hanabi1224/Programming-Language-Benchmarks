@@ -8,7 +8,6 @@ branches:
 environment:
     VERCEL_TOKEN:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
-stack: java 11
 build: off
 cache:
     - /var/lib/docker/overlay2
@@ -23,6 +22,7 @@ install:
     - docker info
     - nvm use 14
     - python -V
+    - update-alternatives --list java
     - java -version
     - gradle -v
     - export PATH="$(yarn global bin):$PATH"
