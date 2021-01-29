@@ -104,7 +104,7 @@ namespace BenchTool
             return m;
         }
 
-        public static async Task<int> RunCommandAsync(
+        public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
             CancellationToken token = default)
@@ -129,7 +129,11 @@ namespace BenchTool
             }
 
             psi.WorkingDirectory = workingDir;
-            return RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            if (ret != 0)
+            {
+                throw new InvalidOperationException($"[Non zero exit code {ret}] {command}");
+            }
         }
 
         public static int RunProcess(

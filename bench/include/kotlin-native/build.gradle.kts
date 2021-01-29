@@ -9,7 +9,7 @@ repositories {
 kotlin {
   linuxX64("native") {
     binaries {
-      executable("app")
+      executable("_app")
     }
   }
 }

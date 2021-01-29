@@ -226,7 +226,15 @@ namespace BenchTool
             }
 
             Console.WriteLine($"Copying from {tmpBuildOutput} to {buildOutput}");
-            Directory.Move(tmpBuildOutput, buildOutput);
+            try
+            {
+                Directory.Move(tmpBuildOutput, buildOutput);
+            }
+            catch (IOException ioe) when (ioe.Message.Contains("Invalid cross-device link", StringComparison.OrdinalIgnoreCase))
+            {
+                await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"").ConfigureAwait(false);
+            }
+
             Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
             await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
             //await ProcessUtils.RunAsync($"cp -a \"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}\" \"{buildOutput}\"").ConfigureAwait(false);
