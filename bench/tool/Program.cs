@@ -59,6 +59,14 @@ namespace BenchTool
 
             var yamlStr = File.ReadAllText(config);
             var benchConfig = yamlDeserializer.Deserialize<YamlBenchmarkConfig>(yamlStr);
+            var configDir = Path.GetDirectoryName(config);
+            foreach (var lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
+            {
+                Console.WriteLine($"Loading {lcPath}");
+                var lc = yamlDeserializer.Deserialize<YamlLangConfig>(File.ReadAllText(lcPath));
+                benchConfig.Langs.Add(lc);
+            }
+
             var langConfigs = benchConfig.Langs;
             var includedLanguages = new HashSet<string>(langs ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
@@ -161,8 +169,12 @@ namespace BenchTool
                 await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"").ConfigureAwait(false);
             }
 
+            var tmpBuildOutput = Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir ?? string.Empty);
+            tmpBuildOutput.CreateDirectoryIfNotExist();
+
             var srcCodeDestDir = langEnvConfig.IncludeSubDir.IsEmptyOrWhiteSpace() ? tmpDir.FullPath : Path.Combine(tmpDir.FullPath, langEnvConfig.IncludeSubDir);
             srcCodeDestDir.CreateDirectoryIfNotExist();
+
             var srcCodeDestFileName = langEnvConfig.SourceRenameTo
                 .FallBackTo(langConfig.SourceRenameTo)
                 .FallBackTo(Path.GetFileName(srcCodePath));
@@ -213,7 +225,6 @@ namespace BenchTool
                 Directory.Delete(buildOutput, recursive: true);
             }
 
-            var tmpBuildOutput = $"{Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir)}";
             Console.WriteLine($"Copying from {tmpBuildOutput} to {buildOutput}");
             Directory.Move(tmpBuildOutput, buildOutput);
             Console.WriteLine($"Copied from {tmpBuildOutput} to {buildOutput}");
@@ -261,9 +272,11 @@ namespace BenchTool
                 }
                 else
                 {
-                    Console.Error.WriteLine($"Test Failed: {buildId}");
-                    Console.WriteLine(stdOut);
-                    Console.Error.WriteLine(stdErr);
+                    throw new Exception($"Test Failed: {buildId}"
+                        + $"\nInput: {test.Input}"
+                        + $"\nExpected output path: {expectedOutputPath}"
+                        + $"\n Output: {stdOut}"
+                        + $"\n Expected output: {expectedOutput}");
                 }
 
                 Console.WriteLine();

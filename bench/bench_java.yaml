@@ -1,0 +1,28 @@
+lang: java
+problems:
+  - name: binarytrees
+    source:
+      - 2.java
+compiler_version_command: javac -version
+compiler_version_regex:
+runtime_version_command: java -version
+runtime_version_regex:
+source_rename_to: c.java
+environments:
+  - os: linux
+    compiler: adoptopenjdk
+    version: 11
+    docker: adoptopenjdk:11
+    include:
+    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java binarytrees
+  - os: linux
+    compiler: adoptopenjdk
+    version: 15
+    docker: adoptopenjdk:15
+    include:
+    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    after_build: docker run --rm adoptopenjdk:15 cp -r.
+    out_dir: out
+    run_cmd: openjdk/bin/java binarytrees

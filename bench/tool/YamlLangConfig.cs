@@ -10,9 +10,9 @@ namespace BenchTool
     {
         public bool Udocker { get; set; }
 
-        public YamlBenchmarkProblemConfig[] Problems { get; set; }
+        public List<YamlBenchmarkProblemConfig> Problems { get; set; }
 
-        public YamlLangConfig[] Langs { get; set; }
+        public List<YamlLangConfig> Langs { get; set; }
     }
 
     public class YamlBenchmarkProblemConfig

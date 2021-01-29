@@ -169,7 +169,9 @@ namespace BenchTool
         {
             startInfo.UseShellExecute = useShellExecute;
             startInfo.RedirectStandardOutput = !useShellExecute;
+            startInfo.StandardOutputEncoding = Encoding.UTF8;
             startInfo.RedirectStandardError = !useShellExecute;
+            startInfo.StandardErrorEncoding = Encoding.UTF8;
 
             var p = new Process
             {
@@ -177,71 +179,6 @@ namespace BenchTool
             };
 
             return RunProcess(p: p, printOnConsole: printOnConsole, stdOutBuilder: stdOutBuilder, stdErrorBuilder: stdErrorBuilder, token: token);
-            //using (var p = new Process
-            //{
-            //    StartInfo = startInfo,
-            //})
-            //{
-            //    if (!useShellExecute)
-            //    {
-            //        p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
-            //        {
-            //            stdOutBuilder?.AppendLine(e.Data);
-            //            if (printOnConsole)
-            //            {
-            //                Console.WriteLine(e.Data);
-            //            }
-            //        };
-
-            //        p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
-            //        {
-            //            stdErrorBuilder?.AppendLine(e.Data);
-            //            if (printOnConsole)
-            //            {
-            //                Console.Error.WriteLine(e.Data);
-            //            }
-            //        };
-            //    }
-
-            //    p.Start();
-            //    if (!useShellExecute)
-            //    {
-            //        p.BeginOutputReadLine();
-            //        p.BeginErrorReadLine();
-            //    }
-
-            //    using (var processEnded = new ManualResetEvent(false))
-            //    {
-            //        using var safeWaitHandle = new SafeWaitHandle(p.Handle, false);
-
-            //        processEnded.SetSafeWaitHandle(safeWaitHandle);
-
-            //        var index = WaitHandle.WaitAny(new[] { processEnded, token.WaitHandle });
-
-            //        //If the signal came from the caller cancellation token close the window
-            //        if (index == 1
-            //            && !p.HasExited)
-            //        {
-            //            p.CloseMainWindow();
-            //            p.Kill();
-            //            return -1;
-            //        }
-            //        else if (index == 0 && !p.HasExited)
-            //        {
-            //            // Workaround for linux: https://github.com/dotnet/corefx/issues/35544
-            //            p.WaitForExit();
-            //        }
-            //    }
-
-            //    try
-            //    {
-            //        return p.ExitCode;
-            //    }
-            //    catch (InvalidOperationException)
-            //    {
-            //        return -1;
-            //    }
-            //}
         }
 
         public static int RunProcess(
@@ -256,7 +193,7 @@ namespace BenchTool
             {
                 Console.WriteLine($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
                 var useShellExecute = p.StartInfo.UseShellExecute;
-                if (!useShellExecute)
+                if (p.StartInfo.RedirectStandardOutput)
                 {
                     p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
@@ -266,7 +203,10 @@ namespace BenchTool
                             Console.WriteLine(e.Data);
                         }
                     };
+                }
 
+                if (p.StartInfo.RedirectStandardError)
+                {
                     p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);
@@ -279,9 +219,12 @@ namespace BenchTool
 
                 p.Start();
                 onStart?.Invoke();
-                if (!useShellExecute)
+                if (p.StartInfo.RedirectStandardOutput)
                 {
                     p.BeginOutputReadLine();
+                }
+                if (p.StartInfo.RedirectStandardError)
+                {
                     p.BeginErrorReadLine();
                 }
 
@@ -310,6 +253,23 @@ namespace BenchTool
 
                 try
                 {
+                    if (p.StartInfo.RedirectStandardOutput)
+                    {
+                        var outRm = p.StandardOutput.ReadToEnd();
+                        if (!outRm.IsEmptyOrWhiteSpace())
+                        {
+                            stdOutBuilder?.Append(outRm);
+                        }
+                    }
+                    if (p.StartInfo.RedirectStandardError)
+                    {
+                        var errRm = p.StandardError.ReadToEnd();
+                        if (!errRm.IsEmptyOrWhiteSpace())
+                        {
+                            stdErrorBuilder?.Append(errRm);
+                        }
+                    }
+
                     return p.ExitCode;
                 }
                 catch (InvalidOperationException)
