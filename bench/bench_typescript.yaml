@@ -16,7 +16,7 @@ environments:
     # include_sub_dir: out
     before_build:
       - curl -fsSL https://deno.land/x/install/install.sh | sh
-      - cp -a $HOME/.deno/bin .
+      - sh -c "cp -a $HOME/.deno/bin ."
     # build: cp /usr/local/bin/node ./out && cp -a $HOME/.deno/bin ./out
     build: bin/deno compile --unstable -o out/_app c.ts
     out_dir: out
