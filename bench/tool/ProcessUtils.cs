@@ -104,6 +104,28 @@ namespace BenchTool
             return m;
         }
 
+        public static async Task RunCommandsAsync(
+            IEnumerable<string> commands,
+            string workingDir = null,
+            bool ensureZeroExitCode = false,
+            CancellationToken token = default
+            )
+        {
+            if (commands == null)
+            {
+                return;
+            }
+
+            foreach (var command in commands)
+            {
+                await RunCommandAsync(
+                    command: command,
+                    workingDir: workingDir,
+                    ensureZeroExitCode: ensureZeroExitCode,
+                    token: token).ConfigureAwait(false);
+            }
+        }
+
         public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
@@ -115,22 +137,9 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
-            ProcessStartInfo psi;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT
-                || command.Contains("sh -c "))
-            {
-                psi = command.ConvertToCommand();
-            }
-            else
-            {
-                psi = new ProcessStartInfo
-                {
-                    FileName = "sh",
-                    Arguments = $"-c \"{command}\"",
-                };
-            }
-
+            var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
+
             var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
             if (ensureZeroExitCode && ret != 0)
             {

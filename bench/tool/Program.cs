@@ -189,13 +189,9 @@ namespace BenchTool
             }
 
             // Before Build
-            var beforeBuild = langEnvConfig.BeforeBuild;
-            if (!beforeBuild.IsEmptyOrWhiteSpace())
-            {
-                await ProcessUtils.RunCommandAsync(
-                    beforeBuild,
-                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
-            }
+            await ProcessUtils.RunCommandsAsync(
+                langEnvConfig.BeforeBuild,
+                workingDir: tmpDir.FullPath).ConfigureAwait(false);
 
             // Check compiler version and save output
             var compilerVersionCommand = langEnvConfig.CompilerVersionCommand.FallBackTo(langConfig.CompilerVersionCommand);
@@ -207,7 +203,7 @@ namespace BenchTool
                 }
 
                 await ProcessUtils.RunCommandAsync(
-                    compilerVersionCommand, 
+                    compilerVersionCommand,
                     workingDir: tmpDir.FullPath).ConfigureAwait(false);
             }
 
@@ -218,7 +214,7 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} sh -c \"{buildCommand}\"";
+                    buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
                 }
 
                 await ProcessUtils.RunCommandAsync(
@@ -258,10 +254,7 @@ namespace BenchTool
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             buildOutput.EnsureDirectoryExists();
 
-            if (!langEnvConfig.BeforeRun.IsEmptyOrWhiteSpace())
-            {
-                await ProcessUtils.RunCommandAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
-            }
+            await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
             await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", workingDir: buildOutput).ConfigureAwait(false);
@@ -314,10 +307,7 @@ namespace BenchTool
             benchResultDir.CreateDirectoryIfNotExist();
             var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}.json");
 
-            if (!langEnvConfig.BeforeRun.IsEmptyOrWhiteSpace())
-            {
-                await ProcessUtils.RunCommandAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
-            }
+            await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);

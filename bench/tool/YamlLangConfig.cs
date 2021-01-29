@@ -85,15 +85,15 @@ namespace BenchTool
 
         public string IncludeSubDir { get; set; }
 
-        public string BeforeBuild { get; set; }
+        public string[] BeforeBuild { get; set; }
 
         public string Build { get; set; }
 
-        public string AfterBuild { get; set; }
+        public string[] AfterBuild { get; set; }
 
         public string OutDir { get; set; } = "out";
 
-        public string BeforeRun { get; set; }
+        public string[] BeforeRun { get; set; }
 
         public string RunCmd { get; set; }
     }

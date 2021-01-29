@@ -14,8 +14,10 @@ environments:
     version: latest
     include:
     # include_sub_dir: out
-    before_build: curl -fsSL https://deno.land/x/install/install.sh | sh
+    before_build:
+      - curl -fsSL https://deno.land/x/install/install.sh | sh
+      - cp -a $HOME/.deno/bin .
     # build: cp /usr/local/bin/node ./out && cp -a $HOME/.deno/bin ./out
-    build: cp -a $HOME/.deno/bin . && bin/deno compile --unstable -o out/_app c.ts
+    build: bin/deno compile --unstable -o out/_app c.ts
     out_dir: out
     run_cmd: _app
