@@ -23,6 +23,9 @@ install:
     - nvm use 14
     - python -V
     - update-alternatives --list java
+    - echo $JAVA_HOME
+    - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+    - echo $JAVA_HOME
     - java -version
     - gradle -v
     - export PATH="$(yarn global bin):$PATH"
