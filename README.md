@@ -5,7 +5,7 @@
 Yet another implementation of [The Computer Language Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), Visit [HERE](https://another-benchmarks-game.vercel.app/)
 
 # Why Build This
-The idea is to build an automatic process for benchmark generation and pulish
+*The idea is to build an automatic process for benchmark generation and pulishing*
 
 ### Comparable numbers
 *It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are run sequencially within a single CI job*
@@ -44,6 +44,10 @@ yarn dev
 [docker](https://www.docker.com/)
 
 [net5.0](https://dotnet.microsoft.com/)
+
+[node LTS](https://nodejs.org/)
+
+[yarn](https://yarnpkg.com/)
 
 ## Build
 
