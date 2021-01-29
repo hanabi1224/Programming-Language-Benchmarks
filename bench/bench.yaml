@@ -56,7 +56,7 @@ langs:
         include_sub_dir: out
         build:
         out_dir: out
-        before_run: nvm use 14
+        # before_run: nvm use 14
         run_cmd: node c.js
   - lang: go
     problems:
