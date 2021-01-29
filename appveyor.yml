@@ -20,9 +20,10 @@ cache:
 install:
     - nvm use 14
     - python -V
-    - curl https://raw.githubusercontent.com/indigo-dc/udocker/master/udocker.py > udocker
-    - chmod u+rx ./udocker
-    - ./udocker install
+    # - curl https://raw.githubusercontent.com/indigo-dc/udocker/master/udocker.py > udocker
+    # - chmod u+rx ./udocker
+    # - ./udocker install
+    - pip install git+https://github.com/indigo-dc/udocker@v1.1.4
     - udocker
     - export PATH="$(yarn global bin):$PATH"
     - yarn global add vercel
