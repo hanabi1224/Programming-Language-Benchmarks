@@ -192,7 +192,9 @@ namespace BenchTool
             var beforeBuild = langEnvConfig.BeforeBuild;
             if (!beforeBuild.IsEmptyOrWhiteSpace())
             {
-                await ProcessUtils.RunCommandAsync(beforeBuild, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync(
+                    beforeBuild,
+                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
             }
 
             // Check compiler version and save output
@@ -204,7 +206,9 @@ namespace BenchTool
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
 
-                await ProcessUtils.RunCommandAsync(compilerVersionCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync(
+                    compilerVersionCommand, 
+                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
             }
 
             // Build
@@ -217,7 +221,9 @@ namespace BenchTool
                     buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} sh -c \"{buildCommand}\"";
                 }
 
-                await ProcessUtils.RunCommandAsync(buildCommand, workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync(
+                    buildCommand,
+                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
             }
 
             if (Directory.Exists(buildOutput))

@@ -107,6 +107,7 @@ namespace BenchTool
         public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
+            bool ensureZeroExitCode = false,
             CancellationToken token = default)
         {
             if (workingDir.IsEmptyOrWhiteSpace())
@@ -130,7 +131,7 @@ namespace BenchTool
 
             psi.WorkingDirectory = workingDir;
             var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, stdErrorBuilder: null, stdOutBuilder: null, token: token);
-            if (ret != 0)
+            if (ensureZeroExitCode && ret != 0)
             {
                 throw new InvalidOperationException($"[Non zero exit code {ret}] {command}");
             }

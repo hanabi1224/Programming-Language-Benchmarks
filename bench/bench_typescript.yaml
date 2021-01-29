@@ -3,7 +3,7 @@ problems:
   - name: helloworld
     source:
       - 1.ts
-compiler_version_command: $HOME/.deno/bin/deno --version
+compiler_version_command: bin/deno --version
 compiler_version_regex:
 runtime_version_command:
 runtime_version_regex:
