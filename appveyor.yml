@@ -38,8 +38,8 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build --force-pull-docker true --langs julia csharp
-    - dotnet run -c Release -p tool -- --task test                           --langs julia csharp
+    - dotnet run -c Release -p tool -- --task build --langs julia swift
+    - dotnet run -c Release -p tool -- --task test  --langs julia swift
     - dotnet run -c Release -p tool -- --task bench --fail-fast true
     - popd
     - pushd website

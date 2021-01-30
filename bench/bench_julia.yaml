@@ -9,7 +9,10 @@ problems:
   - name: pidigits
     source:
       - 1.jl
+compiler_version_command:
+compiler_version_regex:
 runtime_version_parameter: -v
+runtime_version_regex:
 source_rename_to: c.jl
 environments:
   - os: linux
