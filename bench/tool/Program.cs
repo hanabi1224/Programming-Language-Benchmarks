@@ -312,8 +312,6 @@ namespace BenchTool
             string algorithmDir,
             string buildOutputDir)
         {
-            Console.WriteLine("\n\n-------------------------\n\n");
-
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             buildOutput.EnsureDirectoryExists();
 
@@ -392,6 +390,11 @@ namespace BenchTool
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Tests)
             {
+                if (test.SkipOnPullRequest && AppveyorUtils.IsPullRequest)
+                {
+                    continue;
+                }
+
                 var runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
 
                 var runPsi = runCommand.ConvertToCommand();
@@ -423,7 +426,7 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
-                    appveyorBuildId = Environment.GetEnvironmentVariable("APPVEYOR_BUILD_ID"),
+                    appveyorBuildId = AppveyorUtils.BuildId,
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
         }

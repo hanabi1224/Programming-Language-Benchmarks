@@ -36,6 +36,8 @@ namespace BenchTool
         public string Input { get; set; }
 
         public int Repeat { get; set; } = 2;
+
+        public bool SkipOnPullRequest { get; set; } = false;
     }
 
     public abstract class LangConfigBase
