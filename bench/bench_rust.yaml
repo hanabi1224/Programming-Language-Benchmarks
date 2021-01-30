@@ -7,6 +7,9 @@ problems:
   - name: nbody
     source:
       - 1.rs
+  - name: spectral-norm
+    source:
+      - 7.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:

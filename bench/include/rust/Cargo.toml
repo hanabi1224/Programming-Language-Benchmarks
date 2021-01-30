@@ -8,3 +8,5 @@ edition = "2018"
 [dependencies]
 typed-arena = "2"
 rayon = "1"
+generic-array = "0"
+numeric-array = "0"
