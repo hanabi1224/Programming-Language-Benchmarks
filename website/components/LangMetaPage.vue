@@ -78,7 +78,7 @@
               </td>
               <td class="text-right">{{ i.cpuTimeMS.toFixed(2) }}</td>
               <td class="text-center">
-                {{ i.compiler }}-{{ i.compilerVersion }}
+                {{ i.compiler }} {{ i.compilerVersion }}
               </td>
               <!-- <td class="text-right">{{ i.compilerVersion }}</td> -->
               <td class="text-right">{{ i.compilerVersionOption }}</td>

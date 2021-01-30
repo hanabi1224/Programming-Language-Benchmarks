@@ -36,6 +36,8 @@ namespace BenchTool
         public string Input { get; set; }
 
         public int Repeat { get; set; } = 2;
+
+        public bool SkipOnPullRequest { get; set; } = false;
     }
 
     public abstract class LangConfigBase
@@ -80,6 +82,8 @@ namespace BenchTool
         public string CompilerOptionsText { get; set; } = "default";
 
         public string Docker { get; set; }
+
+        public string DockerVolumn { get; set; }
 
         public string Include { get; set; }
 

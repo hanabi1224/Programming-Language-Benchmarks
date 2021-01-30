@@ -28,7 +28,7 @@ environments:
   - os: linux
     compiler: pypy
     version: 3.7
-    docker: pypy:3.7
+    docker: pypy:3.7-slim
     include:
     include_sub_dir: out
     build: cp -a /opt/pypy/ ./out

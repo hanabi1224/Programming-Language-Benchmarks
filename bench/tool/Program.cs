@@ -29,6 +29,7 @@ namespace BenchTool
         const string TaskTest = "test";
         const string TaskBench = "bench";
 
+        private static bool _verbose = false;
         /// <summary>
         /// Main function
         /// </summary>
@@ -40,6 +41,7 @@ namespace BenchTool
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
+        /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
@@ -52,12 +54,13 @@ namespace BenchTool
             bool forcePullDocker = false,
             bool forceRebuild = false,
             bool failFast = false,
+            bool verbose = false,
             string[] langs = null,
             string[] problems = null,
             string[] environments = null)
         {
             var timer = Stopwatch.StartNew();
-
+            _verbose = verbose;
             config.EnsureFileExists();
             algorithm.EnsureDirectoryExists();
             include.EnsureDirectoryExists();
@@ -214,7 +217,10 @@ namespace BenchTool
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
-            await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
+            if (_verbose)
+            {
+                await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
+            }
 
             // Docker setup
             var docker = langEnvConfig.Docker;
@@ -250,7 +256,14 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    var additonalDockerVolumn = string.Empty;
+                    if (Environment.OSVersion.Platform != PlatformID.Win32NT
+                        && !langEnvConfig.DockerVolumn.IsEmptyOrWhiteSpace())
+                    {
+                        additonalDockerVolumn = $"-v {langEnvConfig.DockerVolumn}";
+                    }
+
+                    buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
                 }
 
                 await ProcessUtils.RunCommandAsync(
@@ -284,7 +297,10 @@ namespace BenchTool
                 Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
 
-            await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
+            if (_verbose)
+            {
+                await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
+            }
         }
 
         private static async Task TestAsync(
@@ -296,8 +312,6 @@ namespace BenchTool
             string algorithmDir,
             string buildOutputDir)
         {
-            Console.WriteLine("\n\n-------------------------\n\n");
-
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             buildOutput.EnsureDirectoryExists();
 
@@ -319,18 +333,37 @@ namespace BenchTool
                 var runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
                 runPsi.WorkingDirectory = buildOutput;
-                ProcessUtils.RunProcess(runPsi, printOnConsole: false, asyncRead: false, out var stdOut, out var stdErr, default);
-                if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
+
+                // Test retry
+                Exception error = null;
+                for (var retry = 0; retry < 2; retry++)
                 {
-                    Logger.Info($"Test Passed: {buildId}");
+                    ProcessUtils.RunProcess(
+                        runPsi,
+                        printOnConsole: false,
+                        asyncRead: false,
+                        out var stdOut,
+                        out var stdErr,
+                        default);
+                    if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
+                    {
+                        Logger.Info($"Test Passed: {buildId}");
+                        error = null;
+                        break;
+                    }
+                    else
+                    {
+                        error = new Exception($"Test Failed: {buildId}"
+                            + $"\nInput: {test.Input}"
+                            + $"\nExpected output path: {expectedOutputPath}"
+                            + $"\n Output: {stdOut}"
+                            + $"\n Expected output: {expectedOutput}");
+                    }
                 }
-                else
+
+                if (error != null)
                 {
-                    throw new Exception($"Test Failed: {buildId}"
-                        + $"\nInput: {test.Input}"
-                        + $"\nExpected output path: {expectedOutputPath}"
-                        + $"\n Output: {stdOut}"
-                        + $"\n Expected output: {expectedOutput}");
+                    throw error;
                 }
             }
         }
@@ -357,6 +390,11 @@ namespace BenchTool
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Tests)
             {
+                if (test.SkipOnPullRequest && AppveyorUtils.IsPullRequest)
+                {
+                    continue;
+                }
+
                 var runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
 
                 var runPsi = runCommand.ConvertToCommand();
@@ -388,6 +426,7 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
+                    appveyorBuildId = AppveyorUtils.BuildId,
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
         }
