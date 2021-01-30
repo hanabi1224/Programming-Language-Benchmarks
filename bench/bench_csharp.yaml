@@ -11,6 +11,9 @@ problems:
   - name: nbody
     source:
       - 8.cs
+  - name: spectral-norm
+    source:
+      - 3.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

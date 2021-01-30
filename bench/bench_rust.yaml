@@ -10,6 +10,9 @@ problems:
   - name: spectral-norm
     source:
       - 7.rs
+  - name: mandelbrot
+    source:
+      - 8.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
