@@ -433,10 +433,11 @@ namespace BenchTool
                 runPsi.WorkingDirectory = buildOutput;
 
                 var repeat = test.Repeat > 1 ? test.Repeat : 1;
-                
+
                 // Speed up PR build
-                if (AppveyorUtils.IsPullRequest)
+                if (repeat > 1 && AppveyorUtils.IsPullRequest)
                 {
+                    Logger.Debug($"Reseting repeat from {repeat} to 1 in PR build.");
                     repeat = 1;
                 }
 
