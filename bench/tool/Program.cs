@@ -319,18 +319,37 @@ namespace BenchTool
                 var runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
                 runPsi.WorkingDirectory = buildOutput;
-                ProcessUtils.RunProcess(runPsi, printOnConsole: false, asyncRead: false, out var stdOut, out var stdErr, default);
-                if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
+
+                // Test retry
+                Exception error = null;                            
+                for (var retry = 0; retry < 2; retry++)
                 {
-                    Logger.Info($"Test Passed: {buildId}");
+                    ProcessUtils.RunProcess(
+                        runPsi, 
+                        printOnConsole: false, 
+                        asyncRead: false,
+                        out var stdOut,
+                        out var stdErr,
+                        default);
+                    if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
+                    {
+                        Logger.Info($"Test Passed: {buildId}");
+                        error = null;
+                        break;
+                    }
+                    else
+                    {
+                        error = new Exception($"Test Failed: {buildId}"
+                            + $"\nInput: {test.Input}"
+                            + $"\nExpected output path: {expectedOutputPath}"
+                            + $"\n Output: {stdOut}"
+                            + $"\n Expected output: {expectedOutput}");
+                    }
                 }
-                else
+
+                if (error != null)
                 {
-                    throw new Exception($"Test Failed: {buildId}"
-                        + $"\nInput: {test.Input}"
-                        + $"\nExpected output path: {expectedOutputPath}"
-                        + $"\n Output: {stdOut}"
-                        + $"\n Expected output: {expectedOutput}");
+                    throw error;
                 }
             }
         }
