@@ -6,7 +6,7 @@
   "test": "nbody",
   "code": "2.cs",
   "input": "5000000",
-  "timeMS": 614.9916,
-  "memBytes": 28016640,
-  "cpuTimeMS": 610.0
+  "timeMS": 549.5682,
+  "memBytes": 28324659,
+  "cpuTimeMS": 538.0
 }

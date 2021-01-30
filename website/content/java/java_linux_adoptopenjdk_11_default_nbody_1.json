@@ -6,7 +6,7 @@
   "test": "nbody",
   "code": "1.java",
   "input": "5000000",
-  "timeMS": 880.6432,
-  "memBytes": 35377971,
-  "cpuTimeMS": 920.0
+  "timeMS": 797.1689,
+  "memBytes": 34974105,
+  "cpuTimeMS": 832.0
 }

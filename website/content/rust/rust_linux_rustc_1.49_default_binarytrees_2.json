@@ -6,7 +6,7 @@
   "test": "binarytrees",
   "code": "2.rs",
   "input": "14",
-  "timeMS": 22.3895,
-  "memBytes": 3450470,
+  "timeMS": 18.2408,
+  "memBytes": 3525836,
   "cpuTimeMS": 22.0
 }

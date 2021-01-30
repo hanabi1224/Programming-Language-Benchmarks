@@ -6,7 +6,7 @@
   "test": "binarytrees",
   "code": "1.js",
   "input": "14",
-  "timeMS": 452.7898,
-  "memBytes": 91330969,
-  "cpuTimeMS": 758.0
+  "timeMS": 359.552,
+  "memBytes": 94896128,
+  "cpuTimeMS": 626.0
 }

@@ -6,7 +6,7 @@
   "test": "helloworld",
   "code": "1.ts",
   "input": "T_T",
-  "timeMS": 17.4979,
-  "memBytes": 17195008,
+  "timeMS": 15.8076,
+  "memBytes": 17412096,
   "cpuTimeMS": 10.0
 }

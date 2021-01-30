@@ -6,7 +6,7 @@
   "test": "binarytrees",
   "code": "2.go",
   "input": "14",
-  "timeMS": 77.6348,
-  "memBytes": 11911168,
-  "cpuTimeMS": 132.0
+  "timeMS": 62.0477,
+  "memBytes": 9363456,
+  "cpuTimeMS": 100.0
 }

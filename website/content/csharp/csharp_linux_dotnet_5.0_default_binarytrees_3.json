@@ -6,7 +6,7 @@
   "test": "binarytrees",
   "code": "3.cs",
   "input": "14",
-  "timeMS": 166.3905,
-  "memBytes": 50476646,
-  "cpuTimeMS": 202.0
+  "timeMS": 162.7854,
+  "memBytes": 50179276,
+  "cpuTimeMS": 198.0
 }

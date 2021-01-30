@@ -181,6 +181,12 @@ export default class LangMetaPage extends Vue {
       )
     }
 
+    // Sort
+    exp = exp.orderBy(
+      ['os', 'lang', 'compiler', 'compilerVersion', 'input', 'timeMS'],
+      ['asc', 'asc', 'asc', 'asc', 'asc', 'asc']
+    )
+
     return exp.value()
   }
 
