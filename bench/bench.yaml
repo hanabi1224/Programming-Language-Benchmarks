@@ -18,8 +18,6 @@ problems:
         repeat: 3
       - input: 14
         repeat: 3
-      - input: 21
-        repeat: 2
   - name: nbody
     unittests:
       - input: 1000
