@@ -18,6 +18,8 @@ namespace BenchTool
     {
         private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
+        const string TimerPrefix = "[Timer] ";
+
         static Program()
         {
             NLogUtils.Configure();
@@ -113,6 +115,7 @@ namespace BenchTool
 
                         foreach (var codePath in p.Source)
                         {
+                            var taskTimer = Stopwatch.StartNew();
                             try
                             {
                                 var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
@@ -130,6 +133,9 @@ namespace BenchTool
                                         await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
                                         break;
                                 }
+
+                                taskTimer.Stop();
+                                Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
                             }
                             catch (Exception e)
                             {
@@ -154,7 +160,7 @@ namespace BenchTool
             }
 
             timer.Stop();
-            Logger.Info($"[Timer] Task {task} finished in {timer.Elapsed}");
+            Logger.Info($"{TimerPrefix}Task {task} finished in {timer.Elapsed}");
         }
 
         private static async Task BuildAsync(
