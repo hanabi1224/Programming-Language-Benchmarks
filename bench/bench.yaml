@@ -15,9 +15,11 @@ problems:
         output: 10_out
     tests:
       - input: 7
-        repeat: 5
+        repeat: 3
       - input: 14
-        repeat: 5
+        repeat: 3
+      - input: 21
+        repeat: 2
   - name: nbody
     unittests:
       - input: 1000
@@ -26,7 +28,7 @@ problems:
         output: 10000_out
     tests:
       - input: 500000
-        repeat: 5
+        repeat: 3
       - input: 5000000
         repeat: 3
   - name: spectral-norm
@@ -35,9 +37,9 @@ problems:
         output: 100_out
     tests:
       - input: 3000
-        repeat: 5
+        repeat: 3
       - input: 5500
-        repeat: 5
+        repeat: 3
   - name: pidigits
     unittests:
       - input: 27
@@ -46,16 +48,16 @@ problems:
         output: 30_out
     tests:
       - input: 6002
-        repeat: 5
+        repeat: 3
       - input: 10001
-        repeat: 5
+        repeat: 3
   - name: mandelbrot
     unittests:
       - input: 200
         output: 200_out
     tests:
       - input: 4000
-        repeat: 5
+        repeat: 3
       - input: 16000
         repeat: 3
 langs:
