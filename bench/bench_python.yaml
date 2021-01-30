@@ -17,7 +17,6 @@ environments:
     docker: python:3.9
     include:
     include_sub_dir:
-    runtime_version_command: python -V
     before_build:
       - rm -r dist
     build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
@@ -29,6 +28,7 @@ environments:
     compiler: pypy
     version: 3.7
     docker: pypy:3.7-slim
+    runtime_version_parameter: -V
     include:
     include_sub_dir: out
     build: cp -a /opt/pypy/ ./out

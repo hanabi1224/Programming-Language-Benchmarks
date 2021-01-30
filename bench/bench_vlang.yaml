@@ -5,7 +5,7 @@ problems:
       - 1.v
 compiler_version_command: v -v
 compiler_version_regex:
-runtime_version_command:
+runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: _app.v
 environments:

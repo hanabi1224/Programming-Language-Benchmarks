@@ -130,7 +130,7 @@ namespace BenchTool
                                         await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild).ConfigureAwait(false);
                                         break;
                                     case TaskTest:
-                                        await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
+                                        await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
                                         break;
                                     case TaskBench:
                                         await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
@@ -313,15 +313,21 @@ namespace BenchTool
             YamlLangEnvironmentConfig langEnvConfig,
             YamlLangProblemConfig problem,
             string algorithmDir,
-            string buildOutputDir)
+            string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
+            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
             await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+
+            var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
+            if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())
+            {
+                await ProcessUtils.RunCommandAsync($"{exeName} {runtimeVersionParameter}", workingDir: buildOutput).ConfigureAwait(false);
+            }
 
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Unittests)

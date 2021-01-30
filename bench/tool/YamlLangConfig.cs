@@ -46,7 +46,7 @@ namespace BenchTool
 
         public string CompilerVersionRegex { get; set; }
 
-        public string RuntimeVersionCommand { get; set; }
+        public string RuntimeVersionParameter { get; set; }
 
         public string RuntimeVersionRegex { get; set; }
 

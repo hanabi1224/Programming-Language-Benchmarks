@@ -11,7 +11,7 @@ problems:
       - 1.java
 compiler_version_command: javac -version
 compiler_version_regex:
-runtime_version_command: java -version
+runtime_version_parameter: -version
 runtime_version_regex:
 source_rename_to: c.java
 environments:
