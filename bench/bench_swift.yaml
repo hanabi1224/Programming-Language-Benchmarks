@@ -3,6 +3,9 @@ problems:
   - name: helloworld
     source:
       - 1.swift
+  - name: nbody
+    source:
+      - 7.swift
 compiler_version_command: swift --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -15,6 +18,6 @@ environments:
     docker: swift:5.3
     include: swift
     include_sub_dir: Sources/app
-    build: swift build -c release --static-swift-stdlib
+    build: swift build -c release -Xswiftc -static-executable
     out_dir: .build/x86_64-unknown-linux-gnu/release
     run_cmd: app
