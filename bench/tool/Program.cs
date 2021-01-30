@@ -388,6 +388,7 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
+                    appveyorBuildId = Environment.GetEnvironmentVariable("APPVEYOR_BUILD_ID"),
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
         }
