@@ -4,7 +4,6 @@
 # Translated from Mr Ledrug's C program by Jeremy Zerfas.
 # Transliterated from GMP to built-in by Isaac Gouy
 
-
 from sys import argv
 
 
@@ -67,4 +66,5 @@ def main():
         print(f"{' ' * (10 - remainder)}\t:{i}")
 
 
-main()
+if __name__ == '__main__':
+    main()

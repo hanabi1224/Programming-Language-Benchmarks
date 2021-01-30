@@ -40,7 +40,7 @@ build_script:
     - pushd bench
     - dotnet run -c Release -p tool -- --task build --force-pull-docker true --langs csharp kotlin --problems pidigits
     - dotnet run -c Release -p tool -- --task test                           --langs csharp kotlin --problems pidigits
-    - dotnet run -c Release -p tool -- --task bench
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true
     - popd
     - pushd website
     - yarn
