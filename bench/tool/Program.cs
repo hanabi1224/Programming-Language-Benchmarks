@@ -29,6 +29,7 @@ namespace BenchTool
         const string TaskTest = "test";
         const string TaskBench = "bench";
 
+        private static bool _verbose = false;
         /// <summary>
         /// Main function
         /// </summary>
@@ -40,6 +41,7 @@ namespace BenchTool
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
+        /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
@@ -52,12 +54,13 @@ namespace BenchTool
             bool forcePullDocker = false,
             bool forceRebuild = false,
             bool failFast = false,
+            bool verbose = false,
             string[] langs = null,
             string[] problems = null,
             string[] environments = null)
         {
             var timer = Stopwatch.StartNew();
-
+            _verbose = verbose;
             config.EnsureFileExists();
             algorithm.EnsureDirectoryExists();
             include.EnsureDirectoryExists();
@@ -214,7 +217,10 @@ namespace BenchTool
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
-            await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
+            if (_verbose)
+            {
+                await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
+            }
 
             // Docker setup
             var docker = langEnvConfig.Docker;
@@ -284,7 +290,10 @@ namespace BenchTool
                 Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
 
-            await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
+            if (_verbose)
+            {
+                await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
+            }
         }
 
         private static async Task TestAsync(
