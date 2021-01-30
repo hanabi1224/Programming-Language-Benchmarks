@@ -16,7 +16,7 @@ environments:
   - os: linux
     compiler: rustc
     version: 1.49
-    docker: rust:1.49-alpine
+    docker: rust:1.49-slim
     docker_volumn: /tmp/test:/tmp/test
     include: rust
     include_sub_dir: src
