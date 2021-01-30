@@ -17,6 +17,14 @@ source_rename_to: c.java
 environments:
   - os: linux
     compiler: adoptopenjdk
+    version: 8
+    docker: adoptopenjdk:8
+    include:
+    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java app
+  - os: linux
+    compiler: adoptopenjdk
     version: 11
     docker: adoptopenjdk:11
     include:

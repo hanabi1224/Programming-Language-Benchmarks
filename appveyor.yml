@@ -38,8 +38,8 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build --langs rust csharp
-    - dotnet run -c Release -p tool -- --task test  --langs rust csharp
+    - dotnet run -c Release -p tool -- --task build #--langs swift
+    - dotnet run -c Release -p tool -- --task test #--langs swift
     - dotnet run -c Release -p tool -- --task bench --fail-fast true
     - popd
     - pushd website

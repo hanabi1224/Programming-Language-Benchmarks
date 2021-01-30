@@ -133,7 +133,7 @@ namespace BenchTool
                                         await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
                                         break;
                                     case TaskBench:
-                                        await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
+                                        await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
                                         break;
                                 }
 
@@ -185,6 +185,8 @@ namespace BenchTool
                 Logger.Debug($"Build cache hit.");
                 return;
             }
+
+            var buildOutputJson = new BuildOutputJson();
 
             // Source code
             var srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
@@ -243,9 +245,15 @@ namespace BenchTool
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
 
+                var stdOutBuilder = new StringBuilder();
+                var stdErrorBuilder = new StringBuilder();
                 await ProcessUtils.RunCommandAsync(
                     compilerVersionCommand,
-                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                    workingDir: tmpDir.FullPath,
+                    stdOutBuilder: stdOutBuilder,
+                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim();
             }
 
             // Build
@@ -300,6 +308,8 @@ namespace BenchTool
                 throw new DirectoryNotFoundException(buildOutput);
             }
 
+            await buildOutputJson.SaveAsync(buildOutput).ConfigureAwait(false);
+
             if (_verbose)
             {
                 await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
@@ -318,6 +328,8 @@ namespace BenchTool
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
+            var testOutputJson = new TestOutputJson();
+
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
@@ -326,7 +338,15 @@ namespace BenchTool
             var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
             if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())
             {
-                await ProcessUtils.RunCommandAsync($"{exeName} {runtimeVersionParameter}", workingDir: buildOutput).ConfigureAwait(false);
+                var stdOutBuilder = new StringBuilder();
+                var stdErrorBuilder = new StringBuilder();
+                await ProcessUtils.RunCommandAsync(
+                    $"{exeName} {runtimeVersionParameter}",
+                    workingDir: buildOutput,
+                    stdOutBuilder: stdOutBuilder,
+                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                testOutputJson.RuntimeVersionText = stdOutBuilder.ToString().Trim();
             }
 
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
@@ -375,6 +395,8 @@ namespace BenchTool
                     throw error;
                 }
             }
+
+            await testOutputJson.SaveAsync(buildOutput).ConfigureAwait(false);
         }
 
         private static async Task BenchAsync(
@@ -385,12 +407,12 @@ namespace BenchTool
                 YamlLangProblemConfig problem,
                 string codePath,
                 string algorithmDir,
-                string buildOutputDir)
+                string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
+            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
-            var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputDir, "_results", langConfig.Lang);
+            var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, "_results", langConfig.Lang);
             benchResultDir.CreateDirectoryIfNotExist();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
@@ -436,6 +458,8 @@ namespace BenchTool
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
                     appveyorBuildId = AppveyorUtils.BuildId,
+                    buildLog = BuildOutputJson.LoadFrom(buildOutput),
+                    testLog = TestOutputJson.LoadFrom(buildOutput),
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
         }
