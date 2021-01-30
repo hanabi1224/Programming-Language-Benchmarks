@@ -54,6 +54,8 @@ namespace BenchTool
             string[] problems = null,
             string[] environments = null)
         {
+            var timer = Stopwatch.StartNew();
+
             config.EnsureFileExists();
             algorithm.EnsureDirectoryExists();
             include.EnsureDirectoryExists();
@@ -150,6 +152,9 @@ namespace BenchTool
             {
                 throw new AggregateException(aggregatedExceptions);
             }
+
+            timer.Stop();
+            Logger.Info($"[Timer] Task {task} finished in {timer.Elapsed}");
         }
 
         private static async Task BuildAsync(
