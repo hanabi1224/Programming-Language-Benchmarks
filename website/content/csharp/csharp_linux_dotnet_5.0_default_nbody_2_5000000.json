@@ -1,0 +1,12 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5.0",
+  "test": "nbody",
+  "code": "2.cs",
+  "input": "5000000",
+  "timeMS": 573.4957,
+  "memBytes": 29713749,
+  "cpuTimeMS": 560.0
+}

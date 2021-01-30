@@ -1,0 +1,12 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1.15",
+  "test": "binarytrees",
+  "code": "4.go",
+  "input": "14",
+  "timeMS": 70.6355,
+  "memBytes": 11785830,
+  "cpuTimeMS": 116.0
+}

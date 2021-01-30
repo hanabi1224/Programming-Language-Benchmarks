@@ -1,0 +1,12 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1.15",
+  "test": "spectral-norm",
+  "code": "4.go",
+  "input": "5500",
+  "timeMS": 5215.0492,
+  "memBytes": 6349619,
+  "cpuTimeMS": 10032.0
+}

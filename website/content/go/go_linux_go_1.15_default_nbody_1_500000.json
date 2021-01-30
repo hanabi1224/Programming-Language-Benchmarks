@@ -1,0 +1,12 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1.15",
+  "test": "nbody",
+  "code": "1.go",
+  "input": "500000",
+  "timeMS": 66.5052,
+  "memBytes": 5935104,
+  "cpuTimeMS": 58.0
+}

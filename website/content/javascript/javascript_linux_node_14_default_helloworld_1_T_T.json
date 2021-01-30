@@ -1,0 +1,12 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "14",
+  "test": "helloworld",
+  "code": "1.js",
+  "input": "T_T",
+  "timeMS": 39.851,
+  "memBytes": 32874496,
+  "cpuTimeMS": 30.0
+}

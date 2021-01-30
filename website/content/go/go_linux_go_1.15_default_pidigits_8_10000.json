@@ -1,0 +1,12 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1.15",
+  "test": "pidigits",
+  "code": "8.go",
+  "input": "10000",
+  "timeMS": 2445.1039,
+  "memBytes": 12788531,
+  "cpuTimeMS": 2436.0
+}

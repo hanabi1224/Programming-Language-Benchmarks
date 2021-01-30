@@ -1,0 +1,12 @@
+{
+  "lang": "vlang",
+  "os": "linux",
+  "compiler": "vlang",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.v",
+  "input": "T_T",
+  "timeMS": 5.5502,
+  "memBytes": 1052672,
+  "cpuTimeMS": 0.0
+}

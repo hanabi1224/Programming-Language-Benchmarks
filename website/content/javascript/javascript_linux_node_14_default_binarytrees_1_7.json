@@ -1,0 +1,12 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "14",
+  "test": "binarytrees",
+  "code": "1.js",
+  "input": "7",
+  "timeMS": 151.3888,
+  "memBytes": 48030515,
+  "cpuTimeMS": 230.0
+}

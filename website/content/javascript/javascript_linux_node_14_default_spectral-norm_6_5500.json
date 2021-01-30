@@ -1,0 +1,12 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "14",
+  "test": "spectral-norm",
+  "code": "6.js",
+  "input": "5500",
+  "timeMS": 5543.922,
+  "memBytes": 50999296,
+  "cpuTimeMS": 10338.0
+}
