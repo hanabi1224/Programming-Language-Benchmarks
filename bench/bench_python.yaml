@@ -22,7 +22,7 @@ environments:
       - rm -r dist
     build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
     after_build:
-      - sh -c "chown $USER -R dist/_app"
+      - sh -c "sudo chown appveyor -R dist/_app"
     out_dir: dist/_app
     run_cmd: _app
   - os: linux
