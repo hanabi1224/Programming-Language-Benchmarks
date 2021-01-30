@@ -325,8 +325,7 @@ namespace BenchTool
 
             var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputDir, "_results", langConfig.Lang);
             benchResultDir.CreateDirectoryIfNotExist();
-            var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}.json");
-
+            
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
@@ -351,6 +350,7 @@ namespace BenchTool
                 var avgMeasurement = measurements.GetAverage();
                 Logger.Info($"\n\n[AVG] {buildId} {avgMeasurement}\n\n");
 
+                var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
                 {
                     lang = langConfig.Lang,
