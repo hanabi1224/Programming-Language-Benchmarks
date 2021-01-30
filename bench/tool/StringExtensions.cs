@@ -41,6 +41,13 @@ namespace System
             }
         }
 
+        public static bool IsDirectoryNotEmpty(this string path)
+        {
+            return !path.IsEmptyOrWhiteSpace()
+                && Directory.Exists(path)
+                && Directory.EnumerateFiles(path, string.Empty, SearchOption.AllDirectories).Any();
+        }
+
         public static void CreateDirectoryIfNotExist(this string path)
         {
             if (!Directory.Exists(path))

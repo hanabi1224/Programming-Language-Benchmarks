@@ -180,8 +180,7 @@ namespace BenchTool
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild
-                && Directory.Exists(buildOutput)
-                && Directory.EnumerateFiles(buildOutput).Any())
+                && buildOutput.IsDirectoryNotEmpty())
             {
                 Logger.Debug($"Build cache hit.");
                 return;
@@ -283,8 +282,7 @@ namespace BenchTool
 
             try
             {
-                if (Directory.Exists(tmpBuildOutput)
-                    && Directory.EnumerateFiles(tmpBuildOutput).Any())
+                if (tmpBuildOutput.IsDirectoryNotEmpty())
                 {
                     Logger.Debug($"Moving from {tmpBuildOutput} to {buildOutput}");
                     Directory.Move(tmpBuildOutput, buildOutput);
@@ -295,6 +293,11 @@ namespace BenchTool
             {
                 await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"", asyncRead: false).ConfigureAwait(false);
                 Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
+            }
+
+            if (!buildOutput.IsDirectoryNotEmpty())
+            {
+                throw new DirectoryNotFoundException(buildOutput);
             }
 
             if (_verbose)
