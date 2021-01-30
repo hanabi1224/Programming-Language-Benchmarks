@@ -38,9 +38,9 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build #--langs swift
-    - dotnet run -c Release -p tool -- --task test #--langs swift
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true
+    - dotnet run -c Release -p tool -- --task build --langs swift
+    - dotnet run -c Release -p tool -- --task test --langs swift
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true --langs swift
     - popd
     - pushd website
     - yarn
