@@ -1,0 +1,12 @@
+{
+  "lang": "kotlin",
+  "os": "linux",
+  "compiler": "kotlin_nativec",
+  "compilerVersion": "1.4.21",
+  "test": "helloworld",
+  "code": "1.kt",
+  "input": "T_T",
+  "timeMS": 1.4291,
+  "memBytes": 1040384,
+  "cpuTimeMS": 0.0
+}

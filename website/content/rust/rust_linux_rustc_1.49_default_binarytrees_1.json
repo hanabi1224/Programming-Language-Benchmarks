@@ -1,0 +1,12 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "1.49",
+  "test": "binarytrees",
+  "code": "1.rs",
+  "input": "14",
+  "timeMS": 34.7209,
+  "memBytes": 3624960,
+  "cpuTimeMS": 52.0
+}

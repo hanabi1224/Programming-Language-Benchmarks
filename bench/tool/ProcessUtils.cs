@@ -110,7 +110,7 @@ namespace BenchTool
         public static async Task RunCommandsAsync(
             IEnumerable<string> commands,
             string workingDir = null,
-            bool asyncRead = true,
+            bool asyncRead = false,
             bool ensureZeroExitCode = false,
             CancellationToken token = default
             )
@@ -134,7 +134,7 @@ namespace BenchTool
         public static async Task RunCommandAsync(
             string command,
             string workingDir = null,
-            bool asyncRead = true,
+            bool asyncRead = false,
             bool ensureZeroExitCode = false,
             CancellationToken token = default)
         {
@@ -295,6 +295,35 @@ namespace BenchTool
                     {
                         Logger.Error(e.Message);
                     }
+                }
+                else
+                {
+                    // Avoid deadlock in sync mode
+                    Task.Run(async () =>
+                    {
+                        await Task.Delay(1000).ConfigureAwait(false);
+                        try
+                        {
+                            if (!p.HasExited)
+                            {
+                                if (p.StartInfo.RedirectStandardOutput)
+                                {
+                                    p.BeginOutputReadLine();
+                                }
+                                if (p.StartInfo.RedirectStandardError)
+                                {
+                                    p.BeginErrorReadLine();
+                                }
+                            }
+                        }
+                        catch (InvalidOperationException)
+                        {
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(e.Message);
+                        }
+                    });
                 }
 
                 using (var processEnded = new ManualResetEvent(false))
