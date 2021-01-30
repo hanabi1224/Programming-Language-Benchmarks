@@ -183,7 +183,7 @@ export default class LangMetaPage extends Vue {
 
     // Sort
     exp = exp.orderBy(
-      ['os', 'lang', 'compiler', 'compilerVersion', 'input', 'timeMS'],
+      ['input', 'timeMS', 'os', 'lang', 'compiler', 'compilerVersion'],
       ['asc', 'asc', 'asc', 'asc', 'asc', 'asc']
     )
 

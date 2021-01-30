@@ -1,0 +1,12 @@
+{
+  "lang": "typescript",
+  "os": "linux",
+  "compiler": "deno",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.ts",
+  "input": "T_T",
+  "timeMS": 16.9408,
+  "memBytes": 17666048,
+  "cpuTimeMS": 10.0
+}

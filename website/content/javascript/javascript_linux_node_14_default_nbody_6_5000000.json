@@ -1,0 +1,12 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "14",
+  "test": "nbody",
+  "code": "6.js",
+  "input": "5000000",
+  "timeMS": 847.0293,
+  "memBytes": 37638144,
+  "cpuTimeMS": 833.3332
+}

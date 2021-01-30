@@ -1,0 +1,12 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "adoptopenjdk",
+  "compilerVersion": "11",
+  "test": "nbody",
+  "code": "1.java",
+  "input": "5000000",
+  "timeMS": 836.6401,
+  "memBytes": 35239253,
+  "cpuTimeMS": 873.3333
+}

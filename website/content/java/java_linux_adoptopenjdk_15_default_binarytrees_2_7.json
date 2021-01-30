@@ -1,0 +1,12 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "adoptopenjdk",
+  "compilerVersion": "15",
+  "test": "binarytrees",
+  "code": "2.java",
+  "input": "7",
+  "timeMS": 95.9629,
+  "memBytes": 41878323,
+  "cpuTimeMS": 110.0
+}
