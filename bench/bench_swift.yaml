@@ -18,6 +18,6 @@ environments:
     docker: swift:5.3
     include: swift
     include_sub_dir: Sources/app
-    build: swift build -c release -Xswiftc -static-executable
-    out_dir: .build/x86_64-unknown-linux-gnu/release
+    build: swift build -c release -Xswiftc -static-executable && cp .build/x86_64-unknown-linux-gnu/release/app out
+    out_dir: out
     run_cmd: app
