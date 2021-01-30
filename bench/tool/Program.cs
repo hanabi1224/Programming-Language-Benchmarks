@@ -247,6 +247,11 @@ namespace BenchTool
                     workingDir: tmpDir.FullPath).ConfigureAwait(false);
             }
 
+            // After Build
+            await ProcessUtils.RunCommandsAsync(
+                langEnvConfig.AfterBuild,
+                workingDir: tmpDir.FullPath).ConfigureAwait(false);
+
             if (Directory.Exists(buildOutput))
             {
                 Directory.Delete(buildOutput, recursive: true);
