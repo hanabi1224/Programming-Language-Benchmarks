@@ -6,13 +6,17 @@ const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  loading: {
+    color: 'cyan',
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'another-benchmarks-game',
+    title: 'Another Benchmarks Game for computer languages',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'benchmarks game for computer languages' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },

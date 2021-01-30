@@ -113,6 +113,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
+import $ from 'jquery'
 import _ from 'lodash'
 
 @Component({
@@ -136,6 +137,16 @@ export default class LangMetaPage extends Vue {
   compilerSelected = ''
   compilerVersionSelected = ''
   compilerOptionSelected = ''
+
+  head() {
+    const title = `${this.lang?.lang} ${
+      this.other ? 'VS' + this.other?.lang : ''
+    } benchmarks game`
+    return {
+      title,
+      meta: [{ hid: 'description', name: 'description', content: title }],
+    }
+  }
 
   get otherLangs() {
     return _.chain(this.langs)
@@ -202,8 +213,21 @@ export default class LangMetaPage extends Vue {
     }
   }
 
-  head() {
-    return { title: `${this.lang?.lang}` }
+  mounted() {
+    // Update head
+    const title = `${this.lang?.langDisplay} ${
+      this.other ? 'VS ' + this.other?.langDisplay : ''
+    } benchmarks game`
+
+    $('head title').text(title)
+
+    const metaDesc = $('head meta[name="description"]')
+    const metaContent = metaDesc.attr('content') as string
+    const langsStr = _.chain(this.langs)
+      .map((i) => i.langDisplay)
+      .uniq()
+      .value()
+    metaDesc.attr('content', `${metaContent}, ${title}, ${langsStr}`)
   }
 
   created() {

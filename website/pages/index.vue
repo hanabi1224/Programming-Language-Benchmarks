@@ -34,6 +34,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
+import $ from 'jquery'
+import _ from 'lodash'
 
 @Component({
   components: {},
@@ -42,6 +44,17 @@ export default class IndexPage extends Vue {
   langs: LangBenchResults[] = []
   created() {
     this.langs = this.$route.meta
+  }
+
+  mounted() {
+    // Update head
+    const metaDesc = $('head meta[name="description"]')
+    const metaContent = metaDesc.attr('content') as string
+    const langsStr = _.chain(this.langs)
+      .map((i) => i.langDisplay)
+      .uniq()
+      .value()
+    metaDesc.attr('content', `${metaContent}, ${langsStr}`)
   }
 
   getLinkClass() {
