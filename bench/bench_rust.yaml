@@ -17,6 +17,7 @@ environments:
     compiler: rustc
     version: 1.49
     docker: rust:1.49
+    docker_volumn: /tmp/test:/tmp/test
     include: rust
     include_sub_dir: src
     build: cargo build --release

@@ -256,7 +256,14 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    buildCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    var additonalDockerVolumn = string.Empty;
+                    if (Environment.OSVersion.Platform != PlatformID.Win32NT
+                        && !langEnvConfig.DockerVolumn.IsEmptyOrWhiteSpace())
+                    {
+                        additonalDockerVolumn = $"-v {langEnvConfig.DockerVolumn}";
+                    }
+
+                    buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
                 }
 
                 await ProcessUtils.RunCommandAsync(
@@ -330,12 +337,12 @@ namespace BenchTool
                 runPsi.WorkingDirectory = buildOutput;
 
                 // Test retry
-                Exception error = null;                            
+                Exception error = null;
                 for (var retry = 0; retry < 2; retry++)
                 {
                     ProcessUtils.RunProcess(
-                        runPsi, 
-                        printOnConsole: false, 
+                        runPsi,
+                        printOnConsole: false,
                         asyncRead: false,
                         out var stdOut,
                         out var stdErr,
