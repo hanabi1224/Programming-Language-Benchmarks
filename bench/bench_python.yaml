@@ -14,7 +14,7 @@ environments:
   - os: linux
     compiler: cpython
     version: 3.9
-    docker: python:3.9-slim
+    docker: python:3.9
     include:
     include_sub_dir:
     runtime_version_command: python -V
