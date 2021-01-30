@@ -3,12 +3,12 @@ problems:
   - name: helloworld
     source:
       - 1.py
-  # - name: binarytrees
-  #   source:
-  #     - 1.py
-  # - name: pidigits
-  #   source:
-  #     - 4.py
+  - name: binarytrees
+    source:
+      - 1.py
+  - name: pidigits
+    source:
+      - 4.py
 source_rename_to: c.py
 environments:
   - os: linux
