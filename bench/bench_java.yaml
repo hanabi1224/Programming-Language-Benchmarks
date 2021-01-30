@@ -6,6 +6,9 @@ problems:
   - name: nbody
     source:
       - 1.java
+  - name: pidigits
+    source:
+      - 1.java
 compiler_version_command: javac -version
 compiler_version_regex:
 runtime_version_command: java -version
