@@ -4,7 +4,7 @@ problems:
     source:
       # - 3.cs
       - 6.cs
-      - 7.cs
+      # - 7.cs
   - name: nbody
     source:
       - 2.cs

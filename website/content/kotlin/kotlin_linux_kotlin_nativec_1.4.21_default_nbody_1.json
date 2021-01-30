@@ -6,7 +6,7 @@
   "test": "nbody",
   "code": "1.kt",
   "input": "5000000",
-  "timeMS": 1104.295,
-  "memBytes": 1323827,
-  "cpuTimeMS": 1092.0
+  "timeMS": 967.6538,
+  "memBytes": 1355776,
+  "cpuTimeMS": 958.0
 }

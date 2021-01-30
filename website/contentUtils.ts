@@ -10,7 +10,9 @@ export async function getLangBenchResults($content: contentFunc) {
   var groupsByLang = _.chain(pages as unknown as BenchResult[]).filter(i => !!i.lang).groupBy(i => i.lang).value();
   var r: LangBenchResults[] = [];
   for (var k in groupsByLang) {
-    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: groupsByLang[k] });
+    const benches = groupsByLang[k];
+    console.log(`${k}: ${benches.length} benchmark results`);
+    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: benches });
   }
   return r;
 }

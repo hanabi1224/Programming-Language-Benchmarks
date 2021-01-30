@@ -6,7 +6,7 @@
   "test": "nbody",
   "code": "1.rs",
   "input": "5000000",
-  "timeMS": 618.885,
-  "memBytes": 720896,
-  "cpuTimeMS": 608.0
+  "timeMS": 530.8765,
+  "memBytes": 736460,
+  "cpuTimeMS": 518.0
 }

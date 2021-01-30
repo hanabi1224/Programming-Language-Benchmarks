@@ -6,7 +6,7 @@
   "test": "helloworld",
   "code": "1.js",
   "input": "T_T",
-  "timeMS": 65.3717,
-  "memBytes": 30769152,
-  "cpuTimeMS": 50.0
+  "timeMS": 53.3338,
+  "memBytes": 31744000,
+  "cpuTimeMS": 30.0
 }

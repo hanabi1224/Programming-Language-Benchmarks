@@ -43,7 +43,7 @@ langs:
       - name: binarytrees
         source:
           # - 1.go
-          - 2.go
+          # - 2.go
           - 4.go
       - name: nbody
         source:
