@@ -42,10 +42,12 @@ problems:
     unittests:
       - input: 27
         output: 27_out
+      - input: 30
+        output: 30_out
     tests:
-      - input: 6000
+      - input: 6002
         repeat: 5
-      - input: 10000
+      - input: 10001
         repeat: 5
   - name: mandelbrot
     unittests:
