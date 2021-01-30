@@ -94,7 +94,7 @@ langs:
       - os: linux
         compiler: go
         version: 1.15
-        docker: golang:1.15
+        docker: golang:1.15-slim
         include:
         build: go mod init tmp.org/tmp/v2 && go build -o out/_go
         out_dir: out
