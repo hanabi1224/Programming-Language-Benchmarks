@@ -6,7 +6,7 @@
   "test": "binarytrees",
   "code": "2.java",
   "input": "14",
-  "timeMS": 158.9648,
-  "memBytes": 99501670,
-  "cpuTimeMS": 196.0
+  "timeMS": 163.5281,
+  "memBytes": 100127539,
+  "cpuTimeMS": 194.0
 }
