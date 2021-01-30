@@ -7,7 +7,7 @@ problems:
       # - 7.cs
   - name: nbody
     source:
-      - 2.cs
+      - 8.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_command:
@@ -38,6 +38,6 @@ environments:
     compiler_version_command: csc -version
     docker: mono:6.12
     include:
-    build: csc app.cs && mkbundle --simple -o out/_app --no-config --no-machine-config app.exe
+    build: csc /unsafe app.cs && mkbundle --simple -o out/_app --no-config --no-machine-config app.exe
     out_dir: out
     run_cmd: _app
