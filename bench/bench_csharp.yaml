@@ -36,7 +36,7 @@ environments:
     compiler: mono
     version: 6.12
     compiler_version_command: csc -version
-    docker: mono:6.12-slim
+    docker: mono:6.12
     include:
     build: csc app.cs && mkbundle --simple -o out/_app --no-config --no-machine-config app.exe
     out_dir: out
