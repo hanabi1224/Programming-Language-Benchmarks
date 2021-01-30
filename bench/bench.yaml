@@ -28,7 +28,34 @@ problems:
       - input: 500000
         repeat: 5
       - input: 5000000
+        repeat: 3
+  - name: spectral-norm
+    unittests:
+      - input: 100
+        output: 100_out
+    tests:
+      - input: 3000
         repeat: 5
+      - input: 5500
+        repeat: 5
+  - name: pidigits
+    unittests:
+      - input: 27
+        output: 27_out
+    tests:
+      - input: 6000
+        repeat: 5
+      - input: 10000
+        repeat: 5
+  - name: mandelbrot
+    unittests:
+      - input: 200
+        output: 200_out
+    tests:
+      - input: 4000
+        repeat: 5
+      - input: 16000
+        repeat: 3
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml
@@ -48,6 +75,15 @@ langs:
       - name: nbody
         source:
           - 1.go
+      - name: spectral-norm
+        source:
+          - 4.go
+      - name: pidigits
+        source:
+          - 8.go
+      - name: mandelbrot
+        source:
+          - 1.go
     compiler_version_command: go version
     compiler_version_regex:
     runtime_version_command:
@@ -58,6 +94,6 @@ langs:
         version: 1.15
         docker: golang:1.15
         include:
-        build: go build -o out/_go
+        build: go mod init tmp.org/tmp/v2 && go build -o out/_go
         out_dir: out
         run_cmd: _go

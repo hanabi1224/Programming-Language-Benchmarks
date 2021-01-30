@@ -56,7 +56,7 @@ namespace BenchTool
             CancellationToken token = default)
         {
             var m = new ProcessMeasurement();
-            startInfo.UseShellExecute = true;
+            startInfo.UseShellExecute = false;
             var p = new Process
             {
                 StartInfo = startInfo,
@@ -100,7 +100,15 @@ namespace BenchTool
             }, TaskCreationOptions.LongRunning);
 
             var sw = Stopwatch.StartNew();
-            RunProcess(p, printOnConsole: false, asyncRead: false, null, null, token, onStart: () => started = true);
+            RunProcess(
+                p,
+                printOnConsole: false,
+                asyncRead: true,
+                stdOutBuilder: null,
+                stdErrorBuilder: null,
+                token,
+                onStart: () => started = true);
+
             sw.Stop();
             await t.ConfigureAwait(false);
             m.Elapsed = sw.Elapsed;
@@ -206,8 +214,6 @@ namespace BenchTool
             CancellationToken token)
         {
             startInfo.UseShellExecute = useShellExecute;
-            startInfo.RedirectStandardOutput = !useShellExecute;
-            startInfo.RedirectStandardError = !useShellExecute;
 
             var p = new Process
             {
@@ -234,8 +240,13 @@ namespace BenchTool
         {
             using (p)
             {
-                Logger.Debug($"Executing command: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
                 var useShellExecute = p.StartInfo.UseShellExecute;
+                p.StartInfo.RedirectStandardOutput = !useShellExecute;
+                p.StartInfo.RedirectStandardError = !useShellExecute;
+
+                var prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
+                Logger.Debug($"{prefix}: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
+
                 if (p.StartInfo.RedirectStandardOutput)
                 {
                     p.StartInfo.StandardOutputEncoding = Encoding.UTF8;

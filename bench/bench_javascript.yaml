@@ -6,6 +6,12 @@ problems:
   - name: binarytrees
     source:
       - 1.js
+  - name: nbody
+    source:
+      - 6.js
+  - name: spectral-norm
+    source:
+      - 6.js
 compiler_version_command:
 compiler_version_regex:
 runtime_version_command: node -v

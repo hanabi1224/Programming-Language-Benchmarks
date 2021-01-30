@@ -39,6 +39,7 @@ namespace BenchTool
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
+        /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
         public static async Task Main(
             string config = "bench.yaml",
@@ -50,6 +51,7 @@ namespace BenchTool
             bool forceRebuild = false,
             bool failFast = false,
             string[] langs = null,
+            string[] problems = null,
             string[] environments = null)
         {
             config.EnsureFileExists();
@@ -80,6 +82,7 @@ namespace BenchTool
             var langConfigs = benchConfig.Langs;
             var includedLanguages = new HashSet<string>(langs ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
+            var includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
             var aggregatedExceptions = new List<Exception>();
             foreach (var c in langConfigs.OrderBy(i => i.Lang))
@@ -100,6 +103,12 @@ namespace BenchTool
 
                     foreach (var p in c.Problems)
                     {
+                        if (includedProblems.Count > 0
+                            && !includedProblems.Contains(p.Name))
+                        {
+                            continue;
+                        }
+
                         foreach (var codePath in p.Source)
                         {
                             try
@@ -156,7 +165,7 @@ namespace BenchTool
             bool forceRebuild)
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
-            if (!forceRebuild 
+            if (!forceRebuild
                 && Directory.Exists(buildOutput)
                 && Directory.EnumerateFiles(buildOutput).Any())
             {
@@ -325,7 +334,7 @@ namespace BenchTool
 
             var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputDir, "_results", langConfig.Lang);
             benchResultDir.CreateDirectoryIfNotExist();
-            
+
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
