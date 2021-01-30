@@ -19,8 +19,8 @@ environments:
     include_sub_dir:
     runtime_version_command: python -V
     build: python3 -m pip install pyinstaller && pyinstaller -y -n _app c.py
-    out_dir: dist/_app
-    run_cmd: _app
+    out_dir: dist/
+    run_cmd: _app/_app
   - os: linux
     compiler: pypy
     version: 3.7
