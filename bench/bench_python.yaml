@@ -19,9 +19,9 @@ environments:
     include_sub_dir:
     runtime_version_command: python -V
     before_build:
-      - rm -r dist
-    build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
-    out_dir: dist/_app
+      - rm -r out
+    build: pip3 install pyinstaller && pyinstaller -y -n _app c.py && cp -a dist/_app out
+    out_dir: out
     run_cmd: _app
   - os: linux
     compiler: pypy
