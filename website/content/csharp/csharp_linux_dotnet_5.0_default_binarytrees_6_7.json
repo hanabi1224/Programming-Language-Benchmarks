@@ -6,20 +6,20 @@
   "test": "binarytrees",
   "code": "6.cs",
   "input": "7",
-  "timeMS": 62.0207,
-  "memBytes": 27287552,
-  "cpuTimeMS": 50.0,
-  "appveyorBuildId": "37530564",
+  "timeMS": 56.8682,
+  "memBytes": 27415893,
+  "cpuTimeMS": 46.6666,
+  "appveyorBuildId": "37534898",
   "buildLog": {
     "compilerVersion": "5.0.102",
-    "start": "2021-01-31T01:25:40.3463913+00:00",
-    "finished": "2021-01-31T01:25:56.0990871+00:00",
-    "durationMs": 15752
+    "start": "2021-01-31T15:11:49.1532702+00:00",
+    "finished": "2021-01-31T15:12:05.1694832+00:00",
+    "durationMs": 16016
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T01:35:13.713774+00:00",
-    "finished": "2021-01-31T01:35:13.9459551+00:00",
-    "durationMs": 232
+    "start": "2021-01-31T15:22:29.2108629+00:00",
+    "finished": "2021-01-31T15:22:29.503285+00:00",
+    "durationMs": 292
   }
 }

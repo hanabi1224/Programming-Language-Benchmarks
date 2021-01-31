@@ -1,0 +1,25 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "1",
+  "test": "mandelbrot",
+  "code": "8.rs",
+  "input": "4000",
+  "timeMS": 4884.2275,
+  "memBytes": 2745685,
+  "cpuTimeMS": 9406.6666,
+  "appveyorBuildId": "37534898",
+  "buildLog": {
+    "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
+    "start": "2021-01-31T15:20:18.6722461+00:00",
+    "finished": "2021-01-31T15:20:47.3044507+00:00",
+    "durationMs": 28632
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T15:22:48.3073884+00:00",
+    "finished": "2021-01-31T15:22:48.3293309+00:00",
+    "durationMs": 21
+  }
+}

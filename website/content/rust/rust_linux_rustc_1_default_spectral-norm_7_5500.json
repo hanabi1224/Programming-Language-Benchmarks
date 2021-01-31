@@ -1,0 +1,25 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "1",
+  "test": "spectral-norm",
+  "code": "7.rs",
+  "input": "5500",
+  "timeMS": 17549.307,
+  "memBytes": 2617344,
+  "cpuTimeMS": 33770.0,
+  "appveyorBuildId": "37534898",
+  "buildLog": {
+    "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
+    "start": "2021-01-31T15:19:49.3732086+00:00",
+    "finished": "2021-01-31T15:20:18.6720588+00:00",
+    "durationMs": 29298
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T15:22:48.2873543+00:00",
+    "finished": "2021-01-31T15:22:48.2992065+00:00",
+    "durationMs": 11
+  }
+}

@@ -6,20 +6,20 @@
   "test": "helloworld",
   "code": "1.swift",
   "input": "T_T",
-  "timeMS": 1.3913,
+  "timeMS": 1.1883,
   "memBytes": 0,
   "cpuTimeMS": 0.0,
-  "appveyorBuildId": "37530564",
+  "appveyorBuildId": "37534898",
   "buildLog": {
     "compilerVersion": "Swift version 5.3.3 (swift-5.3.3-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
-    "start": "2021-01-31T01:34:22.3851806+00:00",
-    "finished": "2021-01-31T01:34:50.1674839+00:00",
-    "durationMs": 27782
+    "start": "2021-01-31T15:21:40.2027423+00:00",
+    "finished": "2021-01-31T15:22:07.3706537+00:00",
+    "durationMs": 27167
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T01:35:28.1641704+00:00",
-    "finished": "2021-01-31T01:35:28.1899962+00:00",
-    "durationMs": 25
+    "start": "2021-01-31T15:22:50.2427425+00:00",
+    "finished": "2021-01-31T15:22:50.2799534+00:00",
+    "durationMs": 37
   }
 }

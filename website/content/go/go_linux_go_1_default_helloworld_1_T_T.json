@@ -1,0 +1,25 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1",
+  "test": "helloworld",
+  "code": "1.go",
+  "input": "T_T",
+  "timeMS": 6.2904,
+  "memBytes": 1216512,
+  "cpuTimeMS": 0.0,
+  "appveyorBuildId": "37534898",
+  "buildLog": {
+    "compilerVersion": "go version go1.15.7 linux/amd64",
+    "start": "2021-01-31T15:13:48.2295746+00:00",
+    "finished": "2021-01-31T15:14:08.0528936+00:00",
+    "durationMs": 19823
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T15:22:31.9884448+00:00",
+    "finished": "2021-01-31T15:22:32.0317339+00:00",
+    "durationMs": 43
+  }
+}

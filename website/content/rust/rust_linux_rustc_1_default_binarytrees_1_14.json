@@ -1,0 +1,25 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "1",
+  "test": "binarytrees",
+  "code": "1.rs",
+  "input": "14",
+  "timeMS": 29.611,
+  "memBytes": 4180650,
+  "cpuTimeMS": 33.3333,
+  "appveyorBuildId": "37534898",
+  "buildLog": {
+    "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
+    "start": "2021-01-31T15:18:16.5037913+00:00",
+    "finished": "2021-01-31T15:18:54.3284736+00:00",
+    "durationMs": 37824
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T15:22:48.2645706+00:00",
+    "finished": "2021-01-31T15:22:48.2684513+00:00",
+    "durationMs": 3
+  }
+}
