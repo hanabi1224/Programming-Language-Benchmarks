@@ -2,7 +2,7 @@
   <div class="flex flex-wrap relative">
     <aside class="block w-1/6">
       <h2 title="Benchmarks for other computer languages" class="text-xl">
-        Benchmarks
+        Languages
       </h2>
       <ul class="text-base">
         <li
@@ -28,7 +28,7 @@
         {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
       </h1>
       <h1 v-if="problem" class="text-3xl">
-        All {{ this.problem }} problem benchmarks
+        All {{ problem }} problem benchmarks
       </h1>
       <div class="text-base italic leading-loose">
         <p class="py-3">
@@ -64,46 +64,51 @@
         <h2 class="text-2xl my-5 mb-2 underline text-blue-500">
           <a :href="`/problem/${test}`"> {{ test }} </a>
         </h2>
-        <table class="table-auto w-full text-base leading-loose">
-          <tr class="border-b-2 border-dotted py-1">
-            <th v-show="other || problem" class="text-left">lang</th>
-            <th class="text-right">code</th>
-            <th class="text-right">N</th>
-            <th class="text-right">t(ms)</th>
-            <th class="text-right">mem</th>
-            <th class="text-right">cpu-t(ms)</th>
-            <th class="text-left pl-5">compiler</th>
-          </tr>
-          <tbody>
-            <tr
-              v-for="(i, idx) in filterBenches(test)"
-              :key="idx"
-              :class="
-                'border-b-2 border-dotted py-1 ' +
-                (idx % 2 == 0 ? 'bg-gray-200' : '')
-              "
-            >
-              <td v-show="other || problem" class="text-left">{{ i.lang }}</td>
-              <td class="text-right">
-                <a
-                  :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
-                  target="_blank"
-                  class="underline text-blue-500"
-                  >{{ i.code }}</a
-                >
-              </td>
-              <td class="text-right">{{ i.input }}</td>
-              <td class="text-right">{{ i.timeMS.toFixed(2) }}</td>
-              <td class="text-right">
-                {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
-              </td>
-              <td class="text-right">{{ i.cpuTimeMS.toFixed(2) }}</td>
-              <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
-                {{ i.compiler }} {{ i.compilerVersion }}
-              </td>
+        <div v-for="input in getInputs(test, input)" :key="input" class="mt-5">
+          <h3 class="text-base">Input: {{ input }}</h3>
+          <table class="table-auto w-full text-base leading-loose">
+            <tr class="border-b-2 border-dotted py-1">
+              <th v-show="other || problem" class="text-left">lang</th>
+              <th class="text-right">code</th>
+              <!-- <th class="text-right">N</th> -->
+              <th class="text-right">time(ms)</th>
+              <th class="text-right">mem</th>
+              <th class="text-right">cpu-time(ms)</th>
+              <th class="text-left pl-5">compiler/runtime</th>
             </tr>
-          </tbody>
-        </table>
+            <tbody>
+              <tr
+                v-for="(i, idx) in filterBenches(test, input)"
+                :key="idx"
+                :class="
+                  'border-b-2 border-dotted py-1 ' +
+                  (idx % 2 == 0 ? 'bg-gray-200' : '')
+                "
+              >
+                <td v-show="other || problem" class="text-left">
+                  <a :href="`/${i.lang}`">{{ i.lang }}</a>
+                </td>
+                <td class="text-right">
+                  <a
+                    :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
+                    target="_blank"
+                    class="underline text-blue-500"
+                    >{{ i.code }}</a
+                  >
+                </td>
+                <!-- <td class="text-right">{{ i.input }}</td> -->
+                <td class="text-right">{{ i.timeMS.toFixed(2) }}</td>
+                <td class="text-right">
+                  {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
+                </td>
+                <td class="text-right">{{ i.cpuTimeMS.toFixed(2) }}</td>
+                <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
+                  {{ i.compiler }} {{ i.compilerVersion }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <aside class="block w-1/6">
@@ -225,19 +230,27 @@ export default class LangMetaPage extends Vue {
     )
   }
 
-  filterBenches(test: string) {
+  getInputs(test: string) {
+    return _.chain(this.activeBenchmarks)
+      .filter((i) => i.test === test && i.os === this.osSelected)
+      .map((i) => i.input)
+      .uniq()
+      .orderBy((i) => parseInt(i) ?? i)
+      .value()
+  }
+
+  filterBenches(test: string, input: string) {
     let exp = _.chain(this.activeBenchmarks).filter(
-      (i) => i.test === test && i.os === this.osSelected // &&
-      // i.compiler === this.compilerSelected &&
-      // i.compilerVersion === this.compilerVersionSelected &&
-      // (!this.compilerOptionSelected ||
-      //   i.compilerOptions === this.compilerOptionSelected)
+      (i) => i.test === test && i.os === this.osSelected && i.input === input
     )
 
     if (this.other?.benchmarks && this.other?.benchmarks?.length > 0) {
       exp = exp.unionWith(
         _.chain(this.other?.benchmarks)
-          .filter((i) => i.test === test && i.os === this.osSelected)
+          .filter(
+            (i) =>
+              i.test === test && i.os === this.osSelected && i.input === input
+          )
           .value()
       )
     }
