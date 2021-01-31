@@ -6,7 +6,20 @@
   "test": "binarytrees",
   "code": "1.js",
   "input": "7",
-  "timeMS": 151.3888,
-  "memBytes": 48030515,
-  "cpuTimeMS": 230.0
+  "timeMS": 157.8521,
+  "memBytes": 47726592,
+  "cpuTimeMS": 230.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-01-31T01:28:59.0351023+00:00",
+    "finished": "2021-01-31T01:28:59.6752571+00:00",
+    "durationMs": 640
+  },
+  "testLog": {
+    "runtimeVersion": "v14.15.4",
+    "start": "2021-01-31T01:35:20.19728+00:00",
+    "finished": "2021-01-31T01:35:20.6396163+00:00",
+    "durationMs": 442
+  }
 }

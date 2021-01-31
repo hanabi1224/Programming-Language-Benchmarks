@@ -17,8 +17,8 @@ source_rename_to: c.jl
 environments:
   - os: linux
     compiler: julia
-    version: 1.5
-    docker: julia:1.5
+    version: 1
+    docker: julia:1
     include:
     include_sub_dir: out
     build: cp -a /usr/local/julia out

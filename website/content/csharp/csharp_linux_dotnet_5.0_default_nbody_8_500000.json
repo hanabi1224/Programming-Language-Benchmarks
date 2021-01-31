@@ -1,0 +1,25 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5.0",
+  "test": "nbody",
+  "code": "8.cs",
+  "input": "500000",
+  "timeMS": 146.6644,
+  "memBytes": 30351360,
+  "cpuTimeMS": 140.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "5.0.102",
+    "start": "2021-01-31T01:25:56.0994549+00:00",
+    "finished": "2021-01-31T01:26:11.459486+00:00",
+    "durationMs": 15360
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:13.9530165+00:00",
+    "finished": "2021-01-31T01:35:14.2419328+00:00",
+    "durationMs": 288
+  }
+}

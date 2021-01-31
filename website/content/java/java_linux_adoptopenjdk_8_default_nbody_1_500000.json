@@ -1,0 +1,25 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "adoptopenjdk",
+  "compilerVersion": "8",
+  "test": "nbody",
+  "code": "1.java",
+  "input": "500000",
+  "timeMS": 184.7848,
+  "memBytes": 27037696,
+  "cpuTimeMS": 170.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "javac 1.8.0_282",
+    "start": "2021-01-31T01:28:16.742092+00:00",
+    "finished": "2021-01-31T01:28:19.0215613+00:00",
+    "durationMs": 2279
+  },
+  "testLog": {
+    "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"1.8.0_282\"\nOpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_282-b08)\nOpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.282-b08, mixed mode)",
+    "start": "2021-01-31T01:35:16.3885147+00:00",
+    "finished": "2021-01-31T01:35:16.9245574+00:00",
+    "durationMs": 536
+  }
+}

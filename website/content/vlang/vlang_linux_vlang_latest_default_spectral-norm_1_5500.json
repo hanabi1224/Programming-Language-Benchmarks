@@ -1,0 +1,25 @@
+{
+  "lang": "vlang",
+  "os": "linux",
+  "compiler": "vlang",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.v",
+  "input": "5500",
+  "timeMS": 15514.0387,
+  "memBytes": 3088384,
+  "cpuTimeMS": 15460.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "V 0.2.2 974cac2",
+    "start": "2021-01-31T01:35:09.3373944+00:00",
+    "finished": "2021-01-31T01:35:10.7408598+00:00",
+    "durationMs": 1403
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:28.4186039+00:00",
+    "finished": "2021-01-31T01:35:28.4339544+00:00",
+    "durationMs": 15
+  }
+}

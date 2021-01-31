@@ -47,14 +47,14 @@
         <table class="table-auto w-full">
           <tr class="border-b-2 border-dotted">
             <th v-show="other" class="text-left">lang</th>
-            <th class="text-left">code</th>
+            <th class="text-right">code</th>
             <th class="text-right">N</th>
             <th class="text-right">time</th>
             <th class="text-right">mem</th>
             <th class="text-right">cpu-time</th>
-            <th class="text-center">compiler</th>
+            <th class="text-left pl-5">compiler</th>
             <!-- <th class="text-right">version</th> -->
-            <th class="text-right">options</th>
+            <!-- <th class="text-right">options</th> -->
           </tr>
           <tbody>
             <tr
@@ -63,7 +63,7 @@
               class="border-b-2 border-dotted"
             >
               <td v-show="other" class="text-left">{{ i.lang }}</td>
-              <td class="text-left">
+              <td class="text-right">
                 <a
                   :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
                   target="_blank"
@@ -77,11 +77,11 @@
                 {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
               </td>
               <td class="text-right">{{ i.cpuTimeMS.toFixed(2) }}</td>
-              <td class="text-center">
+              <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
                 {{ i.compiler }} {{ i.compilerVersion }}
               </td>
               <!-- <td class="text-right">{{ i.compilerVersion }}</td> -->
-              <td class="text-right">{{ i.compilerVersionOption }}</td>
+              <!-- <td class="text-right">{{ i.compilerVersionOption }}</td> -->
             </tr>
           </tbody>
         </table>
@@ -115,6 +115,7 @@ import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator'
 import $ from 'jquery'
 import _ from 'lodash'
+import { getFullCompilerVersion } from '~/contentUtils'
 
 @Component({
   components: {},
@@ -152,6 +153,10 @@ export default class LangMetaPage extends Vue {
     return _.chain(this.langs)
       .filter((i) => i.lang !== this.lang?.lang)
       .value()
+  }
+
+  getFullCompilerVersion(i: BenchResult) {
+    return getFullCompilerVersion(i)
   }
 
   isLinkActive(lang: string, otherLang: string) {

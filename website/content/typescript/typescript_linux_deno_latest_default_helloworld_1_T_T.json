@@ -6,7 +6,20 @@
   "test": "helloworld",
   "code": "1.ts",
   "input": "T_T",
-  "timeMS": 16.9408,
-  "memBytes": 17666048,
-  "cpuTimeMS": 10.0
+  "timeMS": 23.4569,
+  "memBytes": 17457152,
+  "cpuTimeMS": 10.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "deno 1.7.1 (release, x86_64-unknown-linux-gnu)\nv8 8.9.255.3\ntypescript 4.1.3",
+    "start": "2021-01-31T01:34:54.5605727+00:00",
+    "finished": "2021-01-31T01:34:58.2173445+00:00",
+    "durationMs": 3656
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:28.2478579+00:00",
+    "finished": "2021-01-31T01:35:28.4020889+00:00",
+    "durationMs": 154
+  }
 }

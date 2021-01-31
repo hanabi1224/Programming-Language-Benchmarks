@@ -6,7 +6,20 @@
   "test": "binarytrees",
   "code": "1.rs",
   "input": "14",
-  "timeMS": 28.6874,
-  "memBytes": 4090265,
-  "cpuTimeMS": 42.0
+  "timeMS": 26.8976,
+  "memBytes": 3612672,
+  "cpuTimeMS": 30.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
+    "start": "2021-01-31T01:31:57.7157201+00:00",
+    "finished": "2021-01-31T01:32:33.7699275+00:00",
+    "durationMs": 36054
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:28.1066708+00:00",
+    "finished": "2021-01-31T01:35:28.1112082+00:00",
+    "durationMs": 4
+  }
 }

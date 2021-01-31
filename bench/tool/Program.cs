@@ -270,15 +270,30 @@ namespace BenchTool
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
 
-                var stdOutBuilder = new StringBuilder();
-                var stdErrorBuilder = new StringBuilder();
-                await ProcessUtils.RunCommandAsync(
-                    compilerVersionCommand,
-                    workingDir: tmpDir.FullPath,
-                    stdOutBuilder: stdOutBuilder,
-                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+                {
+                    var stdOutBuilder = new StringBuilder();
+                    var stdErrorBuilder = new StringBuilder();
+                    await ProcessUtils.RunCommandAsync(
+                        compilerVersionCommand,
+                        workingDir: tmpDir.FullPath,
+                        stdOutBuilder: stdOutBuilder,
+                        stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
 
-                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                    buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                }
+
+                if (buildOutputJson.CompilerVersionText?.Contains("Unable to find image", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    var stdOutBuilder = new StringBuilder();
+                    var stdErrorBuilder = new StringBuilder();
+                    await ProcessUtils.RunCommandAsync(
+                        compilerVersionCommand,
+                        workingDir: tmpDir.FullPath,
+                        stdOutBuilder: stdOutBuilder,
+                        stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                    buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                }
             }
 
             // Build

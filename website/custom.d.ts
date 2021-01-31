@@ -25,6 +25,20 @@ type BenchResult = {
   cpuTimeMS: number,
 
   compilerOptions?: string,
+
+  appveyorBuildId: string,
+  buildLog: {
+    compilerVersion: string,
+    start: string,
+    finished: string,
+    durationMs: number
+  },
+  testLog: {
+    runtimeVersion: string,
+    start: string,
+    finished: string,
+    durationMs: number
+  },
 };
 
 type LangPageMeta = {
