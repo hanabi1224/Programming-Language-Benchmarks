@@ -74,7 +74,7 @@
               <th class="text-right">time(ms)</th>
               <th class="text-right">mem</th>
               <th class="text-right">cpu-time(ms)</th>
-              <th class="text-left pl-5">compiler</th>
+              <th class="text-left pl-5">compiler/runtime</th>
             </tr>
             <tbody>
               <tr
