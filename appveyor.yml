@@ -27,6 +27,8 @@ install:
     - pushd /tmp/vlang
     - make && ./v -version
     - sudo ./v symlink
+    - v -prod examples/hanoi.v
+    - ./examples/hanoi
     - popd
     - v -version
     - update-alternatives --list java
