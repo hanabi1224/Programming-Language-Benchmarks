@@ -1,6 +1,7 @@
 import { NuxtConfig } from '@nuxt/types';
 import { $content } from '@nuxt/content';
 import { getLangBenchResults } from './contentUtils';
+import _ from 'lodash';
 
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
@@ -103,7 +104,25 @@ const config: NuxtConfig = {
           }
         });
       });
-      // console.log(routes);
+
+      const problems = _.chain(langBenchResults)
+        .flatMap(i => i.benchmarks)
+        .map(i => i.test)
+        .uniq()
+        .value()
+
+      problems.forEach(p => {
+        routes.push({
+          name: `problem/${p}`,
+          path: `/problem/${p}`,
+          component: resolve(__dirname, 'components/LangMetaPage.vue'),
+          meta: {
+            problem: p,
+            allProblems: problems,
+            all: langBenchResults,
+          } as LangPageMeta,
+        });
+      })
     },
   }
 };

@@ -42,7 +42,9 @@ type BenchResult = {
 };
 
 type LangPageMeta = {
-  lang: LangBenchResults,
-  all: LangBenchResults[],
+  lang?: LangBenchResults,
+  all?: LangBenchResults[],
   other?: LangBenchResults,
+  problem?: string,
+  allProblems?: string[],
 };

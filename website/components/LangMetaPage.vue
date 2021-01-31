@@ -21,15 +21,18 @@
       </ul>
     </aside>
     <div class="block w-4/6 pr-4">
-      <h1 v-if="!other" class="text-3xl">
+      <h1 v-if="lang && !other" class="text-3xl">
         All {{ lang.langDisplay }} benchmarks
       </h1>
       <h1 v-if="other" class="text-3xl">
         {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
       </h1>
+      <h1 v-if="problem" class="text-3xl">
+        All {{ this.problem }} problem benchmarks
+      </h1>
       <div class="text-base italic leading-loose">
         <p class="py-3">
-          Benchmark data was generated on
+          Current benchmark data was generated on
           <span class="text-pink-800">{{ benchmarkDate }}</span
           >, full log can be found
           <a
@@ -56,28 +59,20 @@
           <option v-for="i in osOptions" :key="i" :value="i">{{ i }}</option>
         </select>
       </div>
-      <!-- <span>Compiler</span>
-    <select v-model="compilerSelected">
-      <option v-for="i in compilerOptions" :value="i">{{ i }}</option>
-    </select>
-    <span>Version</span>
-    <select v-model="compilerVersionSelected">
-      <option v-for="i in compilerVersionOptions" :value="i">{{ i }}</option>
-    </select> -->
 
       <div v-for="test in testOptions" :key="test">
-        <h2 class="text-2xl my-5 mb-2">{{ test }}</h2>
+        <h2 class="text-2xl my-5 mb-2 underline text-blue-500">
+          <a :href="`/problem/${test}`"> {{ test }} </a>
+        </h2>
         <table class="table-auto w-full text-base leading-loose">
           <tr class="border-b-2 border-dotted py-1">
-            <th v-show="other" class="text-left">lang</th>
+            <th v-show="other || problem" class="text-left">lang</th>
             <th class="text-right">code</th>
             <th class="text-right">N</th>
             <th class="text-right">t(ms)</th>
             <th class="text-right">mem</th>
             <th class="text-right">cpu-t(ms)</th>
             <th class="text-left pl-5">compiler</th>
-            <!-- <th class="text-right">version</th> -->
-            <!-- <th class="text-right">options</th> -->
           </tr>
           <tbody>
             <tr
@@ -88,7 +83,7 @@
                 (idx % 2 == 0 ? 'bg-gray-200' : '')
               "
             >
-              <td v-show="other" class="text-left">{{ i.lang }}</td>
+              <td v-show="other || problem" class="text-left">{{ i.lang }}</td>
               <td class="text-right">
                 <a
                   :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
@@ -106,33 +101,50 @@
               <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
                 {{ i.compiler }} {{ i.compilerVersion }}
               </td>
-              <!-- <td class="text-right">{{ i.compilerVersion }}</td> -->
-              <!-- <td class="text-right">{{ i.compilerVersionOption }}</td> -->
             </tr>
           </tbody>
         </table>
       </div>
     </div>
     <aside class="block w-1/6">
-      <h2 class="text-xl">Compare</h2>
-      <ul class="text-base">
-        <li
-          v-for="(i, idx) in otherLangs"
-          :key="idx"
-          class="text-light-onSurfacePrimary"
-        >
-          <a
-            :href="
-              isLinkActive(lang.lang, i.lang)
-                ? `javascript:void(0)`
-                : `/${lang.lang}-vs-${i.lang}`
-            "
-            :class="getLinkClass(lang.lang, i.lang)"
+      <div v-if="problem">
+        <h2 class="text-xl">Problems</h2>
+        <ul class="text-base">
+          <li
+            v-for="(i, idx) in allProblems"
+            :key="idx"
+            class="text-light-onSurfacePrimary"
           >
-            {{ lang.langDisplay }} VS {{ i.langDisplay }}</a
+            <a
+              :href="i === problem ? `javascript:void(0)` : `/problem/${i}`"
+              :class="getLinkClass(i, i)"
+            >
+              {{ i }}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div v-if="!problem">
+        <h2 class="text-xl">Compare</h2>
+        <ul class="text-base">
+          <li
+            v-for="(i, idx) in otherLangs"
+            :key="idx"
+            class="text-light-onSurfacePrimary"
           >
-        </li>
-      </ul>
+            <a
+              :href="
+                isLinkActive(lang.lang, i.lang)
+                  ? `javascript:void(0)`
+                  : `/${lang.lang}-vs-${i.lang}`
+              "
+              :class="getLinkClass(lang.lang, i.lang)"
+            >
+              {{ lang.langDisplay }} VS {{ i.langDisplay }}</a
+            >
+          </li>
+        </ul>
+      </div>
     </aside>
   </div>
 </template>
@@ -148,9 +160,13 @@ import { getFullCompilerVersion } from '~/contentUtils'
 })
 export default class LangMetaPage extends Vue {
   meta?: LangPageMeta
+  problem?: string
+  allProblems?: string[]
   lang?: LangBenchResults
   other?: LangBenchResults
   langs?: LangBenchResults[]
+
+  activeBenchmarks: BenchResult[] = []
 
   langOptions: string[] = []
   testOptions: string[] = []
@@ -172,12 +188,12 @@ export default class LangMetaPage extends Vue {
   }
 
   get buildLogUrl() {
-    const buildId = this.lang?.benchmarks[0].appveyorBuildId
+    const buildId = this.activeBenchmarks[0].appveyorBuildId
     return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
   }
 
   get benchmarkDate() {
-    const ts = this.lang?.benchmarks[0].testLog.finished as string
+    const ts = this.activeBenchmarks[0].testLog.finished as string
     return new Date(ts).toDateString()
   }
 
@@ -186,7 +202,10 @@ export default class LangMetaPage extends Vue {
   }
 
   isLinkActive(lang: string, otherLang: string) {
-    if (otherLang && this.other) {
+    if (this.problem) {
+      // HACK: use lang or otherLang to represent current problem
+      return this.problem === lang
+    } else if (otherLang && this.other) {
       return this.other?.lang === otherLang
     } else if (!otherLang && !this.other) {
       return this.lang?.lang === lang
@@ -207,7 +226,7 @@ export default class LangMetaPage extends Vue {
   }
 
   filterBenches(test: string) {
-    let exp = _.chain(this.lang?.benchmarks).filter(
+    let exp = _.chain(this.activeBenchmarks).filter(
       (i) => i.test === test && i.os === this.osSelected // &&
       // i.compiler === this.compilerSelected &&
       // i.compilerVersion === this.compilerVersionSelected &&
@@ -223,11 +242,13 @@ export default class LangMetaPage extends Vue {
       )
     }
 
-    // Sort
-    exp = exp.orderBy(
-      ['input', 'timeMS', 'os', 'lang', 'compiler', 'compilerVersion'],
-      ['asc', 'asc', 'asc', 'asc', 'asc', 'asc']
-    )
+    if (!this.problem) {
+      // Lang page sort
+      exp = exp.orderBy(
+        ['input', 'timeMS', 'os', 'lang', 'compiler', 'compilerVersion'],
+        ['asc', 'asc', 'asc', 'asc', 'asc', 'asc']
+      )
+    }
 
     return exp.value()
   }
@@ -235,7 +256,7 @@ export default class LangMetaPage extends Vue {
   @Watch('compilerSelected')
   onPropertyChanged(value: string, oldValue: string) {
     if (value !== oldValue) {
-      this.compilerVersionOptions = _.chain(this.lang?.benchmarks)
+      this.compilerVersionOptions = _.chain(this.activeBenchmarks)
         .filter((i) => i.compiler === this.compilerSelected)
         .map((i) => i.compilerVersion)
         .uniq()
@@ -246,9 +267,14 @@ export default class LangMetaPage extends Vue {
 
   mounted() {
     // Update head
-    const title = `${this.lang?.langDisplay} ${
-      this.other ? 'VS ' + this.other?.langDisplay : ''
-    } benchmarks game`
+    let title = ''
+    if (this.problem) {
+      title = `${this.problem} - benchmarks game`
+    } else {
+      title = `${this.lang?.langDisplay} ${
+        this.other ? 'VS ' + this.other?.langDisplay : ''
+      } benchmarks game`
+    }
 
     $('head title').text(title)
 
@@ -263,32 +289,36 @@ export default class LangMetaPage extends Vue {
 
   created() {
     this.meta = this.$route.meta
+    this.problem = this.meta?.problem
+    this.allProblems = this.meta?.allProblems
     this.lang = this.meta?.lang
     this.other = this.meta?.other
-    this.langs = _.chain(this.meta?.all)
-      // .filter((i) => i.lang != this.lang?.lang)
-      .value()
-    // this.langs.forEach((i) => {
-    //   for (var j = 0; j < 10; j++) this.langs?.push(i)
-    // })
-    const lang = this.lang!
+    this.langs = _.chain(this.meta?.all).value()
+
+    this.activeBenchmarks =
+      this.lang?.benchmarks ??
+      _.chain(this.langs)
+        .flatMap((i) => i.benchmarks)
+        .filter((i) => i.test === this.problem)
+        .orderBy(['input', 'timeMS'], ['asc', 'asc'])
+        .value()
 
     this.langOptions = _.chain(this.meta?.all)
       .map((i) => i.lang)
       .uniq()
       .value()
-    this.testOptions = _.chain(lang.benchmarks)
+    this.testOptions = _.chain(this.activeBenchmarks)
       .map((i) => i.test)
       .uniq()
       .value()
 
-    this.osOptions = _.chain(lang.benchmarks)
+    this.osOptions = _.chain(this.activeBenchmarks)
       .map((i) => i.os)
       .uniq()
       .value()
     this.osSelected = this.osOptions[0]
 
-    this.compilerOptions = _.chain(lang.benchmarks)
+    this.compilerOptions = _.chain(this.activeBenchmarks)
       .map((i) => i.compiler)
       .uniq()
       .value()
