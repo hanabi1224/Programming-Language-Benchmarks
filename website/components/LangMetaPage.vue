@@ -247,8 +247,10 @@ export default class LangMetaPage extends Vue {
     if (this.other?.benchmarks && this.other?.benchmarks?.length > 0) {
       exp = exp.unionWith(
         _.chain(this.other?.benchmarks)
-          .filter((i) => i.test === test && i.os === this.osSelected)
-          .groupBy((i) => i.input)
+          .filter(
+            (i) =>
+              i.test === test && i.os === this.osSelected && i.input === input
+          )
           .value()
       )
     }
