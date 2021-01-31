@@ -24,13 +24,15 @@ install:
     - nvm use 14
     - python -V
     - git clone https://github.com/vlang/v /tmp/vlang
+    # begin tmp vlang installation
     - pushd /tmp/vlang
     - make && ./v -version
     - sudo ./v symlink
     - v -prod examples/hanoi.v
-    - ./examples/hanoi
+    # - ./examples/hanoi
     - popd
     - v -version
+    # end tmp vlang installation
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
@@ -48,7 +50,7 @@ build_script:
     - pushd bench
     - dotnet run -c Release -p tool -- --task build --langs vlang --verbose true
     - dotnet run -c Release -p tool -- --task test  --langs vlang
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs vlang
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true --langs vlang
     - popd
     - pushd website
     - yarn
