@@ -27,7 +27,7 @@
       <h1 v-if="other" class="text-3xl">
         {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
       </h1>
-      <div class="text-sm italic leading-loose">
+      <div class="text-base italic leading-loose">
         <p class="py-3">
           Benchmark data was generated on
           <span class="text-pink-800">{{ benchmarkDate }}</span
@@ -67,7 +67,7 @@
 
       <div v-for="test in testOptions" :key="test">
         <h2 class="text-2xl my-5 mb-2">{{ test }}</h2>
-        <table class="table-auto w-full italic text-sm leading-loose">
+        <table class="table-auto w-full text-base leading-loose">
           <tr class="border-b-2 border-dotted py-1">
             <th v-show="other" class="text-left">lang</th>
             <th class="text-right">code</th>

@@ -17,15 +17,32 @@
       </ul>
     </aside>
     <div class="block w-4/6">
-      <p>
-        This is another implementation of
-        <a
-          href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html"
-          target="_blank"
-          >Benchmarks Game site</a
-        >
-      </p>
-      <p>Details to be added</p>
+      <div class="text-base italic leading-loose">
+        <p class="text-xl not-italic">
+          This is another implementation of
+          <a
+            class="underline text-blue-500"
+            href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html"
+            target="_blank"
+            >Benchmarks Game site</a
+          >.
+        </p>
+        <p class="pt-5">
+          It currently use CI to generate benchmark results to garantee all the
+          numbers are generated from the same environment at nearly the same
+          time. All benchmark tests are run sequencially within a single CI job
+        </p>
+        <p class="pt-5">
+          Your
+          <a
+            class="underline bold text-blue-500"
+            href="https://github.com/hanabi1224/Another-Benchmarks-Game"
+            target="_blank"
+            >CONTRIBUTION</a
+          >
+          is WELCOME!
+        </p>
+      </div>
     </div>
     <!-- <aside class="block w-1/6"></aside> -->
   </div>
