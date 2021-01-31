@@ -23,6 +23,8 @@ install:
     - docker info
     - nvm use 14
     - python -V
+    - git clone https://github.com/vlang/v /opt/vlang && make && v -version
+    - export PATH=/opt/vlang:$PATH
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/

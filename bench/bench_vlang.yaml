@@ -15,7 +15,7 @@ environments:
   - os: linux
     compiler: vlang
     version: latest
-    docker: thevlang/vlang:buster-dev
+    # docker: thevlang/vlang:buster-dev
     include:
     build: v -prod _app.v && mv _app out/
     out_dir: out
