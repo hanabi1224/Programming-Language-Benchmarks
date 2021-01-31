@@ -470,12 +470,12 @@ namespace BenchTool
                 for (var i = 0; i < repeat; i++)
                 {
                     var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
-                    Logger.Debug($"{buildId} {measurement}");
+                    Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
                     measurements.Add(measurement);
                 }
 
                 var avgMeasurement = measurements.GetAverage();
-                Logger.Info($"\n\n[AVG] {buildId} {avgMeasurement}\n\n");
+                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {test.Input} {avgMeasurement}\n");
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new

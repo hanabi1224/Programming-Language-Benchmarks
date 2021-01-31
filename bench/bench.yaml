@@ -37,7 +37,7 @@ problems:
       - input: 3000
         repeat: 3
       - input: 5500
-        repeat: 3
+        repeat: 1
   - name: pidigits
     unittests:
       - input: 27
@@ -56,8 +56,8 @@ problems:
     tests:
       - input: 4000
         repeat: 3
-      - input: 16000
-        repeat: 3
+      # - input: 16000
+      #   repeat: 1
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml
