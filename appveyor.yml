@@ -19,12 +19,14 @@ build: off
 #     - /home/appveyor/.udocker
 #     - /home/appveyor/.gradle
 #     - /home/appveyor/.konan
+#     - /home/appveyor/.stack
 install:
     - docker info
     - nvm use 14
     - python -V
-    - git clone https://github.com/vlang/v /tmp/vlang
+    - curl -sSL https://get.haskellstack.org/ | sh
     # begin tmp vlang installation
+    - git clone https://github.com/vlang/v /tmp/vlang
     - pushd /tmp/vlang
     - make && ./v -version
     - sudo ./v symlink
@@ -48,9 +50,9 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build --langs vlang --verbose true
-    - dotnet run -c Release -p tool -- --task test  --langs vlang
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true --langs vlang
+    - dotnet run -c Release -p tool -- --task build --langs vlang haskell --verbose true
+    - dotnet run -c Release -p tool -- --task test  --langs vlang haskell
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true --langs vlang haskell
     - popd
     - pushd website
     - yarn

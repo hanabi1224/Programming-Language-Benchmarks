@@ -1,0 +1,24 @@
+lang: haskell
+problems:
+  - name: helloworld
+    source:
+      - 1.hs
+compiler_version_command: stack exec ghc -- --version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: Main.hs
+environments:
+  - os: linux
+    compiler: ghc
+    version: latest
+    docker:
+    include: haskell
+    include_sub_dir: app
+    before_build:
+      - stack setup --allow-different-user
+    build: stack build
+    after_build:
+      - cp ./.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.2.1.0/build/app-exe ./out/_app
+    out_dir: out
+    run_cmd: _app
