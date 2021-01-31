@@ -124,7 +124,8 @@ namespace BenchTool
                             var allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
                             var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
-                            Logger.Info($"{task}: {buildId}");
+                            Logger.Info($"Starting {task} task: {buildId}");
+                            var taskTimer = Stopwatch.StartNew();
 
                             switch (task)
                             {
@@ -145,9 +146,7 @@ namespace BenchTool
                             {
                                 try
                                 {
-                                    var taskTimer = Stopwatch.StartNew();
                                     await rawJobExecutionTask.ConfigureAwait(false);
-                                    taskTimer.Stop();
                                     Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
                                 }
                                 catch (Exception e)
@@ -161,6 +160,10 @@ namespace BenchTool
                                         aggregatedExceptions.Add(e);
                                         Logger.Error(e);
                                     }
+                                }
+                                finally
+                                {
+                                    taskTimer.Stop();
                                 }
                             });
 
@@ -490,7 +493,7 @@ namespace BenchTool
                 }
 
                 var avgMeasurement = measurements.GetAverage();
-                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {test.Input} {avgMeasurement}\n");
+                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {avgMeasurement}\n");
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
@@ -70,18 +71,65 @@ namespace BenchTool
                     Thread.Sleep(1);
                 }
 
+                IList<Process> childrenProcesses = null;
+
                 while (true)
                 {
                     try
                     {
                         p.Refresh();
                         m.CpuTime = p.TotalProcessorTime;
-                        if (p.WorkingSet64 > m.PeakMemoryBytes)
+                        if (childrenProcesses?.Count > 0)
                         {
-                            m.PeakMemoryBytes = p.WorkingSet64;
+                            foreach (var cp in childrenProcesses)
+                            {
+                                cp.Refresh();
+                                m.CpuTime += cp.TotalProcessorTime;
+                            }
                         }
 
-                        Thread.Sleep(sampleIntervalMS);
+                        var totalMemoryBytes = p.WorkingSet64;
+                        if (childrenProcesses?.Count > 0)
+                        {
+                            foreach (var cp in childrenProcesses)
+                            {
+                                totalMemoryBytes += cp.WorkingSet64;
+                            }
+                        }
+
+                        if (totalMemoryBytes > m.PeakMemoryBytes)
+                        {
+                            m.PeakMemoryBytes = totalMemoryBytes;
+                        }
+
+                        // Look for children process after first recording
+                        if (childrenProcesses == null)
+                        {
+                            // Prevent 2nd check
+                            childrenProcesses = new List<Process>();
+
+                            // Looking for child processes
+                            var stdoutBuilder = new StringBuilder();
+                            RunCommandAsync(command: $"pgrep -P {p.Id}", stdOutBuilder: stdoutBuilder).Wait();
+                            var stdout = stdoutBuilder.ToString().Trim();
+                            if (!stdout.IsEmptyOrWhiteSpace())
+                            {
+                                var matches = Regex.Matches(stdout, @"\d+", RegexOptions.Compiled);
+                                if (matches?.Count > 0)
+                                {
+                                    foreach (Match m in matches)
+                                    {
+                                        var childPid = int.Parse(m.Value);
+                                        childrenProcesses.Add(Process.GetProcessById(childPid));
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(sampleIntervalMS);
+                        }
+
                         if (p.HasExited)
                         {
                             return;
