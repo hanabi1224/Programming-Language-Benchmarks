@@ -6,12 +6,23 @@ problems:
   - name: nbody
     source:
       - 1.java
+  - name: pidigits
+    source:
+      - 1.java
 compiler_version_command: javac -version
 compiler_version_regex:
-runtime_version_command: java -version
+runtime_version_parameter: -version
 runtime_version_regex:
 source_rename_to: c.java
 environments:
+  - os: linux
+    compiler: adoptopenjdk
+    version: 8
+    docker: adoptopenjdk:8
+    include:
+    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
     version: 11

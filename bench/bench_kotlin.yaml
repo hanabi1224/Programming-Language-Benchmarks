@@ -6,9 +6,12 @@ problems:
   - name: nbody
     source:
       - 1.kt
+  # - name: pidigits
+  #   source:
+  #     - 1.kt
 compiler_version_command: echo "kotlin_nativec 1.4.21"
 compiler_version_regex:
-runtime_version_command:
+runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: main.kt
 environments:

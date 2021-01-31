@@ -5,7 +5,7 @@ problems:
       - 1.ts
 compiler_version_command: sh -c "$HOME/.deno/bin/deno --version"
 compiler_version_regex:
-runtime_version_command:
+runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: c.ts
 environments:

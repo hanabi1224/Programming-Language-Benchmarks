@@ -144,6 +144,8 @@ namespace BenchTool
             string workingDir = null,
             bool asyncRead = false,
             bool ensureZeroExitCode = false,
+            StringBuilder stdOutBuilder = null,
+            StringBuilder stdErrorBuilder = null,
             CancellationToken token = default)
         {
             if (workingDir.IsEmptyOrWhiteSpace())
@@ -154,7 +156,15 @@ namespace BenchTool
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            var ret = RunProcess(psi, useShellExecute: false, printOnConsole: true, asyncRead: asyncRead, stdErrorBuilder: null, stdOutBuilder: null, token: token);
+            var ret = RunProcess(
+                psi,
+                useShellExecute: false,
+                printOnConsole: true,
+                asyncRead: asyncRead,
+                stdOutBuilder: stdOutBuilder,
+                stdErrorBuilder: stdErrorBuilder,
+                token: token);
+
             if (ensureZeroExitCode && ret != 0)
             {
                 throw new InvalidOperationException($"[Non zero exit code {ret}] {command}");

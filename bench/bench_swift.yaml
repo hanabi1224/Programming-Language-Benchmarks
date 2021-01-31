@@ -1,0 +1,23 @@
+lang: swift
+problems:
+  - name: helloworld
+    source:
+      - 1.swift
+  - name: nbody
+    source:
+      - 7.swift
+compiler_version_command: swift --version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: main.swift
+environments:
+  - os: linux
+    compiler: swift
+    version: 5.3
+    docker: swift:5.3
+    include: swift
+    include_sub_dir: Sources/app
+    build: swift build -c release -Xswiftc -static-executable && cp .build/x86_64-unknown-linux-gnu/release/app out
+    out_dir: out
+    run_cmd: app

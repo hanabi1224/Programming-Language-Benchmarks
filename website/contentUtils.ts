@@ -14,5 +14,6 @@ export async function getLangBenchResults($content: contentFunc) {
     console.log(`${k}: ${benches.length} benchmark results`);
     r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: benches });
   }
-  return r;
+
+  return _.chain(r).orderBy(['langDisplay'], ['asc']).value();
 }

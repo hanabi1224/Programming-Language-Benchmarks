@@ -12,6 +12,14 @@ kotlin {
       executable("_app")
     }
   }
+
+  sourceSets {
+      val commonMain by getting {
+          dependencies {
+              implementation("com.ionspin.kotlin:bignum:0.2.3")
+          }
+      }
+    }
 }
 
 tasks.withType<Wrapper> {

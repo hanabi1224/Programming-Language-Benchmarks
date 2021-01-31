@@ -41,6 +41,7 @@ namespace BenchTool
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
+        /// <param name="buildPool">A flag that indicates whether builds that can run in parallel</param>
         /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
@@ -54,6 +55,7 @@ namespace BenchTool
             bool forcePullDocker = false,
             bool forceRebuild = false,
             bool failFast = false,
+            bool buildPool = true,
             bool verbose = false,
             string[] langs = null,
             string[] problems = null,
@@ -91,6 +93,7 @@ namespace BenchTool
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             var includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
+            var parallelTasks = new List<Task>();
             var aggregatedExceptions = new List<Exception>();
             foreach (var c in langConfigs.OrderBy(i => i.Lang))
             {
@@ -118,43 +121,65 @@ namespace BenchTool
 
                         foreach (var codePath in p.Source)
                         {
-                            var taskTimer = Stopwatch.StartNew();
-                            try
+                            var allowParallel = task == TaskBuild && buildPool;
+                            Task rawJobExecutionTask = null;
+                            var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
+                            Logger.Info($"{task}: {buildId}");
+
+                            switch (task)
                             {
-                                var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
-                                Logger.Info($"{task}: {buildId}");
-
-                                switch (task)
-                                {
-                                    case TaskBuild:
-                                        await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild).ConfigureAwait(false);
-                                        break;
-                                    case TaskTest:
-                                        await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
-                                        break;
-                                    case TaskBench:
-                                        await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput).ConfigureAwait(failFast);
-                                        break;
-                                }
-
-                                taskTimer.Stop();
-                                Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
+                                case TaskBuild:
+                                    rawJobExecutionTask = BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild);
+                                    break;
+                                case TaskTest:
+                                    rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput);
+                                    break;
+                                case TaskBench:
+                                    rawJobExecutionTask = BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput);
+                                    break;
+                                default:
+                                    continue;
                             }
-                            catch (Exception e)
+
+                            var jobExecutionTask = Task.Run(async () =>
                             {
-                                if (failFast)
+                                try
                                 {
-                                    throw;
+                                    var taskTimer = Stopwatch.StartNew();
+                                    await rawJobExecutionTask.ConfigureAwait(false);
+                                    taskTimer.Stop();
+                                    Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    aggregatedExceptions.Add(e);
-                                    Logger.Error(e);
+                                    if (failFast)
+                                    {
+                                        throw;
+                                    }
+                                    else
+                                    {
+                                        aggregatedExceptions.Add(e);
+                                        Logger.Error(e);
+                                    }
                                 }
+                            });
+
+                            if (allowParallel)
+                            {
+                                parallelTasks.Add(jobExecutionTask);
+                            }
+                            else
+                            {
+                                await jobExecutionTask.ConfigureAwait(false);
                             }
                         }
                     }
                 }
+            }
+
+            if (parallelTasks?.Count > 0)
+            {
+                await Task.WhenAll(parallelTasks).ConfigureAwait(false);
             }
 
             if (aggregatedExceptions?.Count > 0)
@@ -180,12 +205,13 @@ namespace BenchTool
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild
-                && Directory.Exists(buildOutput)
-                && Directory.EnumerateFiles(buildOutput).Any())
+                && buildOutput.IsDirectoryNotEmpty())
             {
                 Logger.Debug($"Build cache hit.");
                 return;
             }
+
+            var buildOutputJson = new BuildOutputJson();
 
             // Source code
             var srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
@@ -244,9 +270,15 @@ namespace BenchTool
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
 
+                var stdOutBuilder = new StringBuilder();
+                var stdErrorBuilder = new StringBuilder();
                 await ProcessUtils.RunCommandAsync(
                     compilerVersionCommand,
-                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                    workingDir: tmpDir.FullPath,
+                    stdOutBuilder: stdOutBuilder,
+                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
             }
 
             // Build
@@ -283,8 +315,7 @@ namespace BenchTool
 
             try
             {
-                if (Directory.Exists(tmpBuildOutput)
-                    && Directory.EnumerateFiles(tmpBuildOutput).Any())
+                if (tmpBuildOutput.IsDirectoryNotEmpty())
                 {
                     Logger.Debug($"Moving from {tmpBuildOutput} to {buildOutput}");
                     Directory.Move(tmpBuildOutput, buildOutput);
@@ -296,6 +327,13 @@ namespace BenchTool
                 await ProcessUtils.RunCommandAsync($"cp -a \"{tmpBuildOutput}\" \"{buildOutput}\"", asyncRead: false).ConfigureAwait(false);
                 Logger.Debug($"Copied from {tmpBuildOutput} to {buildOutput}");
             }
+
+            if (!buildOutput.IsDirectoryNotEmpty())
+            {
+                throw new DirectoryNotFoundException(buildOutput);
+            }
+
+            await buildOutputJson.SaveAsync(buildOutput).ConfigureAwait(false);
 
             if (_verbose)
             {
@@ -310,15 +348,31 @@ namespace BenchTool
             YamlLangEnvironmentConfig langEnvConfig,
             YamlLangProblemConfig problem,
             string algorithmDir,
-            string buildOutputDir)
+            string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
+            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
+
+            var testOutputJson = new TestOutputJson();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
             var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
             await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+
+            var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
+            if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())
+            {
+                var stdOutBuilder = new StringBuilder();
+                var stdErrorBuilder = new StringBuilder();
+                await ProcessUtils.RunCommandAsync(
+                    $"{exeName} {runtimeVersionParameter}",
+                    workingDir: buildOutput,
+                    stdOutBuilder: stdOutBuilder,
+                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                testOutputJson.RuntimeVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+            }
 
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Unittests)
@@ -366,6 +420,8 @@ namespace BenchTool
                     throw error;
                 }
             }
+
+            await testOutputJson.SaveAsync(buildOutput).ConfigureAwait(false);
         }
 
         private static async Task BenchAsync(
@@ -376,12 +432,12 @@ namespace BenchTool
                 YamlLangProblemConfig problem,
                 string codePath,
                 string algorithmDir,
-                string buildOutputDir)
+                string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
+            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
-            var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputDir, "_results", langConfig.Lang);
+            var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, "_results", langConfig.Lang);
             benchResultDir.CreateDirectoryIfNotExist();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
@@ -402,6 +458,14 @@ namespace BenchTool
                 runPsi.WorkingDirectory = buildOutput;
 
                 var repeat = test.Repeat > 1 ? test.Repeat : 1;
+
+                // Speed up PR build
+                if (repeat > 1 && AppveyorUtils.IsPullRequest)
+                {
+                    Logger.Debug($"Reseting repeat from {repeat} to 1 in PR build.");
+                    repeat = 1;
+                }
+
                 var measurements = new List<ProcessMeasurement>(repeat);
                 for (var i = 0; i < repeat; i++)
                 {
@@ -427,6 +491,8 @@ namespace BenchTool
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
                     appveyorBuildId = AppveyorUtils.BuildId,
+                    buildLog = BuildOutputJson.LoadFrom(buildOutput),
+                    testLog = TestOutputJson.LoadFrom(buildOutput),
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
         }

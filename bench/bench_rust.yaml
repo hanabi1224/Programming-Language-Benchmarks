@@ -7,10 +7,16 @@ problems:
   - name: nbody
     source:
       - 1.rs
+  - name: spectral-norm
+    source:
+      - 7.rs
+  - name: mandelbrot
+    source:
+      - 8.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
-runtime_version_command:
+runtime_version_parameter:
 runtime_version_regex:
 environments:
   - os: linux
