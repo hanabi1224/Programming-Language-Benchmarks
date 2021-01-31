@@ -6,6 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 1.hs
+  - name: pidigits
+    source:
+      - 4.hs
 compiler_version_command: stack exec ghc -- --version
 compiler_version_regex:
 runtime_version_parameter:
