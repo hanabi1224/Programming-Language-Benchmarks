@@ -27,6 +27,29 @@
       <h1 v-if="other" class="text-3xl">
         {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
       </h1>
+      <div class="text-sm italic leading-loose">
+        <p class="py-3">
+          Benchmark data was generated on
+          <span class="text-pink-800">{{ benchmarkDate }}</span
+          >, full log can be found
+          <a
+            :href="buildLogUrl"
+            target="_blank"
+            class="underline bold text-blue-500"
+            >HERE</a
+          >
+        </p>
+        <p>
+          Your
+          <a
+            class="underline bold text-blue-500"
+            href="https://github.com/hanabi1224/Another-Benchmarks-Game"
+            target="_blank"
+            >CONTRIBUTION</a
+          >
+          is WELCOME!
+        </p>
+      </div>
       <div class="mt-5">
         <span>OS</span>
         <select v-model="osSelected" class="px-2 py-2 rounded bg-purple-200">
@@ -43,15 +66,15 @@
     </select> -->
 
       <div v-for="test in testOptions" :key="test">
-        <h2 class="text-2xl mt-10 mb-2">{{ test }}</h2>
-        <table class="table-auto w-full">
-          <tr class="border-b-2 border-dotted">
+        <h2 class="text-2xl my-5 mb-2">{{ test }}</h2>
+        <table class="table-auto w-full italic text-sm leading-loose">
+          <tr class="border-b-2 border-dotted py-1">
             <th v-show="other" class="text-left">lang</th>
             <th class="text-right">code</th>
             <th class="text-right">N</th>
-            <th class="text-right">time</th>
+            <th class="text-right">t(ms)</th>
             <th class="text-right">mem</th>
-            <th class="text-right">cpu-time</th>
+            <th class="text-right">cpu-t(ms)</th>
             <th class="text-left pl-5">compiler</th>
             <!-- <th class="text-right">version</th> -->
             <!-- <th class="text-right">options</th> -->
@@ -60,7 +83,10 @@
             <tr
               v-for="(i, idx) in filterBenches(test)"
               :key="idx"
-              class="border-b-2 border-dotted"
+              :class="
+                'border-b-2 border-dotted py-1 ' +
+                (idx % 2 == 0 ? 'bg-gray-200' : '')
+              "
             >
               <td v-show="other" class="text-left">{{ i.lang }}</td>
               <td class="text-right">
@@ -139,20 +165,20 @@ export default class LangMetaPage extends Vue {
   compilerVersionSelected = ''
   compilerOptionSelected = ''
 
-  head() {
-    const title = `${this.lang?.lang} ${
-      this.other ? 'VS' + this.other?.lang : ''
-    } benchmarks game`
-    return {
-      title,
-      meta: [{ hid: 'description', name: 'description', content: title }],
-    }
-  }
-
   get otherLangs() {
     return _.chain(this.langs)
       .filter((i) => i.lang !== this.lang?.lang)
       .value()
+  }
+
+  get buildLogUrl() {
+    const buildId = this.lang?.benchmarks[0].appveyorBuildId
+    return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
+  }
+
+  get benchmarkDate() {
+    const ts = this.lang?.benchmarks[0].testLog.finished as string
+    return new Date(ts).toDateString()
   }
 
   getFullCompilerVersion(i: BenchResult) {
