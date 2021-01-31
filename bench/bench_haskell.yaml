@@ -19,6 +19,6 @@ environments:
       - stack setup --allow-different-user
     build: stack build
     after_build:
-      - cp ./.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.2.1.0/build/app-exe ./out/_app
+      - cp ./.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.2.1.0/build/app-exe/app-exe ./out/_app
     out_dir: out
     run_cmd: _app
