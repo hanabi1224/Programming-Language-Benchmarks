@@ -64,11 +64,11 @@
         <h2 class="text-2xl my-5 mb-2 underline text-blue-500">
           <a :href="`/problem/${test}`"> {{ test }} </a>
         </h2>
-        <div v-for="input in getInputs(test, input)" :key="input" class="mt-5">
+        <div v-for="input in getInputs(test)" :key="input" class="mt-5">
           <h3 class="text-base">Input: {{ input }}</h3>
           <table class="table-auto w-full text-base leading-loose">
             <tr class="border-b-2 border-dotted py-1">
-              <th v-show="other || problem" class="text-left">lang</th>
+              <th v-show="other || problem" class="text-left pl-4">lang</th>
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
               <th class="text-right">time(ms)</th>
@@ -85,7 +85,7 @@
                   (idx % 2 == 0 ? 'bg-gray-200' : '')
                 "
               >
-                <td v-show="other || problem" class="text-left">
+                <td v-show="other || problem" class="text-left pl-4">
                   <a :href="`/${i.lang}`">{{ i.lang }}</a>
                 </td>
                 <td class="text-right">

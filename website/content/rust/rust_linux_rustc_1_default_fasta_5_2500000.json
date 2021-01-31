@@ -1,0 +1,25 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "1",
+  "test": "fasta",
+  "code": "5.rs",
+  "input": "2500000",
+  "timeMS": 484.6554,
+  "memBytes": 1630208,
+  "cpuTimeMS": 456.6666,
+  "appveyorBuildId": "37534898",
+  "buildLog": {
+    "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
+    "start": "2021-01-31T15:20:47.3046244+00:00",
+    "finished": "2021-01-31T15:21:13.8663724+00:00",
+    "durationMs": 26561
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T15:22:48.3356312+00:00",
+    "finished": "2021-01-31T15:22:48.3479788+00:00",
+    "durationMs": 12
+  }
+}

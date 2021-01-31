@@ -6,20 +6,20 @@
   "test": "pidigits",
   "code": "1.java",
   "input": "6002",
-  "timeMS": 4004.2954,
-  "memBytes": 231026688,
-  "cpuTimeMS": 4800.0,
-  "appveyorBuildId": "37530564",
+  "timeMS": 4099.2322,
+  "memBytes": 208698026,
+  "cpuTimeMS": 4790.0,
+  "appveyorBuildId": "37534898",
   "buildLog": {
     "compilerVersion": "javac 11.0.10",
-    "start": "2021-01-31T01:28:33.4130271+00:00",
-    "finished": "2021-01-31T01:28:36.2257754+00:00",
-    "durationMs": 2812
+    "start": "2021-01-31T15:14:46.838843+00:00",
+    "finished": "2021-01-31T15:14:49.8920233+00:00",
+    "durationMs": 3053
   },
   "testLog": {
     "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"11.0.10\" 2021-01-19\nOpenJDK Runtime Environment AdoptOpenJDK (build 11.0.10+9)\nOpenJDK 64-Bit Server VM AdoptOpenJDK (build 11.0.10+9, mixed mode)",
-    "start": "2021-01-31T01:35:18.3789331+00:00",
-    "finished": "2021-01-31T01:35:18.7875855+00:00",
-    "durationMs": 408
+    "start": "2021-01-31T15:22:36.7548318+00:00",
+    "finished": "2021-01-31T15:22:37.2146974+00:00",
+    "durationMs": 459
   }
 }
