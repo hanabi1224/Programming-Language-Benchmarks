@@ -58,6 +58,24 @@ problems:
         repeat: 3
       # - input: 16000
       #   repeat: 1
+  - name: fannkuch-redux
+    unittests:
+      - input: 7
+        output: 7_out
+      - input: 11
+        output: 11_out
+    tests:
+      - input: 11
+        repeat: 3
+  - name: fasta
+    unittests:
+      - input: 1000
+        output: 1000_out
+    tests:
+      - input: 2500000
+        repeat: 3
+      - input: 25000000
+        repeat: 2
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml
@@ -86,6 +104,13 @@ langs:
       - name: mandelbrot
         source:
           - 1.go
+      - name: fannkuch-redux
+        source:
+          # - 1.go
+          - 3.go
+      - name: fasta
+        source:
+          - 3.go
     compiler_version_command: go version
     compiler_version_regex:
     runtime_version_parameter:
