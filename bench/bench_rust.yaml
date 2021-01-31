@@ -13,6 +13,12 @@ problems:
   - name: mandelbrot
     source:
       - 8.rs
+  - name: fasta
+    source:
+      - 5.rs
+  - name: fannkuch-redux
+    source:
+      - 5.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
