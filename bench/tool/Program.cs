@@ -41,6 +41,7 @@ namespace BenchTool
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
+        /// <param name="buildPool">Number of builds that can run in parallel</param>
         /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
@@ -54,6 +55,7 @@ namespace BenchTool
             bool forcePullDocker = false,
             bool forceRebuild = false,
             bool failFast = false,
+            int buildPool = 2,
             bool verbose = false,
             string[] langs = null,
             string[] problems = null,
@@ -91,6 +93,7 @@ namespace BenchTool
             var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             var includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
+            var parallelTasks = new List<Task>();
             var aggregatedExceptions = new List<Exception>();
             foreach (var c in langConfigs.OrderBy(i => i.Lang))
             {
@@ -118,43 +121,61 @@ namespace BenchTool
 
                         foreach (var codePath in p.Source)
                         {
-                            var taskTimer = Stopwatch.StartNew();
-                            try
+                            var allowParallel = task == TaskBuild && buildPool > 1;
+                            var jobExecutionTask = Task.Run(async () =>
                             {
-                                var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
-                                Logger.Info($"{task}: {buildId}");
-
-                                switch (task)
+                                var taskTimer = Stopwatch.StartNew();
+                                try
                                 {
-                                    case TaskBuild:
-                                        await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild).ConfigureAwait(false);
-                                        break;
-                                    case TaskTest:
-                                        await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
-                                        break;
-                                    case TaskBench:
-                                        await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
-                                        break;
-                                }
+                                    var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
+                                    Logger.Info($"{task}: {buildId}");
 
-                                taskTimer.Stop();
-                                Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
+                                    switch (task)
+                                    {
+                                        case TaskBuild:
+                                            await BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild).ConfigureAwait(false);
+                                            break;
+                                        case TaskTest:
+                                            await TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
+                                            break;
+                                        case TaskBench:
+                                            await BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput).ConfigureAwait(failFast);
+                                            break;
+                                    }
+
+                                    taskTimer.Stop();
+                                    Logger.Info($"{TimerPrefix}Job ({task}){buildId} finished in {taskTimer.Elapsed}");
+                                }
+                                catch (Exception e)
+                                {
+                                    if (failFast)
+                                    {
+                                        throw;
+                                    }
+                                    else
+                                    {
+                                        aggregatedExceptions.Add(e);
+                                        Logger.Error(e);
+                                    }
+                                }
+                            });
+
+                            if (allowParallel)
+                            {
+                                parallelTasks.Add(jobExecutionTask);
                             }
-                            catch (Exception e)
+                            else
                             {
-                                if (failFast)
-                                {
-                                    throw;
-                                }
-                                else
-                                {
-                                    aggregatedExceptions.Add(e);
-                                    Logger.Error(e);
-                                }
+                                await jobExecutionTask.ConfigureAwait(false);
                             }
                         }
                     }
                 }
+            }
+
+            if (parallelTasks?.Count > 0)
+            {
+                await Task.WhenAll(parallelTasks).ConfigureAwait(false);
             }
 
             if (aggregatedExceptions?.Count > 0)
