@@ -17,6 +17,6 @@ environments:
     version: latest
     docker: thevlang/vlang
     include:
-    build: v _app.v && mv _app out/
+    build: v -prod _app.v && mv _app out/
     out_dir: out
     run_cmd: _app
