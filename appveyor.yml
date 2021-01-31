@@ -24,7 +24,9 @@ install:
     - nvm use 14
     - python -V
     - git clone https://github.com/vlang/v /tmp/vlang
-    - pushd /tmp/vlang && make && v -version && popd && export PATH=/tmp/vlang:$PATH && v -version
+    - pushd /tmp/vlang && make && v -version && popd
+    - export PATH=/tmp/vlang:$PATH
+    - v -version
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
