@@ -278,7 +278,7 @@ namespace BenchTool
                     stdOutBuilder: stdOutBuilder,
                     stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
 
-                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim();
+                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
             }
 
             // Build
@@ -371,7 +371,7 @@ namespace BenchTool
                     stdOutBuilder: stdOutBuilder,
                     stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
 
-                testOutputJson.RuntimeVersionText = stdOutBuilder.ToString().Trim();
+                testOutputJson.RuntimeVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
             }
 
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
