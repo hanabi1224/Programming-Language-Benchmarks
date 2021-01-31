@@ -6,7 +6,20 @@
   "test": "nbody",
   "code": "6.js",
   "input": "500000",
-  "timeMS": 136.6044,
-  "memBytes": 36557619,
-  "cpuTimeMS": 124.0
+  "timeMS": 134.6519,
+  "memBytes": 35446784,
+  "cpuTimeMS": 120.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-01-31T01:28:59.675654+00:00",
+    "finished": "2021-01-31T01:29:00.3273376+00:00",
+    "durationMs": 651
+  },
+  "testLog": {
+    "runtimeVersion": "v14.15.4",
+    "start": "2021-01-31T01:35:20.6416798+00:00",
+    "finished": "2021-01-31T01:35:20.9917+00:00",
+    "durationMs": 350
+  }
 }

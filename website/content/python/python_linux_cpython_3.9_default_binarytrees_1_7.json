@@ -1,0 +1,25 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3.9",
+  "test": "binarytrees",
+  "code": "1.py",
+  "input": "7",
+  "timeMS": 78.1556,
+  "memBytes": 700416,
+  "cpuTimeMS": 0.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "Python 3.9.1",
+    "start": "2021-01-31T01:31:20.7261887+00:00",
+    "finished": "2021-01-31T01:31:36.1935704+00:00",
+    "durationMs": 15467
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:25.7227044+00:00",
+    "finished": "2021-01-31T01:35:25.9841906+00:00",
+    "durationMs": 261
+  }
+}

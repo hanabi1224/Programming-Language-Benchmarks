@@ -82,16 +82,16 @@ namespace BenchTool
             return Path.Combine(dir, FileName);
         }
 
-        public static BuildOutputJson LoadFrom(string dir)
+        public static TestOutputJson LoadFrom(string dir)
         {
             var path = GetFilePath(dir);
             if (!File.Exists(path))
             {
-                return new BuildOutputJson();
+                return new TestOutputJson();
             }
 
             var content = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<BuildOutputJson>(content);
+            return JsonConvert.DeserializeObject<TestOutputJson>(content);
         }
 
         public Task SaveAsync(string dir)

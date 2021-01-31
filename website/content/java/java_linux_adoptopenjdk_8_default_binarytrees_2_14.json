@@ -1,0 +1,25 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "adoptopenjdk",
+  "compilerVersion": "8",
+  "test": "binarytrees",
+  "code": "2.java",
+  "input": "14",
+  "timeMS": 120.1992,
+  "memBytes": 52793344,
+  "cpuTimeMS": 110.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "Unable to find image 'adoptopenjdk:8' locally\n8: Pulling from library/adoptopenjdk\n83ee3a23efb7: Pulling fs layer\ndb98fc6f11f0: Pulling fs layer\nf611acd52c6c: Pulling fs layer\n760a2f9af18b: Pulling fs layer\n70a343f0d860: Pulling fs layer\n760a2f9af18b: Waiting\n70a343f0d860: Waiting\ndb98fc6f11f0: Verifying Checksum\ndb98fc6f11f0: Download complete\nf611acd52c6c: Verifying Checksum\nf611acd52c6c: Download complete\n83ee3a23efb7: Verifying Checksum\n83ee3a23efb7: Download complete\n760a2f9af18b: Verifying Checksum\n760a2f9af18b: Download complete\n83ee3a23efb7: Pull complete\ndb98fc6f11f0: Pull complete\nf611acd52c6c: Pull complete\n760a2f9af18b: Pull complete\n70a343f0d860: Verifying Checksum\n70a343f0d860: Download complete\n70a343f0d860: Pull complete\nDigest: sha256:7f9d68d62988243616bd58f57bbd2d55dbf645e0ec7046d32cacfe5cdecdcac8\nStatus: Downloaded newer image for adoptopenjdk:8\njavac 1.8.0_282",
+    "start": "2021-01-31T01:28:06.0034614+00:00",
+    "finished": "2021-01-31T01:28:16.7417936+00:00",
+    "durationMs": 10738
+  },
+  "testLog": {
+    "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"1.8.0_282\"\nOpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_282-b08)\nOpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.282-b08, mixed mode)",
+    "start": "2021-01-31T01:35:15.9846445+00:00",
+    "finished": "2021-01-31T01:35:16.3840968+00:00",
+    "durationMs": 399
+  }
+}

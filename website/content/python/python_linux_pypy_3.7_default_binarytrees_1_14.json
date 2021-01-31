@@ -1,0 +1,25 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "pypy",
+  "compilerVersion": "3.7",
+  "test": "binarytrees",
+  "code": "1.py",
+  "input": "14",
+  "timeMS": 875.6832,
+  "memBytes": 111325184,
+  "cpuTimeMS": 640.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-01-31T01:31:55.9791164+00:00",
+    "finished": "2021-01-31T01:31:56.8303167+00:00",
+    "durationMs": 851
+  },
+  "testLog": {
+    "runtimeVersion": "Python 3.7.9 (7e6e2bb30ac5, Nov 18 2020, 10:55:52)\n[PyPy 7.3.3-beta0 with GCC 7.3.1 20180303 (Red Hat 7.3.1-5)]",
+    "start": "2021-01-31T01:35:26.6021124+00:00",
+    "finished": "2021-01-31T01:35:27.7042487+00:00",
+    "durationMs": 1102
+  }
+}

@@ -270,15 +270,30 @@ namespace BenchTool
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
 
-                var stdOutBuilder = new StringBuilder();
-                var stdErrorBuilder = new StringBuilder();
-                await ProcessUtils.RunCommandAsync(
-                    compilerVersionCommand,
-                    workingDir: tmpDir.FullPath,
-                    stdOutBuilder: stdOutBuilder,
-                    stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+                {
+                    var stdOutBuilder = new StringBuilder();
+                    var stdErrorBuilder = new StringBuilder();
+                    await ProcessUtils.RunCommandAsync(
+                        compilerVersionCommand,
+                        workingDir: tmpDir.FullPath,
+                        stdOutBuilder: stdOutBuilder,
+                        stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
 
-                buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                    buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                }
+
+                if (buildOutputJson.CompilerVersionText?.Contains("Unable to find image", StringComparison.OrdinalIgnoreCase) == true)
+                {
+                    var stdOutBuilder = new StringBuilder();
+                    var stdErrorBuilder = new StringBuilder();
+                    await ProcessUtils.RunCommandAsync(
+                        compilerVersionCommand,
+                        workingDir: tmpDir.FullPath,
+                        stdOutBuilder: stdOutBuilder,
+                        stdErrorBuilder: stdErrorBuilder).ConfigureAwait(false);
+
+                    buildOutputJson.CompilerVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
+                }
             }
 
             // Build
@@ -470,12 +485,12 @@ namespace BenchTool
                 for (var i = 0; i < repeat; i++)
                 {
                     var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
-                    Logger.Debug($"{buildId} {measurement}");
+                    Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
                     measurements.Add(measurement);
                 }
 
                 var avgMeasurement = measurements.GetAverage();
-                Logger.Info($"\n\n[AVG] {buildId} {avgMeasurement}\n\n");
+                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {test.Input} {avgMeasurement}\n");
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new

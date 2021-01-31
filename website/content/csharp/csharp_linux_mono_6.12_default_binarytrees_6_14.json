@@ -1,0 +1,25 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "mono",
+  "compilerVersion": "6.12",
+  "test": "binarytrees",
+  "code": "6.cs",
+  "input": "14",
+  "timeMS": 78.612,
+  "memBytes": 29122560,
+  "cpuTimeMS": 100.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "3.6.0-4.20224.5 (ec77c100)",
+    "start": "2021-01-31T01:27:31.5646653+00:00",
+    "finished": "2021-01-31T01:27:34.6171132+00:00",
+    "durationMs": 3052
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:15.53478+00:00",
+    "finished": "2021-01-31T01:35:15.6247162+00:00",
+    "durationMs": 89
+  }
+}

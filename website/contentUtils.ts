@@ -7,7 +7,13 @@ const lang2Display: { [key: string]: string } = {
 
 export async function getLangBenchResults($content: contentFunc) {
   const pages = await $content('/', { deep: true }).fetch() as IContentDocument[];
-  var groupsByLang = _.chain(pages as unknown as BenchResult[]).filter(i => !!i.lang).groupBy(i => i.lang).value();
+  var benchResults = pages as unknown as BenchResult[];
+  benchResults = _.chain(benchResults).filter(i => !!i.lang).value();
+  benchResults.forEach(i => {
+    i.compilerVersion = getRealShortCompilerVersion(i);
+  });
+
+  var groupsByLang = _.chain(benchResults).groupBy(i => i.lang).value();
   var r: LangBenchResults[] = [];
   for (var k in groupsByLang) {
     const benches = groupsByLang[k];
@@ -16,4 +22,14 @@ export async function getLangBenchResults($content: contentFunc) {
   }
 
   return _.chain(r).orderBy(['langDisplay'], ['asc']).value();
+}
+
+export function getFullCompilerVersion(i: BenchResult) {
+  return (i.buildLog?.compilerVersion ?? '') + (i.testLog?.runtimeVersion ?? '')
+}
+
+export function getRealShortCompilerVersion(i: BenchResult) {
+  const full = getFullCompilerVersion(i)
+  const match = /\d+\.\d+(\.\d+)?/.exec(full)
+  return match ? match[0] : 'unknown'
 }

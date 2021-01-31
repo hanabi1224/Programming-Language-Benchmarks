@@ -6,7 +6,20 @@
   "test": "binarytrees",
   "code": "4.go",
   "input": "7",
-  "timeMS": 2.132,
-  "memBytes": 5097881,
-  "cpuTimeMS": 0.0
+  "timeMS": 2.9895,
+  "memBytes": 8192,
+  "cpuTimeMS": 0.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "go version go1.15.7 linux/amd64",
+    "start": "2021-01-31T01:27:58.8438494+00:00",
+    "finished": "2021-01-31T01:28:00.2764684+00:00",
+    "durationMs": 1432
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:15.8601281+00:00",
+    "finished": "2021-01-31T01:35:15.8910672+00:00",
+    "durationMs": 30
+  }
 }

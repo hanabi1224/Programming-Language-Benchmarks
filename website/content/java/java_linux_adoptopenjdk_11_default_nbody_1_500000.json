@@ -6,7 +6,20 @@
   "test": "nbody",
   "code": "1.java",
   "input": "500000",
-  "timeMS": 208.619,
-  "memBytes": 35716300,
-  "cpuTimeMS": 242.0
+  "timeMS": 217.6084,
+  "memBytes": 34725888,
+  "cpuTimeMS": 230.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "javac 11.0.10",
+    "start": "2021-01-31T01:28:30.5469684+00:00",
+    "finished": "2021-01-31T01:28:33.4126988+00:00",
+    "durationMs": 2865
+  },
+  "testLog": {
+    "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"11.0.10\" 2021-01-19\nOpenJDK Runtime Environment AdoptOpenJDK (build 11.0.10+9)\nOpenJDK 64-Bit Server VM AdoptOpenJDK (build 11.0.10+9, mixed mode)",
+    "start": "2021-01-31T01:35:17.8317199+00:00",
+    "finished": "2021-01-31T01:35:18.3760242+00:00",
+    "durationMs": 544
+  }
 }

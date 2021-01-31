@@ -1,0 +1,25 @@
+{
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "1.5",
+  "test": "pidigits",
+  "code": "1.jl",
+  "input": "10001",
+  "timeMS": 2136.5134,
+  "memBytes": 227442688,
+  "cpuTimeMS": 2200.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-01-31T01:29:10.6517127+00:00",
+    "finished": "2021-01-31T01:29:11.9893503+00:00",
+    "durationMs": 1337
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.5.3",
+    "start": "2021-01-31T01:35:24.0044866+00:00",
+    "finished": "2021-01-31T01:35:25.5230617+00:00",
+    "durationMs": 1518
+  }
+}

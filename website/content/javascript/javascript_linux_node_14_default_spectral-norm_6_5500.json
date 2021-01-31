@@ -6,7 +6,20 @@
   "test": "spectral-norm",
   "code": "6.js",
   "input": "5500",
-  "timeMS": 5543.922,
-  "memBytes": 50999296,
-  "cpuTimeMS": 10338.0
+  "timeMS": 5356.8178,
+  "memBytes": 49516544,
+  "cpuTimeMS": 10060.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-01-31T01:29:00.3275922+00:00",
+    "finished": "2021-01-31T01:29:01.0411237+00:00",
+    "durationMs": 713
+  },
+  "testLog": {
+    "runtimeVersion": "v14.15.4",
+    "start": "2021-01-31T01:35:20.9950768+00:00",
+    "finished": "2021-01-31T01:35:21.409521+00:00",
+    "durationMs": 414
+  }
 }

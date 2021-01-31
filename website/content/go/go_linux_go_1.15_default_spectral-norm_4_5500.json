@@ -6,7 +6,20 @@
   "test": "spectral-norm",
   "code": "4.go",
   "input": "5500",
-  "timeMS": 5215.0492,
-  "memBytes": 6349619,
-  "cpuTimeMS": 10032.0
+  "timeMS": 5197.7416,
+  "memBytes": 5013504,
+  "cpuTimeMS": 10010.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "go version go1.15.7 linux/amd64",
+    "start": "2021-01-31T01:28:01.7166036+00:00",
+    "finished": "2021-01-31T01:28:03.1423676+00:00",
+    "durationMs": 1425
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:15.9148419+00:00",
+    "finished": "2021-01-31T01:35:15.9364517+00:00",
+    "durationMs": 21
+  }
 }

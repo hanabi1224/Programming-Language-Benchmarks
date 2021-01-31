@@ -1,0 +1,25 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "1.15",
+  "test": "pidigits",
+  "code": "8.go",
+  "input": "6002",
+  "timeMS": 795.8248,
+  "memBytes": 10809344,
+  "cpuTimeMS": 790.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "go version go1.15.7 linux/amd64",
+    "start": "2021-01-31T01:28:03.1426717+00:00",
+    "finished": "2021-01-31T01:28:04.5919219+00:00",
+    "durationMs": 1449
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:15.9428746+00:00",
+    "finished": "2021-01-31T01:35:15.9621562+00:00",
+    "durationMs": 19
+  }
+}

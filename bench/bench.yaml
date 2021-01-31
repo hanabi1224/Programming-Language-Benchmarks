@@ -37,7 +37,7 @@ problems:
       - input: 3000
         repeat: 3
       - input: 5500
-        repeat: 3
+        repeat: 1
   - name: pidigits
     unittests:
       - input: 27
@@ -56,8 +56,8 @@ problems:
     tests:
       - input: 4000
         repeat: 3
-      - input: 16000
-        repeat: 3
+      # - input: 16000
+      #   repeat: 1
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml
@@ -93,8 +93,8 @@ langs:
     environments:
       - os: linux
         compiler: go
-        version: 1.15
-        docker: golang:1.15
+        version: 1
+        docker: golang:1
         include:
         build: go mod init tmp.org/tmp/v2 && go build -o out/_go
         out_dir: out

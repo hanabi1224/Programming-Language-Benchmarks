@@ -1,0 +1,25 @@
+{
+  "lang": "swift",
+  "os": "linux",
+  "compiler": "swift",
+  "compilerVersion": "5.3",
+  "test": "helloworld",
+  "code": "1.swift",
+  "input": "T_T",
+  "timeMS": 1.3913,
+  "memBytes": 0,
+  "cpuTimeMS": 0.0,
+  "appveyorBuildId": "37530564",
+  "buildLog": {
+    "compilerVersion": "Swift version 5.3.3 (swift-5.3.3-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-01-31T01:34:22.3851806+00:00",
+    "finished": "2021-01-31T01:34:50.1674839+00:00",
+    "durationMs": 27782
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-01-31T01:35:28.1641704+00:00",
+    "finished": "2021-01-31T01:35:28.1899962+00:00",
+    "durationMs": 25
+  }
+}
