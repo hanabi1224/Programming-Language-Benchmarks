@@ -35,6 +35,8 @@ const config: NuxtConfig = {
   buildModules: [
     // https://google-analytics.nuxtjs.org/
     '@nuxtjs/google-analytics',
+    // https://sitemap.nuxtjs.org/
+    '@nuxtjs/sitemap',
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
@@ -56,6 +58,10 @@ const config: NuxtConfig = {
   googleAnalytics: {
     id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided
     checkDuplicatedScript: true,
+  },
+
+  sitemap: {
+    hostname: process.env.APP_HOST_NAME ?? 'https://www.xml-sitemaps.com/',
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

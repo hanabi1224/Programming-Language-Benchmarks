@@ -31,6 +31,7 @@
     "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.3.5",
+    "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.2.1",
     "@types/jquery": "^3.5.5",
     "core-js": "^3.8.3",
