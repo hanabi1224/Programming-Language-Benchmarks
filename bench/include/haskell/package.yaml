@@ -15,5 +15,7 @@ executables:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
+      - -XBangPatterns
+      - -XScopedTypeVariables
     dependencies:
       - app
