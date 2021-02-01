@@ -19,10 +19,22 @@ cache:
     - /home/appveyor/.udocker
     - /home/appveyor/.gradle
     - /home/appveyor/.konan
+    - /home/appveyor/.stack
 install:
     - docker info
     - nvm use 14
     - python -V
+    - curl -sSL https://get.haskellstack.org/ | sh
+    # begin tmp vlang installation
+    - git clone https://github.com/vlang/v /tmp/vlang
+    - pushd /tmp/vlang
+    - make && ./v -version
+    - sudo ./v symlink
+    - v -prod examples/hanoi.v
+    # - ./examples/hanoi
+    - popd
+    - v -version
+    # end tmp vlang installation
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
@@ -38,9 +50,9 @@ install:
     # - popd
 build_script:
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build #--langs swift
-    - dotnet run -c Release -p tool -- --task test #--langs swift
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs swift
+    - dotnet run -c Release -p tool -- --task build #--langs haskell --verbose true
+    - dotnet run -c Release -p tool -- --task test #--langs haskell
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haskell
     - popd
     - pushd website
     - yarn

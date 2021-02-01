@@ -1,0 +1,6 @@
+*
+!.gitignore
+!app.cabal
+!Setup.hs
+!stack.yaml
+!package.yaml
