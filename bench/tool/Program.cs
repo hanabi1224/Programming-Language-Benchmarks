@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
@@ -124,6 +125,7 @@ namespace BenchTool
                             var allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
                             var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
+                            buildId = Regex.Replace(buildId, @"[\\\/\?]", "_", RegexOptions.Compiled);
                             Logger.Info($"Starting {task} task: {buildId}");
                             var taskTimer = Stopwatch.StartNew();
 

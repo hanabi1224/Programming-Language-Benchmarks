@@ -43,7 +43,7 @@ yarn dev
 
 [docker](https://www.docker.com/)
 
-[net5.0](https://dotnet.microsoft.com/)
+[netcore3.1](https://dotnet.microsoft.com/)
 
 [node LTS](https://nodejs.org/)
 
