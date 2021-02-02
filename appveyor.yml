@@ -26,11 +26,11 @@ install:
     - python -V
     - curl -sSL https://get.haskellstack.org/ | sh
     # begin haxe && hashlink
-    - add-apt-repository ppa:haxe/releases -y
-    - apt-get update
-    - apt-get install haxe -y
+    - sudo add-apt-repository ppa:haxe/releases -y
+    - sudo apt-get update
+    - sudo apt-get install haxe -y
     - mkdir /tmp/.hashlib && haxelib setup /tmp/.hashlib
-    - apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
+    - sudo apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
     - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -o hashlink-1.11.zip
     - unzip hashlink-1.11.zip
     - pushd hashlink-1.11
