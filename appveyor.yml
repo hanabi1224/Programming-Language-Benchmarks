@@ -31,7 +31,7 @@ install:
     - sudo apt-get install haxe -y
     - mkdir /tmp/.hashlib && haxelib setup /tmp/.hashlib
     - sudo apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
-    - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -o hashlink-1.11.zip
+    - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -O hashlink-1.11.zip
     - unzip hashlink-1.11.zip
     - pushd hashlink-1.11
     - make && make install
