@@ -100,5 +100,7 @@ namespace BenchTool
         public string[] BeforeRun { get; set; }
 
         public string RunCmd { get; set; }
+
+        public bool RuntimeIncluded { get; set; } = true;
     }
 }

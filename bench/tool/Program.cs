@@ -377,8 +377,12 @@ namespace BenchTool
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
-            var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
-            await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+            var exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            if (langEnvConfig.RuntimeIncluded)
+            {
+                exeName = Path.Combine(buildOutput, exeName);
+                await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+            }
 
             var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
             if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())

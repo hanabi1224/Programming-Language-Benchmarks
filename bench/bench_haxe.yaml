@@ -3,15 +3,18 @@ problems:
   - name: helloworld
     source:
       - 1.hx
-  # - name: binarytrees
-  #   source:
-  #     - 1.hs
-  # - name: pidigits
-  #   source:
-  #     - 4.hs
-compiler_version_command: hl --version # hl is actually runtime here, haxe is compiler, just hack for now
+  - name: fasta
+    source:
+      - 1.hx
+  - name: nbody
+    source:
+      - 1.hx
+  - name: spectral-norm
+    source:
+      - 1.hx
+compiler_version_command: haxe --version
 compiler_version_regex:
-runtime_version_parameter:
+runtime_version_parameter: --version
 runtime_version_regex:
 source_rename_to: App.hx
 environments:
@@ -23,9 +26,6 @@ environments:
     include_sub_dir:
     # before_build:
     build: haxe -m App --hl out/app.hl
-    after_build:
-      - ls -al out
-      - cp ./run.sh ./out/run.sh
-      - ls -al out
+    # after_build:
     out_dir: out
-    run_cmd: run.sh
+    run_cmd: hl app.hl
