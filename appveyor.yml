@@ -37,7 +37,7 @@ install:
     # - make
     # - sudo make install
     # - hl --version
-    - popd
+    # - popd
     # end haxe && hashlink
     # begin tmp vlang installation
     - git clone https://github.com/vlang/v /tmp/vlang
