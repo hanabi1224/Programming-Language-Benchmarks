@@ -9,17 +9,17 @@ environment:
     VERCEL_TOKEN:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
 build: off
-# cache:
-# - /var/lib/docker/overlay2
-# - /home/appveyor/.cache/yarn/v6
-# - /home/appveyor/.nuget/packages
-# - /home/appveyor/.npm
-# - /home/appveyor/.yarn
-# - /home/appveyor/.cargo
-# - /home/appveyor/.udocker
-# - /home/appveyor/.gradle
-# - /home/appveyor/.konan
-# - /home/appveyor/.stack
+cache:
+    - /var/lib/docker/overlay2
+    - /home/appveyor/.cache/yarn/v6
+    - /home/appveyor/.nuget/packages
+    - /home/appveyor/.npm
+    - /home/appveyor/.yarn
+    - /home/appveyor/.cargo
+    - /home/appveyor/.udocker
+    - /home/appveyor/.gradle
+    - /home/appveyor/.konan
+    - /home/appveyor/.stack
 install:
     - docker info
     - nvm use 14
@@ -30,12 +30,12 @@ install:
     - sudo apt-get update
     - sudo apt-get install haxe -y
     - mkdir /tmp/.hashlib && haxelib setup /tmp/.hashlib
-    - sudo apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
-    - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -O hashlink-1.11.zip
-    - unzip hashlink-1.11.zip
-    - pushd hashlink-1.11
-    - make
-    - sudo make install
+    # - sudo apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
+    # - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -O hashlink-1.11.zip
+    # - unzip hashlink-1.11.zip
+    # - pushd hashlink-1.11
+    # - make
+    # - sudo make install
     - hl --version
     - popd
     # end haxe && hashlink
