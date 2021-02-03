@@ -1,15 +1,16 @@
 [package]
-name = "_app"
-version = "0.1.0"
 authors = ["hanabi1224"]
 edition = "2018"
+name = "_app"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-typed-arena = "2"
-rayon = "1"
 generic-array = "0"
-numeric-array = "0"
+num-bigint = "0"
 num-traits = "0"
 num_cpus = "1"
+numeric-array = "0"
+rayon = "1"
 spin = "0"
+typed-arena = "2"
