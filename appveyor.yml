@@ -6,6 +6,7 @@ branches:
     only:
         - main
 environment:
+    SKIP_LINT: true
     VERCEL_TOKEN:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
 build: off
@@ -49,8 +50,8 @@ install:
     - popd
     - v -version
     # end tmp vlang installation
-    - curl -fsSL https://deno.land/x/install/install.sh | sh
     # begin deno installation
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
     - export PATH=$PATH:$HOME/.deno/bin
     - deno --version
     # end deno installation
