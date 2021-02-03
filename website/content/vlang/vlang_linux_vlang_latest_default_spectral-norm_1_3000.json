@@ -6,20 +6,20 @@
   "test": "spectral-norm",
   "code": "1.v",
   "input": "3000",
-  "timeMS": 4755.2886,
-  "memBytes": 2479445,
-  "cpuTimeMS": 4736.6666,
-  "appveyorBuildId": "37534898",
+  "timeMS": 1649.1046,
+  "memBytes": 2041173,
+  "cpuTimeMS": 1633.3332,
+  "appveyorBuildId": "37581224",
   "buildLog": {
-    "compilerVersion": "V 0.2.2 2963425",
-    "start": "2021-01-31T15:22:24.8462801+00:00",
-    "finished": "2021-01-31T15:22:26.2507365+00:00",
-    "durationMs": 1404
+    "compilerVersion": "V 0.2.2 df0520b",
+    "start": "2021-02-03T02:42:19.3571196+00:00",
+    "finished": "2021-02-03T02:42:22.1032657+00:00",
+    "durationMs": 2746
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:50.5397613+00:00",
-    "finished": "2021-01-31T15:22:50.5503042+00:00",
-    "durationMs": 10
+    "start": "2021-02-03T02:42:45.4383857+00:00",
+    "finished": "2021-02-03T02:42:45.4443716+00:00",
+    "durationMs": 5
   }
 }

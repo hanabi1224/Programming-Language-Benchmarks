@@ -6,20 +6,20 @@
   "test": "binarytrees",
   "code": "4.go",
   "input": "14",
-  "timeMS": 71.1693,
-  "memBytes": 7385088,
-  "cpuTimeMS": 110.0,
-  "appveyorBuildId": "37534898",
+  "timeMS": 79.8536,
+  "memBytes": 7449258,
+  "cpuTimeMS": 126.6666,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "go version go1.15.7 linux/amd64",
-    "start": "2021-01-31T15:14:08.0533708+00:00",
-    "finished": "2021-01-31T15:14:09.5618762+00:00",
+    "start": "2021-02-03T02:33:34.5097724+00:00",
+    "finished": "2021-02-03T02:33:36.0178201+00:00",
     "durationMs": 1508
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:32.0359561+00:00",
-    "finished": "2021-01-31T15:22:32.058077+00:00",
-    "durationMs": 22
+    "start": "2021-02-03T02:42:27.7774476+00:00",
+    "finished": "2021-02-03T02:42:27.801622+00:00",
+    "durationMs": 24
   }
 }

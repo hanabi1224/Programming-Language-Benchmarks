@@ -6,20 +6,20 @@
   "test": "nbody",
   "code": "1.kt",
   "input": "500000",
-  "timeMS": 104.8509,
-  "memBytes": 2441216,
-  "cpuTimeMS": 93.3333,
-  "appveyorBuildId": "37534898",
+  "timeMS": 112.984,
+  "memBytes": 2461696,
+  "cpuTimeMS": 100.0,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "kotlin_nativec 1.4.21",
-    "start": "2021-01-31T15:16:32.9656706+00:00",
-    "finished": "2021-01-31T15:17:09.4975159+00:00",
-    "durationMs": 36531
+    "start": "2021-02-03T02:36:11.9782053+00:00",
+    "finished": "2021-02-03T02:36:48.9600406+00:00",
+    "durationMs": 36981
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:45.1388539+00:00",
-    "finished": "2021-01-31T15:22:45.1450413+00:00",
+    "start": "2021-02-03T02:42:40.2455039+00:00",
+    "finished": "2021-02-03T02:42:40.2522098+00:00",
     "durationMs": 6
   }
 }

@@ -6,20 +6,20 @@
   "test": "helloworld",
   "code": "1.cs",
   "input": "T_T",
-  "timeMS": 76.8912,
-  "memBytes": 27037696,
+  "timeMS": 85.5582,
+  "memBytes": 26124288,
   "cpuTimeMS": 50.0,
-  "appveyorBuildId": "37534898",
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "5.0.102",
-    "start": "2021-01-31T15:11:23.8192279+00:00",
-    "finished": "2021-01-31T15:11:49.0609576+00:00",
-    "durationMs": 25241
+    "start": "2021-02-03T02:30:30.2450416+00:00",
+    "finished": "2021-02-03T02:31:07.3150749+00:00",
+    "durationMs": 37070
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:28.7514486+00:00",
-    "finished": "2021-01-31T15:22:29.109234+00:00",
-    "durationMs": 357
+    "start": "2021-02-03T02:42:24.9637259+00:00",
+    "finished": "2021-02-03T02:42:25.240694+00:00",
+    "durationMs": 276
   }
 }

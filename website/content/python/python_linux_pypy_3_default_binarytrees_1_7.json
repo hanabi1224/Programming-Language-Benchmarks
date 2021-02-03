@@ -6,20 +6,20 @@
   "test": "binarytrees",
   "code": "1.py",
   "input": "7",
-  "timeMS": 452.7222,
-  "memBytes": 98777770,
-  "cpuTimeMS": 353.3333,
-  "appveyorBuildId": "37534898",
+  "timeMS": 467.8301,
+  "memBytes": 99124565,
+  "cpuTimeMS": 373.3333,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-01-31T15:18:14.5648775+00:00",
-    "finished": "2021-01-31T15:18:15.5998761+00:00",
-    "durationMs": 1034
+    "start": "2021-02-03T02:37:55.177516+00:00",
+    "finished": "2021-02-03T02:37:56.1209707+00:00",
+    "durationMs": 943
   },
   "testLog": {
     "runtimeVersion": "Python 3.6.12 (db1e853f94de, Nov 18 2020, 09:49:19)\n[PyPy 7.3.3 with GCC 7.3.1 20180303 (Red Hat 7.3.1-5)]",
-    "start": "2021-01-31T15:22:46.3920346+00:00",
-    "finished": "2021-01-31T15:22:47.6653976+00:00",
-    "durationMs": 1273
+    "start": "2021-02-03T02:42:41.4102449+00:00",
+    "finished": "2021-02-03T02:42:42.5046156+00:00",
+    "durationMs": 1094
   }
 }

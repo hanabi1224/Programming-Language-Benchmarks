@@ -5,21 +5,21 @@
   "compilerVersion": "8",
   "test": "pidigits",
   "code": "1.java",
-  "input": "6002",
-  "timeMS": 3752.9613,
-  "memBytes": 271099221,
-  "cpuTimeMS": 4123.3333,
-  "appveyorBuildId": "37534898",
+  "input": "8000",
+  "timeMS": 6259.4799,
+  "memBytes": 332044970,
+  "cpuTimeMS": 6730.0,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "javac 1.8.0_282",
-    "start": "2021-01-31T15:14:30.7014992+00:00",
-    "finished": "2021-01-31T15:14:33.0199662+00:00",
-    "durationMs": 2318
+    "start": "2021-02-03T02:34:10.8322777+00:00",
+    "finished": "2021-02-03T02:34:13.2113919+00:00",
+    "durationMs": 2379
   },
   "testLog": {
     "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"1.8.0_282\"\nOpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_282-b08)\nOpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.282-b08, mixed mode)",
-    "start": "2021-01-31T15:22:35.191666+00:00",
-    "finished": "2021-01-31T15:22:35.7626204+00:00",
-    "durationMs": 570
+    "start": "2021-02-03T02:42:31.150864+00:00",
+    "finished": "2021-02-03T02:42:31.793773+00:00",
+    "durationMs": 642
   }
 }

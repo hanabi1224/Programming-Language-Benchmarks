@@ -1,0 +1,25 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3",
+  "test": "pidigits",
+  "code": "4.py",
+  "input": "4000",
+  "timeMS": 646.9301,
+  "memBytes": 13398016,
+  "cpuTimeMS": 626.6666,
+  "appveyorBuildId": "37581224",
+  "buildLog": {
+    "compilerVersion": "Python 3.9.1",
+    "start": "2021-02-03T02:37:33.9973105+00:00",
+    "finished": "2021-02-03T02:37:50.0045934+00:00",
+    "durationMs": 16007
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-02-03T02:42:40.691221+00:00",
+    "finished": "2021-02-03T02:42:40.8693896+00:00",
+    "durationMs": 178
+  }
+}

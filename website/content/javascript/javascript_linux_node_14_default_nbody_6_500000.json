@@ -6,20 +6,20 @@
   "test": "nbody",
   "code": "6.js",
   "input": "500000",
-  "timeMS": 139.2651,
-  "memBytes": 38415018,
-  "cpuTimeMS": 126.6666,
-  "appveyorBuildId": "37534898",
+  "timeMS": 139.8614,
+  "memBytes": 36065280,
+  "cpuTimeMS": 130.0,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-01-31T15:15:12.8228377+00:00",
-    "finished": "2021-01-31T15:15:13.5326502+00:00",
-    "durationMs": 709
+    "start": "2021-02-03T02:34:54.2120272+00:00",
+    "finished": "2021-02-03T02:34:55.018286+00:00",
+    "durationMs": 806
   },
   "testLog": {
     "runtimeVersion": "v14.15.4",
-    "start": "2021-01-31T15:22:39.5479012+00:00",
-    "finished": "2021-01-31T15:22:39.9181467+00:00",
-    "durationMs": 370
+    "start": "2021-02-03T02:42:35.2907567+00:00",
+    "finished": "2021-02-03T02:42:35.6205936+00:00",
+    "durationMs": 329
   }
 }

@@ -6,20 +6,20 @@
   "test": "nbody",
   "code": "7.swift",
   "input": "5000000",
-  "timeMS": 528.5709,
-  "memBytes": 5476352,
-  "cpuTimeMS": 516.6666,
-  "appveyorBuildId": "37534898",
+  "timeMS": 541.9503,
+  "memBytes": 5472256,
+  "cpuTimeMS": 530.0,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "Swift version 5.3.3 (swift-5.3.3-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
-    "start": "2021-01-31T15:22:07.3708828+00:00",
-    "finished": "2021-01-31T15:22:11.4189677+00:00",
-    "durationMs": 4048
+    "start": "2021-02-03T02:42:07.9142965+00:00",
+    "finished": "2021-02-03T02:42:12.5687417+00:00",
+    "durationMs": 4654
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:50.2892436+00:00",
-    "finished": "2021-01-31T15:22:50.3546532+00:00",
-    "durationMs": 65
+    "start": "2021-02-03T02:42:45.1132383+00:00",
+    "finished": "2021-02-03T02:42:45.1794651+00:00",
+    "durationMs": 66
   }
 }

@@ -6,20 +6,20 @@
   "test": "nbody",
   "code": "1.rs",
   "input": "5000000",
-  "timeMS": 551.8088,
-  "memBytes": 711338,
-  "cpuTimeMS": 540.0,
-  "appveyorBuildId": "37534898",
+  "timeMS": 590.4961,
+  "memBytes": 707242,
+  "cpuTimeMS": 579.9999,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
-    "start": "2021-01-31T15:19:23.3575771+00:00",
-    "finished": "2021-01-31T15:19:49.3730453+00:00",
-    "durationMs": 26015
+    "start": "2021-02-03T02:39:13.3550368+00:00",
+    "finished": "2021-02-03T02:39:41.7466491+00:00",
+    "durationMs": 28391
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:48.2789832+00:00",
-    "finished": "2021-01-31T15:22:48.2834825+00:00",
-    "durationMs": 4
+    "start": "2021-02-03T02:42:42.9990248+00:00",
+    "finished": "2021-02-03T02:42:43.0166038+00:00",
+    "durationMs": 17
   }
 }

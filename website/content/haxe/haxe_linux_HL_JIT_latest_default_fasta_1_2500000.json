@@ -1,0 +1,25 @@
+{
+  "lang": "haxe",
+  "os": "linux",
+  "compiler": "HL/JIT",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "1.hx",
+  "input": "2500000",
+  "timeMS": 13773.8743,
+  "memBytes": 3969024,
+  "cpuTimeMS": 12583.3333,
+  "appveyorBuildId": "37581224",
+  "buildLog": {
+    "compilerVersion": "4.1.5",
+    "start": "2021-02-03T02:33:57.2182079+00:00",
+    "finished": "2021-02-03T02:33:57.5380598+00:00",
+    "durationMs": 319
+  },
+  "testLog": {
+    "runtimeVersion": "1.11.0",
+    "start": "2021-02-03T02:42:29.8427805+00:00",
+    "finished": "2021-02-03T02:42:29.8636755+00:00",
+    "durationMs": 20
+  }
+}
