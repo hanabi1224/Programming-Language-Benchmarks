@@ -26,10 +26,10 @@ install:
     - nvm use 14
     - python -V
     # begin opam installation
-    - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
-    - sudo install opam-installer /usr/local/bin/opam
-    - opam --version
-    - opam init --disable-sandboxing
+    # - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
+    # - sudo install opam-installer /usr/local/bin/opam
+    # - opam --version
+    # - opam init --disable-sandboxing
     # end opam installation
     # begin haskell installation
     - curl -sSL https://get.haskellstack.org/ | sh
