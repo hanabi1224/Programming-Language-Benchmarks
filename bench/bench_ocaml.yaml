@@ -3,6 +3,15 @@ problems:
   - name: helloworld
     source:
       - 1.ml
+  - name: binarytrees
+    source:
+      - 5.ml
+  - name: fannkuch-redux
+    source:
+      - 2.ml
+  - name: nbody
+    source:
+      - 1.ml
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
