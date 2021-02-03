@@ -1,5 +1,8 @@
 lang: java
 problems:
+  - name: helloworld
+    source:
+      - 1.java
   - name: binarytrees
     source:
       - 2.java
@@ -9,18 +12,30 @@ problems:
   - name: pidigits
     source:
       - 1.java
+  - name: fannkuch-redux
+    source:
+      - 1.java
+  - name: fasta
+    source:
+      - 4.java
+  - name: mandelbrot
+    source:
+      - 4.java
+  - name: spectral-norm
+    source:
+      - 2.java
 compiler_version_command: javac -version
 compiler_version_regex:
 runtime_version_parameter: -version
 runtime_version_regex:
-source_rename_to: c.java
+source_rename_to: app.java
 environments:
   - os: linux
     compiler: adoptopenjdk
     version: 8
     docker: adoptopenjdk:8
     include:
-    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
   - os: linux
@@ -28,7 +43,7 @@ environments:
     version: 11
     docker: adoptopenjdk:11
     include:
-    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
   - os: linux
@@ -36,6 +51,6 @@ environments:
     version: 15
     docker: adoptopenjdk:15
     include:
-    build: javac c.java -d out && cp -r /opt/java/openjdk ./out
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
