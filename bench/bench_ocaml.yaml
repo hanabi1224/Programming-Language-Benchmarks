@@ -23,10 +23,11 @@ environments:
     version: latest
     compiler_version_command: ocamlc --version
     docker: ocaml/opam
+    docker_volumn: /home/appveyor/.opam/download-cache/:/home/opam/.opam/download-cache
     include: ocaml
     # before_build:
     #   - opam install . -y
-    build: opam install . -y
+    build: opam install . -y && dune build
     after_build:
       - cp _build/default/app.exe out
     out_dir: out
