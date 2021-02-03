@@ -62,11 +62,15 @@ problems:
     unittests:
       - input: 7
         output: 7_out
-      - input: 11
-        output: 11_out
+      - input: 10
+        output: 10_out
     tests:
+      - input: 10
+        repeat: 2
       - input: 11
         repeat: 2
+        exclude_langs:
+          - ocaml
   - name: fasta
     unittests:
       - input: 1000

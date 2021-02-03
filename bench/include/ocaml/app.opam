@@ -1,0 +1,16 @@
+opam-version: "2.0"
+name: "app"
+version: "0.1.0"
+synopsis: "Opam package"
+description: "Opam package"
+maintainer: ["hanabi1224"]
+license: ["MIT"]
+build: [
+   [ "dune" "build" ]
+]
+depends: [
+  "dune" {build}
+  # "opam-lock" {dev}
+  # "ocaml" {>= "4.11.1"}
+  # "zarith" {>= "1.11"}
+]
