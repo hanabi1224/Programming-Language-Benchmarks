@@ -1,0 +1,22 @@
+lang: ocaml
+problems:
+  - name: helloworld
+    source:
+      - 1.ml
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.ml
+environments:
+  - os: linux
+    compiler: ocamlc
+    version: latest
+    compiler_version_command: ocamlc --version
+    docker: ocaml/opam
+    include: ocaml
+    build: opam install dune && dune build
+    after_build:
+      - cp _build/default/app.exe out
+    out_dir: out
+    run_cmd: app.exe
