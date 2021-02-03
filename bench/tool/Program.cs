@@ -112,7 +112,7 @@ namespace BenchTool
                         continue;
                     }
 
-                    foreach (var p in c.Problems)
+                    foreach (var p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
                     {
                         if (includedProblems.Count > 0
                             && !includedProblems.Contains(p.Name))
@@ -120,7 +120,7 @@ namespace BenchTool
                             continue;
                         }
 
-                        foreach (var codePath in p.Source)
+                        foreach (var codePath in p.Source ?? Enumerable.Empty<string>())
                         {
                             var allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
