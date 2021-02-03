@@ -72,10 +72,10 @@ problems:
       - input: 1000
         output: 1000_out
     tests:
+      - input: 250000
+        repeat: 3
       - input: 2500000
         repeat: 3
-      - input: 25000000
-        repeat: 2
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml

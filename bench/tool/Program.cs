@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
@@ -124,6 +125,7 @@ namespace BenchTool
                             var allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
                             var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
+                            buildId = Regex.Replace(buildId, @"[\\\/\?]", "_", RegexOptions.Compiled);
                             Logger.Info($"Starting {task} task: {buildId}");
                             var taskTimer = Stopwatch.StartNew();
 
@@ -375,8 +377,12 @@ namespace BenchTool
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
-            var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
-            await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+            var exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            if (langEnvConfig.RuntimeIncluded)
+            {
+                exeName = Path.Combine(buildOutput, exeName);
+                await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+            }
 
             var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
             if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())
