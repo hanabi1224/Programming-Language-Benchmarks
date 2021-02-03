@@ -78,7 +78,14 @@ const config: NuxtConfig = {
   content: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    parallel: false,
+    extractCSS: true,
+    optimizeCSS: true,
+  },
+  generate: {
+    crawler: false,
+  },
   tailwindcss: {
     plugins: [
       require('@tailwindcss/forms'),
