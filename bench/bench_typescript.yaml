@@ -12,6 +12,9 @@ problems:
   - name: spectral-norm
     source:
       - 7.ts
+  - name: pidigits
+    source:
+      - 3.ts
 compiler_version_command: deno --version
 compiler_version_regex:
 runtime_version_parameter:
