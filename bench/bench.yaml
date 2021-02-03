@@ -36,8 +36,8 @@ problems:
     tests:
       - input: 3000
         repeat: 3
-      - input: 5500
-        repeat: 1
+      # - input: 5500
+      #   repeat: 1
   - name: pidigits
     unittests:
       - input: 27
@@ -45,9 +45,9 @@ problems:
       - input: 30
         output: 30_out
     tests:
-      - input: 6002
+      - input: 4000
         repeat: 3
-      - input: 10001
+      - input: 8000
         repeat: 3
   - name: mandelbrot
     unittests:
