@@ -22,9 +22,9 @@ environments:
     compiler: ocamlc
     version: latest
     compiler_version_command: ocamlc --version
-    docker: ocaml/opam
+    # docker: ocaml/opam
     include: ocaml
-    build: opam install dune && dune build
+    build: opam install . #opam install dune && dune build
     after_build:
       - cp _build/default/app.exe out
     out_dir: out

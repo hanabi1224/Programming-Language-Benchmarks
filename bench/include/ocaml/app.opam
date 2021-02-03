@@ -11,6 +11,6 @@ build: [
 depends: [
   "dune" {build}
   # "opam-lock" {dev}
-  # "ocaml" {>= "4.11.1"}
+  "ocaml" {>= "4.11.1"}
   "zarith" {>= "1.11"}
 ]

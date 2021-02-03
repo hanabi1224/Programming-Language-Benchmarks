@@ -54,6 +54,10 @@ install:
     - export PATH=$PATH:$HOME/.deno/bin
     - deno --version
     # end deno installation
+    # begin opam installation
+    - sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
+    - opam --version
+    # end opam installation
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
