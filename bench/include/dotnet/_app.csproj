@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;</TargetFrameworks>
+        <TargetFrameworks>net5.0;netcoreapp3.1;</TargetFrameworks>
         <OutputType>Exe</OutputType>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
+    </ItemGroup>
 </Project>

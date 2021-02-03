@@ -86,4 +86,4 @@ artifacts:
     # - path: website/dist
     #   name: website
 on_success:
-    - if [[ ! -z "${VERCEL_TOKEN}" ]]; then vercel website --prod -c -C -t $VERCEL_TOKEN;fi
+    - if [[ ! -z "${VERCEL_TOKEN}" ]]; then vercel website --prod -f -c -C -t $VERCEL_TOKEN;fi
