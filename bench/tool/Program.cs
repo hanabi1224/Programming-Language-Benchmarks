@@ -470,7 +470,14 @@ namespace BenchTool
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Tests)
             {
-                if (test.SkipOnPullRequest && AppveyorUtils.IsPullRequest)
+                if (test.SkipOnPullRequest
+                    && AppveyorUtils.IsPullRequest)
+                {
+                    continue;
+                }
+
+                if (test.ExcludeLangs?.Count > 0
+                    && test.ExcludeLangs.Contains(langConfig.Lang))
                 {
                     continue;
                 }

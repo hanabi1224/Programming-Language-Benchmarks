@@ -9,6 +9,15 @@ problems:
   - name: pidigits
     source:
       - 4.py
+  - name: spectral-norm
+    source:
+      - 8.py
+  - name: fasta
+    source:
+      - 5.py
+  - name: nbody
+    source:
+      - 1.py
 source_rename_to: c.py
 environments:
   - os: linux
