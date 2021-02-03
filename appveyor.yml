@@ -56,10 +56,8 @@ install:
     - deno --version
     # end deno installation
     # begin opam installation
-    # - sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
     - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
     - sudo install opam-installer /usr/local/bin/opam
-    # - sudo chmod +x /usr/local/bin/opam
     - opam --version
     # end opam installation
     - update-alternatives --list java
@@ -71,19 +69,17 @@ install:
     - export PATH="$(yarn global bin):$PATH"
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
 build_script:
-    # build website with placeholder content
-    - pushd website
-    - yarn
-    - yarn build
-    - popd
     # benchmarks
     - pushd bench
     - dotnet run -c Release -p tool -- --task build --langs ocaml --verbose true
     - dotnet run -c Release -p tool -- --task test --langs ocaml
     - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
     - popd
-    # build website with updated content
+    # build website with placeholder content
     - pushd website
+    - yarn
+    - yarn build
+    # build website with updated content
     # - yarn
     - yarn content
     # - yarn build # Disable due to out of memory error
