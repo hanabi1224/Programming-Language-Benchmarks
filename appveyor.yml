@@ -20,6 +20,7 @@ cache:
     # - /home/appveyor/.gradle
     # - /home/appveyor/.konan
     # - /home/appveyor/.stack
+    # - /home/appveyor/.opam/download-cache/
 install:
     - docker info
     - nvm use 14
@@ -55,7 +56,10 @@ install:
     - deno --version
     # end deno installation
     # begin opam installation
-    - sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
+    # - sh <(curl -sL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)
+    - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
+    - sudo install opam-installer /usr/local/bin/opam
+    # - sudo chmod +x /usr/local/bin/opam
     - opam --version
     # end opam installation
     - update-alternatives --list java
