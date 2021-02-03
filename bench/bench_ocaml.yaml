@@ -27,7 +27,7 @@ environments:
     include: ocaml
     # before_build:
     #   - opam install . -y
-    build: opam install dune -y && opam install . -y && dune build
+    build: opam install . -y && dune build
     after_build:
       - cp _build/default/app.exe out
     out_dir: out
