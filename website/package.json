@@ -8,6 +8,7 @@
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
     "regenerate": "rm -r dist && nuxt-ts generate",
+    "nuxt-help": "nuxt-ts generate -h",
     "lint:js": "eslint --ext \".js,.vue\" --fix --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --fix --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",

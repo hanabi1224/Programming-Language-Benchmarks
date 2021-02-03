@@ -33,10 +33,6 @@ const config: NuxtConfig = {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://google-analytics.nuxtjs.org/
-    '@nuxtjs/google-analytics',
-    // https://sitemap.nuxtjs.org/
-    '@nuxtjs/sitemap',
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
@@ -54,15 +50,6 @@ const config: NuxtConfig = {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
   ],
-
-  googleAnalytics: {
-    id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided
-    checkDuplicatedScript: true,
-  },
-
-  sitemap: {
-    hostname: process.env.APP_HOST_NAME ?? 'https://www.xml-sitemaps.com/',
-  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
@@ -147,4 +134,25 @@ const config: NuxtConfig = {
   }
 };
 
-export default config;
+// sitemap
+// https://sitemap.nuxtjs.org/
+if (process.env.APP_HOST_NAME) {
+  console.log(`Turning on sitemap generation for ${process.env.APP_HOST_NAME}`)
+  config.buildModules?.push('@nuxtjs/sitemap')
+  config.sitemap = {
+    hostname: process.env.APP_HOST_NAME,
+  }
+}
+
+// ga
+// https://google-analytics.nuxtjs.org/
+if (process.env.GOOGLE_ANALYTICS_ID) {
+  console.log(`Turning on google analytics`)
+  config.buildModules?.push('@nuxtjs/google-analytics')
+  config.googleAnalytics = {
+    id: process.env.GOOGLE_ANALYTICS_ID,
+    checkDuplicatedScript: true,
+  }
+}
+
+export default config
