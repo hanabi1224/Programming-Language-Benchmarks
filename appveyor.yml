@@ -66,7 +66,7 @@ build_script:
     - pushd bench
     - dotnet run -c Release -p tool -- --task build #--langs haxe --verbose true
     - dotnet run -c Release -p tool -- --task test #--langs haxe
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haskell
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
     - popd
     - pushd website
     - yarn
