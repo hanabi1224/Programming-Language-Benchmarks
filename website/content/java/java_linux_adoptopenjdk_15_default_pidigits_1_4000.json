@@ -3,23 +3,23 @@
   "os": "linux",
   "compiler": "adoptopenjdk",
   "compilerVersion": "15",
-  "test": "binarytrees",
-  "code": "2.java",
-  "input": "14",
-  "timeMS": 155.524,
-  "memBytes": 93525333,
-  "cpuTimeMS": 190.0,
+  "test": "pidigits",
+  "code": "1.java",
+  "input": "4000",
+  "timeMS": 2079.8907,
+  "memBytes": 225736021,
+  "cpuTimeMS": 2639.9999,
   "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "javac 15.0.2",
-    "start": "2021-02-03T02:34:30.3738381+00:00",
-    "finished": "2021-02-03T02:34:40.6597759+00:00",
-    "durationMs": 10285
+    "start": "2021-02-03T02:34:43.6591569+00:00",
+    "finished": "2021-02-03T02:34:46.6230107+00:00",
+    "durationMs": 2963
   },
   "testLog": {
     "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"15.0.2\" 2021-01-19\nOpenJDK Runtime Environment AdoptOpenJDK (build 15.0.2+7)\nOpenJDK 64-Bit Server VM AdoptOpenJDK (build 15.0.2+7, mixed mode, sharing)",
-    "start": "2021-02-03T02:42:33.2934269+00:00",
-    "finished": "2021-02-03T02:42:33.6239362+00:00",
-    "durationMs": 330
+    "start": "2021-02-03T02:42:34.0683128+00:00",
+    "finished": "2021-02-03T02:42:34.4559092+00:00",
+    "durationMs": 387
   }
 }

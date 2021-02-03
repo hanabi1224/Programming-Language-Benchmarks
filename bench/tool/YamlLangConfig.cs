@@ -38,6 +38,8 @@ namespace BenchTool
         public int Repeat { get; set; } = 2;
 
         public bool SkipOnPullRequest { get; set; } = false;
+
+        public HashSet<string> ExcludeLangs { get; set; }
     }
 
     public abstract class LangConfigBase

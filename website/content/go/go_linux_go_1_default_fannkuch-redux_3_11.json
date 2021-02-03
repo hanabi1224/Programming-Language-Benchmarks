@@ -6,20 +6,20 @@
   "test": "fannkuch-redux",
   "code": "3.go",
   "input": "11",
-  "timeMS": 1660.0426,
-  "memBytes": 1850026,
-  "cpuTimeMS": 3160.0,
-  "appveyorBuildId": "37534898",
+  "timeMS": 1791.8989,
+  "memBytes": 1463637,
+  "cpuTimeMS": 3423.3333,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "go version go1.15.7 linux/amd64",
-    "start": "2021-01-31T15:14:15.4679299+00:00",
-    "finished": "2021-01-31T15:14:16.9164274+00:00",
-    "durationMs": 1448
+    "start": "2021-02-03T02:33:42.2243142+00:00",
+    "finished": "2021-02-03T02:33:43.7032872+00:00",
+    "durationMs": 1478
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:32.1559204+00:00",
-    "finished": "2021-01-31T15:22:33.9365872+00:00",
-    "durationMs": 1780
+    "start": "2021-02-03T02:42:27.9171362+00:00",
+    "finished": "2021-02-03T02:42:29.7014644+00:00",
+    "durationMs": 1784
   }
 }

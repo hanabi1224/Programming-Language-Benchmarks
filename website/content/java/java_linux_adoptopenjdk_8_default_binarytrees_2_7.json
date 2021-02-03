@@ -6,20 +6,20 @@
   "test": "binarytrees",
   "code": "2.java",
   "input": "7",
-  "timeMS": 66.1351,
-  "memBytes": 26084693,
-  "cpuTimeMS": 53.3333,
-  "appveyorBuildId": "37534898",
+  "timeMS": 71.0857,
+  "memBytes": 24373930,
+  "cpuTimeMS": 56.6666,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "javac 1.8.0_282",
-    "start": "2021-01-31T15:14:18.4044174+00:00",
-    "finished": "2021-01-31T15:14:28.3464267+00:00",
-    "durationMs": 9942
+    "start": "2021-02-03T02:33:58.2059033+00:00",
+    "finished": "2021-02-03T02:34:08.5447299+00:00",
+    "durationMs": 10338
   },
   "testLog": {
     "runtimeVersion": "Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF8\nopenjdk version \"1.8.0_282\"\nOpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_282-b08)\nOpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.282-b08, mixed mode)",
-    "start": "2021-01-31T15:22:33.9643796+00:00",
-    "finished": "2021-01-31T15:22:34.581593+00:00",
-    "durationMs": 617
+    "start": "2021-02-03T02:42:29.9183167+00:00",
+    "finished": "2021-02-03T02:42:30.4402796+00:00",
+    "durationMs": 521
   }
 }

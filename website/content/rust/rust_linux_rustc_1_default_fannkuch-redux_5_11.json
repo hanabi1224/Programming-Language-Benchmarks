@@ -6,20 +6,20 @@
   "test": "fannkuch-redux",
   "code": "5.rs",
   "input": "11",
-  "timeMS": 2014.1363,
-  "memBytes": 1028096,
-  "cpuTimeMS": 3796.6666,
-  "appveyorBuildId": "37534898",
+  "timeMS": 2042.843,
+  "memBytes": 1011712,
+  "cpuTimeMS": 3863.3333,
+  "appveyorBuildId": "37581224",
   "buildLog": {
     "compilerVersion": "rustc 1.49.0 (e1884a8e3 2020-12-29)",
-    "start": "2021-01-31T15:21:13.8666575+00:00",
-    "finished": "2021-01-31T15:21:40.2025808+00:00",
-    "durationMs": 26335
+    "start": "2021-02-03T02:41:09.6350629+00:00",
+    "finished": "2021-02-03T02:41:38.6411862+00:00",
+    "durationMs": 29006
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-01-31T15:22:48.3531498+00:00",
-    "finished": "2021-01-31T15:22:50.2347225+00:00",
-    "durationMs": 1881
+    "start": "2021-02-03T02:42:43.0712589+00:00",
+    "finished": "2021-02-03T02:42:45.0671006+00:00",
+    "durationMs": 1995
   }
 }

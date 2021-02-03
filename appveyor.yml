@@ -49,6 +49,11 @@ install:
     - popd
     - v -version
     # end tmp vlang installation
+    # begin deno installation
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+    - export PATH=$PATH:$HOME/.deno/bin
+    - deno --version
+    # end deno installation
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
@@ -56,27 +61,29 @@ install:
     - java -version
     - gradle -v
     - export PATH="$(yarn global bin):$PATH"
-    # - yarn global add vercel
-    # - vercel -v
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then yarn global add vercel;fi
-    # - pushd website
-    # - yarn
-    # - popd
 build_script:
+    # build website with placeholder content
+    - pushd website
+    - yarn
+    - yarn build
+    - popd
+    # benchmarks
     - pushd bench
     - dotnet run -c Release -p tool -- --task build #--langs haxe --verbose true
     - dotnet run -c Release -p tool -- --task test #--langs haxe
     - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
     - popd
+    # build website with updated content
     - pushd website
-    - yarn
+    # - yarn
     - yarn content
-    - yarn generate
+    # - yarn build # Disable due to out of memory error
     - popd
 artifacts:
     - path: bench/build/_results
       name: benchmark_results
-    - path: website/dist
-      name: website
+    # - path: website/dist
+    #   name: website
 on_success:
     - if [[ ! -z "${VERCEL_TOKEN}" ]]; then vercel website --prod -c -C -t $VERCEL_TOKEN;fi
