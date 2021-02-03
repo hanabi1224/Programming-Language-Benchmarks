@@ -49,6 +49,11 @@ install:
     - popd
     - v -version
     # end tmp vlang installation
+    - curl -fsSL https://deno.land/x/install/install.sh | sh
+    # begin deno installation
+    - export PATH=$PATH:$HOME/.deno/bin
+    - deno --version
+    # end deno installation
     - update-alternatives --list java
     - echo $JAVA_HOME
     - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/

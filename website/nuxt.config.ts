@@ -35,8 +35,6 @@ const config: NuxtConfig = {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    // https://go.nuxtjs.dev/stylelint
-    '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
@@ -132,7 +130,15 @@ const config: NuxtConfig = {
       })
     },
   }
-};
+}
+
+if (process.env.SKIP_LINT) {
+  console.log(`Skipping nuxt lint`)
+}
+else {
+  // https://go.nuxtjs.dev/stylelint
+  config.buildModules?.push('@nuxtjs/stylelint-module')
+}
 
 // sitemap
 // https://sitemap.nuxtjs.org/
