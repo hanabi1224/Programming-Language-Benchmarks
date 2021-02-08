@@ -8,11 +8,11 @@ Yet another implementation of [The Computer Language Benchmarks Game](https://be
 *The idea is to build an automatic process for benchmark generation and pulishing*
 
 ### Comparable numbers
-*It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are run sequencially within a single CI job*
+*It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests run in sequence within a single CI job*
 
 ### Automatic publish
 
-*Once a change is merged into main branch, the CI job with re-generate and publish the static website*
+*Once a change is merged into main branch, the CI job will re-generate and publish the static website*
 
 
 # [Website](https://another-benchmarks-game.vercel.app/)
@@ -52,7 +52,7 @@ yarn dev
 ## Build
 
 *The 1st step is to build source code from various of lanuages*
-```
+```bash
 cd bench
 dotnet run -p tool --task build
 ```
@@ -60,7 +60,7 @@ dotnet run -p tool --task build
 ## Test
 
 *The 2nd step is to test built binaries to ensure the correctness of their implementation*
-```
+```bash
 cd bench
 dotnet run -p tool --task test
 ```
@@ -68,9 +68,15 @@ dotnet run -p tool --task test
 ## Bench
 
 *The 3rd step is to generate benchmarks*
-```
+```bash
 cd bench
 dotnet run -p tool --task bench
+```
+
+*For usage*
+```bash
+cd bench
+dotnet run -p tool --help
 ```
 
 ## Referesh website
