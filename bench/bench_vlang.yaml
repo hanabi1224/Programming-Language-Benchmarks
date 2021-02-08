@@ -18,6 +18,6 @@ environments:
     # docker: thevlang/vlang
     include:
     include_sub_dir: out
-    build: v -prod out/_app.v
+    build: v -prod -autofree out/_app.v
     out_dir: out
     run_cmd: _app
