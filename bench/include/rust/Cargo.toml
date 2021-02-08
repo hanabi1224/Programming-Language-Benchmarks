@@ -14,3 +14,6 @@ numeric-array = "0"
 rayon = "1"
 spin = "0"
 typed-arena = "2"
+
+[profile.release]
+debug = true

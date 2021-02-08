@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.4.21"
+    kotlin("multiplatform") version "1.4.30"
 }
 
 repositories {
@@ -16,13 +16,13 @@ kotlin {
   sourceSets {
       val commonMain by getting {
           dependencies {
-              implementation("com.ionspin.kotlin:bignum:0.2.3")
+              implementation("com.ionspin.kotlin:bignum:0.2.7")
           }
       }
     }
 }
 
 tasks.withType<Wrapper> {
-  gradleVersion = "6.8.1"
+  gradleVersion = "6.8.2"
   distributionType = Wrapper.DistributionType.BIN
 }
