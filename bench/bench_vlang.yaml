@@ -18,9 +18,10 @@ environments:
   - os: linux
     compiler: vlang
     version: latest
-    # docker: thevlang/vlang
+    docker: thevlang/vlang:alpine
     include:
     include_sub_dir: out
+    # cp /lib/ld-musl-x86_64.so.1 /lib/
     build: v -prod -autofree out/_app.v
     out_dir: out
     run_cmd: _app
