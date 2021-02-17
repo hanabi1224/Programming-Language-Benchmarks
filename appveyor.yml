@@ -58,8 +58,8 @@ install:
     # - sudo ./v symlink
     # - v -prod examples/hanoi.v
     # - ./examples/hanoi
-    - popd
-    - v -version
+    # - popd
+    # - v -version
     # end tmp vlang installation
     # begin deno installation
     - curl -fsSL https://deno.land/x/install/install.sh | sh
