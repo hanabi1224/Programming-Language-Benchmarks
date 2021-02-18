@@ -21,7 +21,7 @@ environments:
   - os: linux
     compiler: HL/JIT
     version: latest
-    docker:
+    docker: haxe
     include: haxe
     include_sub_dir:
     # before_build:

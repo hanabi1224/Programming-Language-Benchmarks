@@ -35,10 +35,10 @@ install:
     - curl -sSL https://get.haskellstack.org/ | sh
     # end haskell installation
     # begin haxe && hashlink
-    - sudo add-apt-repository ppa:haxe/releases -y
-    - sudo apt-get update
-    - sudo apt-get install haxe -y
-    - mkdir /tmp/.hashlib && haxelib setup /tmp/.hashlib
+    # - sudo add-apt-repository ppa:haxe/releases -y
+    # - sudo apt-get update
+    # - sudo apt-get install haxe -y
+    # - mkdir /tmp/.hashlib && haxelib setup /tmp/.hashlib
     # - sudo apt-get install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
     # - wget https://github.com/HaxeFoundation/hashlink/archive/1.11.zip -O hashlink-1.11.zip
     # - unzip hashlink-1.11.zip
@@ -49,14 +49,17 @@ install:
     # - popd
     # end haxe && hashlink
     # begin tmp vlang installation
-    - git clone https://github.com/vlang/v /tmp/vlang
-    - pushd /tmp/vlang
-    - make && ./v -version
-    - sudo ./v symlink
-    - v -prod examples/hanoi.v
+    - mkdir /tmp/hostlib/
+    - docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
+    - sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
+    # - git clone https://github.com/vlang/v /tmp/vlang
+    # - pushd /tmp/vlang
+    # - make && ./v -version
+    # - sudo ./v symlink
+    # - v -prod examples/hanoi.v
     # - ./examples/hanoi
-    - popd
-    - v -version
+    # - popd
+    # - v -version
     # end tmp vlang installation
     # begin deno installation
     - curl -fsSL https://deno.land/x/install/install.sh | sh
@@ -74,8 +77,8 @@ install:
 build_script:
     # benchmarks
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build #--langs ocaml --verbose true
-    - dotnet run -c Release -p tool -- --task test #--langs ocaml
+    - dotnet run -c Release -p tool -- --task build #--langs vlang haxe --verbose true
+    - dotnet run -c Release -p tool -- --task test #--langs vlang haxe
     - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
     - popd
     # build website with placeholder content
