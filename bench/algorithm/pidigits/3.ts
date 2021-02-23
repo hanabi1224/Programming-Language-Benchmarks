@@ -6,10 +6,10 @@
  *    modified for typescript deno by hanabi1224
  */
 
-import { encode } from "https://deno.land/std/encoding/utf8.ts";
+const utf8Encoder = new TextEncoder();
 
 function write(str: string) {
-    Deno.stdout.write(encode(str));
+    Deno.stdout.write(utf8Encoder.encode(str));
 }
 
 (function main() {
