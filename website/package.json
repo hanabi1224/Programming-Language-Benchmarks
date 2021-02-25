@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts generate",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate",
-    "regenerate": "rm -r dist && nuxt-ts generate",
-    "nuxt-help": "nuxt-ts generate -h",
+    "dev": "nuxt",
+    "build": "nuxt generate",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "regenerate": "rm -r dist && nuxt generate",
+    "nuxt-help": "nuxt generate -h",
     "lint:js": "eslint --ext \".js,.vue\" --fix --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --fix --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
@@ -21,15 +21,8 @@
     "*.{js,vue}": "eslint",
     "*.{css,vue}": "stylelint"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@nuxt/content": "^1.13.1",
-    "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.13.1",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
@@ -46,7 +39,7 @@
     "@commitlint/cli": "^12.0.0",
     "@commitlint/config-conventional": "^12.0.0",
     "@nuxt/types": "^2.15.2",
-    "@nuxt/typescript-build": "^2.0.5",
+    "@nuxt/typescript-build": "^2.0.6",
     "@nuxtjs/eslint-config-typescript": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/google-analytics": "^2.4.0",
@@ -58,7 +51,7 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "eslint": "^7.20.0",
-    "eslint-config-prettier": "^8.0.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.6.0",
@@ -71,7 +64,7 @@
     "stylelint": "^13.11.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
-    "ts-jest": "^26.5.1",
+    "ts-jest": "^26.5.2",
     "vue-jest": "^3.0.7"
   }
 }
