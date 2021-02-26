@@ -10,21 +10,28 @@ environment:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
 build: off
 cache:
-    - /var/lib/docker/overlay2
-    - /home/appveyor/.cache/yarn/v6
-    - /home/appveyor/.nuget/packages
-    - /home/appveyor/.npm
-    - /home/appveyor/.yarn
+    # - /var/lib/docker/overlay2
+    # - /home/appveyor/.cache/yarn/v6
+    # - /home/appveyor/.nuget/packages
+    # - /home/appveyor/.npm
+    # - /home/appveyor/.yarn
     - /home/appveyor/.cargo
-    - /home/appveyor/.udocker
-    - /home/appveyor/.gradle
-    - /home/appveyor/.konan
-    - /home/appveyor/.stack
-    - /home/appveyor/.opam/download-cache/
+    # - /home/appveyor/.udocker
+    # - /home/appveyor/.gradle
+    # - /home/appveyor/.konan
+    # - /home/appveyor/.stack
+    # - /home/appveyor/.opam/download-cache/
 install:
     - docker info
     - nvm use 14
     - python -V
+    # begin wasmer installation
+    - curl https://get.wasmer.io -sSfL | sh
+    - source $HOME/.wasmer/wasmer.sh
+    # end wasmer installation
+    # begin wasmtime installation
+    - curl https://wasmtime.dev/install.sh -sSf | bash
+    # end wasmtime installation
     # begin opam installation
     # - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
     # - sudo install opam-installer /usr/local/bin/opam
@@ -77,8 +84,8 @@ install:
 build_script:
     # benchmarks
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build #--langs vlang haxe --verbose true
-    - dotnet run -c Release -p tool -- --task test #--langs vlang haxe
+    - dotnet run -c Release -p tool -- --task build --langs wasm --verbose true
+    - dotnet run -c Release -p tool -- --task test --langs wasm
     - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
     - popd
     # build website with placeholder content
