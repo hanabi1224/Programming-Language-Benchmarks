@@ -25,6 +25,16 @@ install:
     - docker info
     - nvm use 14
     - python -V
+    # begin wasmer installation
+    - curl https://get.wasmer.io -sSfL | sh
+    - source $HOME/.wasmer/wasmer.sh
+    - wasmer -V
+    # end wasmer installation
+    # begin wasmtime installation
+    - curl https://wasmtime.dev/install.sh -sSf | bash
+    - export PATH=$HOME/.wasmtime/bin:$PATH
+    - wasmtime -V
+    # end wasmtime installation
     # begin opam installation
     # - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
     # - sudo install opam-installer /usr/local/bin/opam
@@ -63,7 +73,7 @@ install:
     # end tmp vlang installation
     # begin deno installation
     - curl -fsSL https://deno.land/x/install/install.sh | sh
-    - export PATH=$PATH:$HOME/.deno/bin
+    - export PATH=$HOME/.deno/bin:$PATH
     - deno --version
     # end deno installation
     - update-alternatives --list java
@@ -77,9 +87,9 @@ install:
 build_script:
     # benchmarks
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build #--langs vlang haxe --verbose true
-    - dotnet run -c Release -p tool -- --task test #--langs vlang haxe
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs haxe
+    - dotnet run -c Release -p tool -- --task build #--langs wasm --verbose true
+    - dotnet run -c Release -p tool -- --task test #--langs wasm
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs wasm
     - popd
     # build website with placeholder content
     - pushd website

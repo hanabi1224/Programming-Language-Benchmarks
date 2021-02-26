@@ -466,7 +466,13 @@ namespace BenchTool
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
-            var exeName = Path.Combine(buildOutput, langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0]);
+            var exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            if (langEnvConfig.RuntimeIncluded)
+            {
+                exeName = Path.Combine(buildOutput, exeName);
+                await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+            }
+
             var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             foreach (var test in problemTestConfig.Tests)
             {
