@@ -32,7 +32,7 @@ install:
     # end wasmer installation
     # begin wasmtime installation
     - curl https://wasmtime.dev/install.sh -sSf | bash
-    - source /home/appveyor/.bashrc
+    - export PATH=$HOME/.wasmtime/bin:$PATH
     - wasmtime -V
     # end wasmtime installation
     # begin opam installation
@@ -73,7 +73,7 @@ install:
     # end tmp vlang installation
     # begin deno installation
     - curl -fsSL https://deno.land/x/install/install.sh | sh
-    - export PATH=$PATH:$HOME/.deno/bin
+    - export PATH=$HOME/.deno/bin:PATH
     - deno --version
     # end deno installation
     - update-alternatives --list java
