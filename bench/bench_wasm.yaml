@@ -3,16 +3,16 @@ problems:
   - name: helloworld
     source:
       - 1.rs
-  - name: binarytrees
-    source:
-      - 1.rs
-      - 2.rs
+  # - name: binarytrees
+  #   source:
+  #     - 1.rs
+  #     - 2.rs
   - name: nbody
     source:
       - 1.rs
-  - name: spectral-norm
-    source:
-      - 7.rs
+  # - name: spectral-norm
+  #   source:
+  #     - 7.rs
   # - name: mandelbrot
   #   source:
   #     - 8.rs
