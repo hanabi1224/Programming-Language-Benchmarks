@@ -13,15 +13,15 @@ problems:
   - name: spectral-norm
     source:
       - 7.rs
-  - name: mandelbrot
-    source:
-      - 8.rs
-  - name: fasta
-    source:
-      - 5.rs
-  - name: fannkuch-redux
-    source:
-      - 5.rs
+  # - name: mandelbrot
+  #   source:
+  #     - 8.rs
+  # - name: fasta
+  #   source:
+  #     - 5.rs
+  # - name: fannkuch-redux
+  #   source:
+  #     - 5.rs
   - name: pidigits
     source:
       - 1.rs
