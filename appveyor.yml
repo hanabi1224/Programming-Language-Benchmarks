@@ -73,7 +73,7 @@ install:
     # end tmp vlang installation
     # begin deno installation
     - curl -fsSL https://deno.land/x/install/install.sh | sh
-    - export PATH=$HOME/.deno/bin:PATH
+    - export PATH=$HOME/.deno/bin:$PATH
     - deno --version
     # end deno installation
     - update-alternatives --list java
