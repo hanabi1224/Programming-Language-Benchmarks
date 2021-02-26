@@ -25,7 +25,7 @@ export async function getLangBenchResults($content: contentFunc) {
 }
 
 export function getFullCompilerVersion(i: BenchResult) {
-  return (i.buildLog?.compilerVersion ?? '') + (i.testLog?.runtimeVersion ?? '')
+  return (i.testLog?.runtimeVersion ?? '') + (i.buildLog?.compilerVersion ?? '')
 }
 
 export function getRealShortCompilerVersion(i: BenchResult) {
