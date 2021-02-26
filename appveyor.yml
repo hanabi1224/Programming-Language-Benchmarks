@@ -10,17 +10,17 @@ environment:
         secure: InPNy6LbDQf4YYKZAVYpTbO0uRIKI6D3Dt+nHvOVvS8=
 build: off
 cache:
-    # - /var/lib/docker/overlay2
-    # - /home/appveyor/.cache/yarn/v6
-    # - /home/appveyor/.nuget/packages
-    # - /home/appveyor/.npm
-    # - /home/appveyor/.yarn
+    - /var/lib/docker/overlay2
+    - /home/appveyor/.cache/yarn/v6
+    - /home/appveyor/.nuget/packages
+    - /home/appveyor/.npm
+    - /home/appveyor/.yarn
     - /home/appveyor/.cargo
-    # - /home/appveyor/.udocker
-    # - /home/appveyor/.gradle
-    # - /home/appveyor/.konan
-    # - /home/appveyor/.stack
-    # - /home/appveyor/.opam/download-cache/
+    - /home/appveyor/.udocker
+    - /home/appveyor/.gradle
+    - /home/appveyor/.konan
+    - /home/appveyor/.stack
+    - /home/appveyor/.opam/download-cache/
 install:
     - docker info
     - nvm use 14
@@ -87,9 +87,9 @@ install:
 build_script:
     # benchmarks
     - pushd bench
-    - dotnet run -c Release -p tool -- --task build --langs wasm --verbose true
-    - dotnet run -c Release -p tool -- --task test --langs wasm
-    - dotnet run -c Release -p tool -- --task bench --fail-fast true --langs wasm
+    - dotnet run -c Release -p tool -- --task build #--langs wasm --verbose true
+    - dotnet run -c Release -p tool -- --task test #--langs wasm
+    - dotnet run -c Release -p tool -- --task bench --fail-fast true #--langs wasm
     - popd
     # build website with placeholder content
     - pushd website
