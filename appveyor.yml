@@ -35,6 +35,12 @@ install:
     - export PATH=$HOME/.wasmtime/bin:$PATH
     - wasmtime -V
     # end wasmtime installation
+    # begin rust installation
+    # - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    # - source $HOME/.cargo/env
+    # - rustup target add wasm32-wasi
+    # - rustc -V
+    # end rust installation
     # begin opam installation
     # - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
     # - sudo install opam-installer /usr/local/bin/opam
