@@ -28,9 +28,12 @@ install:
     # begin wasmer installation
     - curl https://get.wasmer.io -sSfL | sh
     - source $HOME/.wasmer/wasmer.sh
+    - wasmer -V
     # end wasmer installation
     # begin wasmtime installation
     - curl https://wasmtime.dev/install.sh -sSf | bash
+    - source /home/appveyor/.bashrc
+    - wasmtime -V
     # end wasmtime installation
     # begin opam installation
     # - wget https://github.com/ocaml/opam/releases/download/2.0.7/opam-2.0.7-x86_64-linux -O opam-installer
