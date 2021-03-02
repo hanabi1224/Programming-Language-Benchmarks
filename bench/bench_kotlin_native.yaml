@@ -9,7 +9,7 @@ problems:
   # - name: pidigits
   #   source:
   #     - 1.kt
-compiler_version_command: echo "kotlin_nativec 1.4.30"
+compiler_version_command: echo "kotlin_nativec 1.4.31"
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:

@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.4.30"
+    kotlin("multiplatform") version "1.4.31"
 }
 
 repositories {
@@ -23,6 +23,6 @@ kotlin {
 }
 
 tasks.withType<Wrapper> {
-  gradleVersion = "6.8.2"
+  gradleVersion = "6.8.3"
   distributionType = Wrapper.DistributionType.BIN
 }
