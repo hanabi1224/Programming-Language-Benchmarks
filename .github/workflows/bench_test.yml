@@ -1,11 +1,11 @@
-name: bench
+name: bench_test
 on:
   push:
     branches: [ci]
   pull_request:
     branches: [ci]
 jobs:
-  bench_test:
+  bench:
     runs-on: ${{ matrix.os }}
     env:
       PROFILE: /tmp/.tmpprofile
