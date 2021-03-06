@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
+        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
         # lang: [csharp, go, haskell, java, javascript, julia, kotlin, rust, swift, typescript, vlang]
-        lang: [haxe]
+        lang: [dart]
     steps:
       - uses: actions/checkout@v2
       - name: Install vlang
