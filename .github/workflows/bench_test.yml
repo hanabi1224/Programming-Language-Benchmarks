@@ -2,6 +2,8 @@ name: bench
 on:
   push:
     branches: [ci]
+  pull_request:
+    branches: [ci]
 jobs:
   bench:
     runs-on: ${{ matrix.os }}
@@ -10,7 +12,7 @@ jobs:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
         # lang: [csharp, go, haxe, javascript, julia, vlang]
-        lang: [java, kotlin, python, swift, vlang]
+        lang: [java, kotlin, python, swift]
     steps:
       - uses: actions/checkout@v2
       - name: Install deno
