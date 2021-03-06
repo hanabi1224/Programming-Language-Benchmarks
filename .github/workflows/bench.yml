@@ -10,7 +10,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        lang: [julia, javascript]
+        # lang: [julia, javascript, typescript, go, csharp, java, kotlin]
+        lang: [go]
     steps:
       - uses: actions/checkout@v2
       - name: Install
@@ -54,12 +55,19 @@ jobs:
       - name: Install
         run: |
           ls -al bench/build/_results/
-      - name: Site
+      - name: Site Update Content
         run: |
           pushd website
           yarn
           yarn content
-
+      - name: Site Publish
+        if: github.ref == 'refs/heads/main'
+        env:
+          VERCEL_PUBLISH_TOKEN: ${{ secrets.VERCEL_PUBLISH_TOKEN }}
+        run: | 
+          yarn global add vercel
+          export PATH="$(yarn global bin):$PATH"
+          vercel website  -f -c -C -t $VERCEL_PUBLISH_TOKEN
           
           
           
