@@ -31,7 +31,7 @@ environments:
       - rm -r dist
     build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
     after_build:
-      - sh -c "sudo chown appveyor -R dist && sudo chmod -R 755 dist"
+      - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
     out_dir: dist/_app
     run_cmd: _app
   - os: linux
