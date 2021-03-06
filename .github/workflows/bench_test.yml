@@ -12,8 +12,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haxe, javascript, julia]
-        lang: [java, kotlin, swift]
+        # lang: [csharp, go, haxe, java, javascript, julia, kotlin, swift]
+        lang: [haskell, typescript]
     steps:
       - uses: actions/checkout@v2
       - name: Install deno
@@ -22,6 +22,10 @@ jobs:
           curl -fsSL https://deno.land/x/install/install.sh | sh
           export PATH=$HOME/.deno/bin:$PATH
           deno --version
+      - name: Install haskell
+        if: matrix.lang == 'haskell'
+        run: |
+          curl -sSL https://get.haskellstack.org/ | sh
       - name: Install wasm
         if: matrix.lang == 'rust'
         run: |
