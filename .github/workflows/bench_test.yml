@@ -1,0 +1,52 @@
+name: bench
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  bench:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
+        # lang: [csharp, go, haxe, javascript, julia, vlang]
+        lang: [java, kotlin, python, swift, vlang]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install deno
+        if: matrix.lang == 'typescript'
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | sh
+          export PATH=$HOME/.deno/bin:$PATH
+          deno --version
+      - name: Install wasm
+        if: matrix.lang == 'rust'
+        run: |
+          curl https://get.wasmer.io -sSfL | sh
+          source $HOME/.wasmer/wasmer.sh
+          wasmer -V
+          curl https://wasmtime.dev/install.sh -sSf | bash
+          export PATH=$HOME/.wasmtime/bin:$PATH
+          wasmtime -V
+      - name: Build
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
+          popd
+      - name: Test
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
+          popd
+      - name: Bench
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
+          popd
+      - uses: actions/upload-artifact@v2
+        with:
+          name: log
+          path: bench/build/_results/**/*.json
+          if-no-files-found: error
