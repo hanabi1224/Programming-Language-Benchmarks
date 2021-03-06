@@ -3,3 +3,4 @@
 
 !*.csproj
 !kotlin-native/*
+!pubspec.yaml
