@@ -477,7 +477,7 @@ namespace BenchTool
             foreach (var test in problemTestConfig.Tests)
             {
                 if (test.SkipOnPullRequest
-                    && AppveyorUtils.IsPullRequest)
+                    && GithubActionUtils.IsPullRequest)
                 {
                     continue;
                 }
@@ -497,7 +497,7 @@ namespace BenchTool
                 var repeat = test.Repeat > 1 ? test.Repeat : 1;
 
                 // Speed up PR build
-                if (repeat > 1 && AppveyorUtils.IsPullRequest)
+                if (repeat > 1 && GithubActionUtils.IsPullRequest)
                 {
                     Logger.Debug($"Reseting repeat from {repeat} to 1 in PR build.");
                     repeat = 1;
@@ -527,7 +527,8 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
-                    appveyorBuildId = AppveyorUtils.BuildId,
+                    //appveyorBuildId = AppveyorUtils.BuildId,
+                    githubRunId = GithubActionUtils.RunId,
                     buildLog = BuildOutputJson.LoadFrom(buildOutput),
                     testLog = TestOutputJson.LoadFrom(buildOutput),
                 }, Formatting.Indented)).ConfigureAwait(false);

@@ -193,8 +193,10 @@ export default class LangMetaPage extends Vue {
   }
 
   get buildLogUrl() {
-    const buildId = this.activeBenchmarks[0].appveyorBuildId
-    return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
+    // const buildId = this.activeBenchmarks[0].appveyorBuildId
+    // return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
+    const runId = this.activeBenchmarks[0].githubRunId
+    return `https://github.com/hanabi1224/Another-Benchmarks-Game/runs/${runId}`
   }
 
   get benchmarkDate() {
