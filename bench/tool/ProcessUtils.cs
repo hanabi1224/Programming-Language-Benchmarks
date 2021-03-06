@@ -201,6 +201,8 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
+            await Task.Delay(1).ConfigureAwait(false);
+
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
