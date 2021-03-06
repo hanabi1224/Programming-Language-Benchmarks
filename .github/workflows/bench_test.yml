@@ -12,17 +12,20 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haxe, java, javascript, julia, kotlin, swift]
-        lang: [haskell, typescript]
+        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift]
+        lang: [typescript, vlang]
     steps:
       - uses: actions/checkout@v2
+      - name: Install vlang
+        if: matrix.lang == 'vlang'
+        run: |
+          docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
+          sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
       - name: Install deno
         if: matrix.lang == 'typescript'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
-          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $HOME/.profile
-          source $HOME/.profile
-          deno --version
+          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $HOME/.bashrc
       - name: Install haskell
         if: matrix.lang == 'haskell'
         run: |
@@ -34,9 +37,7 @@ jobs:
           source $HOME/.wasmer/wasmer.sh
           wasmer -V
           curl https://wasmtime.dev/install.sh -sSf | bash
-          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $HOME/.profile
-          source $HOME/.profile
-          wasmtime -V
+          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $HOME/.bashrc
       - name: Build
         run: |
           pushd bench
