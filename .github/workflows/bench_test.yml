@@ -36,11 +36,11 @@ jobs:
         if: matrix.lang == 'rust'
         run: |
           curl https://get.wasmer.io -sSfL | sh
-          source $HOME/.wasmer/wasmer.sh
-          wasmer -V
+          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
           curl https://wasmtime.dev/install.sh -sSf | bash
           echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
-      - name: Install wasm
+          cat $PROFILE
+      - name: Install
         run: echo '# placeholder' >> $PROFILE
       - name: Build
         run: |
