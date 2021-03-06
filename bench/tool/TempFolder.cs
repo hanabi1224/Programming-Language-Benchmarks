@@ -16,11 +16,10 @@ namespace BenchTool
 
         public string RootDirName { get; set; }
 
-        public TempFolder()
+        public TempFolder(string identifier = "")
         {
-            RootDirName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            //FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", RootDirName);
-            FullPath = Path.Combine(Path.GetTempPath(), RootDirName);
+            RootDirName = $"{identifier}_{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
+            FullPath = Path.Combine(Path.GetTempPath(),  RootDirName);
         }
 
         public void CreateIfNotExist()
