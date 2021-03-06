@@ -1,0 +1,50 @@
+name: bench
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          echo 'Install'
+      - name: Build
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task build --langs csharp --verbose true
+          popd
+      - name: Test
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task test --langs csharp --verbose true
+          popd
+      - name: Bench
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task bench --langs csharp --verbose true
+          popd
+      - name: Site
+        run: |
+          pushd website
+          yarn
+          yarn content
+          yarn build
+      - uses: actions/upload-artifact@v2
+        with:
+          path: bench/build/_results/**/*.json
+          if-no-files-found: error
+          
+          
+          
+          
+          
+        
+        
+        
