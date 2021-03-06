@@ -5,14 +5,15 @@ on:
   pull_request:
     branches: [ci]
 jobs:
-  bench:
+  bench_test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haxe, javascript, julia, vlang]
-        lang: [java, kotlin, python, swift]
+        # lang: [csharp, go, haxe, javascript, julia]
+        lang: [java, kotlin, swift]
     steps:
       - uses: actions/checkout@v2
       - name: Install deno
