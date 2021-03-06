@@ -18,30 +18,29 @@ jobs:
       - name: Build
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task build --langs csharp --verbose true
+          dotnet run -c Release -p tool -- --task build --langs haxe --verbose true
           popd
       - name: Test
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs csharp --verbose true
+          dotnet run -c Release -p tool -- --task test --langs haxe --verbose true
           popd
       - name: Bench
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs csharp --verbose true
+          dotnet run -c Release -p tool -- --task bench --langs haxe --verbose true
           popd
+      - uses: actions/upload-artifact@v2
+        with:
+          path: bench/build/_results/**/*.json
+          if-no-files-found: error
       - name: Site
         run: |
           pushd website
           yarn
           yarn content
           yarn build
-      - uses: actions/upload-artifact@v2
-        with:
-          path: bench/build/_results/**/*.json
-          if-no-files-found: error
-          
-          
+
           
           
           
