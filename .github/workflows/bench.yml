@@ -19,17 +19,17 @@ jobs:
       - name: Build
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} --verbose true
+          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
           popd
       - name: Test
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} --verbose true
+          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - name: Bench
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} --verbose true
+          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
           popd
       - uses: actions/upload-artifact@v2
         with:
