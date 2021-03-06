@@ -4,6 +4,7 @@ on:
     branches: [ci]
   pull_request:
     branches: [ci]
+  workflow_dispatch:
 jobs:
   bench:
     runs-on: ${{ matrix.os }}
