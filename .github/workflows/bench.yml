@@ -26,25 +26,34 @@ jobs:
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} --verbose true
           popd
+      - uses: actions/upload-artifact@v2
+        with:
+          name: log
+          path: bench/build/_results/**/*.json
+          if-no-files-found: error
   bench:
+    needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.0.8
+        with:
+          # Artifact name
+          name: log
+          # Destination path
+          path: bench/build/_results/
       - name: Install
         run: |
-          echo 'Install'
+          ls -al bench/build/_results/
       - name: Bench
         run: |
           pushd bench
           dotnet run -c Release -p tool -- --task bench --langs julia javascript --verbose true
           popd
-      - uses: actions/upload-artifact@v2
-        with:
-          path: bench/build/_results/**/*.json
-          if-no-files-found: error
       - name: Site
         run: |
           pushd website
