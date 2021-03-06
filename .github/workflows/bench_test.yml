@@ -14,8 +14,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift, typescript, vlang]
-        lang: [python, rust]
+        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, rust, swift, typescript, vlang]
+        lang: [python]
     steps:
       - uses: actions/checkout@v2
       - name: Install vlang
