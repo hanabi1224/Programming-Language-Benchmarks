@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  build:
+  bench:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -26,13 +26,18 @@ jobs:
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} --verbose true
           popd
+      - name: Bench
+        run: |
+          pushd bench
+          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} --verbose true
+          popd
       - uses: actions/upload-artifact@v2
         with:
           name: log
           path: bench/build/_results/**/*.json
           if-no-files-found: error
-  bench:
-    needs: [build]
+  publish:
+    needs: [bench]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -49,11 +54,6 @@ jobs:
       - name: Install
         run: |
           ls -al bench/build/_results/
-      - name: Bench
-        run: |
-          pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs julia javascript --verbose true
-          popd
       - name: Site
         run: |
           pushd website
