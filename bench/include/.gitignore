@@ -4,3 +4,4 @@
 !*.csproj
 !kotlin-native/*
 !pubspec.yaml
+!nim.nimble
