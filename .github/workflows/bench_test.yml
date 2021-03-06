@@ -18,6 +18,14 @@ jobs:
         lang: [dart]
     steps:
       - uses: actions/checkout@v2
+      - name: Install dart
+        if: matrix.lang == 'dart'
+        run: |
+          sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
+          sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+          sudo apt-get update -y
+          sudo apt-get install dart -y
+          echo 'export PATH="$PATH:/usr/lib/dart/bin"' >> $PROFILE
       - name: Install vlang
         if: matrix.lang == 'vlang'
         run: |
