@@ -14,9 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haskell, java, javascript, julia, kotlin, rust, swift, typescript, vlang]
-        lang: [dart]
+        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, nim, python, rust, swift, typescript, vlang]
+        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, rust, swift, typescript, vlang]
+        lang: [nim]
     steps:
       - uses: actions/checkout@v2
       - name: Install dart
