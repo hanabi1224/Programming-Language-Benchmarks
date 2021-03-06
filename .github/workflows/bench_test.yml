@@ -7,13 +7,15 @@ on:
 jobs:
   bench_test:
     runs-on: ${{ matrix.os }}
+    env:
+      PROFILE: /tmp/.tmpprofile
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift]
-        lang: [typescript, vlang]
+        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift, vlang]
+        lang: [typescript, python]
     steps:
       - uses: actions/checkout@v2
       - name: Install vlang
@@ -25,7 +27,7 @@ jobs:
         if: matrix.lang == 'typescript'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
-          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $HOME/.bashrc
+          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
       - name: Install haskell
         if: matrix.lang == 'haskell'
         run: |
@@ -37,19 +39,22 @@ jobs:
           source $HOME/.wasmer/wasmer.sh
           wasmer -V
           curl https://wasmtime.dev/install.sh -sSf | bash
-          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $HOME/.bashrc
+          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
       - name: Build
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
           popd
       - name: Test
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - name: Bench
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
           popd
