@@ -56,7 +56,7 @@ namespace BenchTool
             bool forcePullDocker = false,
             bool forceRebuild = false,
             bool failFast = false,
-            bool buildPool = true,
+            bool buildPool = false,
             bool verbose = false,
             string[] langs = null,
             string[] problems = null,
