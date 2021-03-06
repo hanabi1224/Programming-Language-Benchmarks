@@ -14,8 +14,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
-        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift, vlang]
-        lang: [typescript, python]
+        # lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, swift, typescript, vlang]
+        lang: [python, rust]
     steps:
       - uses: actions/checkout@v2
       - name: Install vlang
@@ -40,6 +40,8 @@ jobs:
           wasmer -V
           curl https://wasmtime.dev/install.sh -sSf | bash
           echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
+      - name: Install wasm
+        run: echo '# placeholder' >> $PROFILE
       - name: Build
         run: |
           source $PROFILE
