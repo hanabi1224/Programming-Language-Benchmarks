@@ -19,7 +19,7 @@ namespace BenchTool
         public TempFolder(string identifier = "")
         {
             RootDirName = $"{identifier}_{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}";
-            FullPath = Path.Combine(Path.GetTempPath(),  RootDirName);
+            FullPath = Path.Combine(Path.GetTempPath(), RootDirName);
         }
 
         public void CreateIfNotExist()
