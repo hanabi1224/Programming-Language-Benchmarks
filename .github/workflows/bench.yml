@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
+        lang: [julia, javascript]
     steps:
       - uses: actions/checkout@v2
       - name: Install
@@ -18,17 +19,27 @@ jobs:
       - name: Build
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task build --langs haxe --verbose true
+          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} --verbose true
           popd
       - name: Test
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs haxe --verbose true
+          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} --verbose true
           popd
+  bench:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          echo 'Install'
       - name: Bench
         run: |
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs haxe --verbose true
+          dotnet run -c Release -p tool -- --task bench --langs julia javascript --verbose true
           popd
       - uses: actions/upload-artifact@v2
         with:
@@ -39,7 +50,6 @@ jobs:
           pushd website
           yarn
           yarn content
-          yarn build
 
           
           
