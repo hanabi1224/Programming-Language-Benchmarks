@@ -26,7 +26,8 @@ type BenchResult = {
 
   compilerOptions?: string,
 
-  appveyorBuildId: string,
+  // appveyorBuildId: string,
+  githubRunId: string,
   buildLog: {
     compilerVersion: string,
     start: string,
