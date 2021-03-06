@@ -7,28 +7,54 @@ on:
 jobs:
   bench:
     runs-on: ${{ matrix.os }}
+    env:
+      PROFILE: /tmp/.tmpprofile
     strategy:
+      fail-fast: true
       matrix:
         os: [ubuntu-20.04]
-        # lang: [julia, javascript, typescript, go, csharp, java, kotlin]
-        lang: [go]
+        lang: [csharp, go, haskell, haxe, java, javascript, julia, kotlin, python, rust, swift, typescript, vlang]
     steps:
       - uses: actions/checkout@v2
-      - name: Install
+      - name: Install vlang
+        if: matrix.lang == 'vlang'
         run: |
-          echo 'Install'
+          docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
+          sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
+      - name: Install deno
+        if: matrix.lang == 'typescript'
+        run: |
+          curl -fsSL https://deno.land/x/install/install.sh | sh
+          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
+      - name: Install haskell
+        if: matrix.lang == 'haskell'
+        run: |
+          stack upgrade
+      - name: Install wasm
+        if: matrix.lang == 'rust'
+        run: |
+          curl https://get.wasmer.io -sSfL | sh
+          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
+          curl https://wasmtime.dev/install.sh -sSf | bash
+          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
+          cat $PROFILE
+      - name: Install
+        run: echo '# placeholder' >> $PROFILE
       - name: Build
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
           popd
       - name: Test
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - name: Bench
         run: |
+          source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
           popd
@@ -46,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v2.0.8
+        uses: actions/download-artifact@v2
         with:
           # Artifact name
           name: log
@@ -67,10 +93,5 @@ jobs:
         run: | 
           yarn global add vercel
           export PATH="$(yarn global bin):$PATH"
-          vercel website  -f -c -C -t $VERCEL_PUBLISH_TOKEN
-          
-          
-          
-        
-        
-        
+          vercel website --prod -f -c -C -t $VERCEL_PUBLISH_TOKEN
+ 
