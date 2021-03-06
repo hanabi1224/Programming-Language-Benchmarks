@@ -1,9 +1,7 @@
 name: bench
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [ci]
 jobs:
   bench:
     runs-on: ${{ matrix.os }}
