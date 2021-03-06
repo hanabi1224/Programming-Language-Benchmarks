@@ -1,0 +1,40 @@
+name: site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - name: Install
+        run: |
+          npm install --global yarn
+          yarn --version
+          yarn global bin
+          docker info
+      - name: Build
+        run: |
+          pushd website
+          yarn
+          yarn build
+          popd
+          
+          
+          
+          
+        
+        
+        
+        
+        
+        
