@@ -25,7 +25,7 @@ jobs:
       - name: Install haskell
         if: matrix.lang == 'haskell'
         run: |
-          curl -sSL https://get.haskellstack.org/ | sh
+          stack upgrade
       - name: Install wasm
         if: matrix.lang == 'rust'
         run: |
@@ -33,7 +33,8 @@ jobs:
           source $HOME/.wasmer/wasmer.sh
           wasmer -V
           curl https://wasmtime.dev/install.sh -sSf | bash
-          export PATH=$HOME/.wasmtime/bin:$PATH
+          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $HOME/.profile
+          source $HOME/.profile
           wasmtime -V
       - name: Build
         run: |
