@@ -223,7 +223,7 @@ namespace BenchTool
             srcCodePath.EnsureFileExists();
 
             // Setup tmp build folder
-            using var tmpDir = new TempFolder();
+            using var tmpDir = new TempFolder(buildId);
 
             Logger.Debug($"Temp build folder: {tmpDir.FullPath}");
 
