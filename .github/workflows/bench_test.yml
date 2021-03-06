@@ -20,7 +20,8 @@ jobs:
         if: matrix.lang == 'typescript'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
-          export PATH=$HOME/.deno/bin:$PATH
+          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $HOME/.profile
+          source $HOME/.profile
           deno --version
       - name: Install haskell
         if: matrix.lang == 'haskell'
