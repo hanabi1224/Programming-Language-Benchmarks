@@ -22,7 +22,7 @@ environments:
     include: nim
     include_sub_dir:
     # before_build:
-    build: nimble build app -y && cp app out
+    build: nimble build app -y -d:release && cp app out
     # after_build:
     out_dir: out
     run_cmd: app
