@@ -23,4 +23,4 @@ environments:
     include_sub_dir: out
     build: cp -a /usr/local/julia out
     out_dir: out
-    run_cmd: julia/bin/julia c.jl
+    run_cmd: julia/bin/julia -O3 c.jl
