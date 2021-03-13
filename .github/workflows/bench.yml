@@ -13,9 +13,32 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-20.04]
-        lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, nim, python, rust, swift, typescript, vlang]
+        lang:
+          [
+            csharp,
+            dart,
+            go,
+            haskell,
+            java,
+            javascript,
+            julia,
+            kotlin,
+            nim,
+            python,
+            ruby,
+            rust,
+            swift,
+            typescript,
+            vlang,
+          ]
     steps:
       - uses: actions/checkout@v2
+      - name: Install ruby
+        if: matrix.lang == 'ruby'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.0 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install dart
         if: matrix.lang == 'dart'
         run: |
@@ -98,8 +121,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         env:
           VERCEL_PUBLISH_TOKEN: ${{ secrets.VERCEL_PUBLISH_TOKEN }}
-        run: | 
+        run: |
           yarn global add vercel
           export PATH="$(yarn global bin):$PATH"
           vercel website --prod -f -c -C -t $VERCEL_PUBLISH_TOKEN
- 
