@@ -23,7 +23,7 @@ jobs:
         if: matrix.lang == 'ruby'
         run: |
           sudo apt-get install rbenv -y
-          rbenv init
+          eval "$(rbenv init -)"
           echo 'export PATH="$HOME/.rbenv/shims:$PATH"' >> $PROFILE
           git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
           rbenv install 3.0.0
