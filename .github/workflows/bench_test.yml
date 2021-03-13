@@ -14,11 +14,20 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, nim, python, rust, swift, typescript, vlang]
-        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, rust, swift, typescript, vlang]
-        lang: [nim]
+        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, nim, python, ruby, rust, swift, typescript, vlang]
+        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, ruby, rust, swift, typescript, vlang]
+        lang: [ruby]
     steps:
       - uses: actions/checkout@v2
+      - name: Install ruby
+        if: matrix.lang == 'ruby'
+        run: |
+          sudo apt-get install rbenv -y
+          rbenv init
+          echo 'export PATH="$HOME/.rbenv/shims:$PATH"' >> $PROFILE
+          git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+          rbenv install 3.0.0
+          ruby --version
       - name: Install dart
         if: matrix.lang == 'dart'
         run: |
