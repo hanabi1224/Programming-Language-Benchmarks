@@ -9,6 +9,7 @@ problems:
   - name: pidigits
     source:
       - 1.jl
+      - 3.jl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -v
@@ -23,4 +24,4 @@ environments:
     include_sub_dir: out
     build: cp -a /usr/local/julia out
     out_dir: out
-    run_cmd: julia/bin/julia c.jl
+    run_cmd: julia/bin/julia -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl

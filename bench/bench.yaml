@@ -14,9 +14,9 @@ problems:
       - input: 10
         output: 10_out
     tests:
-      - input: 7
-        repeat: 2
       - input: 14
+        repeat: 2
+      - input: 18
         repeat: 2
   - name: nbody
     unittests:
@@ -29,8 +29,8 @@ problems:
         repeat: 2
       - input: 5000000
         repeat: 2
-        exclude_langs:
-          - python
+        # exclude_langs:
+        #   - python
   - name: spectral-norm
     unittests:
       - input: 100
