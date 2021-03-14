@@ -1,0 +1,34 @@
+lang: lua
+problems:
+  - name: helloworld
+    source:
+      - 1.lua
+  - name: binarytrees
+    source:
+      - 4.lua
+  - name: nbody
+    source:
+      - 4.lua
+  - name: spectral-norm
+    source:
+      - 1.lua
+compiler_version_command:
+compiler_version_regex: -v
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.lua
+environments:
+  - os: linux
+    compiler: lua
+    version: latest
+    build: cp app.lua out
+    out_dir: out
+    run_cmd: lua app.lua
+    runtime_included: false
+  - os: linux
+    compiler: luajit
+    version: latest
+    build: cp app.lua out
+    out_dir: out
+    run_cmd: luajit app.lua
+    runtime_included: false
