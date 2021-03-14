@@ -20,30 +20,30 @@ problems:
       - 1.py
 source_rename_to: c.py
 environments:
-  # - os: linux
-  #   compiler: cpython
-  #   version: 3
-  #   compiler_version_command: python -V
-  #   docker: python:3
-  #   include:
-  #   include_sub_dir:
-  #   before_build:
-  #     - rm -r dist
-  #   build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
-  #   after_build:
-  #     - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
-  #   out_dir: dist/_app
-  #   run_cmd: _app
-  # - os: linux
-  #   compiler: pypy
-  #   version: 3
-  #   docker: pypy:3-slim
-  #   runtime_version_parameter: -V
-  #   include:
-  #   include_sub_dir: out
-  #   build: cp -a /opt/pypy/ ./out
-  #   out_dir: out
-  #   run_cmd: pypy/bin/pypy3 c.py
+  - os: linux
+    compiler: cpython
+    version: 3
+    compiler_version_command: python -V
+    docker: python:3
+    include:
+    include_sub_dir:
+    before_build:
+      - rm -r dist
+    build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
+    after_build:
+      - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
+    out_dir: dist/_app
+    run_cmd: _app
+  - os: linux
+    compiler: pypy
+    version: 3
+    docker: pypy:3-slim
+    runtime_version_parameter: -V
+    include:
+    include_sub_dir: out
+    build: cp -a /opt/pypy/ ./out
+    out_dir: out
+    run_cmd: pypy/bin/pypy3 c.py
   - os: linux
     compiler: pyston
     version: latest
