@@ -6,6 +6,21 @@ problems:
   - name: binarytrees
     source:
       - 4.jl
+  - name: mandelbrot
+    source:
+      - 8.jl
+  - name: nbody
+    source:
+      - 7.jl
+  - name: fasta
+    source:
+      - 7.jl
+  - name: fannkuch-redux
+    source:
+      - 2.jl
+  - name: spectral-norm
+    source:
+      - 3.jl
   - name: pidigits
     source:
       - 1.jl
