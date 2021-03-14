@@ -23,6 +23,7 @@ jobs:
             javascript,
             julia,
             kotlin,
+            lua,
             nim,
             python,
             ruby,
@@ -33,6 +34,16 @@ jobs:
           ]
     steps:
       - uses: actions/checkout@v2
+      - name: Install lua
+        if: matrix.lang == 'lua'
+        run: |
+          sudo apt-get install lua5.3 -y
+          lua -v
+          git clone https://github.com/LuaJIT/LuaJIT
+          cd LuaJIT
+          make && sudo make install
+          sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
+          luajit -v
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
