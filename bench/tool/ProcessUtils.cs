@@ -79,21 +79,24 @@ namespace BenchTool
                     {
                         p.Refresh();
                         m.CpuTime = p.TotalProcessorTime;
-                        if (childrenProcesses?.Count > 0)
-                        {
-                            foreach (var cp in childrenProcesses)
-                            {
-                                cp.Refresh();
-                                m.CpuTime += cp.TotalProcessorTime;
-                            }
-                        }
-
                         var totalMemoryBytes = p.WorkingSet64;
                         if (childrenProcesses?.Count > 0)
                         {
                             foreach (var cp in childrenProcesses)
                             {
-                                totalMemoryBytes += cp.WorkingSet64;
+                                try
+                                {
+                                    if (!cp.HasExited)
+                                    {
+                                        cp.Refresh();
+                                        m.CpuTime += cp.TotalProcessorTime;
+                                        totalMemoryBytes += cp.WorkingSet64;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.Error(e);
+                                }
                             }
                         }
 
