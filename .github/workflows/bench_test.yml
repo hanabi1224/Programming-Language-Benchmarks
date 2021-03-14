@@ -14,11 +14,21 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, nim, python, ruby, rust, swift, typescript, vlang]
-        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, ruby, rust, swift, typescript, vlang]
-        lang: [ruby]
+        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
+        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
+        lang: [lua]
     steps:
       - uses: actions/checkout@v2
+      - name: Install lua
+        if: matrix.lang == 'lua'
+        run: |
+          sudo apt-get install lua5.3 -y
+          lua -v
+          git clone https://github.com/LuaJIT/LuaJIT
+          cd LuaJIT
+          make && sudo make install
+          sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
+          luajit -v
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
