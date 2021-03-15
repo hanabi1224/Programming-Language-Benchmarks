@@ -33,6 +33,7 @@
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.3",
+    "nuxt-property-decorator": "^2.9.1",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"
   },
