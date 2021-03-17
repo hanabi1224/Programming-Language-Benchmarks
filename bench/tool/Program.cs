@@ -310,9 +310,9 @@ namespace BenchTool
                     const string DockerTmpCodeDir = "/tmp/code";
                     var additonalDockerVolumn = string.Empty;
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT
-                        && !langEnvConfig.DockerVolumn.IsEmptyOrWhiteSpace())
+                        && langEnvConfig.DockerVolumns?.Length > 0)
                     {
-                        additonalDockerVolumn = $"-v {langEnvConfig.DockerVolumn}";
+                        additonalDockerVolumn = string.Join(" ", langEnvConfig.DockerVolumns.Select(v => $"-v {v}"));
                     }
 
                     buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
