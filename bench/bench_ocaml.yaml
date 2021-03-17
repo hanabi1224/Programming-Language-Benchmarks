@@ -37,7 +37,7 @@ environments:
     include: ocaml
     before_build:
       - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
-    build: opam install . -y && dune build --release
+    build: opam install . -y && dune build
     after_build:
       - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
       - cp _build/default/app.exe out

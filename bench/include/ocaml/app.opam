@@ -6,7 +6,7 @@ description: "Opam package"
 maintainer: ["hanabi1224"]
 license: ["MIT"]
 build: [
-   [ "dune" "build" "--release" ]
+   [ "dune" "build" ]
 ]
 depends: [
   "dune" {build}
