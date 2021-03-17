@@ -53,7 +53,7 @@ let make_random_fasta last id desc table n =
   let line = Bytes.create nchars in
   let last_n = ref last in
   let pos = ref 0 in
-  for i = 1 to nlines-1 do
+  for _ = 1 to nlines-1 do
     let current_pos = !pos in
     let final_pos = current_pos + width-1 in
     for j = current_pos to final_pos do
@@ -87,7 +87,7 @@ let make_repeat_fasta id desc src n =
   print_char '\n';
   let l = Bytes.length src
   and i0 = ref 0 in
-  for i = 1 to n / width do
+  for _ = 1 to n / width do
     i0 := write src !i0 l width;
   done;
   let w = n mod width in

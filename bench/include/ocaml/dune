@@ -1,6 +1,5 @@
-;; This declares the hello_world executable implemented by hello_world.ml
 (executable
  (name app)
- ; (libraries zarith)
+ (ocamlopt_flags -O3 -inline 100 -nodynlink -noassert -unsafe -fPIC)
  (modes byte exe)
- )
+)

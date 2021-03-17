@@ -15,9 +15,6 @@ problems:
   - name: fasta
     source:
       - 6.ml
-  - name: mandelbrot
-    source:
-      - 1.ml
   - name: spectral-norm
     source:
       - 2.ml

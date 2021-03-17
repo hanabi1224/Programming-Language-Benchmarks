@@ -32,7 +32,7 @@ let eval_AtA_times_u u v =
 let () =
   let n = try int_of_string(Array.get Sys.argv 1) with _ ->  2000 in
   let u = Array.make n 1.0  and  v = Array.make n 0.0 in
-  for i = 0 to 9 do
+  for _ = 0 to 9 do
     eval_AtA_times_u u v; eval_AtA_times_u v u
   done;
 
