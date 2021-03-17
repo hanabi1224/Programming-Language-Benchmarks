@@ -85,7 +85,7 @@ namespace BenchTool
 
         public string Docker { get; set; }
 
-        public string DockerVolumn { get; set; }
+        public string[] DockerVolumns { get; set; }
 
         public string Include { get; set; }
 

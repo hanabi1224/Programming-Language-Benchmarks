@@ -1,17 +1,17 @@
 lang: ocaml
 problems:
-  # - name: helloworld
-  #   source:
-  #     - 1.ml
-  # - name: binarytrees
-  #   source:
-  #     - 5.ml
-  # - name: fannkuch-redux
-  #   source:
-  #     - 2.ml
-  # - name: nbody
-  #   source:
-  #     - 1.ml
+  - name: helloworld
+    source:
+      - 1.ml
+  - name: binarytrees
+    source:
+      - 5.ml
+  - name: fannkuch-redux
+    source:
+      - 2.ml
+  - name: nbody
+    source:
+      - 1.ml
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -23,11 +23,14 @@ environments:
     version: latest
     compiler_version_command: ocamlc --version
     docker: ocaml/opam
-    docker_volumn: /home/appveyor/.opam/download-cache/:/home/opam/.opam/download-cache
+    # docker_volumns:
+    #   - /tmp/.opam/download-cache/:/home/opam/.opam/download-cache
     include: ocaml
     before_build:
+      - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
     build: opam install . -y && dune build
     after_build:
+      - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
       - cp _build/default/app.exe out
     out_dir: out
     run_cmd: app.exe

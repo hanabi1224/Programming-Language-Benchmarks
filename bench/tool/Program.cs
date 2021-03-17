@@ -247,7 +247,8 @@ namespace BenchTool
                 .FallBackTo(Path.GetFileName(srcCodePath));
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
-            File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
+            //File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
+            await File.WriteAllTextAsync(path: srcCodeDestPath, await File.ReadAllTextAsync(srcCodePath).ConfigureAwait(false)).ConfigureAwait(false);
             if (_verbose)
             {
                 await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
@@ -310,9 +311,9 @@ namespace BenchTool
                     const string DockerTmpCodeDir = "/tmp/code";
                     var additonalDockerVolumn = string.Empty;
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT
-                        && !langEnvConfig.DockerVolumn.IsEmptyOrWhiteSpace())
+                        && langEnvConfig.DockerVolumns?.Length > 0)
                     {
-                        additonalDockerVolumn = $"-v {langEnvConfig.DockerVolumn}";
+                        additonalDockerVolumn = string.Join(" ", langEnvConfig.DockerVolumns.Select(v => $"-v {v}"));
                     }
 
                     buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
