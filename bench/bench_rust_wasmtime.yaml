@@ -36,7 +36,7 @@ environments:
     docker: rust:1-slim
     docker_volumns:
       - /tmp/rust/target:/tmp/rust/target
-      - /home/appveyor/.cargo/registry:/usr/local/cargo/registry
+      - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
     build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi && cp /tmp/rust/target/wasm32-wasi/release/_app.wasm out

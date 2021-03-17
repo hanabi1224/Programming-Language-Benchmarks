@@ -40,9 +40,9 @@ environments:
     docker: rust:1-slim
     docker_volumns:
       - /tmp/rust/target:/tmp/rust/target
-      - /home/appveyor/.cargo/registry:/usr/local/cargo/registry
+      - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
-    build: cargo build --release --target-dir /tmp/rust/target && cp target/release/_app out
+    build: cargo build --release --target-dir /tmp/rust/target && cp /tmp/rust/target/release/_app out
     out_dir: out
     run_cmd: _app
