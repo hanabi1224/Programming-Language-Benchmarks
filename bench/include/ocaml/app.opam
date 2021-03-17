@@ -12,5 +12,6 @@ depends: [
   "dune" {build}
   # "opam-lock" {dev}
   # "ocaml" {>= "4.11.1"}
-  # "zarith" {>= "1.11"}
+  # "zarith" {>= "1.12"}
+  # "gmp" {>= "6.2.1"}
 ]
