@@ -12,6 +12,15 @@ problems:
   - name: nbody
     source:
       - 1.ml
+  - name: fasta
+    source:
+      - 6.ml
+  - name: mandelbrot
+    source:
+      - 1.ml
+  - name: spectral-norm
+    source:
+      - 2.ml
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -28,7 +37,7 @@ environments:
     include: ocaml
     before_build:
       - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
-    build: opam install . -y && dune build
+    build: opam install . -y && dune build --release
     after_build:
       - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
       - cp _build/default/app.exe out
