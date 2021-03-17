@@ -45,6 +45,6 @@ environments:
     include_sub_dir: src
     build: cargo build --release --target-dir /tmp/rust/target
     after_build:
-      - mv /tmp/rust/target/release/_app out
+      - sudo mv /tmp/rust/target/release/_app out
     out_dir: out
     run_cmd: _app
