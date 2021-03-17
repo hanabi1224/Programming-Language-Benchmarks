@@ -47,5 +47,6 @@ environments:
     after_build:
       - sudo mv /tmp/rust/target/release/_app out
       - sudo rm /tmp/rust/target/release/_app.*
+      - sudo rm -r /tmp/rust/target/release/deps
     out_dir: out
     run_cmd: _app

@@ -43,6 +43,7 @@ environments:
     after_build:
       - sudo mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
       - sudo rm /tmp/rust/target/wasm32-wasi/release/_app.*
+      - sudo rm -r /tmp/rust/target/wasm32-wasi/release/deps
     out_dir: out
     run_cmd: wasmtime run _app.wasm
     runtime_included: false
