@@ -3,11 +3,8 @@
 //
 // contributed by the Rust Project Developers
 // contributed by TeXitoi
-// *reset*
+// modified into single-thread version by hanabi1224
 
-extern crate typed_arena;
-
-use std::thread;
 use typed_arena::Arena;
 
 struct Tree<'a> {
@@ -72,12 +69,12 @@ fn main() {
         .filter(|&d| d % 2 == 0)
         .map(|depth| {
             let iterations = 1 << ((max_depth - depth + min_depth) as u32);
-            thread::spawn(move || inner(depth, iterations))
+            inner(depth, iterations)
         })
         .collect::<Vec<_>>();
 
     for message in messages.into_iter() {
-        println!("{}", message.join().unwrap());
+        println!("{}", message);
     }
 
     println!(

@@ -30,14 +30,14 @@ compiler_version_command: rustc -V
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
-environments:
-  - os: linux
-    compiler: rustc
-    version: 1
-    docker: rust:1-slim
-    docker_volumn: /home/appveyor/.cargo/registry:/usr/local/cargo/registry
-    include: rust
-    include_sub_dir: src
-    build: cargo build --release
-    out_dir: target/release
-    run_cmd: _app
+# environments:
+#   - os: linux
+#     compiler: rustc
+#     version: 1
+#     docker: rust:1-slim
+#     docker_volumn: /home/appveyor/.cargo/registry:/usr/local/cargo/registry
+#     include: rust
+#     include_sub_dir: src
+#     build: cargo build --release
+#     out_dir: target/release
+#     run_cmd: _app
