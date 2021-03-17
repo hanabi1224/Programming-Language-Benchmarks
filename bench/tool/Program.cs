@@ -247,7 +247,8 @@ namespace BenchTool
                 .FallBackTo(Path.GetFileName(srcCodePath));
             var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
-            File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
+            //File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
+            await File.WriteAllTextAsync(path: srcCodeDestPath, await File.ReadAllTextAsync(srcCodePath).ConfigureAwait(false)).ConfigureAwait(false);
             if (_verbose)
             {
                 await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);

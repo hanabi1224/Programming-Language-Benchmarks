@@ -46,7 +46,5 @@ environments:
     build: cargo build --release --target-dir /tmp/rust/target
     after_build:
       - sudo mv /tmp/rust/target/release/_app out
-      - sudo rm /tmp/rust/target/release/_app.*
-      - sudo rm -r /tmp/rust/target/release/deps/_app.*
     out_dir: out
     run_cmd: _app
