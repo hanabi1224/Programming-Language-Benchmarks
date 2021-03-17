@@ -154,11 +154,16 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import { Component, Watch } from 'vue-property-decorator'
+import { Component, Watch, Vue } from 'nuxt-property-decorator'
 import $ from 'jquery'
 import _ from 'lodash'
-import { getFullCompilerVersion } from '~/contentUtils'
+import { getFullCompilerVersion, mergeLangBenchResults } from '~/contentUtils'
+
+function requireAll(requireContext: any) {
+  const r = requireContext.keys().map(requireContext)
+  return mergeLangBenchResults(r)
+}
+const langs = requireAll((require as any).context('../content', true, /.json$/))
 
 @Component({
   components: {},
@@ -169,7 +174,7 @@ export default class LangMetaPage extends Vue {
   allProblems?: string[]
   lang?: LangBenchResults
   other?: LangBenchResults
-  langs?: LangBenchResults[]
+  langs: LangBenchResults[] = langs
 
   activeBenchmarks: BenchResult[] = []
 
@@ -308,7 +313,6 @@ export default class LangMetaPage extends Vue {
     this.allProblems = this.meta?.allProblems
     this.lang = this.meta?.lang
     this.other = this.meta?.other
-    this.langs = _.chain(this.meta?.all).value()
 
     this.activeBenchmarks =
       this.lang?.benchmarks ??

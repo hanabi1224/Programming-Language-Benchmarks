@@ -8,20 +8,24 @@ const lang2Display: { [key: string]: string } = {
 export async function getLangBenchResults($content: contentFunc) {
   const pages = await $content('/', { deep: true }).fetch() as IContentDocument[];
   var benchResults = pages as unknown as BenchResult[];
+  return mergeLangBenchResults(benchResults);
+}
+
+export function mergeLangBenchResults(benchResults: BenchResult[]) {
   benchResults = _.chain(benchResults).filter(i => !!i.lang).value();
   benchResults.forEach(i => {
-    i.compilerVersion = getRealShortCompilerVersion(i);
-  });
+    i.compilerVersion = getRealShortCompilerVersion(i)
+  })
 
   var groupsByLang = _.chain(benchResults).groupBy(i => i.lang).value();
   var r: LangBenchResults[] = [];
   for (var k in groupsByLang) {
     const benches = groupsByLang[k];
-    console.log(`${k}: ${benches.length} benchmark results`);
-    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: benches });
+    console.log(`${k}: ${benches.length} benchmark results`)
+    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: benches })
   }
 
-  return _.chain(r).orderBy(['langDisplay'], ['asc']).value();
+  return _.chain(r).orderBy(['langDisplay'], ['asc']).value()
 }
 
 export function getFullCompilerVersion(i: BenchResult) {

@@ -6,7 +6,7 @@ import _ from 'lodash';
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-
+  ssr: true,
   loading: {
     color: 'cyan',
   },
@@ -90,7 +90,6 @@ const config: NuxtConfig = {
           component: resolve(__dirname, 'components/LangMetaPage.vue'),
           meta: {
             lang: l,
-            all: langBenchResults,
           } as LangPageMeta,
         });
 
@@ -103,7 +102,6 @@ const config: NuxtConfig = {
               meta: {
                 lang: l,
                 other: l2,
-                all: langBenchResults,
               } as LangPageMeta,
             });
           }

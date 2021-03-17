@@ -44,3 +44,13 @@ environments:
     build: cp -a /opt/pypy/ ./out
     out_dir: out
     run_cmd: pypy/bin/pypy3 c.py
+  - os: linux
+    compiler: pyston
+    version: latest
+    docker:
+    runtime_version_parameter: -V
+    include:
+    build: cp c.py out
+    out_dir: out
+    run_cmd: pyston c.py
+    runtime_included: false
