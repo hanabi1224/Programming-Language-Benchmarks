@@ -27,7 +27,7 @@ environments:
     #   - /tmp/.opam/download-cache/:/home/opam/.opam/download-cache
     include: ocaml
     before_build:
-      - mkdir _build
+      - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
     build: opam install . -y && dune build
     after_build:
       - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
