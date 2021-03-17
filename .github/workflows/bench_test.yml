@@ -14,9 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
-        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
-        lang: [rust]
+        # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang]
+        # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang]
+        lang: [ocaml]
     steps:
       - uses: actions/checkout@v2
       - name: Install lua
