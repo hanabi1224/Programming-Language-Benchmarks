@@ -16,7 +16,7 @@ jobs:
         os: [ubuntu-20.04]
         # lang: [csharp, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
         # lang: [csharp, dart, go, haskell, java, javascript, julia, kotlin, lua, nim, python, ruby, rust, swift, typescript, vlang]
-        lang: [lua, python]
+        lang: [rust]
     steps:
       - uses: actions/checkout@v2
       - name: Install lua
