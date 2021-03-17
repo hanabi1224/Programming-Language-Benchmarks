@@ -39,7 +39,9 @@ environments:
       - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
-    build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi && cp /tmp/rust/target/wasm32-wasi/release/_app.wasm out
+    build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi
+    after_build:
+      - mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
     run_cmd: wasmer run --llvm _app.wasm
     runtime_included: false
@@ -52,7 +54,9 @@ environments:
       - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
-    build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi && cp /tmp/rust/target/wasm32-wasi/release/_app.wasm out
+    build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi
+    after_build:
+      - mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
     run_cmd: wasmer run --cranelift _app.wasm
     runtime_included: false
