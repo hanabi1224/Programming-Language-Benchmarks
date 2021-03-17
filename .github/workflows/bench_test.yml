@@ -82,9 +82,7 @@ jobs:
           echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
           cat $PROFILE
       - name: Install
-        run: | 
-          echo '# placeholder' >> $PROFILE
-          sudo chmod 666 /var/run/docker.sock
+        run: echo '# placeholder' >> $PROFILE
       - name: Build
         run: |
           source $PROFILE
