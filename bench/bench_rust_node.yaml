@@ -1,0 +1,48 @@
+lang: rust
+problems:
+  - name: helloworld
+    source:
+      - 1.rs
+  - name: binarytrees
+    source:
+      - 1.rs
+  - name: nbody
+    source:
+      - 1.rs
+  - name: spectral-norm
+    source:
+      - 1.rs
+  # - name: mandelbrot
+  #   source:
+  #     - 8.rs
+  - name: fasta
+    source:
+      - 1.rs
+  - name: fannkuch-redux
+    source:
+      - 2.rs
+  - name: pidigits
+    source:
+      - 1.rs
+source_rename_to: main.rs
+compiler_version_command: rustc -V
+compiler_version_regex:
+runtime_version_parameter: --version
+runtime_version_regex:
+environments:
+  - os: linux
+    compiler: node
+    version: 1
+    docker: rust:1-slim
+    docker_volumns:
+      - /tmp/rust/target:/tmp/rust/target
+      - /tmp/.cargo/registry:/usr/local/cargo/registry
+    include: rust
+    include_sub_dir: src
+    build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi
+    after_build:
+      - sudo mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
+      - cp wrapper.js out
+    out_dir: out
+    run_cmd: node --experimental-wasi-unstable-preview1 wrapper.js
+    runtime_included: false

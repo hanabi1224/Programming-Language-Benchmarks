@@ -69,8 +69,6 @@ problems:
         repeat: 2
       - input: 11
         repeat: 2
-        exclude_langs:
-          - ocaml
   - name: fasta
     unittests:
       - input: 1000
