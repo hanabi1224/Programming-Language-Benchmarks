@@ -3,7 +3,7 @@ const fs = require('fs');
 const { WASI } = require('wasi');
 
 const wasi = new WASI({
-    args: process.argv,
+    args: process.argv.slice(1),
     env: process.env,
 });
 
