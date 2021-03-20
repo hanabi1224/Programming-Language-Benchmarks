@@ -74,7 +74,7 @@ jobs:
           docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
           sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
       - name: Install deno
-        if: matrix.lang == 'typescript'
+        if: matrix.lang == 'typescript' || matrix.lang == 'rust' || matrix.lang == 'wasm'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
           echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
