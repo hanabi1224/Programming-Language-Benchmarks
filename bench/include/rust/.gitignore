@@ -1,1 +1,3 @@
 !Cargo.toml
+!*.js
+!*.ts
