@@ -43,6 +43,7 @@ environments:
     after_build:
       - sudo mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
       - cp wrapper.js out
+      - ls -al out
     out_dir: out
     run_cmd: node --experimental-wasi-unstable-preview1 wrapper.js
     runtime_included: false

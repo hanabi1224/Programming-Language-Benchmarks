@@ -31,7 +31,7 @@ runtime_version_parameter: --version
 runtime_version_regex:
 environments:
   - os: linux
-    compiler: node
+    compiler: deno
     version: 1
     docker: rust:1-slim
     docker_volumns:
