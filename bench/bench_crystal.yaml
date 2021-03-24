@@ -3,6 +3,9 @@ problems:
   - name: helloworld
     source:
       - 1.cr
+  - name: nbody
+    source:
+      - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:
