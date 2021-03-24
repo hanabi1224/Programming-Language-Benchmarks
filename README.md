@@ -11,7 +11,7 @@ Yet another implementation of [The Computer Language Benchmarks Game](https://be
 *The idea is to build an automatic process for benchmark generation and pulishing*
 
 ### Comparable numbers
-*It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests run in sequence within a single CI job*
+*It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job*
 
 ### Automatic publish
 
@@ -20,7 +20,7 @@ Yet another implementation of [The Computer Language Benchmarks Game](https://be
 
 # [Website](https://another-benchmarks-game.vercel.app/)
 ### Build
-To achieve better SEO, the published site is static and prerenderd, powered by [nuxt.js](https://nuxtjs.org/). 
+To achieve better SEO, the published site is static and prerenderd, powered by [nuxt.js](https://nuxtjs.org/).
 
 ### Host
 The website is hosted on [Vercel](https://vercel.com/)
@@ -102,7 +102,7 @@ Intergrate build / test / benchmark infomation into website
 ...
 
 # How to contribute
-TODO 
+TODO
 
 # LICENSES
 Code of problem implementation from [The Computer Language Benchmarks Game](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/) is under their [Revised BSD](https://benchmarksgame-team.pages.debian.net/benchmarksgame/license.html)
