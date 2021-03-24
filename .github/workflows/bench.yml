@@ -17,6 +17,7 @@ jobs:
         lang:
           [
             csharp,
+            crystal,
             dart,
             go,
             haskell,
@@ -47,6 +48,13 @@ jobs:
           make && sudo make install
           sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
           luajit -v
+      - name: Install crystal
+        if: matrix.lang == 'crystal'
+        run: |
+          # https://crystal-lang.org/install/on_ubuntu/
+          curl -fsSL https://crystal-lang.org/install.sh | sudo bash
+          sudo apt install -y libgmp-dev
+          crystal version
       - name: Install python
         if: matrix.lang == 'python'
         run: |
