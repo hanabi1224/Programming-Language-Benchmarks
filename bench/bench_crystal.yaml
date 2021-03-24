@@ -12,11 +12,12 @@ environments:
   - os: linux
     compiler: crystal
     version: latest
-    docker: 
+    docker:
     include: crystal
     include_sub_dir: src
-    # before_build:
-    build: shards install && shards build --release
+    before_build:
+      - shards install
+    build: shards build --release
     # after_build:
     out_dir: bin
     run_cmd: app
