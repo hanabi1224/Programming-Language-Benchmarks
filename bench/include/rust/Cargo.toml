@@ -7,6 +7,7 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 generic-array = "0"
+ibig = "0"
 num-bigint = "0"
 num-traits = "0"
 num_cpus = "1"
