@@ -28,11 +28,11 @@ problems:
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
-runtime_version_parameter: -V
+runtime_version_parameter: --version
 runtime_version_regex:
 environments:
   - os: linux
-    compiler: wasmtime
+    compiler: deno
     version: 1
     docker: rust:1-slim
     docker_volumns:
@@ -43,6 +43,7 @@ environments:
     build: rustup target add wasm32-wasi && cargo build --release --target-dir /tmp/rust/target --target wasm32-wasi
     after_build:
       - sudo mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
+      - cp wrapper.ts out
     out_dir: out
-    run_cmd: wasmtime run _app.wasm
+    run_cmd: deno run --unstable --allow-env --allow-read wrapper.ts --
     runtime_included: false
