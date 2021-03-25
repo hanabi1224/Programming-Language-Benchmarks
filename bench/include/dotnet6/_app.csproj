@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net5;netcoreapp3.1;</TargetFrameworks>
+        <TargetFrameworks>net6</TargetFrameworks>
         <OutputType>Exe</OutputType>
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
