@@ -4,7 +4,7 @@
 # Optimized for Ruby by Jesse Millikan
 # From version ported by Michael Neumann from the C gcc version,
 # which was written by Christoph Bauer.
-# ported to crystal by hanabi1224
+# ported from ruby to crystal by hanabi1224
 
 SOLAR_MASS = Float64.new(4 * Math::PI**2)
 DAYS_PER_YEAR = Float64.new(365.24)
