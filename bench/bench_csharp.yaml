@@ -32,20 +32,20 @@ source_rename_to: app.cs
 environments:
   - os: linux
     compiler: dotnet
-    version: 6.0
+    version: 6
     compiler_version_command: dotnet --version
     docker: mcr.microsoft.com/dotnet/sdk:6.0-alpine
     include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f net6.0 -o out
+    build: dotnet publish -c Release -r linux-x64 -f net6 -o out
     out_dir: out
     run_cmd: _app
   - os: linux
     compiler: dotnet
-    version: 5.0
+    version: 5
     compiler_version_command: dotnet --version
     docker: mcr.microsoft.com/dotnet/sdk:5.0-alpine
     include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f net5.0 -o out
+    build: dotnet publish -c Release -r linux-x64 -f net5 -o out
     out_dir: out
     run_cmd: _app
   - os: linux
