@@ -73,6 +73,7 @@ namespace BenchTool
 
                 IList<Process> childrenProcesses = null;
 
+                var nLoop = 0;
                 while (true)
                 {
                     try
@@ -128,6 +129,10 @@ namespace BenchTool
                                 }
                             }
                         }
+                        else if (nLoop < 10 || m.PeakMemoryBytes <= 0)
+                        {
+                            Thread.Sleep(1);
+                        }
                         else
                         {
                             Thread.Sleep(sampleIntervalMS);
@@ -137,6 +142,8 @@ namespace BenchTool
                         {
                             return;
                         }
+
+                        nLoop++;
                     }
                     catch (InvalidOperationException)
                     {
