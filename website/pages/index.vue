@@ -28,7 +28,7 @@
           >.
         </p>
         <p class="pt-5">
-          It currently use CI to generate benchmark results to garantee all the
+          It currently uses CI to generate benchmark results to garantee all the
           numbers are generated from the same environment at nearly the same
           time. All benchmark tests are executed in a single CI job
         </p>
