@@ -12,28 +12,28 @@ ALU =
   "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA"
 
 IUB = {
-  "a" => 0.27,
-  "c" => 0.12,
-  "g" => 0.12,
-  "t" => 0.27,
-  "B" => 0.02,
-  "D" => 0.02,
-  "H" => 0.02,
-  "K" => 0.02,
-  "M" => 0.02,
-  "N" => 0.02,
-  "R" => 0.02,
-  "S" => 0.02,
-  "V" => 0.02,
-  "W" => 0.02,
-  "Y" => 0.02,
+  'a' => 0.27,
+  'c' => 0.12,
+  'g' => 0.12,
+  't' => 0.27,
+  'B' => 0.02,
+  'D' => 0.02,
+  'H' => 0.02,
+  'K' => 0.02,
+  'M' => 0.02,
+  'N' => 0.02,
+  'R' => 0.02,
+  'S' => 0.02,
+  'V' => 0.02,
+  'W' => 0.02,
+  'Y' => 0.02,
 }
 
 HOMOSAPIENS = {
-  "a" => 0.3029549426680,
-  "c" => 0.1979883004921,
-  "g" => 0.1975473066391,
-  "t" => 0.3015094502008,
+  'a' => 0.3029549426680,
+  'c' => 0.1979883004921,
+  'g' => 0.1975473066391,
+  't' => 0.3015094502008,
 }
 
 class Fasta
@@ -56,17 +56,23 @@ class Fasta
     rand, v = nil, nil
     prob = 0.0
     table.each { |(k, p)| table[k] = prob += p }
-    output = ""
+    output = String::Builder.new(capacity:60)
     n.times do
       rand = gen_random(1.0)
       table.each do |(k, p)|
         if p > rand
-          output += k
+          output << k
+          if output.bytesize == 60
+            puts output.to_s
+            output = String::Builder.new(capacity:60)
+          end
           break
         end
       end
     end
-    0.step(to: output.size - 1, by: 60) { |x| print output[x, 60], "\n" }
+    if output.bytesize > 0
+      puts output.to_s
+    end
   end
 end
 
