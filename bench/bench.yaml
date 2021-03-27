@@ -93,9 +93,8 @@ langs:
           - 1.go
       - name: binarytrees
         source:
-          # - 1.go
-          # - 2.go
-          - 4.go
+          - 1.go
+          - 2.go
       - name: nbody
         source:
           - 1.go
