@@ -5,7 +5,8 @@ problems:
       - 1.cs
   - name: binarytrees
     source:
-      - 6.cs
+      - 1.cs
+      - 2.cs
   - name: nbody
     source:
       - 8.cs
