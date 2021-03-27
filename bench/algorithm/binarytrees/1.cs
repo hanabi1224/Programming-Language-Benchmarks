@@ -57,11 +57,6 @@ class BinaryTrees
         Console.WriteLine($"stretch tree of depth {stretchDepth}\t check: {TreeNode.Create(stretchDepth).Check()}");
 
         var longLivedTree = TreeNode.Create(maxDepth);
-        var longLivedText = Task.Run(() =>
-        {
-            return $"long lived tree of depth {maxDepth}\t check: {longLivedTree.Check()}";
-        });
-
         var nResults = (maxDepth - MinDepth) / 2 + 1;
         for (int i = 0; i < nResults; i++)
         {
