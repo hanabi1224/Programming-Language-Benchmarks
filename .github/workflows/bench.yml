@@ -81,6 +81,13 @@ jobs:
         run: |
           docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
           sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
+          sudo apt install -y libgc-dev
+          git clone https://github.com/vlang/v /tmp/vlang
+          pushd /tmp/vlang
+          make && ./v -version
+          sudo ./v symlink
+          popd
+          v --version
       - name: Install deno
         if: matrix.lang == 'typescript' || matrix.lang == 'rust' || matrix.lang == 'wasm'
         run: |
