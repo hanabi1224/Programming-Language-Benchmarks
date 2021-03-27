@@ -15,6 +15,10 @@ problems:
   - name: fasta
     source:
       - 1.cr
+      - 2.cr
+  - name: fannkuch-redux
+    source:
+      - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:
