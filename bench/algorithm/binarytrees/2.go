@@ -1,9 +1,3 @@
-/* The Computer Language Benchmarks Game
- * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
- *
- * Contributed by Alexandr Karbivnichiy
- */
-
 package main
 
 import (
@@ -15,32 +9,30 @@ import (
 )
 
 type Node struct {
-	next *Next
+	left  *Node
+	right *Node
 }
 
-type Next struct {
-	left, right Node
-}
-
-func createTree(depth int) Node {
+func createTree(depth int) *Node {
 	if depth > 1 {
-		return Node{&Next{createTree(depth - 1), createTree(depth - 1)}}
+		return &Node{createTree(depth - 1), createTree(depth - 1)}
 	}
-	return Node{&Next{Node{}, Node{}}}
+	return &Node{&Node{}, &Node{}}
 }
 
-func checkTree(node Node) int {
+func (node *Node) checkTree() int {
 	sum := 1
-	current := node.next
-	for current != nil {
-		sum += checkTree(current.right) + 1
-		current = current.left.next
+	if node.left != nil {
+		sum += node.left.checkTree()
+	}
+	if node.right != nil {
+		sum += node.right.checkTree()
 	}
 	return sum
 }
 
 func main() {
-	n := 0
+	n := 10
 	flag.Parse()
 	if flag.NArg() > 0 {
 		n, _ = strconv.Atoi(flag.Arg(0))
@@ -50,7 +42,7 @@ func main() {
 
 func run(maxDepth int) {
 	const minDepth = 4
-	var longLivedTree Node
+	var longLivedTree *Node
 	var group sync.WaitGroup
 	var messages sync.Map
 
@@ -61,7 +53,7 @@ func run(maxDepth int) {
 	group.Add(1)
 	go func() {
 		messages.Store(-1, fmt.Sprintf("stretch tree of depth %d\t check: %d",
-			maxDepth+1, checkTree(createTree(maxDepth+1))))
+			maxDepth+1, createTree(maxDepth+1).checkTree()))
 		longLivedTree = createTree(maxDepth)
 		group.Done()
 	}()
@@ -71,7 +63,7 @@ func run(maxDepth int) {
 		group.Add(1)
 		go func(depth, iters, chk int) {
 			for i := 0; i < iters; i++ {
-				chk += checkTree(createTree(depth))
+				chk += createTree(depth).checkTree()
 			}
 			messages.Store(depth, fmt.Sprintf("%d\t trees of depth %d\t check: %d",
 				iters, depth, chk))
@@ -93,5 +85,5 @@ func run(maxDepth int) {
 	}
 
 	fmt.Printf("long lived tree of depth %d\t check: %d\n",
-		maxDepth, checkTree(longLivedTree))
+		maxDepth, longLivedTree.checkTree())
 }

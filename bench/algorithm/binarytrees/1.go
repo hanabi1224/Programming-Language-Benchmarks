@@ -18,7 +18,8 @@ import (
 var n = 0
 
 type Node struct {
-	left, right *Node
+	left  *Node
+	right *Node
 }
 
 func bottomUpTree(depth int) *Node {
