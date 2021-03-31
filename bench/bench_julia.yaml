@@ -6,9 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 4.jl
-  - name: mandelbrot
-    source:
-      - 8.jl
+  # - name: mandelbrot
+  #   source:
+  #     - 8.jl
   - name: nbody
     source:
       - 7.jl
@@ -33,8 +33,8 @@ source_rename_to: c.jl
 environments:
   - os: linux
     compiler: julia
-    version: 1
-    docker: julia:1
+    version: latest
+    docker: julia
     include:
     include_sub_dir: out
     build: cp -a /usr/local/julia out
