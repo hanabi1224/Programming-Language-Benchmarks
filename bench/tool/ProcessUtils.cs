@@ -53,6 +53,8 @@ namespace BenchTool
     public static class ProcessUtils
     {
         private static readonly bool s_isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static readonly bool s_isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        private static readonly bool s_isOsx = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
         private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
@@ -60,7 +62,7 @@ namespace BenchTool
 
         static ProcessUtils()
         {
-            if (!s_isWindows)
+            if (s_isLinux)
             {
                 // Look up the number of ticks per second in the system's configuration,
                 // then use that to convert to a TimeSpan
@@ -157,7 +159,8 @@ namespace BenchTool
                     try
                     {
                         var isChildProcessCpuTimeCounted = false;
-                        if (!s_isWindows)
+                        long totalMemoryBytes = 0;
+                        if (s_isLinux)
                         {
                             if (procfs.TryReadStatFile(pid, out var stat))
                             {
@@ -165,6 +168,10 @@ namespace BenchTool
                                 var childrenTicks = stat.cutime + stat.cstime;
                                 m.CpuTime = TicksToTimeSpanLinux(selfTicks + childrenTicks);
                                 isChildProcessCpuTimeCounted = childrenTicks > 0;
+                                if (procfs.TryReadStatusFile(pid, out var status))
+                                {
+                                    totalMemoryBytes = (long)status.VmRSS;
+                                }
                             }
                             p.Refresh();
                         }
@@ -172,9 +179,8 @@ namespace BenchTool
                         {
                             p.Refresh();
                             m.CpuTime = p.TotalProcessorTime;
+                            totalMemoryBytes = p.WorkingSet64;
                         }
-
-                        var totalMemoryBytes = p.WorkingSet64;
 
                         // Look for children process after first recording
                         if (childProcesses == null && (isChildProcessCpuTimeCounted || forceCheckChildProcesses))
@@ -210,20 +216,23 @@ namespace BenchTool
                                 {
                                     if (!cp.HasExited)
                                     {
-                                        cp.Refresh();
                                         if (!isChildProcessCpuTimeCounted)
                                         {
-                                            if (s_isWindows)
+                                            if (!s_isLinux)
                                             {
+                                                cp.Refresh();
                                                 m.CpuTime += cp.TotalProcessorTime;
+                                                totalMemoryBytes += cp.WorkingSet64;
                                             }
                                             else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
                                             {
                                                 m.CpuTime += TicksToTimeSpanLinux(cpstat.utime + cpstat.stime);
+                                                if (procfs.TryReadStatusFile(cp.Id, out var cpstatus))
+                                                {
+                                                    totalMemoryBytes += (long)cpstatus.VmRSS;
+                                                }
                                             }
                                         }
-
-                                        totalMemoryBytes += cp.WorkingSet64;
                                     }
                                 }
                                 catch (Exception e)
