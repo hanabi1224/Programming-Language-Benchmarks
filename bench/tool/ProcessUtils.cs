@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using NLog;
+using static Interop;
 
 namespace BenchTool
 {
@@ -49,18 +52,95 @@ namespace BenchTool
 
     public static class ProcessUtils
     {
+        private static readonly bool s_isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
+
+        private static long s_ticksPerSecond;
+
+        static ProcessUtils()
+        {
+            if (!s_isWindows)
+            {
+                // Look up the number of ticks per second in the system's configuration,
+                // then use that to convert to a TimeSpan
+                var ticksPerSecond = Interop.Sys.SysConf(Interop.Sys.SysConfName._SC_CLK_TCK);
+                if (ticksPerSecond <= 0)
+                {
+                    throw new Win32Exception();
+                }
+
+                Volatile.Write(ref s_ticksPerSecond, ticksPerSecond);
+            }
+        }
+
+        /// <summary>Convert a number of "jiffies", or ticks, to a TimeSpan.</summary>
+        /// <param name="ticks">The number of ticks.</param>
+        /// <returns>The equivalent TimeSpan.</returns>
+        internal static TimeSpan TicksToTimeSpanLinux(double ticks)
+        {
+            return TimeSpan.FromSeconds(ticks / s_ticksPerSecond);
+        }
+
+        private static async Task<IReadOnlySet<int>> GetChildProcessIdsLinuxAsync(int pid)
+        {
+            var immediateChildren = await GetImmediateChildProcessIdsLinuxAsync(pid).ConfigureAwait(false);
+            if (immediateChildren.Count == 0)
+            {
+                return immediateChildren;
+            }
+
+            var children = new HashSet<int>(immediateChildren);
+            foreach (var cpid in immediateChildren)
+            {
+                var c = await GetChildProcessIdsLinuxAsync(cpid).ConfigureAwait(false);
+                foreach (var cpid2 in c)
+                {
+                    children.Add(cpid2);
+                }
+            }
+
+            return children;
+        }
+
+        private static async Task<IReadOnlySet<int>> GetImmediateChildProcessIdsLinuxAsync(int pid)
+        {
+            var result = new HashSet<int>();
+            // Looking for child processes
+            var stdoutBuilder = new StringBuilder();
+            // FIXME: child process lookup logic is not for windows here
+            await RunCommandAsync(command: $"pgrep -P {pid}", stdOutBuilder: stdoutBuilder).ConfigureAwait(false);
+            var stdout = stdoutBuilder.ToString().Trim();
+            if (!stdout.IsEmptyOrWhiteSpace())
+            {
+                var matches = Regex.Matches(stdout, @"\d+", RegexOptions.Compiled);
+                if (matches?.Count > 0)
+                {
+                    foreach (Match m in matches)
+                    {
+                        var cpid = int.Parse(m.Value);
+                        if (cpid != pid)
+                        {
+                            result.Add(cpid);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
 
         public static async Task<ProcessMeasurement> MeasureAsync(
             ProcessStartInfo startInfo,
             int sampleIntervalMS = 3,
+            bool forceCheckChildProcesses = false,
             CancellationToken token = default)
         {
             using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
             var m = new ProcessMeasurement();
             startInfo.UseShellExecute = false;
-            var p = new Process
+            using var p = new Process
             {
                 StartInfo = startInfo,
             };
@@ -68,26 +148,83 @@ namespace BenchTool
             using var manualResetEvent = new ManualResetEventSlim(initialState: false);
             var t = Task.Factory.StartNew(() =>
             {
-                IList<Process> childrenProcesses = null;
+                IList<Process> childProcesses = null;
                 var nLoop = 0;
                 manualResetEvent.Wait(cts.Token);
+                var pid = p.Id;
                 while (!cts.Token.IsCancellationRequested)
                 {
                     try
                     {
-                        p.Refresh();
-                        m.CpuTime = p.TotalProcessorTime;
-                        var totalMemoryBytes = p.WorkingSet64;
-                        if (childrenProcesses?.Count > 0)
+                        var isChildProcessCpuTimeCounted = false;
+                        if (!s_isWindows)
                         {
-                            foreach (var cp in childrenProcesses)
+                            if (procfs.TryReadStatFile(pid, out var stat))
+                            {
+                                var selfTicks = stat.utime + stat.stime;
+                                var childrenTicks = stat.cutime + stat.cstime;
+                                m.CpuTime = TicksToTimeSpanLinux(selfTicks + childrenTicks);
+                                isChildProcessCpuTimeCounted = childrenTicks > 0;
+                                //if (childrenTicks > 0 && nLoop % 100 == 0) {
+                                //    Logger.Warn($"childrenTicks:{childrenTicks}");
+                                //}
+                            }
+                        }
+                        else
+                        {
+                            p.Refresh();
+                            m.CpuTime = p.TotalProcessorTime;
+                        }
+
+                        var totalMemoryBytes = p.WorkingSet64;
+
+                        // Look for children process after first recording
+                        if (childProcesses == null && (isChildProcessCpuTimeCounted || forceCheckChildProcesses))
+                        {
+                            // Prevent 2nd check
+                            childProcesses = new List<Process>();
+                            var childrenSet = GetChildProcessIdsLinuxAsync(pid).ConfigureAwait(false).GetAwaiter().GetResult();
+                            if (childrenSet?.Count > 0)
+                            {
+                                foreach (var cpid in childrenSet)
+                                {
+                                    try
+                                    {
+                                        childProcesses.Add(Process.GetProcessById(cpid));
+                                    }
+                                    catch (ArgumentException e)
+                                    {
+                                        Logger.Warn(e);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(e);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (childProcesses?.Count > 0)
+                        {
+                            foreach (var cp in childProcesses)
                             {
                                 try
                                 {
                                     if (!cp.HasExited)
                                     {
-                                        cp.Refresh();
-                                        m.CpuTime += cp.TotalProcessorTime;
+                                        if (!isChildProcessCpuTimeCounted)
+                                        {
+                                            if (s_isWindows)
+                                            {
+                                                cp.Refresh();
+                                                m.CpuTime += cp.TotalProcessorTime;
+                                            }
+                                            else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
+                                            {
+                                                m.CpuTime += TicksToTimeSpanLinux(cpstat.utime + cpstat.stime);
+                                            }
+                                        }
+
                                         totalMemoryBytes += cp.WorkingSet64;
                                     }
                                 }
@@ -103,30 +240,7 @@ namespace BenchTool
                             m.PeakMemoryBytes = totalMemoryBytes;
                         }
 
-                        // Look for children process after first recording
-                        if (childrenProcesses == null)
-                        {
-                            // Prevent 2nd check
-                            childrenProcesses = new List<Process>();
-
-                            // Looking for child processes
-                            var stdoutBuilder = new StringBuilder();
-                            RunCommandAsync(command: $"pgrep -P {p.Id}", stdOutBuilder: stdoutBuilder).Wait();
-                            var stdout = stdoutBuilder.ToString().Trim();
-                            if (!stdout.IsEmptyOrWhiteSpace())
-                            {
-                                var matches = Regex.Matches(stdout, @"\d+", RegexOptions.Compiled);
-                                if (matches?.Count > 0)
-                                {
-                                    foreach (Match m in matches)
-                                    {
-                                        var childPid = int.Parse(m.Value);
-                                        childrenProcesses.Add(Process.GetProcessById(childPid));
-                                    }
-                                }
-                            }
-                        }
-                        else if (nLoop < 50)
+                        if (nLoop < 50)
                         {
                         }
                         else if (nLoop < 200 || m.PeakMemoryBytes <= 0)
@@ -388,7 +502,7 @@ namespace BenchTool
                     // Avoid deadlock in sync mode
                     Task.Run(async () =>
                     {
-                        await Task.Delay(1000).ConfigureAwait(false);
+                        await Task.Delay(500).ConfigureAwait(false);
                         try
                         {
                             if (!p.HasExited)
