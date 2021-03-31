@@ -507,9 +507,17 @@ namespace BenchTool
                 var measurements = new List<ProcessMeasurement>(repeat);
                 for (var i = 0; i < repeat; i++)
                 {
-                    var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
-                    Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                    measurements.Add(measurement);
+                    try
+                    {
+                        var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
+                        Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                        measurements.Add(measurement);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e);
+                        i--;
+                    }
                 }
 
                 var avgMeasurement = measurements.GetAverage();

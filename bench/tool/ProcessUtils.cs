@@ -53,9 +53,11 @@ namespace BenchTool
 
         public static async Task<ProcessMeasurement> MeasureAsync(
             ProcessStartInfo startInfo,
-            int sampleIntervalMS = 5,
+            int sampleIntervalMS = 3,
             CancellationToken token = default)
         {
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+
             var m = new ProcessMeasurement();
             startInfo.UseShellExecute = false;
             var p = new Process
@@ -63,18 +65,13 @@ namespace BenchTool
                 StartInfo = startInfo,
             };
 
-            var started = false;
+            using var manualResetEvent = new ManualResetEventSlim(initialState: false);
             var t = Task.Factory.StartNew(() =>
             {
-                while (!started)
-                {
-                    Thread.Sleep(1);
-                }
-
                 IList<Process> childrenProcesses = null;
-
                 var nLoop = 0;
-                while (true)
+                manualResetEvent.Wait(cts.Token);
+                while (!cts.Token.IsCancellationRequested)
                 {
                     try
                     {
@@ -129,7 +126,10 @@ namespace BenchTool
                                 }
                             }
                         }
-                        else if (nLoop < 10 || m.PeakMemoryBytes <= 0)
+                        else if (nLoop < 50)
+                        {
+                        }
+                        else if (nLoop < 200 || m.PeakMemoryBytes <= 0)
                         {
                             Thread.Sleep(1);
                         }
@@ -152,24 +152,30 @@ namespace BenchTool
                     catch (Exception e)
                     {
                         Logger.Error(e);
-                        return;
+                        if (cts.Token.IsCancellationRequested || p.HasExited)
+                        {
+                            return;
+                        }
+
+                        Thread.Sleep(1);
                     }
                 }
-            }, TaskCreationOptions.LongRunning);
+            }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
             var sw = Stopwatch.StartNew();
-            RunProcess(
+            var ret = RunProcess(
                 p,
                 printOnConsole: false,
                 asyncRead: true,
                 stdOutBuilder: null,
                 stdErrorBuilder: null,
                 token,
-                onStart: () => started = true);
+                onStart: () => manualResetEvent.Set());
 
             sw.Stop();
-            await t.ConfigureAwait(false);
+            cts.Cancel();
             m.Elapsed = sw.Elapsed;
+            await t.ConfigureAwait(false);
             return m;
         }
 
@@ -211,7 +217,7 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
-            await Task.Delay(1).ConfigureAwait(false);
+            await Task.Yield();
 
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
