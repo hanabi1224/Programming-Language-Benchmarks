@@ -21,6 +21,7 @@ jobs:
             dart,
             go,
             haskell,
+            haxe,
             java,
             javascript,
             julia,
