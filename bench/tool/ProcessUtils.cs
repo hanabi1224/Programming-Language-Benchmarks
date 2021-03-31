@@ -165,10 +165,8 @@ namespace BenchTool
                                 var childrenTicks = stat.cutime + stat.cstime;
                                 m.CpuTime = TicksToTimeSpanLinux(selfTicks + childrenTicks);
                                 isChildProcessCpuTimeCounted = childrenTicks > 0;
-                                //if (childrenTicks > 0 && nLoop % 100 == 0) {
-                                //    Logger.Warn($"childrenTicks:{childrenTicks}");
-                                //}
                             }
+                            p.Refresh();
                         }
                         else
                         {
@@ -212,11 +210,11 @@ namespace BenchTool
                                 {
                                     if (!cp.HasExited)
                                     {
+                                        cp.Refresh();
                                         if (!isChildProcessCpuTimeCounted)
                                         {
                                             if (s_isWindows)
                                             {
-                                                cp.Refresh();
                                                 m.CpuTime += cp.TotalProcessorTime;
                                             }
                                             else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
