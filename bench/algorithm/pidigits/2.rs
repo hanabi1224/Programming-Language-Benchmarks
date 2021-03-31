@@ -1,4 +1,4 @@
-use ibig::prelude::*;
+use ibig::{IBig, ibig};
 
 fn main() {
     let digits_to_print = std::env::args_os()
