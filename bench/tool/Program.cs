@@ -509,7 +509,7 @@ namespace BenchTool
                 {
                     try
                     {
-                        var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
+                        var measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
                         Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
                         measurements.Add(measurement);
                     }

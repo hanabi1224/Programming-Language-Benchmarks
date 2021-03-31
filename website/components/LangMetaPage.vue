@@ -242,7 +242,7 @@ export default class LangMetaPage extends Vue {
       .filter((i) => i.test === test && i.os === this.osSelected)
       .map((i) => i.input)
       .uniq()
-      .orderBy((i) => parseInt(i) ?? i)
+      .orderBy((i) => parseInt(i) ?? i, 'desc')
       .value()
   }
 

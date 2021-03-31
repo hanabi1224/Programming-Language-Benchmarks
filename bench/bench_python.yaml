@@ -34,6 +34,7 @@ environments:
       - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
     out_dir: dist/_app
     run_cmd: _app
+    force_check_child_processes: true
   - os: linux
     compiler: pypy
     version: 3
@@ -44,6 +45,7 @@ environments:
     build: cp -a /opt/pypy/ ./out
     out_dir: out
     run_cmd: pypy/bin/pypy3 c.py
+    force_check_child_processes: true
   - os: linux
     compiler: pyston
     version: latest
@@ -54,3 +56,4 @@ environments:
     out_dir: out
     run_cmd: pyston c.py
     runtime_included: false
+    force_check_child_processes: true
