@@ -48,14 +48,6 @@ environments:
     run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
-    version: 15
-    docker: adoptopenjdk/openjdk15:slim
-    include:
-    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
-    out_dir: out
-    run_cmd: openjdk/bin/java app
-  - os: linux
-    compiler: adoptopenjdk
     version: 16
     docker: adoptopenjdk/openjdk16:slim
     include:
