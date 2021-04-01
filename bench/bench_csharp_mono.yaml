@@ -21,9 +21,9 @@ source_rename_to: app.cs
 environments:
   - os: linux
     compiler: mono
-    version: 6
+    version: latest
     compiler_version_command: mono -V
-    docker: mono:6
+    docker: mono
     include:
     build: csc /unsafe app.cs && mkbundle --simple -o out/_app --no-config --no-machine-config app.exe
     out_dir: out

@@ -1,0 +1,27 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "3.go",
+  "input": "10",
+  "timeMS": 308.4774,
+  "memBytes": 1398784,
+  "cpuTimeMS": 420.0,
+  "cpuTimeUserMS": 385.0,
+  "cpuTimeKernelMS": 35.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "go version go1.16.2 linux/amd64",
+    "start": "2021-04-01T05:28:48.3109442+00:00",
+    "finished": "2021-04-01T05:28:50.9358725+00:00",
+    "durationMs": 2624
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-04-01T06:03:44.7013282+00:00",
+    "finished": "2021-04-01T06:03:44.9172945+00:00",
+    "durationMs": 215
+  }
+}

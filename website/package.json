@@ -29,7 +29,7 @@
     "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.3.2",
     "@types/jquery": "^3.5.5",
-    "core-js": "^3.9.1",
+    "core-js": "^3.10.0",
     "find-versions": "^4.0.0",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",

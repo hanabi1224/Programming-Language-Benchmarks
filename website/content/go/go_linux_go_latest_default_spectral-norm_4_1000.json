@@ -1,0 +1,27 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "4.go",
+  "input": "1000",
+  "timeMS": 53.76,
+  "memBytes": 1607680,
+  "cpuTimeMS": 65.0,
+  "cpuTimeUserMS": 40.0,
+  "cpuTimeKernelMS": 25.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "go version go1.16.2 linux/amd64",
+    "start": "2021-04-01T05:28:38.7137769+00:00",
+    "finished": "2021-04-01T05:28:41.6141312+00:00",
+    "durationMs": 2900
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-04-01T06:03:44.5868238+00:00",
+    "finished": "2021-04-01T06:03:44.6147279+00:00",
+    "durationMs": 27
+  }
+}

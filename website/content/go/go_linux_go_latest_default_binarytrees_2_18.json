@@ -1,0 +1,27 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "2.go",
+  "input": "18",
+  "timeMS": 2521.7523,
+  "memBytes": 66103296,
+  "cpuTimeMS": 9434.9999,
+  "cpuTimeUserMS": 9089.9999,
+  "cpuTimeKernelMS": 345.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "go version go1.16.2 linux/amd64",
+    "start": "2021-04-01T05:28:32.3922284+00:00",
+    "finished": "2021-04-01T05:28:34.982493+00:00",
+    "durationMs": 2590
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-04-01T06:03:44.5105643+00:00",
+    "finished": "2021-04-01T06:03:44.540904+00:00",
+    "durationMs": 30
+  }
+}
