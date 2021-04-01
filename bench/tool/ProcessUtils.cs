@@ -27,8 +27,9 @@ namespace BenchTool
                 return array.Single();
             }
 
-            var positiveCpuTime = array.Select(i => i.CpuTime.TotalMilliseconds).Where(i => i > 0).ToList();
-            var avgCpuTime = TimeSpan.FromMilliseconds(positiveCpuTime.Count > 0 ? positiveCpuTime.Average() : 0);
+            var positiveCpuTimeRecords = array.Where(i => i.CpuTime.TotalMilliseconds > 0).ToList();
+            var avgCpuTimeUser = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeUser.TotalMilliseconds) : 0);
+            var avgCpuTimeKernel = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeKernel.TotalMilliseconds) : 0);
 
             var positivePeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Where(i => i > 0).ToList();
             var avgPeakMemoryBytes = positivePeakMemoryBytes.Count > 0 ? positivePeakMemoryBytes.Average() : 0;
@@ -36,7 +37,8 @@ namespace BenchTool
             return new ProcessMeasurement
             {
                 Elapsed = TimeSpan.FromMilliseconds(array.Average(i => i.Elapsed.TotalMilliseconds)),
-                CpuTime = avgCpuTime,
+                CpuTimeKernel = avgCpuTimeKernel,
+                CpuTimeUser = avgCpuTimeUser,
                 PeakMemoryBytes = (long)Math.Round(avgPeakMemoryBytes),
             };
         }
@@ -46,13 +48,17 @@ namespace BenchTool
     {
         public TimeSpan Elapsed { get; set; }
 
-        public TimeSpan CpuTime { get; set; }
+        public TimeSpan CpuTime => CpuTimeUser + CpuTimeKernel;
+
+        public TimeSpan CpuTimeUser { get; set; }
+
+        public TimeSpan CpuTimeKernel { get; set; }
 
         public long PeakMemoryBytes { get; set; }
 
         public override string ToString()
         {
-            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
+            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, cpu-time-user: {CpuTimeUser.TotalMilliseconds}ms, cpu-time-kernel: {CpuTimeKernel.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
         }
     }
 
@@ -170,10 +176,9 @@ namespace BenchTool
                         {
                             if (procfs.TryReadStatFile(pid, out var stat))
                             {
-                                var selfTicks = stat.utime + stat.stime;
-                                var childrenTicks = stat.cutime + stat.cstime;
-                                m.CpuTime = TicksToTimeSpanLinux(selfTicks + childrenTicks);
-                                isChildProcessCpuTimeCounted = childrenTicks > 0;
+                                m.CpuTimeUser = TicksToTimeSpanLinux(stat.utime + stat.cutime);
+                                m.CpuTimeKernel = TicksToTimeSpanLinux(stat.stime + stat.cstime);
+                                isChildProcessCpuTimeCounted = stat.cutime > 0 || stat.cstime > 0;
                                 if (procfs.TryReadStatusFile(pid, out var status))
                                 {
                                     totalMemoryBytes = (long)status.VmRSS;
@@ -184,7 +189,8 @@ namespace BenchTool
                         else
                         {
                             p.Refresh();
-                            m.CpuTime = p.TotalProcessorTime;
+                            m.CpuTimeUser = p.UserProcessorTime;
+                            m.CpuTimeKernel = p.PrivilegedProcessorTime;
                             totalMemoryBytes = p.WorkingSet64;
                         }
 
@@ -222,21 +228,23 @@ namespace BenchTool
                                 {
                                     if (!cp.HasExited)
                                     {
-                                        if (!isChildProcessCpuTimeCounted)
+                                        if (!s_isLinux)
                                         {
-                                            if (!s_isLinux)
+                                            cp.Refresh();
+                                            m.CpuTimeUser += cp.UserProcessorTime;
+                                            m.CpuTimeKernel += cp.PrivilegedProcessorTime;
+                                            totalMemoryBytes += cp.WorkingSet64;
+                                        }
+                                        else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
+                                        {
+                                            if (!isChildProcessCpuTimeCounted)
                                             {
-                                                cp.Refresh();
-                                                m.CpuTime += cp.TotalProcessorTime;
-                                                totalMemoryBytes += cp.WorkingSet64;
+                                                m.CpuTimeUser += TicksToTimeSpanLinux(cpstat.utime);
+                                                m.CpuTimeKernel += TicksToTimeSpanLinux(cpstat.stime);
                                             }
-                                            else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
+                                            if (procfs.TryReadStatusFile(cp.Id, out var cpstatus))
                                             {
-                                                m.CpuTime += TicksToTimeSpanLinux(cpstat.utime + cpstat.stime);
-                                                if (procfs.TryReadStatusFile(cp.Id, out var cpstatus))
-                                                {
-                                                    totalMemoryBytes += (long)cpstatus.VmRSS;
-                                                }
+                                                totalMemoryBytes += (long)cpstatus.VmRSS;
                                             }
                                         }
                                     }

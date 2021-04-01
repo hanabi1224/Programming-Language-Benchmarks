@@ -23,6 +23,8 @@ type BenchResult = {
   timeMS: number,
   memBytes: number,
   cpuTimeMS: number,
+  cpuTimeUserMS: number,
+  cpuTimeKernelMS: number,
 
   compilerOptions?: string,
 

@@ -536,6 +536,8 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
+                    cpuTimeUserMS = avgMeasurement.CpuTimeUser.TotalMilliseconds,
+                    cpuTimeKernelMS = avgMeasurement.CpuTimeKernel.TotalMilliseconds,
                     //appveyorBuildId = AppveyorUtils.BuildId,
                     githubRunId = GithubActionUtils.RunId,
                     buildLog = BuildOutputJson.LoadFrom(buildOutput),

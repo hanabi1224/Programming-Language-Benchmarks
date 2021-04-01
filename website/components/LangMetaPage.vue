@@ -65,15 +65,16 @@
           <a :href="`/problem/${test}`"> {{ test }} </a>
         </h2>
         <div v-for="input in getInputs(test)" :key="input" class="mt-5">
-          <h3 class="text-base">Input: {{ input }}</h3>
+          <h3 class="text-base font-bold text-red-800">Input: {{ input }}</h3>
           <table class="table-auto w-full text-base leading-loose">
             <tr class="border-b-2 border-dotted py-1">
               <th v-show="other || problem" class="text-left pl-4">lang</th>
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
-              <th class="text-right">time(ms)</th>
-              <th class="text-right">mem</th>
-              <th class="text-right">cpu-time(ms)</th>
+              <th class="text-right" title="total-time">time</th>
+              <th class="text-right">peak-mem</th>
+              <th class="text-right" title="cpu-time-user">time(user)</th>
+              <th class="text-right" title="cpu-time-kernel">time(kernel)</th>
               <th class="text-left pl-5">compiler/runtime</th>
             </tr>
             <tbody>
@@ -97,11 +98,12 @@
                   >
                 </td>
                 <!-- <td class="text-right">{{ i.input }}</td> -->
-                <td class="text-right">{{ i.timeMS.toFixed(2) }}</td>
+                <td class="text-right">{{ i.timeMS.toFixed(1) }}ms</td>
                 <td class="text-right">
                   {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
                 </td>
-                <td class="text-right">{{ i.cpuTimeMS.toFixed(2) }}</td>
+                <td class="text-right">{{ i.cpuTimeUserMS.toFixed(0) }}ms</td>
+                <td class="text-right">{{ i.cpuTimeKernelMS.toFixed(0) }}ms</td>
                 <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
                   {{ i.compiler }} {{ i.compilerVersion }}
                 </td>
