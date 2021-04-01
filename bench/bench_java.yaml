@@ -33,7 +33,15 @@ environments:
   - os: linux
     compiler: adoptopenjdk
     version: 8
-    docker: adoptopenjdk:8
+    docker: adoptopenjdk/openjdk8:slim
+    include:
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java app
+  - os: linux
+    compiler: adoptopenjdk-openj9
+    version: 8
+    docker: adoptopenjdk/openjdk8-openj9:slim
     include:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
@@ -41,15 +49,31 @@ environments:
   - os: linux
     compiler: adoptopenjdk
     version: 11
-    docker: adoptopenjdk:11
+    docker: adoptopenjdk/openjdk11:slim
+    include:
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java app
+  - os: linux
+    compiler: adoptopenjdk-openj9
+    version: 11
+    docker: adoptopenjdk/openjdk11-openj9:slim
     include:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
-    version: 15
-    docker: adoptopenjdk:15
+    version: 16
+    docker: adoptopenjdk/openjdk16:slim
+    include:
+    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
+    out_dir: out
+    run_cmd: openjdk/bin/java app
+  - os: linux
+    compiler: adoptopenjdk-openj9
+    version: 16
+    docker: adoptopenjdk/openjdk16-openj9:slim
     include:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out

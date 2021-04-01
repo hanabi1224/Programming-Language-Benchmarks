@@ -2,15 +2,16 @@
   <PropertyGroup>
     <TargetFramework>net5</TargetFramework>
     <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
-    <PackageReference Include="NLog" Version="4.7.7" />
-    <PackageReference Include="NLog.Schema" Version="4.7.7" PrivateAssets="all" />
-    <PackageReference Include="YamlDotNet" Version="9.1.4" />
+    <PackageReference Include="NLog" Version="4.7.9" />
+    <PackageReference Include="NLog.Schema" Version="4.7.9" PrivateAssets="all" />
+    <PackageReference Include="YamlDotNet" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="nlog.config">

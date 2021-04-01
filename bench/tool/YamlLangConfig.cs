@@ -104,5 +104,7 @@ namespace BenchTool
         public string RunCmd { get; set; }
 
         public bool RuntimeIncluded { get; set; } = true;
+
+        public bool ForceCheckChildProcesses { get; set; } = false;
     }
 }

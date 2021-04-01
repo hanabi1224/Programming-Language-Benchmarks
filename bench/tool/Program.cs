@@ -507,9 +507,17 @@ namespace BenchTool
                 var measurements = new List<ProcessMeasurement>(repeat);
                 for (var i = 0; i < repeat; i++)
                 {
-                    var measurement = await ProcessUtils.MeasureAsync(runPsi).ConfigureAwait(false);
-                    Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                    measurements.Add(measurement);
+                    try
+                    {
+                        var measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
+                        Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                        measurements.Add(measurement);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e);
+                        i--;
+                    }
                 }
 
                 var avgMeasurement = measurements.GetAverage();
@@ -528,6 +536,8 @@ namespace BenchTool
                     timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
                     memBytes = avgMeasurement.PeakMemoryBytes,
                     cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
+                    cpuTimeUserMS = avgMeasurement.CpuTimeUser.TotalMilliseconds,
+                    cpuTimeKernelMS = avgMeasurement.CpuTimeKernel.TotalMilliseconds,
                     //appveyorBuildId = AppveyorUtils.BuildId,
                     githubRunId = GithubActionUtils.RunId,
                     buildLog = BuildOutputJson.LoadFrom(buildOutput),
