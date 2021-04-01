@@ -27,11 +27,17 @@ namespace BenchTool
                 return array.Single();
             }
 
+            var positiveCpuTime = array.Select(i => i.CpuTime.TotalMilliseconds).Where(i => i > 0).ToList();
+            var avgCpuTime = TimeSpan.FromMilliseconds(positiveCpuTime.Count > 0 ? positiveCpuTime.Average() : 0);
+
+            var positivePeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Where(i => i > 0).ToList();
+            var avgPeakMemoryBytes = positivePeakMemoryBytes.Count > 0 ? positivePeakMemoryBytes.Average() : 0;
+
             return new ProcessMeasurement
             {
                 Elapsed = TimeSpan.FromMilliseconds(array.Average(i => i.Elapsed.TotalMilliseconds)),
-                CpuTime = TimeSpan.FromMilliseconds(array.Average(i => i.CpuTime.TotalMilliseconds)),
-                PeakMemoryBytes = (long)array.Average(i => i.PeakMemoryBytes),
+                CpuTime = avgCpuTime,
+                PeakMemoryBytes = (long)Math.Round(avgPeakMemoryBytes),
             };
         }
     }
