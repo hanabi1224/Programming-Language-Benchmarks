@@ -44,9 +44,10 @@ jobs:
           sudo apt install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
           git clone -b 1.11 --single-branch https://github.com/HaxeFoundation/hashlink.git /tmp/hashlink
           pushd /tmp/hashlink
-          make
+          make && make install
+          cp -f libhl.so /usr/local/bin
           ./hl --version
-          sudo ln -sf $PWD/hl /usr/local/bin/hl          
+          # sudo ln -sf $PWD/hl /usr/local/bin/hl          
           popd
           hl --version
       - name: Install python
