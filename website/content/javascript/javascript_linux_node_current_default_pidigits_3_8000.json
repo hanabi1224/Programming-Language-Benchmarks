@@ -6,22 +6,22 @@
   "test": "pidigits",
   "code": "3.js",
   "input": "8000",
-  "timeMS": 10358.0483,
-  "memBytes": 54497280,
-  "cpuTimeMS": 9880.0,
-  "cpuTimeUserMS": 9460.0,
-  "cpuTimeKernelMS": 420.0,
-  "githubRunId": null,
+  "timeMS": 9263.7619,
+  "memBytes": 71733248,
+  "cpuTimeMS": 9240.0,
+  "cpuTimeUserMS": 9140.0,
+  "cpuTimeKernelMS": 100.0,
+  "githubRunId": "711849872",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-04-01T05:35:31.6181451+00:00",
-    "finished": "2021-04-01T05:35:33.2403719+00:00",
-    "durationMs": 1622
+    "start": "2021-04-02T14:02:24.8581041+00:00",
+    "finished": "2021-04-02T14:02:26.4468447+00:00",
+    "durationMs": 1588
   },
   "testLog": {
-    "runtimeVersion": "v15.12.0",
-    "start": "2021-04-01T06:03:48.3733653+00:00",
-    "finished": "2021-04-01T06:03:48.6462847+00:00",
-    "durationMs": 272
+    "runtimeVersion": "v15.13.0",
+    "start": "2021-04-02T14:02:30.2636625+00:00",
+    "finished": "2021-04-02T14:02:30.3560895+00:00",
+    "durationMs": 92
   }
 }

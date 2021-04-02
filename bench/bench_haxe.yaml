@@ -19,7 +19,7 @@ runtime_version_regex:
 source_rename_to: App.hx
 environments:
   - os: linux
-    compiler: HL/JIT
+    compiler: haxe/hashlink
     version: latest
     docker: haxe
     include: haxe

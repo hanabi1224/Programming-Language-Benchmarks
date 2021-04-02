@@ -9,7 +9,13 @@ problems:
   - name: nbody
     source:
       - 1.v
+  - name: fasta
+    source:
+      - 1.v
   - name: spectral-norm
+    source:
+      - 1.v
+  - name: fannkuch-redux
     source:
       - 1.v
 compiler_version_command: v --version

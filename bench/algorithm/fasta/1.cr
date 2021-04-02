@@ -39,15 +39,15 @@ HOMOSAPIENS = {
 class Fasta
   @last = 42.0
 
-  def gen_random(max)
-    (max * (@last = (@last * IA + IC) % IM)) / IM
+  def gen_random
+    (@last = (@last * IA + IC) % IM) / IM
   end
 
   def make_repeat_fasta(id, desc, src, n)
     puts ">#{id} #{desc}"
     l = src.size
     s = src * ((n // l) + 1)
-    s = s[0,n]
+    s = s[0, n]
     0.step(to: s.size - 1, by: 60) { |x| print s[x, 60], "\n" }
   end
 
@@ -56,15 +56,15 @@ class Fasta
     rand, v = nil, nil
     prob = 0.0
     table.each { |(k, p)| table[k] = prob += p }
-    output = String::Builder.new(capacity:60)
+    output = String::Builder.new(capacity: 60)
     n.times do
-      rand = gen_random(1.0)
+      rand = gen_random()
       table.each do |(k, p)|
         if p > rand
           output << k
           if output.bytesize == 60
             puts output.to_s
-            output = String::Builder.new(capacity:60)
+            output = String::Builder.new(capacity: 60)
           end
           break
         end
