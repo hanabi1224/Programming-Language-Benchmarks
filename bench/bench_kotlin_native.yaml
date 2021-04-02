@@ -12,17 +12,17 @@ problems:
   # - name: pidigits
   #   source:
   #     - 1.kt
-compiler_version_command: echo "kotlin_nativec 1.4.31"
+compiler_version_command: sh -c "./gradlew kotlinVersion"
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: main.kt
 environments:
   - os: linux
-    compiler: kotlin_nativec
-    version: 1
+    compiler: Kotlin/Native
+    version: provided
     include: kotlin-native
     include_sub_dir: src/nativeMain/kotlin
-    build: sh -c "chmod +x ./gradlew && ./gradlew nativeBinaries"
+    build: sh -c "./gradlew link_appReleaseExecutableNative"
     out_dir: build/bin/native/_appReleaseExecutable
     run_cmd: _app.kexe
