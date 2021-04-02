@@ -44,34 +44,69 @@
         </p>
       </div>
     </div>
-    <!-- <aside class="block w-1/6"></aside> -->
+    <aside class="block w-1/6">
+      <div>
+        <h2 class="text-xl">Problems</h2>
+        <ul class="text-base">
+          <li
+            v-for="(i, idx) in problems"
+            :key="idx"
+            class="text-light-onSurfacePrimary"
+          >
+            <a
+              :href="`/problem/${i}`"
+              class="p-1 pl-3 flex rounded transition-colors duration-300 ease-linear justify-between underline text-blue-500 hover:text-green-400"
+            >
+              {{ i }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </aside>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
-import $ from 'jquery'
+import { Component, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
+
+Component.registerHooks(['head'])
 
 @Component({
   components: {},
 })
 export default class IndexPage extends Vue {
   langs: LangBenchResults[] = []
+  problems: string[] = []
   created() {
     this.langs = this.$route.meta
+    this.problems = _.chain(this.langs)
+      .map((i) => i.benchmarks)
+      .flatten()
+      .map((i) => i.test)
+      .uniq()
+      .sort()
+      .value()
   }
 
-  mounted() {
-    // Update head
-    const metaDesc = $('head meta[name="description"]')
-    const metaContent = metaDesc.attr('content') as string
-    const langsStr = _.chain(this.langs)
+  head() {
+    const langsStrs = _.chain(this.langs)
       .map((i) => i.langDisplay)
       .uniq()
       .value()
-    metaDesc.attr('content', `${metaContent}, ${langsStr}`)
+    return {
+      title:
+        'Another Benchmarks Game for computer languages | Which programming language is faster',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `programming languages,benchmarks game,performance,${langsStrs.join(
+            ','
+          )},${this.problems.join(',')}`,
+        },
+      ],
+    }
   }
 
   getLinkClass() {
