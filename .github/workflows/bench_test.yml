@@ -42,9 +42,10 @@ jobs:
         if: matrix.lang == 'haxe'
         run: |
           sudo apt install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
-          git clone -b 1.11 --single-branch https://github.com/HaxeFoundation/hashlink.git /tmp/hashlink
+          git clone -b master --single-branch https://github.com/HaxeFoundation/hashlink.git /tmp/hashlink
           pushd /tmp/hashlink
           make && sudo make install
+          ./hl --version
           popd
           hl --version
       - name: Install python
