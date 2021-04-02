@@ -1,9 +1,15 @@
+object Constants {
+    const val kotlinVersion = "1.4.32"
+}
+
 plugins {
-    kotlin("multiplatform") version "1.4.31"
+    kotlin("multiplatform").version("1.4.32")
 }
 
 repositories {
+    google()
     mavenCentral()
+    gradlePluginPortal()
 }
 
 kotlin {
@@ -22,7 +28,8 @@ kotlin {
     }
 }
 
-tasks.withType<Wrapper> {
-  gradleVersion = "6.8.3"
-  distributionType = Wrapper.DistributionType.BIN
+tasks.register("kotlinVersion") {
+  doLast {
+    println("kotlin_nativec ${Constants.kotlinVersion}")
+  }
 }

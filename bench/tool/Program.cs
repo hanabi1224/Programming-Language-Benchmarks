@@ -415,7 +415,7 @@ namespace BenchTool
 
                 // Test retry
                 Exception error = null;
-                for (var retry = 0; retry < 2; retry++)
+                for (var retry = 0; retry < 3; retry++)
                 {
                     ProcessUtils.RunProcess(
                         runPsi,
