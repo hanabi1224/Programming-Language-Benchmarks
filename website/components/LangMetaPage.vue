@@ -157,7 +157,6 @@
 </template>
 <script lang="ts">
 import { Component, Watch, Vue } from 'nuxt-property-decorator'
-import $ from 'jquery'
 import _ from 'lodash'
 import { getFullCompilerVersion, mergeLangBenchResults } from '~/contentUtils'
 
@@ -166,6 +165,8 @@ function requireAll(requireContext: any) {
   return mergeLangBenchResults(r)
 }
 const langs = requireAll((require as any).context('../content', true, /.json$/))
+
+Component.registerHooks(['head'])
 
 @Component({
   components: {},
@@ -287,26 +288,32 @@ export default class LangMetaPage extends Vue {
     }
   }
 
-  mounted() {
-    // Update head
+  head() {
+    const suffix = 'benchmarks game | Which programming language is faster'
     let title = ''
     if (this.problem) {
-      title = `${this.problem} - benchmarks game`
+      title = `${this.problem} - ${suffix}`
     } else {
-      title = `${this.lang?.langDisplay} ${
-        this.other ? 'VS ' + this.other?.langDisplay : ''
-      } benchmarks game`
+      title = `${this.lang?.langDisplay}${
+        this.other ? ' VS ' + this.other?.langDisplay : ''
+      } ${suffix}`
     }
 
-    $('head title').text(title)
-
-    const metaDesc = $('head meta[name="description"]')
-    const metaContent = metaDesc.attr('content') as string
-    const langsStr = _.chain(this.langs)
+    const langsStrs = _.chain(this.langs)
       .map((i) => i.langDisplay)
       .uniq()
       .value()
-    metaDesc.attr('content', `${metaContent}, ${title}, ${langsStr}`)
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `benchmarks game,performance,${langsStrs.join(',')}`,
+        },
+      ],
+    }
   }
 
   created() {
