@@ -30,6 +30,7 @@ kotlin {
 
 tasks.register("kotlinVersion") {
   doLast {
-    println("kotlin_nativec ${Constants.kotlinVersion}")
+    // $HOME/.konan/kotlin-native-prebuilt-linux-${Constants.kotlinVersion}/bin/kotlinc-native -version
+    println("Kotlin/Native ${Constants.kotlinVersion}")
   }
 }

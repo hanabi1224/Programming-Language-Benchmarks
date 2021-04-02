@@ -19,7 +19,7 @@ runtime_version_regex:
 source_rename_to: main.kt
 environments:
   - os: linux
-    compiler: kotlin_nativec
+    compiler: Kotlin/Native
     version: provided
     include: kotlin-native
     include_sub_dir: src/nativeMain/kotlin
