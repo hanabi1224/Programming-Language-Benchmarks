@@ -13,11 +13,11 @@ const config: NuxtConfig = {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Another Benchmarks Game for computer languages',
+    title: 'Benchmarks for programming languages and compilers',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'benchmarks game for computer languages' },
+      { hid: 'description', name: 'description', content: 'benchmarks for programming languages and compilers' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },

@@ -289,7 +289,8 @@ export default class LangMetaPage extends Vue {
   }
 
   head() {
-    const suffix = 'benchmarks game | Which programming language is faster'
+    const suffix =
+      'benchmarks, Which programming language or compiler is faster'
     let title = ''
     if (this.problem) {
       title = `${this.problem} - ${suffix}`
@@ -310,7 +311,7 @@ export default class LangMetaPage extends Vue {
         {
           hid: 'description',
           name: 'description',
-          content: `benchmarks game,performance,${langsStrs.join(',')}`,
+          content: `benchmarks,benchmark,performance,${langsStrs.join(',')}`,
         },
       ],
     }
