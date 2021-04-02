@@ -505,7 +505,8 @@ namespace BenchTool
                 }
 
                 var measurements = new List<ProcessMeasurement>(repeat);
-                for (var i = 0; i < repeat; i++)
+                var maxRetries = 10;
+                for (var i = 0; i < repeat && maxRetries > 0; i++)
                 {
                     try
                     {
@@ -517,6 +518,7 @@ namespace BenchTool
                     {
                         Logger.Error(e);
                         i--;
+                        maxRetries--;
                     }
                 }
 
