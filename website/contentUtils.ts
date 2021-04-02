@@ -3,27 +3,38 @@ import _ from 'lodash'
 import findVersions from 'find-versions'
 
 const lang2Display: { [key: string]: string } = {
-  'csharp': 'C#',
+  csharp: 'C#',
 }
 
 export async function getLangBenchResults($content: contentFunc) {
-  const pages = await $content('/', { deep: true }).fetch() as IContentDocument[]
-  var benchResults = pages as unknown as BenchResult[]
+  const pages = (await $content('/', {
+    deep: true,
+  }).fetch()) as IContentDocument[]
+  const benchResults = (pages as unknown) as BenchResult[]
   return mergeLangBenchResults(benchResults)
 }
 
 export function mergeLangBenchResults(benchResults: BenchResult[]) {
-  benchResults = _.chain(benchResults).filter(i => !!i.lang).value();
-  benchResults.forEach(i => {
+  benchResults = _.chain(benchResults)
+    .filter((i) => !!i.lang)
+    .value()
+  benchResults.forEach((i) => {
     i.compilerVersion = getRealShortCompilerVersion(i)
   })
 
-  var groupsByLang = _.chain(benchResults).groupBy(i => i.lang).value();
-  var r: LangBenchResults[] = [];
-  for (var k in groupsByLang) {
-    const benches = groupsByLang[k];
+  const groupsByLang = _.chain(benchResults)
+    .groupBy((i) => i.lang)
+    .value()
+  const r: LangBenchResults[] = []
+  for (const k in groupsByLang) {
+    const benches = groupsByLang[k]
+    // eslint-disable-next-line no-console
     console.log(`${k}: ${benches.length} benchmark results`)
-    r.push({ lang: k, langDisplay: lang2Display[k] ?? _.capitalize(k), benchmarks: benches })
+    r.push({
+      lang: k,
+      langDisplay: lang2Display[k] ?? _.capitalize(k),
+      benchmarks: benches,
+    })
   }
 
   return _.chain(r).orderBy(['langDisplay'], ['asc']).value()

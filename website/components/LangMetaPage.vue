@@ -114,7 +114,7 @@
       </div>
     </div>
     <aside class="block w-1/6">
-      <div v-if="problem">
+      <div class="pb-5">
         <h2 class="text-xl">Problems</h2>
         <ul class="text-base">
           <li
@@ -165,6 +165,12 @@ function requireAll(requireContext: any) {
   return mergeLangBenchResults(r)
 }
 const langs = requireAll((require as any).context('../content', true, /.json$/))
+const problems = _.chain(langs)
+  .flatMap((i) => i.benchmarks)
+  .map((i) => i.test)
+  .uniq()
+  .sort()
+  .value()
 
 Component.registerHooks(['head'])
 
@@ -174,7 +180,7 @@ Component.registerHooks(['head'])
 export default class LangMetaPage extends Vue {
   meta?: LangPageMeta
   problem?: string
-  allProblems?: string[]
+  allProblems?: string[] = problems
   lang?: LangBenchResults
   other?: LangBenchResults
   langs: LangBenchResults[] = langs
@@ -320,7 +326,6 @@ export default class LangMetaPage extends Vue {
   created() {
     this.meta = this.$route.meta
     this.problem = this.meta?.problem
-    this.allProblems = this.meta?.allProblems
     this.lang = this.meta?.lang
     this.other = this.meta?.other
 
