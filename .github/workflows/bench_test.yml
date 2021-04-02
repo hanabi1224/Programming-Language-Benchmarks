@@ -44,7 +44,7 @@ jobs:
           sudo apt install -y libpng-dev libturbojpeg-dev libvorbis-dev libopenal-dev libsdl2-dev libmbedtls-dev libuv1-dev
           git clone -b 1.11 --single-branch https://github.com/HaxeFoundation/hashlink.git /tmp/hashlink
           pushd /tmp/hashlink
-          make && sudo ln -sf ./hl /usr/local/bin/hl
+          make && sudo ln -sf $PWD/hl /usr/local/bin/hl
           ./hl --version
           popd
           hl --version
