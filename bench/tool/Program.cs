@@ -275,6 +275,14 @@ namespace BenchTool
                 {
                     compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
                 }
+                else
+                {
+                    await ProcessUtils.RunCommandAsync(
+                       compilerVersionCommand,
+                       workingDir: tmpDir.FullPath,
+                       stdOutBuilder: null,
+                       stdErrorBuilder: null).ConfigureAwait(false);
+                }
 
                 {
                     var stdOutBuilder = new StringBuilder();
@@ -290,15 +298,6 @@ namespace BenchTool
 
                 if (buildOutputJson.CompilerVersionText?.Contains("Unable to find image", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    if (!useDocker)
-                    {
-                        await ProcessUtils.RunCommandAsync(
-                           compilerVersionCommand,
-                           workingDir: tmpDir.FullPath,
-                           stdOutBuilder: null,
-                           stdErrorBuilder: null).ConfigureAwait(false);
-                    }
-
                     var stdOutBuilder = new StringBuilder();
                     var stdErrorBuilder = new StringBuilder();
                     await ProcessUtils.RunCommandAsync(
