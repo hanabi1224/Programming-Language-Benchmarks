@@ -75,14 +75,20 @@
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
               <th class="text-right" title="total-time">time</th>
-              <th class="text-right">peak-mem</th>
+              <th class="text-right">
+                <span class="md-hide">peak-mem</span>
+                <span class="md-show">mem</span>
+              </th>
               <th :class="'text-right' + mdHide" title="cpu-time-user">
                 time(user)
               </th>
               <th :class="'text-right' + mdHide" title="cpu-time-kernel">
                 time(kernel)
               </th>
-              <th class="text-left pl-5">compiler/runtime</th>
+              <th class="text-left pl-5">
+                <span class="md-show">compiler</span>
+                <span class="md-hide">compiler/runtime</span>
+              </th>
             </tr>
             <tbody>
               <tr
@@ -406,6 +412,11 @@ export default class LangMetaPage extends Vue {
   }
   .full-width {
     width: 100%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .md-show {
+    display: none;
   }
 }
 </style>
