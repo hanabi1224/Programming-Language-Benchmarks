@@ -23,7 +23,7 @@ export default class MenuButtonPage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .menu-btn {
     display: inline-block;
     cursor: pointer;

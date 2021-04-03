@@ -403,7 +403,7 @@ export default class LangMetaPage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .md-hide {
     display: none;
   }
