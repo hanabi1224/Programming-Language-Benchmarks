@@ -94,10 +94,6 @@ jobs:
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
           echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
-      - name: Install haskell
-        if: matrix.lang == 'haskell'
-        run: |
-          stack upgrade
       - name: Install wasm
         if: matrix.lang == 'rust'
         run: |
