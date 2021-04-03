@@ -127,6 +127,9 @@ jobs:
       - name: Install wasm
         if: matrix.lang == 'rust'
         run: |
+          sudo gu install wasm
+          sudo ln -sf $GRAALVM_11_ROOT/bin/wasm /usr/bin/graalwasm
+          graalwasm --version
           curl https://get.wasmer.io -sSfL | sh
           cat $HOME/.wasmer/wasmer.sh >> $PROFILE
           curl https://wasmtime.dev/install.sh -sSf | bash
