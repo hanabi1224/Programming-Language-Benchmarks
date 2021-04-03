@@ -9,6 +9,9 @@ problems:
   - name: nbody
     source:
       - 1.v
+  - name: pidigits
+    source:
+      - 1.v
   - name: fasta
     source:
       - 1.v
@@ -27,11 +30,12 @@ environments:
   - os: linux
     compiler: vlang
     version: latest
-    # docker: thevlang/vlang:alpine
     include:
-    include_sub_dir: out
-    # cp /lib/ld-musl-x86_64.so.1 /lib/
-    build: v -prod -gc boehm -cc clang out/_app.v
-    # build: v -prod -autofree out/_app.v
+    include_sub_dir:
+    before_build:
+      - v install hanabi1224.biginteger
+    build: v -prod -gc boehm_full -cc clang _app.v
+    after_build:
+      - mv _app out
     out_dir: out
     run_cmd: _app
