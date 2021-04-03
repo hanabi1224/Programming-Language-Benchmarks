@@ -48,9 +48,9 @@ jobs:
           sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
           gu --version
           sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
-          java -version
+          graaljava -version
           sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
-          javac -version
+          graaljavac -version
           sudo ln -sf $GRAALVM_11_ROOT/bin/node /usr/bin/graalnode
           graalnode --version
       - name: Install graalvm native-image
