@@ -5,7 +5,7 @@ problems:
       - 1.rb
   - name: binarytrees
     source:
-      - 5.rb
+      - 1.rb
   - name: nbody
     source:
       - 2.rb
