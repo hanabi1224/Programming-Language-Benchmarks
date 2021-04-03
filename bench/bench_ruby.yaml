@@ -42,3 +42,12 @@ environments:
     build: cp app.rb out
     out_dir: out
     run_cmd: ruby --jit -W0 app.rb
+  - os: linux
+    compiler: truffleruby
+    version: latest
+    docker:
+    include:
+    runtime_included: false
+    build: cp app.rb out
+    out_dir: out
+    run_cmd: truffleruby -W0 app.rb
