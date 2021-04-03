@@ -1,5 +1,5 @@
 <template>
-  <div :class="'menu-btn' + openStatus" @click="toggle">
+  <div v-touch="toggleMenu" :class="'menu-btn' + openStatus">
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
@@ -7,12 +7,23 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import Vue2TouchEvents from 'vue2-touch-events'
+
+Vue.use(Vue2TouchEvents)
+
 @Component({
   components: {},
 })
 export default class MenuButtonPage extends Vue {
   isOpen = false
-  toggle() {
+
+  // mounted() {
+  //   this.$el.addEventListener('click', this.toggleMenu)
+  //   this.$el.addEventListener('touchstart', this.toggleMenu)
+  // }
+
+  toggleMenu(e: Event) {
+    e.preventDefault()
     this.$emit('toggle')
     this.isOpen = !this.isOpen
   }
@@ -23,13 +34,17 @@ export default class MenuButtonPage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .menu-btn {
     display: inline-block;
+    background-color: transparent;
     cursor: pointer;
     position: fixed;
     top: 40px;
     right: 40px;
+    a {
+      display: inline-block;
+    }
     .bar1,
     .bar2,
     .bar3 {
@@ -54,7 +69,7 @@ export default class MenuButtonPage extends Vue {
     }
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
   .menu-btn {
     display: none;
   }
