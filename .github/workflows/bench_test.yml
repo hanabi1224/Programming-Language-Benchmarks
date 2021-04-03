@@ -116,13 +116,13 @@ jobs:
           java -version
           sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
           javac -version
-          gu install native-image
+          sudo gu install native-image
           sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
           native-image --version
-          $GRAALVM_11_ROOT/bin/gu install python
+          sudo gu install python
           sudo ln -sf $GRAALVM_11_ROOT/bin/graalpython /usr/bin/graalpython
           graalpython --version
-          $GRAALVM_11_ROOT/bin/gu install ruby
+          sudo gu install ruby
           sudo ln -sf $GRAALVM_11_ROOT/bin/truffleruby /usr/bin/truffleruby
           truffleruby --version
       - name: Build
