@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-wrap relative">
-    <aside class="block w-1/6">
+    <menu-button @toggle="toggleMenu"></menu-button>
+    <aside :class="sideBarClass">
       <h2 title="Benchmarks for other computer languages" class="text-xl">
         Benchmarks
       </h2>
@@ -16,7 +17,7 @@
         </li>
       </ul>
     </aside>
-    <article class="block w-4/6">
+    <article :class="contentClass">
       <div class="px-5 max-w-prose">
         <div class="text-lg tracking-wider leading-8">
           <p class="pt-5">
@@ -64,7 +65,7 @@
         </div>
       </div>
     </article>
-    <aside class="block w-1/6">
+    <aside :class="sideBarClass">
       <div>
         <h2 class="text-xl">Problems</h2>
         <ul class="text-base">
@@ -89,15 +90,34 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
+import MenuButton from './../components/MenuButton.vue'
 
 Component.registerHooks(['head'])
 
 @Component({
-  components: {},
+  components: {
+    MenuButton,
+  },
 })
 export default class IndexPage extends Vue {
+  isMenuOn = false
   langs: LangBenchResults[] = []
   problems: string[] = []
+
+  toggleMenu() {
+    this.isMenuOn = !this.isMenuOn
+  }
+
+  get sideBarClass() {
+    return this.isMenuOn ? 'block w-1/6 half-width' : 'block w-1/6 md-hide'
+  }
+
+  get contentClass() {
+    return this.isMenuOn
+      ? 'block w-4/6 md-hide'
+      : 'block w-4/6 full-width mx-auto'
+  }
+
   created() {
     this.langs = this.$route.meta
     this.problems = _.chain(this.langs)
@@ -150,11 +170,16 @@ export default class IndexPage extends Vue {
   }
 }
 </script>
-
-<style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
+<style lang="scss" scoped>
+@media screen and (max-width: 768px) {
+  .md-hide {
+    display: none;
+  }
+  .half-width {
+    width: 50%;
+  }
+  .full-width {
+    width: 100%;
+  }
 }
-*/
 </style>
