@@ -25,7 +25,7 @@ executable app-exe
       Paths_app
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -XBangPatterns -XScopedTypeVariables
+  ghc-options: -O2 -threaded -rtsopts -with-rtsopts=-N -XBangPatterns -XScopedTypeVariables
   build-depends:
       app
     , base >=4.7 && <5
