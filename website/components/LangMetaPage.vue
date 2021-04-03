@@ -114,7 +114,7 @@
       </div>
     </div>
     <aside class="block w-1/6">
-      <div v-if="problem">
+      <div class="pb-5">
         <h2 class="text-xl">Problems</h2>
         <ul class="text-base">
           <li
@@ -157,7 +157,6 @@
 </template>
 <script lang="ts">
 import { Component, Watch, Vue } from 'nuxt-property-decorator'
-import $ from 'jquery'
 import _ from 'lodash'
 import { getFullCompilerVersion, mergeLangBenchResults } from '~/contentUtils'
 
@@ -166,6 +165,14 @@ function requireAll(requireContext: any) {
   return mergeLangBenchResults(r)
 }
 const langs = requireAll((require as any).context('../content', true, /.json$/))
+const problems = _.chain(langs)
+  .flatMap((i) => i.benchmarks)
+  .map((i) => i.test)
+  .uniq()
+  .sort()
+  .value()
+
+Component.registerHooks(['head'])
 
 @Component({
   components: {},
@@ -173,7 +180,7 @@ const langs = requireAll((require as any).context('../content', true, /.json$/))
 export default class LangMetaPage extends Vue {
   meta?: LangPageMeta
   problem?: string
-  allProblems?: string[]
+  allProblems?: string[] = problems
   lang?: LangBenchResults
   other?: LangBenchResults
   langs: LangBenchResults[] = langs
@@ -287,32 +294,38 @@ export default class LangMetaPage extends Vue {
     }
   }
 
-  mounted() {
-    // Update head
+  head() {
+    const suffix =
+      'benchmarks, Which programming language or compiler is faster'
     let title = ''
     if (this.problem) {
-      title = `${this.problem} - benchmarks game`
+      title = `${this.problem} - ${suffix}`
     } else {
-      title = `${this.lang?.langDisplay} ${
-        this.other ? 'VS ' + this.other?.langDisplay : ''
-      } benchmarks game`
+      title = `${this.lang?.langDisplay}${
+        this.other ? ' VS ' + this.other?.langDisplay : ''
+      } ${suffix}`
     }
 
-    $('head title').text(title)
-
-    const metaDesc = $('head meta[name="description"]')
-    const metaContent = metaDesc.attr('content') as string
-    const langsStr = _.chain(this.langs)
+    const langsStrs = _.chain(this.langs)
       .map((i) => i.langDisplay)
       .uniq()
       .value()
-    metaDesc.attr('content', `${metaContent}, ${title}, ${langsStr}`)
+
+    return {
+      title,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `benchmarks,benchmark,performance,${langsStrs.join(',')}`,
+        },
+      ],
+    }
   }
 
   created() {
     this.meta = this.$route.meta
     this.problem = this.meta?.problem
-    this.allProblems = this.meta?.allProblems
     this.lang = this.meta?.lang
     this.other = this.meta?.other
 

@@ -298,14 +298,14 @@ namespace BenchTool
             }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
             var sw = Stopwatch.StartNew();
-            var ret = RunProcess(
+            var ret = await RunProcessAsync(
                 p,
                 printOnConsole: false,
                 asyncRead: true,
                 stdOutBuilder: null,
                 stdErrorBuilder: null,
                 token,
-                onStart: () => manualResetEvent.Set());
+                onStart: () => manualResetEvent.Set()).ConfigureAwait(false);
 
             sw.Stop();
             cts.Cancel();
@@ -352,19 +352,17 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
-            await Task.Yield();
-
             var psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            var ret = RunProcess(
+            var ret = await RunProcessAsync(
                 psi,
                 useShellExecute: false,
                 printOnConsole: true,
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
-                token: token);
+                token: token).ConfigureAwait(false);
 
             if (ensureZeroExitCode && ret != 0)
             {
@@ -383,13 +381,13 @@ namespace BenchTool
             var stdOutBuilder = new StringBuilder();
             var stdErrorBuilder = new StringBuilder();
 
-            var ret = RunProcess(
+            var ret = RunProcessAsync(
                 startInfo: startInfo,
                 printOnConsole: printOnConsole,
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
-                token: token);
+                token: token).ConfigureAwait(false).GetAwaiter().GetResult();
 
             stdOut = stdOutBuilder.ToString();
             stdError = stdErrorBuilder.ToString();
@@ -397,7 +395,7 @@ namespace BenchTool
             return ret;
         }
 
-        public static int RunProcess(
+        public static Task<int> RunProcessAsync(
             ProcessStartInfo startInfo,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
@@ -405,7 +403,7 @@ namespace BenchTool
             bool asyncRead,
             CancellationToken token)
         {
-            return RunProcess(
+            return RunProcessAsync(
                 startInfo: startInfo,
                 useShellExecute: false,
                 printOnConsole: printOnConsole,
@@ -415,7 +413,7 @@ namespace BenchTool
                 token: token);
         }
 
-        public static int RunProcess(
+        public static Task<int> RunProcessAsync(
             ProcessStartInfo startInfo,
             bool useShellExecute,
             bool printOnConsole,
@@ -431,7 +429,7 @@ namespace BenchTool
                 StartInfo = startInfo,
             };
 
-            return RunProcess(
+            return RunProcessAsync(
                 p: p,
                 printOnConsole: printOnConsole,
                 asyncRead: asyncRead,
@@ -440,7 +438,7 @@ namespace BenchTool
                 token: token);
         }
 
-        public static int RunProcess(
+        public static async Task<int> RunProcessAsync(
             Process p,
             bool printOnConsole,
             bool asyncRead,
@@ -449,6 +447,7 @@ namespace BenchTool
             CancellationToken token,
             Action onStart = null)
         {
+            await Task.Yield();
             using (p)
             {
                 var useShellExecute = p.StartInfo.UseShellExecute;
@@ -461,14 +460,14 @@ namespace BenchTool
                 if (p.StartInfo.RedirectStandardOutput)
                 {
                     p.StartInfo.StandardOutputEncoding = Encoding.UTF8;
-                    p.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+                    p.OutputDataReceived += async (object sender, DataReceivedEventArgs e) =>
                     {
                         stdOutBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
                             if (e.Data.IsEmptyOrWhiteSpace())
                             {
-                                Console.WriteLine(e.Data);
+                                await Console.Out.WriteLineAsync(e.Data).ConfigureAwait(false);
                             }
                             else
                             {
@@ -481,14 +480,14 @@ namespace BenchTool
                 if (p.StartInfo.RedirectStandardError)
                 {
                     p.StartInfo.StandardErrorEncoding = Encoding.UTF8;
-                    p.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
+                    p.ErrorDataReceived += async (object sender, DataReceivedEventArgs e) =>
                     {
                         stdErrorBuilder?.AppendLine(e.Data);
                         if (printOnConsole)
                         {
                             if (e.Data.IsEmptyOrWhiteSpace())
                             {
-                                Console.Error.WriteLine(e.Data);
+                                await Console.Error.WriteLineAsync(e.Data).ConfigureAwait(false);
                             }
                             else
                             {
@@ -500,82 +499,31 @@ namespace BenchTool
 
                 p.Start();
                 onStart?.Invoke();
-                if (asyncRead)
-                {
-                    try
-                    {
-                        if (p.StartInfo.RedirectStandardOutput)
-                        {
-                            p.BeginOutputReadLine();
-                        }
-                        if (p.StartInfo.RedirectStandardError)
-                        {
-                            p.BeginErrorReadLine();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e.Message);
-                    }
-                }
-                else
+
+                try
                 {
                     // Avoid deadlock in sync mode
-                    Task.Run(async () =>
+                    // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.standardoutput?view=net-5.0
+                    // To avoid deadlocks, use an asynchronous read operation on at least one of the streams.  
+                    if (p.StartInfo.RedirectStandardError)
                     {
-                        await Task.Delay(500).ConfigureAwait(false);
-                        try
-                        {
-                            if (!p.HasExited)
-                            {
-                                if (p.StartInfo.RedirectStandardOutput)
-                                {
-                                    p.BeginOutputReadLine();
-                                }
-                                if (p.StartInfo.RedirectStandardError)
-                                {
-                                    p.BeginErrorReadLine();
-                                }
-                            }
-                        }
-                        catch (InvalidOperationException)
-                        {
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error(e.Message);
-                        }
-                    });
+                        p.BeginErrorReadLine();
+                    }
+
+                    if (asyncRead && p.StartInfo.RedirectStandardOutput)
+                    {
+                        p.BeginOutputReadLine();
+                    }
                 }
-
-                using (var processEnded = new ManualResetEvent(false))
+                catch (Exception e)
                 {
-                    using var safeWaitHandle = new SafeWaitHandle(p.Handle, false);
-
-                    processEnded.SetSafeWaitHandle(safeWaitHandle);
-
-                    var index = WaitHandle.WaitAny(new[] { processEnded, token.WaitHandle });
-
-                    //If the signal came from the caller cancellation token close the window
-                    if (index == 1
-                        && !p.HasExited)
-                    {
-                        p.CloseMainWindow();
-                        p.Kill();
-                        return -1;
-                    }
-                    else if (index == 0 && !p.HasExited)
-                    {
-                        // Workaround for linux: https://github.com/dotnet/corefx/issues/35544
-                        p.WaitForExit();
-                    }
+                    Logger.Error(e.Message);
                 }
 
                 try
                 {
-                    if (p.StartInfo.RedirectStandardOutput)
+                    if (!asyncRead && p.StartInfo.RedirectStandardOutput)
                     {
-                        p.StandardOutput.BaseStream.Flush();
                         var outRm = p.StandardOutput.ReadToEnd();
                         if (!outRm.IsEmptyOrWhiteSpace())
                         {
@@ -586,54 +534,15 @@ namespace BenchTool
                             }
                         }
                     }
-                    if (p.StartInfo.RedirectStandardError)
-                    {
-                        p.StandardError.BaseStream.Flush();
-                        var errRm = p.StandardError.ReadToEnd();
-                        if (!errRm.IsEmptyOrWhiteSpace())
-                        {
-                            stdErrorBuilder?.Append(errRm);
-                            if (printOnConsole)
-                            {
-                                Logger.Error(errRm);
-                            }
-                        }
-                    }
 
+                    await p.WaitForExitAsync(token).ConfigureAwait(false);
                     return p.ExitCode;
                 }
-                catch (InvalidOperationException)
+                catch (Exception e)
                 {
+                    Logger.Error(e);
                     return -1;
                 }
-            }
-        }
-
-        /// <summary>
-        /// https://github.com/dotnet/corefx/issues/35544
-        /// </summary>
-        public static void BugRepro()
-        {
-            Process p;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                p = Process.Start("timeout", "10");
-            }
-            else
-            {
-                p = Process.Start("sleep", "10s");
-            }
-
-            var waitHandle = new ManualResetEvent(false);
-            waitHandle.SetSafeWaitHandle(new SafeWaitHandle(p.Handle, false));
-            WaitHandle.WaitAll(new[] { waitHandle });
-            if (!p.HasExited)
-            {
-                throw new Exception("Process wait handle is not working properly");
-            }
-            else
-            {
-                Console.WriteLine("success");
             }
         }
     }

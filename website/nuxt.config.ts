@@ -1,7 +1,7 @@
-import { NuxtConfig } from '@nuxt/types';
-import { $content } from '@nuxt/content';
-import { getLangBenchResults } from './contentUtils';
-import _ from 'lodash';
+import { NuxtConfig } from '@nuxt/types'
+import { $content } from '@nuxt/content'
+import _ from 'lodash'
+import { getLangBenchResults } from './contentUtils'
 
 const config: NuxtConfig = {
   // Target: https://go.nuxtjs.dev/config-target
@@ -13,11 +13,15 @@ const config: NuxtConfig = {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Another Benchmarks Game for computer languages',
+    title: 'Benchmarks for programming languages and compilers',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'benchmarks game for computer languages' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'benchmarks for programming languages and compilers',
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -72,18 +76,16 @@ const config: NuxtConfig = {
     crawler: false,
   },
   tailwindcss: {
-    plugins: [
-      require('@tailwindcss/forms'),
-    ],
+    plugins: [require('@tailwindcss/forms')],
   },
   router: {
     async extendRoutes(routes, resolve) {
-      const langBenchResults = await getLangBenchResults($content);
-      routes.forEach(r => {
+      const langBenchResults = await getLangBenchResults($content)
+      routes.forEach((r) => {
         r.meta = langBenchResults
-      });
+      })
 
-      langBenchResults.forEach(l => {
+      langBenchResults.forEach((l) => {
         routes.push({
           name: l.lang,
           path: `/${l.lang}`,
@@ -91,10 +93,10 @@ const config: NuxtConfig = {
           meta: {
             lang: l,
           } as LangPageMeta,
-        });
+        })
 
-        langBenchResults.forEach(l2 => {
-          if (l.lang != l2.lang) {
+        langBenchResults.forEach((l2) => {
+          if (l.lang !== l2.lang) {
             routes.push({
               name: `${l.lang}-versus-${l2.lang}`,
               path: `/${l.lang}-vs-${l2.lang}`,
@@ -103,37 +105,36 @@ const config: NuxtConfig = {
                 lang: l,
                 other: l2,
               } as LangPageMeta,
-            });
+            })
           }
-        });
-      });
+        })
+      })
 
       const problems = _.chain(langBenchResults)
-        .flatMap(i => i.benchmarks)
-        .map(i => i.test)
+        .flatMap((i) => i.benchmarks)
+        .map((i) => i.test)
         .uniq()
         .value()
 
-      problems.forEach(p => {
+      problems.forEach((p) => {
         routes.push({
           name: `problem/${p}`,
           path: `/problem/${p}`,
           component: resolve(__dirname, 'components/LangMetaPage.vue'),
           meta: {
             problem: p,
-            allProblems: problems,
             all: langBenchResults,
           } as LangPageMeta,
-        });
+        })
       })
     },
-  }
+  },
 }
 
 if (process.env.SKIP_LINT) {
+  // eslint-disable-next-line no-console
   console.log(`Skipping nuxt lint`)
-}
-else {
+} else {
   // https://go.nuxtjs.dev/stylelint
   config.buildModules?.push('@nuxtjs/stylelint-module')
 }
@@ -141,6 +142,7 @@ else {
 // sitemap
 // https://sitemap.nuxtjs.org/
 if (process.env.APP_HOST_NAME) {
+  // eslint-disable-next-line no-console
   console.log(`Turning on sitemap generation for ${process.env.APP_HOST_NAME}`)
   config.buildModules?.push('@nuxtjs/sitemap')
   config.sitemap = {
@@ -151,6 +153,7 @@ if (process.env.APP_HOST_NAME) {
 // ga
 // https://google-analytics.nuxtjs.org/
 if (process.env.GOOGLE_ANALYTICS_ID) {
+  // eslint-disable-next-line no-console
   console.log(`Turning on google analytics`)
   config.buildModules?.push('@nuxtjs/google-analytics')
   config.googleAnalytics = {

@@ -17,7 +17,7 @@ problems:
       - 3.js
 compiler_version_command:
 compiler_version_regex:
-runtime_version_parameter: -v
+runtime_version_parameter: --version
 runtime_version_regex:
 source_rename_to: c.js
 environments:
@@ -39,3 +39,13 @@ environments:
     build: cp /usr/local/bin/node ./out
     out_dir: out
     run_cmd: node c.js
+  - os: linux
+    compiler: node/graal
+    version: latest
+    docker:
+    include:
+    include_sub_dir: out
+    build: ls -al out
+    out_dir: out
+    run_cmd: graalnode c.js
+    runtime_included: false

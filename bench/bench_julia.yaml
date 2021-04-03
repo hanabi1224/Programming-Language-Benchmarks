@@ -6,9 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 4.jl
-  # - name: mandelbrot
-  #   source:
-  #     - 8.jl
+  - name: mandelbrot
+    source:
+      - 8.jl
   - name: nbody
     source:
       - 7.jl
