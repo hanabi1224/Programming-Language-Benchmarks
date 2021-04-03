@@ -38,6 +38,27 @@ jobs:
           ]
     steps:
       - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          echo '# placeholder' >> $PROFILE
+          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
+          # https://www.graalvm.org/docs/getting-started/
+          echo $GRAALVM_11_ROOT
+          ls -al $GRAALVM_11_ROOT
+          sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
+          gu --version
+          sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
+          graaljava -version
+          sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
+          graaljavac -version
+          sudo ln -sf $GRAALVM_11_ROOT/bin/node /usr/bin/graalnode
+          graalnode --version
+      - name: Install graalvm native-image
+        if: matrix.lang == 'java'
+        run: |
+          sudo gu install native-image
+          sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
+          native-image --version
       - name: Install lua
         if: matrix.lang == 'lua'
         run: |
@@ -63,12 +84,21 @@ jobs:
           wget https://github.com/pyston/pyston/releases/download/v2.1/pyston_2.1_20.04.deb
           sudo apt install -y ./pyston_2.1_20.04.deb
           pyston -V
+          sudo gu install python
+          sudo ln -sf $GRAALVM_11_ROOT/bin/graalpython /usr/bin/graalpython
+          graalpython --version
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install truffleruby
+        if: matrix.lang == 'ruby'
+        run: |
+          sudo gu install ruby
+          sudo ln -sf $GRAALVM_11_ROOT/bin/truffleruby /usr/bin/truffleruby
+          truffleruby --version
       - name: Install dart
         if: matrix.lang == 'dart'
         run: |
@@ -102,8 +132,6 @@ jobs:
           curl https://wasmtime.dev/install.sh -sSf | bash
           echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
           cat $PROFILE
-      - name: Install
-        run: echo '# placeholder' >> $PROFILE
       - name: Build
         run: |
           source $PROFILE
