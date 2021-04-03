@@ -15,8 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         # lang: [csharp, crystal, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang]
-        # lang: [csharp, crystal, dart, go, haskell, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang]
-        lang: [haxe]
+        lang: [go]
     steps:
       - uses: actions/checkout@v2
       - name: Install lua
@@ -105,7 +104,27 @@ jobs:
           echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
           cat $PROFILE
       - name: Install
-        run: echo '# placeholder' >> $PROFILE
+        run: |
+          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
+          # https://www.graalvm.org/docs/getting-started/
+          echo '# placeholder' >> $PROFILE
+          echo $GRAALVM_11_ROOT
+          ls -al $GRAALVM_11_ROOT
+          sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
+          gu --version
+          sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
+          java -version
+          sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
+          javac -version
+          gu install native-image
+          sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
+          native-image --version
+          $GRAALVM_11_ROOT/bin/gu install python
+          sudo ln -sf $GRAALVM_11_ROOT/bin/graalpython /usr/bin/graalpython
+          graalpython --version
+          $GRAALVM_11_ROOT/bin/gu install ruby
+          sudo ln -sf $GRAALVM_11_ROOT/bin/truffleruby /usr/bin/truffleruby
+          truffleruby --version
       - name: Build
         run: |
           source $PROFILE
