@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-wrap relative">
-    <aside class="block w-1/6">
+    <menu-button @toggle="toggleMenu"></menu-button>
+    <aside :class="sideBarClass">
       <h2 title="Benchmarks for other computer languages" class="text-xl">
         Languages
       </h2>
@@ -20,7 +21,7 @@
         </li>
       </ul>
     </aside>
-    <div class="block w-4/6 pr-4">
+    <div :class="contentClass">
       <h1 v-if="lang && !other" class="text-3xl">
         All {{ lang.langDisplay }} benchmarks
       </h1>
@@ -46,7 +47,7 @@
           Your
           <a
             class="underline bold text-blue-500"
-            href="https://github.com/hanabi1224/Another-Benchmarks-Game"
+            href="https://github.com/hanabi1224/Programming-Language-Benchmarks"
             target="_blank"
             >CONTRIBUTION</a
           >
@@ -68,14 +69,26 @@
           <h3 class="text-base font-bold text-red-800">Input: {{ input }}</h3>
           <table class="table-auto w-full text-base leading-loose">
             <tr class="border-b-2 border-dotted py-1">
-              <th v-show="other || problem" class="text-left pl-4">lang</th>
+              <th v-show="other || problem" :class="'text-left pl-4' + mdHide">
+                lang
+              </th>
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
               <th class="text-right" title="total-time">time</th>
-              <th class="text-right">peak-mem</th>
-              <th class="text-right" title="cpu-time-user">time(user)</th>
-              <th class="text-right" title="cpu-time-kernel">time(kernel)</th>
-              <th class="text-left pl-5">compiler/runtime</th>
+              <th class="text-right">
+                <span class="md-hide">peak-mem</span>
+                <span class="md-show">mem</span>
+              </th>
+              <th :class="'text-right' + mdHide" title="cpu-time-user">
+                time(user)
+              </th>
+              <th :class="'text-right' + mdHide" title="cpu-time-kernel">
+                time(kernel)
+              </th>
+              <th class="text-left pl-5">
+                <span class="md-show">compiler</span>
+                <span class="md-hide">compiler/runtime</span>
+              </th>
             </tr>
             <tbody>
               <tr
@@ -86,12 +99,15 @@
                   (idx % 2 == 0 ? 'bg-gray-200' : '')
                 "
               >
-                <td v-show="other || problem" class="text-left pl-4">
+                <td
+                  v-show="other || problem"
+                  :class="'text-left pl-4' + mdHide"
+                >
                   <a :href="`/${i.lang}`">{{ i.lang }}</a>
                 </td>
                 <td class="text-right">
                   <a
-                    :href="`https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/algorithm/${test}/${i.code}`"
+                    :href="`https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/bench/algorithm/${test}/${i.code}`"
                     target="_blank"
                     class="underline text-blue-500"
                     >{{ i.code }}</a
@@ -102,8 +118,12 @@
                 <td class="text-right">
                   {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
                 </td>
-                <td class="text-right">{{ i.cpuTimeUserMS.toFixed(0) }}ms</td>
-                <td class="text-right">{{ i.cpuTimeKernelMS.toFixed(0) }}ms</td>
+                <td :class="'text-right' + mdHide">
+                  {{ i.cpuTimeUserMS.toFixed(0) }}ms
+                </td>
+                <td :class="'text-right' + mdHide">
+                  {{ i.cpuTimeKernelMS.toFixed(0) }}ms
+                </td>
                 <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
                   {{ i.compiler }} {{ i.compilerVersion }}
                 </td>
@@ -113,7 +133,7 @@
         </div>
       </div>
     </div>
-    <aside class="block w-1/6">
+    <aside :class="sideBarClass">
       <div class="pb-5">
         <h2 class="text-xl">Problems</h2>
         <ul class="text-base">
@@ -158,6 +178,7 @@
 <script lang="ts">
 import { Component, Watch, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
+import MenuButton from './MenuButton.vue'
 import { getFullCompilerVersion, mergeLangBenchResults } from '~/contentUtils'
 
 function requireAll(requireContext: any) {
@@ -175,9 +196,12 @@ const problems = _.chain(langs)
 Component.registerHooks(['head'])
 
 @Component({
-  components: {},
+  components: {
+    MenuButton,
+  },
 })
 export default class LangMetaPage extends Vue {
+  isMenuOn = false
   meta?: LangPageMeta
   problem?: string
   allProblems?: string[] = problems
@@ -200,6 +224,24 @@ export default class LangMetaPage extends Vue {
   compilerVersionSelected = ''
   compilerOptionSelected = ''
 
+  toggleMenu() {
+    this.isMenuOn = !this.isMenuOn
+  }
+
+  get sideBarClass() {
+    return this.isMenuOn ? 'block w-1/6 half-width' : 'block w-1/6 md-hide'
+  }
+
+  get contentClass() {
+    return this.isMenuOn
+      ? 'block w-4/6 pr-4 md-hide'
+      : 'block w-4/6 full-width mx-auto'
+  }
+
+  get mdHide() {
+    return ' md-hide '
+  }
+
   get otherLangs() {
     return _.chain(this.langs)
       .filter((i) => i.lang !== this.lang?.lang)
@@ -210,7 +252,7 @@ export default class LangMetaPage extends Vue {
     // const buildId = this.activeBenchmarks[0].appveyorBuildId
     // return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
     const runId = this.activeBenchmarks[0].githubRunId
-    return `https://github.com/hanabi1224/Another-Benchmarks-Game/actions/runs/${runId}`
+    return `https://github.com/hanabi1224/Programming-Language-Benchmarks/actions/runs/${runId}`
   }
 
   get benchmarkDate() {
@@ -360,3 +402,21 @@ export default class LangMetaPage extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+@media screen and (max-width: 768px) {
+  .md-hide {
+    display: none;
+  }
+  .half-width {
+    width: 50%;
+  }
+  .full-width {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 769px) {
+  .md-show {
+    display: none;
+  }
+}
+</style>
