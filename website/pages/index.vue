@@ -56,7 +56,7 @@
             Your
             <a
               class="underline bold text-blue-500"
-              href="https://github.com/hanabi1224/Another-Benchmarks-Game"
+              href="https://github.com/hanabi1224/Programming-Language-Benchmarks"
               target="_blank"
               >CONTRIBUTION</a
             >
@@ -161,7 +161,7 @@ export default class IndexPage extends Vue {
     // const buildId = this.activeBenchmarks[0].appveyorBuildId
     // return `https://ci.appveyor.com/project/hanabi1224/another-benchmarks-game/builds/${buildId}`
     const runId = this.langs[0].benchmarks[0].githubRunId
-    return `https://github.com/hanabi1224/Another-Benchmarks-Game/actions/runs/${runId}`
+    return `https://github.com/hanabi1224/Programming-Language-Benchmarks/actions/runs/${runId}`
   }
 
   get benchmarkDate() {
