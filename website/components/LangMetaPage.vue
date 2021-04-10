@@ -67,7 +67,7 @@
         </h2>
         <div v-for="input in getInputs(test)" :key="input" class="mt-5">
           <h3 class="text-base font-bold text-red-800">Input: {{ input }}</h3>
-          <table class="table-auto w-full text-base leading-loose">
+          <table class="table-auto w-full text-xs leading-loose">
             <tr class="border-b-2 border-dotted py-1">
               <th v-show="other || problem" :class="'text-left pl-4' + mdHide">
                 lang
@@ -90,7 +90,7 @@
                 <span class="md-hide">compiler/runtime</span>
               </th>
             </tr>
-            <tbody>
+            <tbody class="font-light">
               <tr
                 v-for="(i, idx) in filterBenches(test, input)"
                 :key="idx"
@@ -402,21 +402,3 @@ export default class LangMetaPage extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-@media screen and (max-width: 768px) {
-  .md-hide {
-    display: none;
-  }
-  .half-width {
-    width: 50%;
-  }
-  .full-width {
-    width: 100%;
-  }
-}
-@media screen and (min-width: 769px) {
-  .md-show {
-    display: none;
-  }
-}
-</style>

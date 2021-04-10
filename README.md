@@ -6,7 +6,7 @@
 <!-- [![Build status](https://img.shields.io/appveyor/ci/hanabi1224/Another-Benchmarks-Game/main.svg)](https://ci.appveyor.com/project/hanabi1224/Another-Benchmarks-Game) -->
 
 # Why Build This
-The idea is to build an automatic process for benchmark generation and pulishing
+The idea is to build an automatic process for benchmark generation and pulishing. 
 
 ### Comparable numbers
 *It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job*
@@ -15,6 +15,10 @@ The idea is to build an automatic process for benchmark generation and pulishing
 
 *Once a change is merged into main branch, the CI job will re-generate and publish the static website*
 
+## Main Goals
++ Compare performance differences between different languages. Note that implementations might be using different optimizations, e.g. with or w/o multithreading, please do read the source code to check if it's a fair comparision or not.
++ Compare performance differences between different compilers or runtimes of the same language with the same source code.
++ A reference for CI setup / Dev environment setup / package management setup for different languages. Refer to [Github action](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml)
 
 # [Website](https://programming-language-benchmarks.vercel.app/)
 ### Build

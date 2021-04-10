@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt generate",
     "dev": "nuxt dev -s -t server -o",
+    "start": "nuxt start -H 0.0.0.0",
     "generate": "nuxt generate",
     "regenerate": "rm -r dist && nuxt generate",
     "nuxt-help": "nuxt -h",
@@ -27,11 +28,12 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.3.2",
-    "core-js": "^3.10.0",
+    "core-js": "^3.10.1",
     "find-versions": "^4.0.0",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.4",
     "nuxt-property-decorator": "^2.9.1",
+    "sass-google-fonts": "^1.0.1",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2",
     "vue2-touch-events": "^3.2.1"
@@ -49,7 +51,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "eslint": "^7.23.0",
+    "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -64,6 +66,7 @@
     "stylelint": "^13.12.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
+    "stylelint-scss": "^3.19.0",
     "ts-jest": "^26.5.4",
     "vue-jest": "^3.0.7"
   }
