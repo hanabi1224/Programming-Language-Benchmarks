@@ -1,0 +1,38 @@
+lang: zig
+problems:
+  - name: helloworld
+    source:
+      - 1.zig
+  # - name: binarytrees
+  #   source:
+  #     - 1.zig
+  - name: nbody
+    source:
+      - 1.zig
+  - name: spectral-norm
+    source:
+      - 1.zig
+  # - name: pidigits
+  #   source:
+  #     - 1.zig
+  # - name: fasta
+  #   source:
+  #     - 1.zig
+  - name: fannkuch-redux
+    source:
+      - 1.zig
+compiler_version_command: zig version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.zig
+environments:
+  - os: linux
+    compiler: zig
+    version: latest
+    docker:
+    include: zig
+    build: zig build
+    # after_build:
+    out_dir: out
+    run_cmd: app
