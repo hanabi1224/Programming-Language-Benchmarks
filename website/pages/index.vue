@@ -19,9 +19,9 @@
     </aside>
     <article :class="contentClass">
       <div class="px-5 max-w-prose">
-        <div class="text-lg tracking-wider leading-8">
+        <div class="text-lg tracking-widest leading-8">
           <p class="pt-5">
-            This site provide side by side comparison of several programming
+            This site provides side by side comparison of several programming
             languages and their different compilers or runtime
           </p>
           <p class="pt-5">
@@ -29,6 +29,33 @@
             the numbers are generated from the same environment at nearly the
             same time. All benchmark tests are executed in a single CI job
           </p>
+          <p class="pt-5">
+            Once a change is merged into main branch, the CI job will
+            re-generate and publish the static website
+          </p>
+          <p class="pt-5 font-bold">Main goals:</p>
+          <ul class="list-disc list-outside italic text-base">
+            <li class="pt-5">
+              Compare performance differences between different languages. Note
+              that implementations might be using different optimizations, e.g.
+              with or without multithreading, please do read the source code to
+              check if it's a fair comparision or not.
+            </li>
+            <li class="pt-5">
+              Compare performance differences between different compilers or
+              runtimes of the same language with the same source code.
+            </li>
+            <li class="pt-5">
+              A reference for CI setup / Dev environment setup / package
+              management setup for different languages. Refer to
+              <a
+                href="https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml"
+                class="underline text-blue-500"
+                target="_blank"
+                >Github action</a
+              >
+            </li>
+          </ul>
         </div>
         <div class="italic text-base leading-8">
           <p class="pt-5">
@@ -170,16 +197,3 @@ export default class IndexPage extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-@media screen and (max-width: 768px) {
-  .md-hide {
-    display: none;
-  }
-  .half-width {
-    width: 50%;
-  }
-  .full-width {
-    width: 100%;
-  }
-}
-</style>
