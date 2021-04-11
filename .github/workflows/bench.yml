@@ -59,6 +59,10 @@ jobs:
           sudo gu install native-image
           sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
           native-image --version
+      - name: Install kotlin
+        if: matrix.lang == 'kotlin'
+        run: |
+          sudo apt-get install libtinfo5 -y
       - name: Install lua
         if: matrix.lang == 'lua'
         run: |
