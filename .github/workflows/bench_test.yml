@@ -53,7 +53,7 @@ jobs:
       - name: Install zig
         if: matrix.lang == 'zig'
         run: |
-          snap install zig --classic --beta
+          sudo snap install zig --classic --beta
           zig version
       - name: Install crystal
         if: matrix.lang == 'crystal'
