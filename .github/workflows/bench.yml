@@ -35,6 +35,7 @@ jobs:
             swift,
             typescript,
             vlang,
+            zig,
           ]
     steps:
       - uses: actions/checkout@v2
@@ -70,6 +71,11 @@ jobs:
           make && sudo make install
           sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
           luajit -v
+      - name: Install zig
+        if: matrix.lang == 'zig'
+        run: |
+          sudo snap install zig --classic --beta
+          zig version
       - name: Install crystal
         if: matrix.lang == 'crystal'
         run: |
