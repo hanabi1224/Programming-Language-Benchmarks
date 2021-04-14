@@ -530,8 +530,8 @@ namespace BenchTool
                     }
                 }
 
-                var avgMeasurement = measurements.GetAverage();
-                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {avgMeasurement}\n");
+                var statsMeasurement = measurements.GetStats();
+                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {statsMeasurement}\n");
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
@@ -543,11 +543,12 @@ namespace BenchTool
                     test = problem.Name,
                     code = codePath,
                     input = test.Input,
-                    timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
-                    memBytes = avgMeasurement.PeakMemoryBytes,
-                    cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
-                    cpuTimeUserMS = avgMeasurement.CpuTimeUser.TotalMilliseconds,
-                    cpuTimeKernelMS = avgMeasurement.CpuTimeKernel.TotalMilliseconds,
+                    timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
+                    timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
+                    memBytes = statsMeasurement.PeakMemoryBytes,
+                    cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
+                    cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
+                    cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
                     //appveyorBuildId = AppveyorUtils.BuildId,
                     githubRunId = GithubActionUtils.RunId,
                     buildLog = BuildOutputJson.LoadFrom(buildOutput),
