@@ -1,5 +1,5 @@
 <template>
-  <div v-touch="toggleMenu" :class="'menu-btn' + openStatus">
+  <div v-touch="toggleMenu" :class="['menu-btn', openStatus]">
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
@@ -29,7 +29,7 @@ export default class MenuButtonPage extends Vue {
   }
 
   get openStatus() {
-    return this.isOpen ? ' open' : ''
+    return this.isOpen ? 'open' : ''
   }
 }
 </script>

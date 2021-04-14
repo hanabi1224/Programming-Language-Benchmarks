@@ -69,20 +69,29 @@
           <h3 class="text-base font-bold text-red-800">Input: {{ input }}</h3>
           <table class="table-auto w-full text-xs leading-loose">
             <tr class="border-b-2 border-dotted py-1">
-              <th v-show="other || problem" :class="'text-left pl-4' + mdHide">
+              <th
+                v-show="other || problem"
+                :class="['text-left', 'pl-4', mdHide]"
+              >
                 lang
               </th>
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
-              <th class="text-right" title="total-time">time</th>
+              <th class="text-right" title="total time">time</th>
+              <th
+                :class="['text-right', mdHide]"
+                title="total time standard deviation"
+              >
+                stddev
+              </th>
               <th class="text-right">
                 <span class="md-hide">peak-mem</span>
                 <span class="md-show">mem</span>
               </th>
-              <th :class="'text-right' + mdHide" title="cpu-time-user">
+              <th :class="['text-right', mdHide]" title="cpu-time-user">
                 time(user)
               </th>
-              <th :class="'text-right' + mdHide" title="cpu-time-kernel">
+              <th :class="['text-right', mdHide]" title="cpu-time-kernel">
                 time(kernel)
               </th>
               <th class="text-left pl-5">
@@ -101,7 +110,7 @@
               >
                 <td
                   v-show="other || problem"
-                  :class="'text-left pl-4' + mdHide"
+                  :class="['text-left', 'pl-4', mdHide]"
                 >
                   <a :href="`/${i.lang}`">{{ i.lang }}</a>
                 </td>
@@ -114,14 +123,17 @@
                   >
                 </td>
                 <!-- <td class="text-right">{{ i.input }}</td> -->
-                <td class="text-right">{{ i.timeMS.toFixed(1) }}ms</td>
-                <td class="text-right">
-                  {{ (i.memBytes / (1024 * 1024)).toFixed(2) }}MB
+                <td class="text-right">{{ i.timeMS.toFixed(0) }}ms</td>
+                <td :class="['text-right', mdHide]">
+                  {{ i.timeStdDevMS.toFixed(0) }}ms
                 </td>
-                <td :class="'text-right' + mdHide">
+                <td class="text-right">
+                  {{ (i.memBytes / (1024 * 1024)).toFixed(1) }}MB
+                </td>
+                <td :class="['text-right', mdHide]">
                   {{ i.cpuTimeUserMS.toFixed(0) }}ms
                 </td>
-                <td :class="'text-right' + mdHide">
+                <td :class="['text-right', mdHide]">
                   {{ i.cpuTimeKernelMS.toFixed(0) }}ms
                 </td>
                 <td class="text-left pl-5" :title="getFullCompilerVersion(i)">
@@ -239,7 +251,7 @@ export default class LangMetaPage extends Vue {
   }
 
   get mdHide() {
-    return ' md-hide '
+    return 'md-hide'
   }
 
   get otherLangs() {

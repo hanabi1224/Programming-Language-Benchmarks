@@ -6,22 +6,23 @@
   "test": "helloworld",
   "code": "1.js",
   "input": "T_T",
-  "timeMS": 46.1,
-  "memBytes": 33283686,
-  "cpuTimeMS": 34.0,
-  "cpuTimeUserMS": 30.0,
-  "cpuTimeKernelMS": 4.0,
-  "githubRunId": "711849872",
+  "timeMS": 70.9553,
+  "timeStdDevMS": 3.739701612591866,
+  "memBytes": 16366387,
+  "cpuTimeMS": 54.0,
+  "cpuTimeUserMS": 38.0,
+  "cpuTimeKernelMS": 16.0,
+  "githubRunId": null,
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-04-02T14:01:55.8120223+00:00",
-    "finished": "2021-04-02T14:02:06.5131048+00:00",
-    "durationMs": 10701
+    "start": "2021-04-01T05:35:01.2673101+00:00",
+    "finished": "2021-04-01T05:35:03.900554+00:00",
+    "durationMs": 2633
   },
   "testLog": {
     "runtimeVersion": "v14.16.0",
-    "start": "2021-04-02T14:02:28.8532533+00:00",
-    "finished": "2021-04-02T14:02:28.9816474+00:00",
-    "durationMs": 128
+    "start": "2021-04-14T12:13:44.1933382+00:00",
+    "finished": "2021-04-14T12:13:44.5375718+00:00",
+    "durationMs": 344
   }
 }
