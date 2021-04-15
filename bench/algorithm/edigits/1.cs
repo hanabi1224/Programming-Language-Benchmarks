@@ -17,18 +17,26 @@ class DigitsOfE
         var a = BigInteger.Pow(new BigInteger(10), n - 1);
         var answer = p * a / q;
         var answerStr = answer.ToString();
+        Span<char> sb = stackalloc char[10];
         for (var i = 0; i < n; i += 10)
         {
-            Span<char> sb = stackalloc char[10] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', };
-            for (var j = i; j < n && j < i + 10; j++)
-            {
-                sb[j - i] = answerStr[j];
-            }
             var count = i + 10;
             if (count > n)
             {
                 count = n;
             }
+            for (var j = i; j < i + 10; j++)
+            {
+                if (j < n)
+                {
+                    sb[j - i] = answerStr[j];
+                }
+                else
+                {
+                    sb[j - i] = ' ';
+                }
+            }
+
             Console.WriteLine($"{new String(sb)}\t:{count}");
         }
     }
