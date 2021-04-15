@@ -21,6 +21,9 @@ problems:
   - name: pidigits
     source:
       - 2.dart
+  - name: edigits
+    source:
+      - 1.dart
   - name: spectral-norm
     source:
       - 1.dart
@@ -41,3 +44,27 @@ environments:
     build: dart compile exe app.dart -o out/app
     out_dir: out
     run_cmd: app
+  - os: linux
+    compiler: dart/aot
+    version: latest
+    docker:
+    include: dart
+    include_sub_dir:
+    before_build:
+      - dart pub get
+    build: dart compile aot-snapshot app.dart -o out/app.aot
+    out_dir: out
+    run_cmd: dartaotruntime app.aot
+    runtime_included: false
+  - os: linux
+    compiler: dart/jit
+    version: latest
+    docker:
+    include: dart
+    include_sub_dir:
+    before_build:
+      - dart pub get
+    build: dart compile jit-snapshot app.dart -o out/app.jit
+    out_dir: out
+    run_cmd: dart run app.jit
+    runtime_included: false
