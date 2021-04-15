@@ -127,7 +127,7 @@ class Manager {
 }
 
 Future<void> main(List<String> args) async {
-  int n = args.length > 0 ? int.parse(args[0]) : 0;
+  int n = args.length > 0 ? int.parse(args[0]) : 7;
 
   // Start up the workers, then dispatch work to them
   final futureManager = Manager.init(workerCount);
