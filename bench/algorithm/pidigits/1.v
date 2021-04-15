@@ -6,7 +6,7 @@ import hanabi1224.biginteger
 import strings
 
 fn main() {
-	mut n := 1000
+	mut n := 27
 	if os.args.len > 1 {
 		n = strconv.atoi(os.args[1]) or { n }
 	}

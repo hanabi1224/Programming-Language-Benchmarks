@@ -43,6 +43,15 @@ problems:
     tests:
       - input: 4000
       - input: 8000
+  - name: edigits
+    unittests:
+      - input: 227
+        output: 227_out
+      - input: 1000
+        output: 1000_out
+    tests:
+      - input: 100000
+      - input: 250001
   - name: mandelbrot
     unittests:
       - input: 200
@@ -91,6 +100,9 @@ langs:
       - name: pidigits
         source:
           - 8.go
+      - name: edigits
+        source:
+          - 1.go
       - name: mandelbrot
         source:
           - 1.go
