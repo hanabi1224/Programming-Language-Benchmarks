@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 void main(args) {
-  int n = args.length > 0 ? int.parse(args[0]) : 2000;
+  int n = args.length > 0 ? int.parse(args[0]) : 200;
 
   var threads = Platform.numberOfProcessors;
   final segmentFutures = <Future>[];
