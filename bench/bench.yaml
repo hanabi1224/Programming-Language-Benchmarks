@@ -76,6 +76,13 @@ problems:
       - input: 2500000
         # exclude_langs:
         #   - python
+  - name: prime-sieve
+    unittests:
+      - input: 1000
+        output: 1000_out
+    tests:
+      - input: 2000
+      - input: 5000
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml
@@ -113,10 +120,14 @@ langs:
       - name: fasta
         source:
           - 3.go
+      - name: prime-sieve
+        source:
+          - 1.go
     compiler_version_command: go version
     compiler_version_regex:
     runtime_version_parameter:
     runtime_version_regex:
+    source_rename_to: app.go
     environments:
       - os: linux
         compiler: go

@@ -10,12 +10,10 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"os"
 	"strconv"
 )
-
-var n = 0
 
 type Node struct {
 	left  *Node
@@ -39,13 +37,14 @@ func (n *Node) itemCheck() int {
 const minDepth = 4
 
 func main() {
-	flag.Parse()
-	if flag.NArg() > 0 {
-		n, _ = strconv.Atoi(flag.Arg(0))
+	maxDepth := 5
+	if len(os.Args) > 1 {
+		if _n, err := strconv.Atoi(os.Args[1]); err == nil {
+			maxDepth = _n
+		}
 	}
 
-	maxDepth := n
-	if minDepth+2 > n {
+	if minDepth+2 > maxDepth {
 		maxDepth = minDepth + 2
 	}
 	stretchDepth := maxDepth + 1

@@ -44,14 +44,13 @@
           >
         </p>
         <p>
-          Your
           <a
             class="underline bold text-blue-500"
             href="https://github.com/hanabi1224/Programming-Language-Benchmarks"
             target="_blank"
-            >CONTRIBUTION</a
+            >CONTRIBUTIONS</a
           >
-          is WELCOME!
+          are WELCOME!
         </p>
       </div>
       <div class="mt-5">
