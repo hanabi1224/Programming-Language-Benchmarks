@@ -18,31 +18,40 @@ pub fn main() !void {
     var u = try bigint.Managed.init(global_allocator);
     var v = try bigint.Managed.init(global_allocator);
     var w = try bigint.Managed.init(global_allocator);
-    var tmp = try bigint.Managed.init(global_allocator);
 
-    var digits_printed: i32 = 0;
+    var digits_printed: usize = 0;
+    var sb = [10:0]u8{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
     while (true) {
         // u = &n1 / &d;
-        try bigint.Managed.divFloor(&u, &tmp, n1.toConst(), d.toConst());
+        {
+            var tmp = try bigint.Managed.init(global_allocator);
+            defer tmp.deinit();
+            try bigint.Managed.divFloor(&u, &tmp, n1.toConst(), d.toConst());
+        }
         // v = &n2 / &d;
-        try bigint.Managed.divFloor(&v, &tmp, n2.toConst(), d.toConst());
+        {
+            var tmp = try bigint.Managed.init(global_allocator);
+            defer tmp.deinit();
+            try bigint.Managed.divFloor(&v, &tmp, n2.toConst(), d.toConst());
+        }
         // if u == v
         if (bigint.Managed.eq(u, v)) {
-            try stdout.print("{}", .{u});
-            digits_printed += 1;
+            var digitStr = try u.toString(global_allocator, 10, false);
             const rem = @rem(digits_printed, 10);
-            if (rem == 0) {
-                try stdout.print("\t:{}\n", .{digits_printed});
+            sb[rem] = digitStr[0];
+            digits_printed += 1;
+            if (rem == 9) {
+                try stdout.print("{}\t:{}\n", .{ sb, digits_printed });
             }
 
             if (digits_printed >= n) {
-                if (rem != 0) {
-                    var i = 10 - rem;
-                    while (i > 0) {
-                        try stdout.print(" ", .{});
-                        i -= 1;
+                if (rem != 9) {
+                    var i = rem + 1;
+                    while (i < 10) {
+                        sb[i] = ' ';
+                        i += 1;
                     }
-                    try stdout.print("\t:{}\n", .{digits_printed});
+                    try stdout.print("{}\t:{}\n", .{ sb, digits_printed });
                 }
                 break;
             }
@@ -50,38 +59,84 @@ pub fn main() !void {
             // let to_minus = &u * &ten * &d;
             var to_minus_managed = try bigint.Managed.init(global_allocator);
             defer to_minus_managed.deinit();
-            try bigint.Managed.mul(&to_minus_managed, u.toConst(), d.toConst());
-            try bigint.Managed.mul(&to_minus_managed, to_minus_managed.toConst(), ten);
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.mul(&tmp, u.toConst(), d.toConst());
+                try bigint.Managed.mul(&to_minus_managed, tmp.toConst(), ten);
+            }
             const to_minus = to_minus_managed.toConst();
             // n1 = &n1 * &ten - &to_minus;
-            try bigint.Managed.mul(&tmp, n1.toConst(), ten);
-            try bigint.Managed.sub(&n1, tmp.toConst(), to_minus);
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.mul(&tmp, n1.toConst(), ten);
+                try bigint.Managed.sub(&n1, tmp.toConst(), to_minus);
+            }
             // n2 = &n2 * &ten - &to_minus;
-            try bigint.Managed.mul(&tmp, n2.toConst(), ten);
-            try bigint.Managed.sub(&n2, tmp.toConst(), to_minus);
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.mul(&tmp, n2.toConst(), ten);
+                try bigint.Managed.sub(&n2, tmp.toConst(), to_minus);
+            }
         } else {
             // let k2 = &k * &two;
             var k2 = try bigint.Managed.init(global_allocator);
             defer k2.deinit();
             try bigint.Managed.mul(&k2, k.toConst(), two);
             // u = &n1 * (&k2 - &one);
-            try bigint.Managed.sub(&tmp, k2.toConst(), one);
-            try bigint.Managed.mul(&u, tmp.toConst(), n1.toConst());
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.sub(&tmp, k2.toConst(), one);
+                var tmpu = try bigint.Managed.init(global_allocator);
+                try bigint.Managed.mul(&tmpu, tmp.toConst(), n1.toConst());
+                u.deinit();
+                u = tmpu;
+            }
             // v = &n2 * &two;
-            try bigint.Managed.mul(&v, n2.toConst(), two);
+            {
+                var tmpv = try bigint.Managed.init(global_allocator);
+                try bigint.Managed.mul(&tmpv, n2.toConst(), two);
+                v.deinit();
+                v = tmpv;
+            }
             // w = &n1 * (&k - &one);
-            try bigint.Managed.sub(&tmp, k.toConst(), one);
-            try bigint.Managed.mul(&w, tmp.toConst(), n1.toConst());
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.sub(&tmp, k.toConst(), one);
+                var tmpw = try bigint.Managed.init(global_allocator);
+                try bigint.Managed.mul(&tmpw, tmp.toConst(), n1.toConst());
+                w.deinit();
+                w = tmpw;
+            }
             // n1 = &u + &v;
             try bigint.Managed.add(&n1, u.toConst(), v.toConst());
             // u = &n2 * (&k + &two);
-            try bigint.Managed.add(&tmp, k.toConst(), two);
-            try bigint.Managed.mul(&u, tmp.toConst(), n2.toConst());
+            {
+                var tmp = try bigint.Managed.init(global_allocator);
+                defer tmp.deinit();
+                try bigint.Managed.add(&tmp, k.toConst(), two);
+                var tmpu = try bigint.Managed.init(global_allocator);
+                try bigint.Managed.mul(&tmpu, tmp.toConst(), n2.toConst());
+                u.deinit();
+                u = tmpu;
+            }
             // n2 = &w + &u;
             try bigint.Managed.add(&n2, w.toConst(), u.toConst());
             // d = &d * (&k2 + &one);
-            try bigint.Managed.add(&tmp, k2.toConst(), one);
-            try bigint.Managed.mul(&d, tmp.toConst(), d.toConst());
+            {
+                var tmp1 = try bigint.Managed.init(global_allocator);
+                defer tmp1.deinit();
+                try bigint.Managed.add(&tmp1, k2.toConst(), one);
+                var tmpd = try bigint.Managed.init(global_allocator);
+                try bigint.Managed.mul(&tmpd, tmp1.toConst(), d.toConst());
+                d.deinit();
+                d = tmpd;
+            }
+
             // k = &k + &one;
             try bigint.Managed.add(&k, k.toConst(), one);
         }
