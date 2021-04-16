@@ -43,6 +43,8 @@ problems:
     tests:
       - input: 4000
       - input: 8000
+        exclude_langs:
+          - zig
   - name: edigits
     unittests:
       - input: 227
@@ -52,6 +54,8 @@ problems:
     tests:
       - input: 100000
       - input: 250001
+        exclude_langs:
+          - zig
   - name: mandelbrot
     unittests:
       - input: 200

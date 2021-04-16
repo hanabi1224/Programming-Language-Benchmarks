@@ -12,12 +12,12 @@ problems:
   - name: spectral-norm
     source:
       - 1.zig
-  # - name: pidigits
-  #   source:
-  #     - 1.zig
-  # - name: edigits
-  #   source:
-  #     - 1.zig
+  - name: pidigits
+    source:
+      - 1.zig
+  - name: edigits
+    source:
+      - 1.zig
   # - name: fasta
   #   source:
   #     - 1.zig

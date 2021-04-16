@@ -30,8 +30,10 @@ pub fn main() !void {
     var ten = try bigint.Managed.initSet(global_allocator, 10);
     defer ten.deinit();
     try bigint.Managed.pow(&a, ten.toConst(), @bitCast(u32, n - 1));
-    try bigint.Managed.mul(&answer, answer.toConst(), a.toConst());
-    try bigint.Managed.divFloor(&answer, &a, answer.toConst(), q);
+    var tmp = try bigint.Managed.init(global_allocator);
+    defer tmp.deinit();
+    try bigint.Managed.mul(&tmp, answer.toConst(), a.toConst());
+    try bigint.Managed.divFloor(&answer, &a, tmp.toConst(), q);
     var str = try answer.toString(global_allocator, 10, false);
     var i: usize = 0;
     var n_usize = @as(usize, @bitCast(u32, n));
