@@ -276,7 +276,8 @@ namespace BenchTool
             {
                 if (useDocker)
                 {
-                    compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
+                    const string DockerTmpCodeDir = "/tmp/code";
+                    compilerVersionCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {compilerVersionCommand}";
                 }
                 else
                 {
