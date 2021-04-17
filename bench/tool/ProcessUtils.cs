@@ -16,7 +16,7 @@ namespace BenchTool
 {
     public static class ProcessMeasurementExtensions
     {
-        public static ProcessMeasurement GetStats(this ICollection<ProcessMeasurement> array)
+        public static ProcessMeasurement GetAverageStats(this ICollection<ProcessMeasurement> array)
         {
             if (array.Count == 0)
             {
