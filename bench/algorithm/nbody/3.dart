@@ -11,7 +11,7 @@ import 'dart:math' as Math;
 import 'dart:typed_data';
 
 void main(args) {
-  int n = args.length > 0 ? int.parse(args[0]) : 0;
+  int n = args.length > 0 ? int.parse(args[0]) : 10000;
 
   NBodySystem system = NBodySystem();
   print(system.energy().toStringAsFixed(9));

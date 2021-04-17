@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-gray-700 text-base font-mono subpixel-antialiased text-lg tracking-wide .leading-relaxed py-5 container mx-auto min-h-screen shadow-lg bg-gray-100 p-5"
+    class="text-gray-700 text-base subpixel-antialiased text-lg tracking-wide .leading-relaxed py-5 md:container md:mx-auto min-h-screen shadow-lg bg-gray-100 p-5"
   >
     <div class="bg-pink-800 text-white p-5 mb-5 text-3xl rounded">
       <a href="/"
@@ -17,7 +17,5 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component({
   components: {},
 })
-export default class DefaultLayout extends Vue {
-  header() {}
-}
+export default class DefaultLayout extends Vue {}
 </script>

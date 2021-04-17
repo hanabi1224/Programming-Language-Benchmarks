@@ -16,6 +16,9 @@ problems:
   - name: pidigits
     source:
       - 1.cs
+  - name: edigits
+    source:
+      - 1.cs
   - name: fannkuch-redux
     source:
       - 9.cs
@@ -25,6 +28,9 @@ problems:
   - name: mandelbrot
     source:
       - 9.cs
+  - name: prime-sieve
+    source:
+      - 1.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

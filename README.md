@@ -1,14 +1,12 @@
-# [Another Benchmarks Game](https://another-benchmarks-game.vercel.app/)
+# [Programming Language Benchmarks](https://programming-language-benchmarks.vercel.app/)
 
 [![bench](https://github.com/hanabi1224/Another-Benchmarks-Game/actions/workflows/bench.yml/badge.svg)](https://github.com/hanabi1224/Another-Benchmarks-Game/actions/workflows/bench.yml)
 [![MIT License](https://img.shields.io/github/license/hanabi1224/Another-Benchmarks-Game.svg)](https://github.com/hanabi1224/Another-Benchmarks-Game/blob/master/LICENSE)
 
 <!-- [![Build status](https://img.shields.io/appveyor/ci/hanabi1224/Another-Benchmarks-Game/main.svg)](https://ci.appveyor.com/project/hanabi1224/Another-Benchmarks-Game) -->
 
-Yet another implementation of [The Computer Language Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), Visit [HERE](https://another-benchmarks-game.vercel.app/)
-
 # Why Build This
-*The idea is to build an automatic process for benchmark generation and pulishing*
+The idea is to build an automatic process for benchmark generation and pulishing. 
 
 ### Comparable numbers
 *It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job*
@@ -17,8 +15,12 @@ Yet another implementation of [The Computer Language Benchmarks Game](https://be
 
 *Once a change is merged into main branch, the CI job will re-generate and publish the static website*
 
+## Main Goals
++ Compare performance differences between different languages. Note that implementations might be using different optimizations, e.g. with or w/o multithreading, please do read the source code to check if it's a fair comparision or not.
++ Compare performance differences between different compilers or runtimes of the same language with the same source code.
++ A reference for CI setup / Dev environment setup / package management setup for different languages. Refer to [Github action](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml)
 
-# [Website](https://another-benchmarks-game.vercel.app/)
+# [Website](https://programming-language-benchmarks.vercel.app/)
 ### Build
 To achieve better SEO, the published site is static and prerenderd, powered by [nuxt.js](https://nuxtjs.org/).
 
@@ -103,6 +105,9 @@ Intergrate build / test / benchmark infomation into website
 
 # How to contribute
 TODO
+
+# Thanks
+*This is inspired by [The Computer Language Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/), thanks to the creator.*
 
 # LICENSES
 Code of problem implementation from [The Computer Language Benchmarks Game](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/) is under their [Revised BSD](https://benchmarksgame-team.pages.debian.net/benchmarksgame/license.html)

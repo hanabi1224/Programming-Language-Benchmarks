@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
+using MathNet.Numerics.Statistics;
 using NLog;
 using static Interop;
 
@@ -16,7 +16,7 @@ namespace BenchTool
 {
     public static class ProcessMeasurementExtensions
     {
-        public static ProcessMeasurement GetAverage(this ICollection<ProcessMeasurement> array)
+        public static ProcessMeasurement GetStats(this ICollection<ProcessMeasurement> array)
         {
             if (array.Count == 0)
             {
@@ -37,6 +37,7 @@ namespace BenchTool
             return new ProcessMeasurement
             {
                 Elapsed = TimeSpan.FromMilliseconds(array.Average(i => i.Elapsed.TotalMilliseconds)),
+                ElapsedStdDevMS = Statistics.StandardDeviation(array.Select(i => i.Elapsed.TotalMilliseconds)),
                 CpuTimeKernel = avgCpuTimeKernel,
                 CpuTimeUser = avgCpuTimeUser,
                 PeakMemoryBytes = (long)Math.Round(avgPeakMemoryBytes),
@@ -48,6 +49,8 @@ namespace BenchTool
     {
         public TimeSpan Elapsed { get; set; }
 
+        public double ElapsedStdDevMS { get; set; }
+
         public TimeSpan CpuTime => CpuTimeUser + CpuTimeKernel;
 
         public TimeSpan CpuTimeUser { get; set; }
@@ -58,7 +61,7 @@ namespace BenchTool
 
         public override string ToString()
         {
-            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, cpu-time-user: {CpuTimeUser.TotalMilliseconds}ms, cpu-time-kernel: {CpuTimeKernel.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
+            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, stddev: {ElapsedStdDevMS}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, cpu-time-user: {CpuTimeUser.TotalMilliseconds}ms, cpu-time-kernel: {CpuTimeKernel.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
         }
     }
 

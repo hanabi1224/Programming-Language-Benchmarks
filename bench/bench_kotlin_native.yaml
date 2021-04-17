@@ -11,7 +11,7 @@ problems:
       - 1.kt
   # - name: pidigits
   #   source:
-  #     - 1.kt
+  #     - 1n.kt
 compiler_version_command: sh -c "./gradlew kotlinVersion"
 compiler_version_regex:
 runtime_version_parameter:

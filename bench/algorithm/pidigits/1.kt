@@ -7,12 +7,12 @@
    Modified by hanabi1224
 */
 
-import com.ionspin.kotlin.bignum.integer.*
+import java.math.BigInteger;
 
 fun main(args: Array<String>) {
     val L = 10
 
-    var n = args[0].toInt()
+    var n = if(args.size > 0) args[0].toInt() else 27
     var j = 0
 
     val digits = PiDigitSpigot()
@@ -108,7 +108,8 @@ internal class Transformation {
         val bigj = j.toBigInteger()
         val numerator = q.multiply(bigj).add(r)
         val denominator = s.multiply(bigj).add(t)
-        return numerator.divide(denominator).intValue()
+        val q = numerator.divide(denominator)
+        return q.intValueExact()
     }
 
     fun qrst(q: Int, r: Int, s: Int, t: Int): Transformation {

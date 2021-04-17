@@ -44,6 +44,7 @@ namespace BenchTool
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
         /// <param name="buildPool">A flag that indicates whether builds that can run in parallel</param>
         /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
+        /// <param name="noDocker">A Flag that forces disabling docker</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
@@ -58,6 +59,7 @@ namespace BenchTool
             bool failFast = false,
             bool buildPool = false,
             bool verbose = false,
+            bool noDocker = false,
             string[] langs = null,
             string[] problems = null,
             string[] environments = null)
@@ -132,7 +134,7 @@ namespace BenchTool
                             switch (task)
                             {
                                 case TaskBuild:
-                                    rawJobExecutionTask = BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild);
+                                    rawJobExecutionTask = BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild, noDocker: noDocker);
                                     break;
                                 case TaskTest:
                                     rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput);
@@ -206,7 +208,8 @@ namespace BenchTool
             string buildOutputDir,
             string includeDir,
             bool forcePullDocker,
-            bool forceRebuild)
+            bool forceRebuild,
+            bool noDocker)
         {
             var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild
@@ -256,7 +259,7 @@ namespace BenchTool
 
             // Docker setup
             var docker = langEnvConfig.Docker;
-            var useDocker = !docker.IsEmptyOrWhiteSpace();
+            var useDocker = !noDocker && !docker.IsEmptyOrWhiteSpace();
             if (useDocker && forcePullDocker)
             {
                 await ProcessUtils.RunCommandAsync($"docker pull {docker}").ConfigureAwait(false);
@@ -273,7 +276,8 @@ namespace BenchTool
             {
                 if (useDocker)
                 {
-                    compilerVersionCommand = $"docker run --rm {docker} {compilerVersionCommand}";
+                    const string DockerTmpCodeDir = "/tmp/code";
+                    compilerVersionCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {compilerVersionCommand}";
                 }
                 else
                 {
@@ -443,8 +447,8 @@ namespace BenchTool
                         error = new Exception($"Test Failed: {buildId}"
                             + $"\nInput: {test.Input}"
                             + $"\nExpected output path: {expectedOutputPath}"
-                            + $"\n Output: {stdOut}"
-                            + $"\n Expected output: {expectedOutput}");
+                            + $"\n Output:\n{stdOut}"
+                            + $"\n Expected output:\n{expectedOutput}");
                     }
                 }
 
@@ -530,8 +534,8 @@ namespace BenchTool
                     }
                 }
 
-                var avgMeasurement = measurements.GetAverage();
-                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {avgMeasurement}\n");
+                var statsMeasurement = measurements.GetStats();
+                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {statsMeasurement}\n");
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
@@ -543,11 +547,12 @@ namespace BenchTool
                     test = problem.Name,
                     code = codePath,
                     input = test.Input,
-                    timeMS = avgMeasurement.Elapsed.TotalMilliseconds,
-                    memBytes = avgMeasurement.PeakMemoryBytes,
-                    cpuTimeMS = avgMeasurement.CpuTime.TotalMilliseconds,
-                    cpuTimeUserMS = avgMeasurement.CpuTimeUser.TotalMilliseconds,
-                    cpuTimeKernelMS = avgMeasurement.CpuTimeKernel.TotalMilliseconds,
+                    timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
+                    timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
+                    memBytes = statsMeasurement.PeakMemoryBytes,
+                    cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
+                    cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
+                    cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
                     //appveyorBuildId = AppveyorUtils.BuildId,
                     githubRunId = GithubActionUtils.RunId,
                     buildLog = BuildOutputJson.LoadFrom(buildOutput),

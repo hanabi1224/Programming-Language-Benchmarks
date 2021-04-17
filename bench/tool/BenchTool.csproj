@@ -7,11 +7,12 @@
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
     <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="NLog.Schema" Version="4.7.9" PrivateAssets="all" />
-    <PackageReference Include="YamlDotNet" Version="10.0.0" />
+    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20574.7" />
+    <PackageReference Include="YamlDotNet" Version="11.1.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="nlog.config">

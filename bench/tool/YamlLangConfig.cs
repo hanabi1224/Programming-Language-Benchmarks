@@ -35,7 +35,7 @@ namespace BenchTool
     {
         public string Input { get; set; }
 
-        public int Repeat { get; set; } = 2;
+        public int Repeat { get; set; } = 3;
 
         public bool SkipOnPullRequest { get; set; } = false;
 

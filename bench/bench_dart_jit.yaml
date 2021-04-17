@@ -1,0 +1,48 @@
+lang: dart
+problems:
+  - name: helloworld
+    source:
+      - 1.dart
+  - name: binarytrees
+    source:
+      - 4.dart
+  - name: fasta
+    source:
+      - 1.dart
+  - name: fannkuch-redux
+    source:
+      - 2.dart
+  # - name: mandelbrot
+  #   source:
+  #     - 2.dart
+  - name: nbody
+    source:
+      - 3.dart
+  - name: pidigits
+    source:
+      - 2.dart
+  - name: edigits
+    source:
+      - 1.dart
+  - name: spectral-norm
+    source:
+      - 1.dart
+compiler_version_command: dart --version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.dart
+environments:
+  - os: linux
+    compiler: dart/jit
+    version: latest
+    docker:
+    include: dart
+    include_sub_dir:
+    before_build:
+      - dart pub get
+    build: dart compile jit-snapshot app.dart -o out/app.jit
+    out_dir: out
+    run_cmd: dart run app.jit
+    runtime_included: false
+    runtime_version_parameter: --version

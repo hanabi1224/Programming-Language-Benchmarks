@@ -22,6 +22,7 @@ kotlin {
   sourceSets {
       val commonMain by getting {
           dependencies {
+              // implementation(libs.bignum)
               implementation("com.ionspin.kotlin:bignum:0.2.8")
           }
       }

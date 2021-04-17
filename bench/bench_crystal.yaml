@@ -15,11 +15,17 @@ problems:
   - name: pidigits
     source:
       - 1.cr
+  - name: edigits
+    source:
+      - 1.cr
   - name: fasta
     source:
       - 1.cr
       - 2.cr
   - name: fannkuch-redux
+    source:
+      - 1.cr
+  - name: prime-sieve
     source:
       - 1.cr
 compiler_version_command: crystal version
