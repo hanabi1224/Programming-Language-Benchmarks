@@ -15,12 +15,12 @@ problems:
   - name: pidigits
     source:
       - 1.rb
-  - name: fasta
-    source:
-      - 6.rb
-  - name: prime-sieve
-    source:
-      - 1.rb
+  # - name: fasta
+  #   source:
+  #     - 6.rb
+  # - name: prime-sieve
+  #   source:
+  #     - 1.rb
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
@@ -28,20 +28,11 @@ runtime_version_regex:
 source_rename_to: app.rb
 environments:
   - os: linux
-    compiler: ruby
+    compiler: truffleruby
     version: latest
     docker:
     include:
     runtime_included: false
     build: cp app.rb out
     out_dir: out
-    run_cmd: ruby -W0 app.rb
-  - os: linux
-    compiler: ruby/jit
-    version: latest
-    docker:
-    include:
-    runtime_included: false
-    build: cp app.rb out
-    out_dir: out
-    run_cmd: ruby --jit -W0 app.rb
+    run_cmd: truffleruby -W0 app.rb
