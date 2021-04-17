@@ -516,26 +516,45 @@ namespace BenchTool
                     repeat = 1;
                 }
 
-                var measurements = new List<ProcessMeasurement>(repeat);
-                var maxRetries = 10;
-                for (var i = 0; i < repeat && maxRetries > 0; i++)
+                ProcessMeasurement statsMeasurement = new ProcessMeasurement();
+                for (var nRetry = 0; nRetry < 5; nRetry++)
                 {
-                    try
+                    var measurements = new List<ProcessMeasurement>(repeat);
+                    var maxRetries = 10;
+                    for (var i = 0; i < repeat && maxRetries > 0; i++)
                     {
-                        var measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
-                        Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                        measurements.Add(measurement);
+                        try
+                        {
+                            var measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
+                            Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                            measurements.Add(measurement);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(e);
+                            i--;
+                            maxRetries--;
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        Logger.Error(e);
-                        i--;
-                        maxRetries--;
-                    }
-                }
 
-                var statsMeasurement = measurements.GetStats();
-                Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {statsMeasurement}\n");
+                    statsMeasurement = measurements.GetAverageStats();
+                    Logger.Info($"\n[AVG] ({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {statsMeasurement}\n");
+                    if (statsMeasurement.ElapsedStdDevMS < 30)
+                    {
+                        break;
+                    }
+                    else if (statsMeasurement.ElapsedStdDevMS < 60
+                        && statsMeasurement.ElapsedStdDevMS * 2 < statsMeasurement.Elapsed.TotalMilliseconds)
+                    {
+                        break;
+                    }
+                    else if (statsMeasurement.ElapsedStdDevMS * 4 < statsMeasurement.Elapsed.TotalMilliseconds)
+                    {
+                        break;
+                    }
+                    Logger.Warn("Standard deviation is too large, retrying in 5s...");
+                    await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+                }
 
                 var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
