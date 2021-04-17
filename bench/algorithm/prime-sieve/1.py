@@ -1,9 +1,9 @@
-from sys import argv
+import sys
 import asyncio
 
 
 async def main():
-    n = 100 if len(argv) < 2 else int(argv[1])
+    n = 100 if len(sys.argv) < 2 else int(sys.argv[1])
     ch = generate()
     for i in range(0, n):
         prime = await ch.__anext__()
@@ -25,4 +25,5 @@ async def filter(ch, prime):
             yield i
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(5000)
     asyncio.run(main())
