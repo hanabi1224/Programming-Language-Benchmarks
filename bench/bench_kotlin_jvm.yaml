@@ -12,6 +12,9 @@ problems:
   - name: pidigits
     source:
       - 1.kt
+  - name: prime-sieve
+    source:
+      - 1.kt
 compiler_version_command: echo "kotlinc 1.4.32"
 compiler_version_regex:
 runtime_version_parameter: -version

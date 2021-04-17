@@ -19,14 +19,10 @@ static class ConcurrentPrimeSieve
         using var cts = new CancellationTokenSource();
         var ch = Channel.CreateBounded<int>(ChannelSize);
         _ = GenerateAsync(ch.Writer);
-        for (var i = 0; ; i++)
+        for (var i = 0; i < n; i++)
         {
             var prime = await ch.Reader.ReadAsync().ConfigureAwait(false);
             Console.WriteLine(prime);
-            if (i >= n)
-            {
-                break;
-            }
             var chNext = Channel.CreateBounded<int>(ChannelSize);
             _ = FilterAsync(ch.Reader, chNext.Writer, prime, cts.Token);
             ch = chNext;
