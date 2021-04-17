@@ -33,6 +33,9 @@ problems:
   - name: edigits
     source:
       - 1.rs
+  - name: prime-sieve
+    source:
+      - 1.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
@@ -48,7 +51,7 @@ environments:
       - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
-    build: cargo build --release --target-dir /tmp/rust/target
+    build: cargo build --release --all-features --target-dir /tmp/rust/target
     after_build:
       - sudo mv /tmp/rust/target/release/_app out
     out_dir: out
