@@ -54,8 +54,8 @@ jobs:
           graaljavac -version
           sudo ln -sf $GRAALVM_11_ROOT/bin/node /usr/bin/graalnode
           graalnode --version
-      - name: Install loom, graalvm native-image
-        if: matrix.lang == 'java'
+      - name: Install loom
+        if: matrix.lang == 'java' || matrix.lang == 'kotlin'
         run: |
           wget https://download.java.net/java/early_access/loom/6/openjdk-17-loom+6-225_linux-x64_bin.tar.gz
           tar -xvf openjdk-17-loom+6-225_linux-x64_bin.tar.gz
@@ -63,6 +63,9 @@ jobs:
           sudo ln -sf $PWD/jdk-17/bin/java /usr/bin/loomjava
           loomjavac -version
           loomjava -version
+      - name: Install graalvm native-image
+        if: matrix.lang == 'java'
+        run: |
           sudo gu install native-image
           sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
           native-image --version

@@ -1,11 +1,11 @@
-// Single thread version by using new ForkJoinPool(1)
+// Multiple thread version by using ForkJoinPool.commonPool()
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.SynchronousQueue;
 
 final class app {
-  private static Executor pool = new ForkJoinPool(1);
+  private static Executor pool = ForkJoinPool.commonPool();
   public static void main(String[] args) {
     int n = 100;
     if (args.length > 0) {

@@ -6,6 +6,7 @@ problems:
   - name: prime-sieve
     source:
       - 1.java
+      - 2.java
 compiler_version_command: loomjavac -version
 compiler_version_regex:
 runtime_version_parameter: -version
