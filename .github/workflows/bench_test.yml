@@ -23,6 +23,7 @@ jobs:
           echo '# placeholder' >> $PROFILE
           # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
           # https://www.graalvm.org/docs/getting-started/
+          gu upgrade -A
           echo $GRAALVM_11_ROOT
           ls -al $GRAALVM_11_ROOT
           sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
