@@ -27,7 +27,7 @@ jobs:
           ls -al $GRAALVM_11_ROOT
           sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
           gu --version
-          gu upgrade -A
+          sudo gu upgrade -A
           gu --version
           sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
           graaljava -version
