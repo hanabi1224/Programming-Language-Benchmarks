@@ -25,15 +25,21 @@ jobs:
           # https://www.graalvm.org/docs/getting-started/
           echo $GRAALVM_11_ROOT
           ls -al $GRAALVM_11_ROOT
-          sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
+          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          tar -xvf graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          sudo ln -sf $PWD/graalvm-ce-java11-21.1.0 $HOME/graalvm-ce-java11
+          ls -al $HOME/graalvm-ce-java11
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
           gu --version
           sudo gu upgrade -A
           gu --version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
           graaljava -version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
           graaljavac -version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/node /usr/bin/graalnode
+          sudo gu install nodejs
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
           graalnode --version
       - name: Install loom, graalvm native-image
         if: matrix.lang == 'java'
@@ -45,7 +51,7 @@ jobs:
           loomjavac -version
           loomjava -version
           sudo gu install native-image
-          sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/native-image /usr/bin/native-image
           native-image --version
       - name: Install lua
         if: matrix.lang == 'lua'
@@ -90,7 +96,7 @@ jobs:
         if: matrix.lang == 'ruby'
         run: |
           sudo gu install ruby
-          sudo ln -sf $GRAALVM_11_ROOT/bin/truffleruby /usr/bin/truffleruby
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
           truffleruby --version
       - name: Install dart
         if: matrix.lang == 'dart'
@@ -121,7 +127,7 @@ jobs:
         if: matrix.lang == 'rust'
         run: |
           sudo gu install wasm
-          sudo ln -sf $GRAALVM_11_ROOT/bin/wasm /usr/bin/graalwasm
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
           graalwasm --version
           curl https://get.wasmer.io -sSfL | sh
           cat $HOME/.wasmer/wasmer.sh >> $PROFILE
