@@ -1,4 +1,4 @@
-// Multiple thread version by add withContext(Default) 
+// Multiple thread version by adding withContext(Default) 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.Dispatchers.Default
