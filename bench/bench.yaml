@@ -45,6 +45,7 @@ problems:
       - input: 8000
         exclude_langs:
           - zig
+          - nim
   - name: edigits
     unittests:
       - input: 227
@@ -56,6 +57,7 @@ problems:
       - input: 250001
         exclude_langs:
           - zig
+          - nim
   - name: mandelbrot
     unittests:
       - input: 200

@@ -15,9 +15,6 @@ problems:
   - name: pidigits
     source:
       - 3.js
-  # - name: edigits
-  #   source:
-  #     - 1.js
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
@@ -25,20 +22,12 @@ runtime_version_regex:
 source_rename_to: c.js
 environments:
   - os: linux
-    compiler: node
-    version: lts
-    docker: node:lts-slim
+    compiler: node/graal
+    version: latest
+    docker:
     include:
     include_sub_dir: out
-    build: cp /usr/local/bin/node ./out
+    build: ls -al out
     out_dir: out
-    run_cmd: node --stack-size=10000 c.js
-  - os: linux
-    compiler: node
-    version: current
-    docker: node:current-slim
-    include:
-    include_sub_dir: out
-    build: cp /usr/local/bin/node ./out
-    out_dir: out
-    run_cmd: node --stack-size=10000 c.js
+    run_cmd: graalnode --stack-size=10000 c.js
+    runtime_included: false
