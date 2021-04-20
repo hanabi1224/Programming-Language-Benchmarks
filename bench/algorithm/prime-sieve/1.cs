@@ -1,4 +1,4 @@
-// Port from go concurrent prime sieve with goroutines
+// Ported from go concurrent prime sieve with goroutines
 
 using System;
 using System.Threading;
@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 
 static class ConcurrentPrimeSieve
 {
-    const int ChannelSize = 2;
+    private static readonly BoundedChannelOptions s_channelOptions = new BoundedChannelOptions(1)
+    {
+        SingleWriter = true,
+        SingleReader = true,
+        AllowSynchronousContinuations = true,
+    };
+
     public static async Task Main(string[] args)
     {
         int n;
@@ -17,13 +23,13 @@ static class ConcurrentPrimeSieve
         }
 
         using var cts = new CancellationTokenSource();
-        var ch = Channel.CreateBounded<int>(ChannelSize);
+        var ch = Channel.CreateBounded<int>(s_channelOptions);
         _ = GenerateAsync(ch.Writer);
         for (var i = 0; i < n; i++)
         {
             var prime = await ch.Reader.ReadAsync().ConfigureAwait(false);
             Console.WriteLine(prime);
-            var chNext = Channel.CreateBounded<int>(ChannelSize);
+            var chNext = Channel.CreateBounded<int>(s_channelOptions);
             _ = FilterAsync(ch.Reader, chNext.Writer, prime, cts.Token);
             ch = chNext;
         }

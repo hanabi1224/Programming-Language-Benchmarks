@@ -42,24 +42,44 @@ jobs:
       - name: Install
         run: |
           echo '# placeholder' >> $PROFILE
+      - name: Install graal
+        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'rust'
+        run: |
           # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
           # https://www.graalvm.org/docs/getting-started/
           echo $GRAALVM_11_ROOT
-          ls -al $GRAALVM_11_ROOT
-          sudo ln -sf $GRAALVM_11_ROOT/bin/gu /usr/bin/gu
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          tar -xvf graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          sudo ln -sf $PWD/graalvm-ce-java11-21.1.0 $HOME/graalvm-ce-java11
+          ls -al $HOME/graalvm-ce-java11
+          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
           gu --version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
           graaljava -version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
           graaljavac -version
-          sudo ln -sf $GRAALVM_11_ROOT/bin/node /usr/bin/graalnode
-          graalnode --version
+      - name: Install loom
+        if: matrix.lang == 'java' || matrix.lang == 'kotlin'
+        run: |
+          wget https://download.java.net/java/early_access/loom/6/openjdk-17-loom+6-225_linux-x64_bin.tar.gz
+          tar -xvf openjdk-17-loom+6-225_linux-x64_bin.tar.gz
+          sudo ln -sf $PWD/jdk-17/bin/javac /usr/bin/loomjavac
+          sudo ln -sf $PWD/jdk-17/bin/java /usr/bin/loomjava
+          loomjavac -version
+          loomjava -version
       - name: Install graalvm native-image
         if: matrix.lang == 'java'
         run: |
           sudo gu install native-image
-          sudo ln -sf $GRAALVM_11_ROOT/bin/native-image /usr/bin/native-image
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/native-image /usr/bin/native-image
           native-image --version
+      - name: Install graalnode
+        if: matrix.lang == 'javascript'
+        run: |
+          sudo gu install nodejs || echo 'graal nodejs already installed'
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
+          graalnode --version
       - name: Install lua
         if: matrix.lang == 'lua'
         run: |
@@ -91,7 +111,7 @@ jobs:
           sudo apt install -y ./pyston_2.1_20.04.deb
           pyston -V
           sudo gu install python
-          sudo ln -sf $GRAALVM_11_ROOT/bin/graalpython /usr/bin/graalpython
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/graalpython /usr/bin/graalpython
           graalpython --version
       - name: Install ruby
         if: matrix.lang == 'ruby'
@@ -103,7 +123,7 @@ jobs:
         if: matrix.lang == 'ruby'
         run: |
           sudo gu install ruby
-          sudo ln -sf $GRAALVM_11_ROOT/bin/truffleruby /usr/bin/truffleruby
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
           truffleruby --version
       - name: Install dart
         if: matrix.lang == 'dart'
@@ -134,7 +154,7 @@ jobs:
         if: matrix.lang == 'rust'
         run: |
           sudo gu install wasm
-          sudo ln -sf $GRAALVM_11_ROOT/bin/wasm /usr/bin/graalwasm
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
           graalwasm --version
           curl https://get.wasmer.io -sSfL | sh
           cat $HOME/.wasmer/wasmer.sh >> $PROFILE
