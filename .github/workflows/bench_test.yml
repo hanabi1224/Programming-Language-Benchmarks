@@ -19,6 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install
+        run: |
+          echo '# placeholder' >> $PROFILE
+      - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby'
         run: |
           echo '# placeholder' >> $PROFILE
