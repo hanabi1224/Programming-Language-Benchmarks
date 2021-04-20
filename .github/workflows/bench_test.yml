@@ -25,11 +25,11 @@ jobs:
           # https://www.graalvm.org/docs/getting-started/
           echo $GRAALVM_11_ROOT
           ls -al $GRAALVM_11_ROOT
-          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          tar -xvf graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          sudo ln -sf $PWD/graalvm-ce-java11-21.1.0 $HOME/graalvm-ce-java11
-          ls -al $HOME/graalvm-ce-java11
+          sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
+          # wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          # tar -xvf graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
+          # sudo ln -sf $PWD/graalvm-ce-java11-21.1.0 $HOME/graalvm-ce-java11
+          # ls -al $HOME/graalvm-ce-java11
           sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
           gu --version
           sudo gu upgrade -A
@@ -38,7 +38,7 @@ jobs:
           graaljava -version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
           graaljavac -version
-          sudo gu install nodejs
+          # sudo gu install nodejs
           sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
           graalnode --version
       - name: Install loom, graalvm native-image
