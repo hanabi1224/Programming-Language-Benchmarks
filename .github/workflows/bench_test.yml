@@ -32,8 +32,8 @@ jobs:
           # ls -al $HOME/graalvm-ce-java11
           sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
           gu --version
-          sudo gu upgrade -A
-          gu --version
+          # sudo gu upgrade -A
+          # gu --version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
           graaljava -version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
