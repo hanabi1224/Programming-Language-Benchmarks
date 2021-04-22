@@ -12,7 +12,7 @@ problems:
   - name: pidigits
     source:
       - 1.kt
-  - name: prime-sieve
+  - name: coro-prime-sieve
     source:
       - 1.kt
       - 2.kt
