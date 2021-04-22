@@ -18,7 +18,7 @@ problems:
   - name: fasta
     source:
       - 6.rb
-  # - name: prime-sieve
+  # - name: coro-prime-sieve
   #   source:
   #     - 1.rb
 compiler_version_command:

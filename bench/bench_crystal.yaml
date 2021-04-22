@@ -25,7 +25,7 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.cr
-  - name: prime-sieve
+  - name: coro-prime-sieve
     source:
       - 1.cr
 compiler_version_command: crystal version
