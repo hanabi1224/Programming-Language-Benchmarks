@@ -47,5 +47,4 @@ async fn filter(
             sender.send(i).await?;
         }
     }
-    Ok(())
 }
