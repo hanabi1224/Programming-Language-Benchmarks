@@ -12,9 +12,9 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.swift
-  # - name: fasta
-  #   source:
-  #     - 3.swift
+  - name: fasta
+    source:
+      - 3.swift
 compiler_version_command: swift --version
 compiler_version_regex:
 runtime_version_parameter:
