@@ -1,9 +1,9 @@
 object Constants {
-    const val kotlinVersion = "1.4.32"
+    const val kotlinVersion = "1.5.0"
 }
 
 plugins {
-    kotlin("multiplatform").version("1.4.32")
+    kotlin("multiplatform").version("1.5.0")
 }
 
 repositories {
