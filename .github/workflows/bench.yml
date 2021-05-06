@@ -55,7 +55,7 @@ jobs:
           ls -al $HOME/graalvm-ce-java11
           # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
           sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
-          sudo gu upgrade || echo ''
+          sudo gu upgrade -A || echo ''
           gu --version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
           graaljava -version
@@ -109,8 +109,8 @@ jobs:
         if: matrix.lang == 'python'
         run: |
           cd /tmp
-          wget https://github.com/pyston/pyston/releases/download/v2.1/pyston_2.1_20.04.deb
-          sudo apt install -y ./pyston_2.1_20.04.deb
+          wget https://github.com/pyston/pyston/releases/download/pyston_2.2/pyston_2.2_20.04.deb
+          sudo apt install -y ./pyston_2.2_20.04.deb
           pyston -V
           sudo gu install python
           sudo ln -sf $HOME/graalvm-ce-java11/bin/graalpython /usr/bin/graalpython
