@@ -64,8 +64,8 @@ jobs:
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
         run: |
-          wget https://download.java.net/java/early_access/loom/6/openjdk-17-loom+6-225_linux-x64_bin.tar.gz
-          tar -xvf openjdk-17-loom+6-225_linux-x64_bin.tar.gz
+          wget https://download.java.net/java/early_access/loom/7/openjdk-17-loom+7-342_linux-x64_bin.tar.gz
+          tar -xvf openjdk-17-loom+7-342_linux-x64_bin.tar.gz
           sudo ln -sf $PWD/jdk-17/bin/javac /usr/bin/loomjavac
           sudo ln -sf $PWD/jdk-17/bin/java /usr/bin/loomjava
           loomjavac -version
