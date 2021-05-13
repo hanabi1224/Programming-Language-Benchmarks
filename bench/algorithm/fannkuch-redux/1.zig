@@ -84,7 +84,7 @@ pub fn main() !void {
         }
     }
 
-    try stdout.print("{}\nPfannkuchen({}) = {}\n", .{ checksum, n, max_flips_count });
+    try stdout.print("{d}\nPfannkuchen({d}) = {d}\n", .{ checksum, n, max_flips_count });
 }
 
 fn get_n() !usize {
