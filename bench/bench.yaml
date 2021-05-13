@@ -140,6 +140,6 @@ langs:
         version: latest
         docker: golang
         include:
-        build: go mod init tmp.org/tmp/v2 && go build -o out/_go
+        build: go mod init tmp.org/tmp/v2 && go build -o out/app
         out_dir: out
-        run_cmd: _go
+        run_cmd: app
