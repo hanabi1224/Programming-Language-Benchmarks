@@ -15,10 +15,10 @@ problems:
   - name: pidigits
     source:
       - 1.rb
-  # - name: fasta
-  #   source:
-  #     - 6.rb
-  # - name: prime-sieve
+  - name: fasta
+    source:
+      - 6.rb
+  # - name: coro-prime-sieve
   #   source:
   #     - 1.rb
 compiler_version_command:

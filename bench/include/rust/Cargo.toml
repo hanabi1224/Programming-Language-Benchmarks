@@ -5,7 +5,7 @@ name = "_app"
 version = "0.1.0"
 
 [features]
-async = ["async-std"]
+async = ["async-std", "tokio"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
@@ -19,6 +19,7 @@ num_cpus = "1"
 numeric-array = "0"
 rayon = "1"
 spin = "0"
+tokio = {version = "1", optional = true, features = ["full"]}
 typed-arena = "2"
 
 # [profile.release]

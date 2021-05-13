@@ -21,7 +21,7 @@ problems:
   - name: nbody
     source:
       - 1.py
-  - name: prime-sieve
+  - name: coro-prime-sieve
     source:
       - 1.py
 source_rename_to: c.py

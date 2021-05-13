@@ -10,7 +10,7 @@ export async function getLangBenchResults($content: contentFunc) {
   const pages = (await $content('/', {
     deep: true,
   }).fetch()) as IContentDocument[]
-  const benchResults = (pages as unknown) as BenchResult[]
+  const benchResults = pages as unknown as BenchResult[]
   return mergeLangBenchResults(benchResults)
 }
 

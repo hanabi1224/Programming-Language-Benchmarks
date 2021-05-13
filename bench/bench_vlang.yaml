@@ -34,7 +34,7 @@ environments:
     include_sub_dir:
     before_build:
       - v install hanabi1224.biginteger
-    build: v -prod -gc boehm_full -cc clang _app.v
+    build: v -prod -gc boehm_full -cc "clang -static" _app.v
     after_build:
       - mv _app out
     out_dir: out

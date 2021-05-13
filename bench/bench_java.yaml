@@ -41,14 +41,14 @@ environments:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
-  - os: linux
-    compiler: adoptopenjdk-openj9
-    version: 8
-    docker: adoptopenjdk/openjdk8-openj9:slim
-    include:
-    build: javac app.java -d out && cp -r /opt/java/openjdk ./out
-    out_dir: out
-    run_cmd: openjdk/bin/java app
+  # - os: linux
+  #   compiler: adoptopenjdk-openj9
+  #   version: 8
+  #   docker: adoptopenjdk/openjdk8-openj9:slim
+  #   include:
+  #   build: javac app.java -d out && cp -r /opt/java/openjdk ./out
+  #   out_dir: out
+  #   run_cmd: openjdk/bin/java app
   # - os: linux
   #   compiler: zuluopenjdk
   #   version: 8

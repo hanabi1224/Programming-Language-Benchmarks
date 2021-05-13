@@ -24,9 +24,11 @@ environments:
   - os: linux
     compiler: swift
     version: latest
-    docker: swift
+    docker: swift:focal
     include: swift
     include_sub_dir: Sources/app
-    build: swift build -c release -Xswiftc -static-executable && cp .build/x86_64-unknown-linux-gnu/release/app out
+    build: swift build -c release -Xswiftc -static-executable
+    after_build:
+      - cp .build/x86_64-unknown-linux-gnu/release/app out
     out_dir: out
     run_cmd: app

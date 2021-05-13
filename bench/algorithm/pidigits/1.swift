@@ -5,13 +5,13 @@ let arguments = CommandLine.arguments
 let digitsToPrint = arguments.count > 1 ? Int(arguments[1])! : 27
 var digitsPrinted = 0
 
-var k = BigInt(1)
-var n1 = BigInt(4)
-var n2 = BigInt(3)
-var d = BigInt(1)
-var u: BigInt
-var v: BigInt
-var w: BigInt
+var k = BInt(1)
+var n1 = BInt(4)
+var n2 = BInt(3)
+var d = BInt(1)
+var u: BInt
+var v: BInt
+var w: BInt
 while true {
     u = n1 / d
     v = n2 / d

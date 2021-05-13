@@ -102,7 +102,19 @@
           >
             <a
               :href="`/problem/${i}`"
-              class="p-1 pl-3 flex rounded transition-colors duration-300 ease-linear justify-between underline text-blue-500 hover:text-green-400"
+              class="
+                p-1
+                pl-3
+                flex
+                rounded
+                transition-colors
+                duration-300
+                ease-linear
+                justify-between
+                underline
+                text-blue-500
+                hover:text-green-400
+              "
             >
               {{ i }}</a
             >

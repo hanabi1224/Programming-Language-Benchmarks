@@ -41,7 +41,7 @@ pub fn main() !void {
             sb[rem] = digitStr[0];
             digits_printed += 1;
             if (rem == 9) {
-                try stdout.print("{}\t:{}\n", .{ sb, digits_printed });
+                try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
             }
 
             if (digits_printed >= n) {
@@ -51,7 +51,7 @@ pub fn main() !void {
                         sb[i] = ' ';
                         i += 1;
                     }
-                    try stdout.print("{}\t:{}\n", .{ sb, digits_printed });
+                    try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
                 }
                 break;
             }
