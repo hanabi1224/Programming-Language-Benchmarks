@@ -45,9 +45,9 @@ pub fn main() !void {
             j += 1;
         }
         if (i + 10 <= n_usize) {
-            try stdout.print("{}\t:{}\n", .{ sb, i + 10 });
+            try stdout.print("{s}\t:{d}\n", .{ sb, i + 10 });
         } else {
-            try stdout.print("{}\t:{}\n", .{ sb, n });
+            try stdout.print("{s}\t:{d}\n", .{ sb, n });
         }
         i += 10;
     }
