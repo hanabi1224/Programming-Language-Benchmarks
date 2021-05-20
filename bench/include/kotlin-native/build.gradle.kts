@@ -24,7 +24,7 @@ kotlin {
           dependencies {
               // implementation(libs.bignum)
               implementation("com.ionspin.kotlin:bignum:0.3.0")
-              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
           }
       }
     }

@@ -25,7 +25,7 @@ compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
-source_rename_to: _app.v
+source_rename_to: app.v
 environments:
   - os: linux
     compiler: vlang
@@ -34,8 +34,8 @@ environments:
     include_sub_dir:
     before_build:
       - v install hanabi1224.biginteger
-    build: v -prod -gc boehm_full -cc "clang -static" _app.v
+    build: v -prod -gc boehm_full -cc clang app.v
     after_build:
-      - mv _app out
+      - mv app out
     out_dir: out
-    run_cmd: _app
+    run_cmd: app
