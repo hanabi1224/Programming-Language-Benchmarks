@@ -1,9 +1,9 @@
 object Constants {
-    const val kotlinVersion = "1.5.0"
+    const val kotlinVersion = "1.5.10"
 }
 
 plugins {
-    kotlin("multiplatform").version("1.5.0")
+    kotlin("multiplatform").version("1.5.10")
 }
 
 repositories {
@@ -23,7 +23,7 @@ kotlin {
       val commonMain by getting {
           dependencies {
               // implementation(libs.bignum)
-              implementation("com.ionspin.kotlin:bignum:0.3.0")
+              implementation("com.ionspin.kotlin:bignum:0.3.1")
               implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
           }
       }
