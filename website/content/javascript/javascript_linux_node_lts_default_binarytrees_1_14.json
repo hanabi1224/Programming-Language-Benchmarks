@@ -6,23 +6,23 @@
   "test": "binarytrees",
   "code": "1.js",
   "input": "14",
-  "timeMS": 411.2065,
-  "timeStdDevMS": 80.18187847790176,
-  "memBytes": 82126848,
-  "cpuTimeMS": 960.0,
-  "cpuTimeUserMS": 725.0,
-  "cpuTimeKernelMS": 235.0,
-  "githubRunId": null,
+  "timeMS": 383.5338,
+  "timeStdDevMS": 31.283433324578283,
+  "memBytes": 96027989,
+  "cpuTimeMS": 586.6666,
+  "cpuTimeUserMS": 516.6666,
+  "cpuTimeKernelMS": 70.0,
+  "githubRunId": "916110912",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-04-01T05:35:04.0619767+00:00",
-    "finished": "2021-04-01T05:35:16.7565736+00:00",
-    "durationMs": 12694
+    "start": "2021-06-07T20:12:23.2394457+00:00",
+    "finished": "2021-06-07T20:12:24.1903915+00:00",
+    "durationMs": 950
   },
   "testLog": {
-    "runtimeVersion": "v14.16.0",
-    "start": "2021-04-14T12:13:44.5459303+00:00",
-    "finished": "2021-04-14T12:13:44.9787633+00:00",
-    "durationMs": 432
+    "runtimeVersion": "v14.17.0",
+    "start": "2021-06-07T20:12:39.2001125+00:00",
+    "finished": "2021-06-07T20:12:39.4306568+00:00",
+    "durationMs": 230
   }
 }
