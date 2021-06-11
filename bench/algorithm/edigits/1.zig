@@ -34,7 +34,7 @@ pub fn main() !void {
     defer tmp.deinit();
     try bigint.Managed.mul(&tmp, answer.toConst(), a.toConst());
     try bigint.Managed.divFloor(&answer, &a, tmp.toConst(), q);
-    var str = try answer.toString(global_allocator, 10, false);
+    var str = try answer.toString(global_allocator, 10, std.fmt.Case.lower);
     var i: usize = 0;
     var n_usize = @as(usize, @bitCast(u32, n));
     while (i < n_usize) {
