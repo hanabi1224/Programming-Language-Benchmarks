@@ -29,7 +29,7 @@ environments:
     include: kotlin-jvm
     include_sub_dir: src/main/kotlin
     before_build:
-      - sh -c "./gradlew build"
+      - sh -c "./gradlew build --no-daemon"
     build: cp build/libs/app-all.jar out/app.jar && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java -jar app.jar
@@ -40,7 +40,7 @@ environments:
     include: kotlin-jvm
     include_sub_dir: src/main/kotlin
     before_build:
-      - sh -c "./gradlew build"
+      - sh -c "./gradlew build --no-daemon"
     build: cp build/libs/app-all.jar out/app.jar
     out_dir: out
     run_cmd: loomjava -jar app.jar
