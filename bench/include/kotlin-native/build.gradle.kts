@@ -22,8 +22,8 @@ kotlin {
   sourceSets {
       val commonMain by getting {
           dependencies {
-              // implementation(libs.bignum)
-              implementation("com.ionspin.kotlin:bignum:0.3.1")
+              implementation(libs.bignum)
+              // implementation("com.ionspin.kotlin:bignum:0.3.1")
               implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
           }
       }
