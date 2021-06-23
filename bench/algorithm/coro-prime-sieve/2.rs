@@ -1,6 +1,6 @@
 // Tokio version from https://users.rust-lang.org/t/how-to-properly-use-channel-for-coroutine-communication/58761/2?u=hanabi1224
 
-use tokio::sync::mpsc::{self, Sender, Receiver};
+use tokio::sync::mpsc::{self, Receiver, Sender};
 
 fn main() {
     let n = std::env::args_os()
@@ -14,14 +14,18 @@ fn main() {
 
 #[tokio::main]
 async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
-    let (sender, mut receiver) = mpsc::channel::<usize>(2);
-    tokio::spawn(generate(sender));
+    let (sender, mut receiver) = mpsc::channel::<usize>(1);
+    let mut handles = Vec::with_capacity(n + 1);
+    handles.push(tokio::spawn(generate(sender)));
     for _i in 0..n {
         let prime = receiver.recv().await.unwrap();
         println!("{}", prime);
         let (sender_next, receiver_next) = mpsc::channel::<usize>(2);
-        tokio::spawn(filter(receiver, sender_next, prime));
+        handles.push(tokio::spawn(filter(receiver, sender_next, prime)));
         receiver = receiver_next;
+    }
+    for handle in &handles {
+        handle.abort();
     }
     Ok(())
 }

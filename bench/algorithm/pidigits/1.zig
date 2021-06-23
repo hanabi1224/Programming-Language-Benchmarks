@@ -36,7 +36,7 @@ pub fn main() !void {
         }
         // if u == v
         if (bigint.Managed.eq(u, v)) {
-            var digitStr = try u.toString(global_allocator, 10, false);
+            var digitStr = try u.toString(global_allocator, 10, std.fmt.Case.lower);
             const rem = @rem(digits_printed, 10);
             sb[rem] = digitStr[0];
             digits_printed += 1;

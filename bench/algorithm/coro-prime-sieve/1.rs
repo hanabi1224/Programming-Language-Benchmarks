@@ -2,7 +2,6 @@ use async_std::{
     channel,
     channel::{Receiver, Sender},
     task,
-    task::Task,
 };
 
 fn main() {
@@ -12,11 +11,11 @@ fn main() {
         .and_then(|s| s.parse().ok())
         .unwrap_or(100);
 
-    task::block_on(async_main(n));
+    task::block_on(async_main(n)).unwrap();
 }
 
 async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
-    let (sender, mut receiver) = channel::bounded::<usize>(2);
+    let (sender, mut receiver) = channel::bounded::<usize>(1);
     task::spawn(generate(sender));
     for _i in 0..n {
         let prime = receiver.recv().await?;

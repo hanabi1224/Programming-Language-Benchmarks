@@ -122,9 +122,9 @@
                   >
                 </td>
                 <!-- <td class="text-right">{{ i.input }}</td> -->
-                <td class="text-right">{{ i.timeMS.toFixed(0) }}ms</td>
+                <td class="text-right">{{ msToFixed(i.timeMS) }}ms</td>
                 <td :class="['text-right', mdHide]">
-                  {{ i.timeStdDevMS.toFixed(0) }}ms
+                  {{ msToFixed(i.timeStdDevMS) }}ms
                 </td>
                 <td class="text-right">
                   {{ (i.memBytes / (1024 * 1024)).toFixed(1) }}MB
@@ -237,6 +237,10 @@ export default class LangMetaPage extends Vue {
 
   toggleMenu() {
     this.isMenuOn = !this.isMenuOn
+  }
+
+  msToFixed(ms: number): string {
+    return ms < 10 ? ms.toFixed(1) : ms.toFixed(0)
   }
 
   get sideBarClass() {
