@@ -100,7 +100,7 @@ jobs:
           sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
           luajit -v
       - name: Install zig
-        if: matrix.lang == 'zig'
+        if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
         run: |
           sudo snap install zig --classic --edge
           zig version
