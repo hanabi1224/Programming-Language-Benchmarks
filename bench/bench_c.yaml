@@ -6,6 +6,16 @@ problems:
   - name: binarytrees
     source:
       - 2.c
+  - name: nbody
+    source:
+      - 2.c
+      - 5.c
+      - 8.c
+  - name: spectral-norm
+    source:
+      - 3.c
+      - 4.c
+      - 5.c
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
