@@ -1,1 +1,1 @@
--pipe -Wall -O3 -fomit-frame-pointer -fopenmp -pthread -mfpmath=sse -msse2 -o app app.cpp
+-pipe -Wall -O3 -fomit-frame-pointer -march=ivybridge -std=c++17 -fopenmp -pthread -mfpmath=sse -msse2 -o app app.cpp
