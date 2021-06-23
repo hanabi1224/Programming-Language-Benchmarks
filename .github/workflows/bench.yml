@@ -16,6 +16,8 @@ jobs:
         os: [ubuntu-20.04]
         lang:
           [
+            c,
+            cpp,
             csharp,
             crystal,
             dart,
@@ -61,6 +63,10 @@ jobs:
           graaljava -version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
           graaljavac -version
+      - name: Install c deps
+        if: matrix.lang == 'c'
+        run: |
+          sudo apt-get install -y libapr1 libapr1-dev
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
         run: |
