@@ -1,0 +1,23 @@
+lang: elixir
+problems:
+  - name: helloworld
+    source:
+      - 1.ex
+# erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(Version), halt().' -noshell
+compiler_version_command: elixir --version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.ex
+environments:
+  - os: linux
+    compiler: elixir
+    version: latest
+    docker: elixir
+    include: elixir
+    include_sub_dir: lib
+    build: MIX_ENV=prod mix escript.build --overwrite
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app
