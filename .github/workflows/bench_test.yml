@@ -67,10 +67,10 @@ jobs:
       - name: Install Erlang VM
         if: matrix.lang == 'erlang' || matrix.lang == 'elixir'
         run: |
-          wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
-          echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
-          sudo apt update -y
-          sudo apt-get upgrade erlang -y
+          # wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+          # echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+          # sudo apt update -y
+          # sudo apt-get upgrade erlang -y
           erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(Version), halt().' -noshell
           escript || echo ''
       - name: Install lua
