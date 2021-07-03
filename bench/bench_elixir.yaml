@@ -6,6 +6,12 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.ex
+  - name: edigits
+    source:
+      - 1.ex
+  - name: pidigits
+    source:
+      - 1.ex
 # erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(Version), halt().' -noshell
 compiler_version_command: elixir --version
 compiler_version_regex:
@@ -19,7 +25,7 @@ environments:
     docker: elixir
     include: elixir
     include_sub_dir: lib
-    build: MIX_ENV=prod mix escript.build --overwrite
+    build: mix local.hex --force && mix deps.get && MIX_ENV=prod mix escript.build --overwrite
     after_build:
       - mv app out
     out_dir: out
