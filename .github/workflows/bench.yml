@@ -21,6 +21,7 @@ jobs:
             csharp,
             crystal,
             dart,
+            elixir,
             go,
             haskell,
             haxe,
@@ -125,7 +126,7 @@ jobs:
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3     # Not needed with a .ruby-version file
+          ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install truffleruby
         if: matrix.lang == 'ruby'
