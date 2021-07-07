@@ -147,6 +147,11 @@ if (process.env.APP_HOST_NAME) {
   config.buildModules?.push('@nuxtjs/sitemap')
   config.sitemap = {
     hostname: process.env.APP_HOST_NAME,
+    // defaults: {
+    //   changefreq: 'weekly',
+    //   priority: 1,
+    //   lastmod: new Date(),
+    // },
   }
 }
 

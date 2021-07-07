@@ -20,14 +20,15 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
     for _i in 0..n {
         let prime = receiver.recv().await.unwrap();
         println!("{}", prime);
-        let (sender_next, receiver_next) = mpsc::channel::<usize>(2);
+        let (sender_next, receiver_next) = mpsc::channel::<usize>(1);
         handles.push(tokio::spawn(filter(receiver, sender_next, prime)));
         receiver = receiver_next;
     }
-    for handle in &handles {
-        handle.abort();
-    }
-    Ok(())
+    std::process::exit(0);
+    // for handle in &handles {
+    //     handle.abort();
+    // }
+    // Ok(())
 }
 
 async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
