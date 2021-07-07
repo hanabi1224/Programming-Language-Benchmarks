@@ -21,6 +21,9 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.v
+  - name: coro-prime-sieve
+    source:
+      - 1.v
 compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:

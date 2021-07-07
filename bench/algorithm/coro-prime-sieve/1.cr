@@ -20,12 +20,12 @@ def filter(ch_in : Channel(Int32), ch_out : Channel(Int32), prime : Int32)
 end
 
 n = ARGV.size > 0 ? ARGV[0].to_i : 100
-ch = Channel(Int32).new 2
+ch = Channel(Int32).new 1
 f = generate(ch)
 (0...n).each do
   prime = ch.receive
   puts prime
-  ch_next = Channel(Int32).new 2
+  ch_next = Channel(Int32).new 1
   filter ch, ch_next, prime
   ch = ch_next
 end

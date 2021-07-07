@@ -34,12 +34,12 @@ func main() {
 			n = _n
 		}
 	}
-	ch := make(chan int) // Create a new channel.
-	go Generate(ch)      // Launch Generate goroutine.
+	ch := make(chan int, 1) // Create a new channel.
+	go Generate(ch)         // Launch Generate goroutine.
 	for i := 0; i < n; i++ {
 		prime := <-ch
 		fmt.Println(prime)
-		ch1 := make(chan int)
+		ch1 := make(chan int, 1)
 		go Filter(ch, ch1, prime)
 		ch = ch1
 	}

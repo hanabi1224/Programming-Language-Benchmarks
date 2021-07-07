@@ -9,12 +9,12 @@ fn main() {
 		n = strconv.atoi(os.args[1]) or { n }
 	}
 
-	mut ch := chan int{}
+	mut ch := chan int{cap:1}
 	go generate(ch)
 	for _ in 0 .. n {
 		prime := <-ch
 		println(prime)
-		ch_next := chan int{}
+		ch_next := chan int{cap:1}
 		go filter(ch, ch_next, prime)
 		ch = ch_next
 	}
