@@ -91,6 +91,7 @@ problems:
       - input: 2000
       - input: 5000
         exclude_langs:
+          - dart
           - javascript
           - vlang
 langs:
