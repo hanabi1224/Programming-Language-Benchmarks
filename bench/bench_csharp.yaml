@@ -31,6 +31,7 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.cs
+      - 2.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
