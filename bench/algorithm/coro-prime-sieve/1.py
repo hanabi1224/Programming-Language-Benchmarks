@@ -8,8 +8,7 @@ async def main():
     for i in range(0, n):
         prime = await ch.__anext__()
         print(prime)
-        ch1 = filter(ch, prime)
-        ch = ch1
+        ch = filter(ch, prime)
 
 
 async def generate():

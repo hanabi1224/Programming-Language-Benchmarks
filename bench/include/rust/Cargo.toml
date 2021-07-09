@@ -13,6 +13,7 @@ anyhow = "1"
 async-std = {version = "1", optional = true}
 generic-array = "0"
 ibig = "0"
+lazy_static = "1"
 num-bigint = "0"
 num-traits = "0"
 num_cpus = "1"

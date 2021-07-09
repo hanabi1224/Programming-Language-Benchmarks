@@ -24,6 +24,7 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.py
+      - 2.py
 source_rename_to: c.py
 environments:
   - os: linux

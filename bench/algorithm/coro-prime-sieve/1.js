@@ -1,13 +1,11 @@
-// Not true coroutine w/o fiber tho
-
 async function* generate() {
-    for(var i = 2; ;i++){
+    for (var i = 2; ; i++) {
         yield i;
     }
 }
 
 async function* filter(ch, prime) {
-    while(true) {
+    while (true) {
         var i = (await ch.next()).value;
         if (i % prime != 0) {
             yield i;
@@ -26,7 +24,7 @@ async function findPrimes(n) {
 
 function main() {
     const n = +process.argv[2] || 100;
-    findPrimes(n);    
+    findPrimes(n);
 }
 
 main();

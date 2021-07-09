@@ -16,9 +16,12 @@ jobs:
         os: [ubuntu-20.04]
         lang:
           [
+            c,
+            cpp,
             csharp,
             crystal,
             dart,
+            elixir,
             go,
             haskell,
             haxe,
@@ -61,6 +64,10 @@ jobs:
           graaljava -version
           sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
           graaljavac -version
+      - name: Install c deps
+        if: matrix.lang == 'c'
+        run: |
+          sudo apt-get install -y libapr1 libapr1-dev
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
         run: |
@@ -94,7 +101,7 @@ jobs:
           sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
           luajit -v
       - name: Install zig
-        if: matrix.lang == 'zig'
+        if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
         run: |
           sudo snap install zig --classic --edge
           zig version
@@ -119,7 +126,7 @@ jobs:
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3     # Not needed with a .ruby-version file
+          ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install truffleruby
         if: matrix.lang == 'ruby'

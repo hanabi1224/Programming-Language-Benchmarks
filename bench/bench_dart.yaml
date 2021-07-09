@@ -27,6 +27,10 @@ problems:
   - name: spectral-norm
     source:
       - 1.dart
+  - name: coro-prime-sieve
+    source:
+      - 1.dart
+      # - 2.dart
 compiler_version_command: dart --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -57,4 +61,3 @@ environments:
     run_cmd: dartaotruntime app.aot
     runtime_included: false
     runtime_version_parameter: --version
-    

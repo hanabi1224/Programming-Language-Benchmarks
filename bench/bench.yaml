@@ -56,8 +56,9 @@ problems:
       - input: 100000
       - input: 250001
         exclude_langs:
-          - zig
+          - elixir
           - nim
+          - zig
   - name: mandelbrot
     unittests:
       - input: 200
@@ -89,6 +90,10 @@ problems:
     tests:
       - input: 2000
       - input: 5000
+        exclude_langs:
+          - dart
+          - javascript
+          - vlang
 langs:
   # - lang: csharp: bench_csharp.yaml
   # - lang: javascript: bench_javascript.yaml

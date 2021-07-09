@@ -1,0 +1,34 @@
+lang: c
+problems:
+  - name: helloworld
+    source:
+      - 1.c
+  # - name: binarytrees
+  #   source:
+  #     - 2.c
+  - name: nbody
+    source:
+      - 2.c
+      - 5.c
+      - 8.c
+  - name: spectral-norm
+    source:
+      # - 3.c
+      # - 4.c
+      # - 5.c
+compiler_version_command: zig version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.c
+environments:
+  - os: linux
+    compiler: zigcc
+    version: latest
+    docker:
+    include: c
+    build: zig cc @app.rsp
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app
