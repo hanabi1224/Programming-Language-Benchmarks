@@ -14,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [c, csharp, crystal, dart, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang, zig]
-        lang: [c]
+        # lang: [c, cpp, csharp, crystal, dart, elixir, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang, zig]
+        lang: [elixir]
     steps:
       - uses: actions/checkout@v2
       - name: Install
@@ -64,6 +64,15 @@ jobs:
           sudo gu install nodejs || echo 'graal nodejs already installed'
           sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
           graalnode --version
+      - name: Install Erlang VM
+        if: matrix.lang == 'erlang' || matrix.lang == 'elixir'
+        run: |
+          # wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+          # echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+          # sudo apt update -y
+          # sudo apt-get upgrade erlang -y
+          erl -eval '{ok, Version} = file:read_file(filename:join([code:root_dir(), "releases", erlang:system_info(otp_release), "OTP_VERSION"])), io:fwrite(Version), halt().' -noshell
+          escript || echo ''
       - name: Install lua
         if: matrix.lang == 'lua'
         run: |
