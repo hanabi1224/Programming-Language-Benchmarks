@@ -60,7 +60,7 @@
     "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
-    "sass": "^1.35.1",
+    "sass": "^1.35.2",
     "sass-loader": "^10.2.0",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
