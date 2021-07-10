@@ -9,9 +9,9 @@ problems:
   - name: nbody
     source:
       - 2.f90
-  - name: pidigits
-    source:
-      - 4.f90
+  # - name: pidigits
+  #   source:
+  #     - 4.f90
   - name: spectral-norm
     source:
       - 2.f90
