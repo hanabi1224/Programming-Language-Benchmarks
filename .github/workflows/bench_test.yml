@@ -14,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [c, cpp, csharp, crystal, dart, elixir, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang, zig]
-        lang: [elixir]
+        # lang: [c, cpp, csharp, crystal, dart, elixir, fortran, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, ruby, rust, swift, typescript, vlang, zig]
+        lang: [fortran]
     steps:
       - uses: actions/checkout@v2
       - name: Install
@@ -46,6 +46,13 @@ jobs:
         if: matrix.lang == 'c'
         run: |
           sudo apt-get install -y libapr1 libapr1-dev
+      - name: Install fortran
+        if: matrix.lang == 'fortran'
+        run: |
+          gfortran-9 --version
+          gfortran-10 --version
+          sudo apt-get install -y flang libgmp-dev
+          flang --version
       - name: Install loom, graalvm native-image
         if: matrix.lang == 'java'
         run: |
