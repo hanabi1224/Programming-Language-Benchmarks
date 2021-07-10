@@ -51,7 +51,7 @@ jobs:
         run: |
           gfortran-9 --version
           gfortran-10 --version
-          sudo apt-get install -y flang
+          sudo apt-get install -y flang libgmp-dev
           flang --version
       - name: Install loom, graalvm native-image
         if: matrix.lang == 'java'
