@@ -1,0 +1,41 @@
+lang: fortran
+problems:
+  - name: helloworld
+    source:
+      - 1.f90
+  - name: fasta
+    source:
+      - 4.f90
+  - name: nbody
+    source:
+      - 2.f90
+  - name: pidigits
+    source:
+      - 4.f90
+  - name: spectral-norm
+    source:
+      - 2.f90
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.f90
+environments:
+  - os: linux
+    compiler: gfortran
+    compiler_version_command: gfortran-10 --version
+    version: 10
+    docker:
+    include:
+    build: gfortran-10 -O3 -static -lgmp -o out/app app.f90
+    out_dir: out
+    run_cmd: app
+  - os: linux
+    compiler: flang
+    compiler_version_command: flang --version
+    version: latest
+    docker:
+    include:
+    build: flang -O3 -static -lgmp -o out/app app.f90
+    out_dir: out
+    run_cmd: app
