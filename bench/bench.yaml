@@ -83,6 +83,18 @@ problems:
       - input: 2500000
         # exclude_langs:
         #   - python
+  - name: json-serde
+    data:
+      - sample.json
+      - canada.json
+    unittests:
+      - input: sample 10
+        output: sample_10_out
+      - input: canada 3
+        output: canada_3_out
+    tests:
+      - input: sample 10
+      - input: canada 5
   - name: coro-prime-sieve
     unittests:
       - input: 1000
@@ -131,6 +143,9 @@ langs:
       - name: fasta
         source:
           - 3.go
+      - name: json-serde
+        source:
+          - 1.go
       - name: coro-prime-sieve
         source:
           - 1.go

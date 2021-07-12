@@ -12,6 +12,9 @@ problems:
   - name: pidigits
     source:
       - 1.kt
+  - name: json-serde
+    source:
+      - 1.kt
   - name: coro-prime-sieve
     source:
       - 1.kt

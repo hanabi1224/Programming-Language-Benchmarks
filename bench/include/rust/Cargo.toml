@@ -14,11 +14,14 @@ async-std = {version = "1", optional = true}
 generic-array = "0"
 ibig = "0"
 lazy_static = "1"
+md5 = "0"
 num-bigint = "0"
 num-traits = "0"
 num_cpus = "1"
 numeric-array = "0"
 rayon = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip", "preserve_order"] }
 spin = "0"
 tokio = {version = "1", optional = true, features = ["full"]}
 typed-arena = "2"
