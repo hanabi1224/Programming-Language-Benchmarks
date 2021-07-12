@@ -33,6 +33,9 @@ problems:
   - name: edigits
     source:
       - 1.rs
+  - name: json-serde
+    source:
+      - 1.rs
   - name: coro-prime-sieve
     source:
       - 1.rs
