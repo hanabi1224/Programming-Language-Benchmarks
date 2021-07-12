@@ -7,6 +7,7 @@
         <ServerGarbageCollection>true</ServerGarbageCollection>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.*" />
       <!-- <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" /> -->
     </ItemGroup>
 </Project>

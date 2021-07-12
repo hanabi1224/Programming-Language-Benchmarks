@@ -134,7 +134,7 @@ namespace BenchTool
                             switch (task)
                             {
                                 case TaskBuild:
-                                    rawJobExecutionTask = BuildAsync(buildId, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild, noDocker: noDocker);
+                                    rawJobExecutionTask = BuildAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild, noDocker: noDocker);
                                     break;
                                 case TaskTest:
                                     rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput);
@@ -200,6 +200,7 @@ namespace BenchTool
 
         private static async Task BuildAsync(
             string buildId,
+            YamlBenchmarkConfig benchConfig,
             YamlLangConfig langConfig,
             YamlLangEnvironmentConfig langEnvConfig,
             YamlLangProblemConfig problem,
@@ -340,6 +341,18 @@ namespace BenchTool
             await ProcessUtils.RunCommandsAsync(
                 langEnvConfig.AfterBuild,
                 workingDir: tmpDir.FullPath).ConfigureAwait(false);
+
+            var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            if (problemTestConfig.Data?.Length > 0)
+            {
+                foreach (var fileName in problemTestConfig.Data)
+                {
+                    var dataFileFromPath = Path.Combine(algorithmDir, problem.Name, fileName);
+                    var dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
+                    Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
+                    File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
+                }
+            }
 
             if (Directory.Exists(buildOutput))
             {
