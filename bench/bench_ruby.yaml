@@ -18,6 +18,9 @@ problems:
   - name: fasta
     source:
       - 6.rb
+  - name: json-serde
+    source:
+      - 1.rb
   - name: coro-prime-sieve
     source:
       - 1.rb
