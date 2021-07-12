@@ -9,6 +9,9 @@ problems:
   - name: nbody
     source:
       - 1.kt
+  # - name: json-serde
+  #   source:
+  #     - 1.kt
   # - name: pidigits
   #   source:
   #     - 1n.kt

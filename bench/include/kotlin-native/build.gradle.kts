@@ -4,6 +4,7 @@ object Constants {
 
 plugins {
     kotlin("multiplatform").version("1.5.20")
+    kotlin("plugin.serialization").version("1.5.20")
 }
 
 repositories {
@@ -24,7 +25,8 @@ kotlin {
           dependencies {
               implementation(libs.bignum)
               // implementation("com.ionspin.kotlin:bignum:0.3.1")
-              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+              implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
           }
       }
     }
