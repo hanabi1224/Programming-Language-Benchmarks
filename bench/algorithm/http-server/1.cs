@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -33,9 +34,14 @@ static class Program
         _ = server.RunAsync(cts.Token);
         var sum = 0;
         var api = $"http://localhost:{port}/";
+        var tasks = new List<Task<int>>(n);
         for (var i = 1; i <= n; i++)
         {
-            sum += await SendAsync(api, i);
+            tasks.Add(SendAsync(api, i));
+        }
+        foreach (var task in tasks)
+        {
+            sum += await task.ConfigureAwait(false);
         }
         Console.WriteLine(sum);
     }

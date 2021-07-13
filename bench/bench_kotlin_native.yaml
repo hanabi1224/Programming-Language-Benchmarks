@@ -30,6 +30,6 @@ environments:
     version: provided
     include: kotlin-native
     include_sub_dir: src/nativeMain/kotlin
-    build: sh -c "./gradlew link_appReleaseExecutableNative --no-daemon"
+    build: sh -c "./gradlew link_appReleaseExecutableNative"
     out_dir: build/bin/native/_appReleaseExecutable
     run_cmd: _app.kexe
