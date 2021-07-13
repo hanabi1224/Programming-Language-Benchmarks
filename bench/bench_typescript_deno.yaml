@@ -21,6 +21,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.ts
+  - name: http-server
+    source:
+      - 1.ts
 compiler_version_command: deno --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -33,6 +36,6 @@ environments:
     include:
     include_sub_dir:
     # before_build:
-    build: deno compile --unstable --allow-read -o out/_app c.ts
+    build: deno compile --allow-net --allow-read --unstable -o out/_app c.ts
     out_dir: out
     run_cmd: _app
