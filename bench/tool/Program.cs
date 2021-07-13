@@ -83,6 +83,10 @@ namespace BenchTool
 
             var yamlStr = File.ReadAllText(config);
             var benchConfig = yamlDeserializer.Deserialize<YamlBenchmarkConfig>(yamlStr);
+            if (benchConfig.Langs == null)
+            {
+                benchConfig.Langs = new List<YamlLangConfig>();
+            }
             var configDir = Path.GetDirectoryName(config);
             foreach (var lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
             {

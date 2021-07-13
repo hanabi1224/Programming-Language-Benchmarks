@@ -21,6 +21,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.js
+  - name: http-server
+    source:
+      - 1.js
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
