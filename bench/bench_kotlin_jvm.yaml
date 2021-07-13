@@ -20,6 +20,9 @@ problems:
       - 1.kt
       - 2.kt
       - 3.kt
+  - name: http-server
+    source:
+      - 1.kt
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -version
