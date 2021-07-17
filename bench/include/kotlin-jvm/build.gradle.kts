@@ -33,8 +33,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
-//    implementation("io.ktor:ktor-serialization:$ktor_version")
-//    implementation("ch.qos.logback:logback-classic:1.2.3")
+    //    implementation("io.ktor:ktor-serialization:$ktor_version")
+    //    implementation("ch.qos.logback:logback-classic:1.2.3")
 }
 
 tasks.register("kotlinVersion") {
@@ -46,23 +46,17 @@ tasks.register("kotlinVersion") {
 }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
-    resolutionStrategy {
-        componentSelection {
-            all {
-                val rejected =
-                        listOf("alpha", "beta", "rc", "cr", "m", "preview", "b", "ea").any {
-                                qualifier ->
-                            candidate.version.matches(Regex("(?i).*[.-]$qualifier[.\\d-+]*"))
-                        }
-                if (rejected) {
-                    reject("Release candidate")
-                }
-            }
-        }
-    }
+    rejectVersionIf { isNonStable(candidate.version) && !isNonStable(currentVersion) }
     // optional parameters
     checkForGradleUpdate = true
     outputFormatter = "json"
     outputDir = "build/dependencyUpdates"
     reportfileName = "report"
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
