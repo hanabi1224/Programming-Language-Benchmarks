@@ -1,0 +1,11 @@
+{
+	"authors": [
+		"root"
+	],
+	"copyright": "Copyright © 2021, root",
+	"dependencies": {},
+	"description": "A minimal D application.",
+	"license": "MIT",
+	"name": "app",
+	"targetPath": "out"
+}
