@@ -45,6 +45,10 @@ tasks.register("kotlinVersion") {
     }
 }
 
+tasks.register("du") {
+    dependsOn("dependencyUpdates")
+}
+
 tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
     rejectVersionIf { isNonStable(candidate.version) && !isNonStable(currentVersion) }
     // optional parameters
