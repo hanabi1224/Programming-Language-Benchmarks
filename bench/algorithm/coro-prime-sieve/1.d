@@ -8,7 +8,7 @@ const int mailBoxSize = 1;
 
 void main(string[] args) {
     auto n = args.length > 1 ? args[1].to!int() : 10;
-    auto scheduler = new FiberScheduler;
+    scheduler = new FiberScheduler;
     scheduler.start({
         mainTid = thisTid();
         setMaxMailboxSize(mainTid, n, OnCrowding.throwException);
