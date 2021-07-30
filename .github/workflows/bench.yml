@@ -35,6 +35,7 @@ jobs:
             nim,
             ocaml,
             python,
+            racket,
             ruby,
             rust,
             swift,
@@ -69,6 +70,12 @@ jobs:
         if: matrix.lang == 'c'
         run: |
           sudo apt-get install -y libapr1 libapr1-dev
+      - name: Install racket
+        if: matrix.lang == 'racket'
+        run: |
+          sudo add-apt-repository ppa:plt/racket
+          sudo apt-get install -y racket
+          racket --version
       - name: Install fortran
         if: matrix.lang == 'fortran'
         run: |
