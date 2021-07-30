@@ -53,12 +53,13 @@
           are WELCOME!
         </p>
       </div>
-      <div class="mt-5">
+
+      <!-- <div class="mt-5">
         <span>OS</span>
         <select v-model="osSelected" class="px-2 py-2 rounded bg-purple-200">
           <option v-for="i in osOptions" :key="i" :value="i">{{ i }}</option>
         </select>
-      </div>
+      </div> -->
 
       <div v-for="test in testOptions" :key="test">
         <h2 class="text-2xl my-5 mb-2 underline text-blue-500">

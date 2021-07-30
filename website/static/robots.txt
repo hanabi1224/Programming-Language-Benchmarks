@@ -1,1 +1,4 @@
+User-agent: *
+Allow: /
+
 Sitemap: https://programming-language-benchmarks.vercel.app/sitemap.xml

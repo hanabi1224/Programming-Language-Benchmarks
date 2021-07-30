@@ -67,8 +67,8 @@ environments:
     run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk-openj9
-    version: 11
-    docker: adoptopenjdk/openjdk11-openj9:slim
+    version: 16
+    docker: adoptopenjdk/openjdk16-openj9:slim
     include:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out

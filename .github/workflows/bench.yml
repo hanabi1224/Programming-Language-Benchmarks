@@ -20,6 +20,7 @@ jobs:
             cpp,
             csharp,
             crystal,
+            d,
             dart,
             elixir,
             fortran,
@@ -34,6 +35,7 @@ jobs:
             nim,
             ocaml,
             python,
+            racket,
             ruby,
             rust,
             swift,
@@ -52,12 +54,11 @@ jobs:
           # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
           # https://www.graalvm.org/docs/getting-started/
           echo $GRAALVM_11_ROOT
-          sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-          # wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.1.0/graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          # tar -xvf graalvm-ce-java11-linux-amd64-21.1.0.tar.gz
-          # sudo ln -sf $PWD/graalvm-ce-java11-21.1.0 $HOME/graalvm-ce-java11
-          ls -al $HOME/graalvm-ce-java11
           # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
+          tar -xvf graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
+          sudo ln -sf $PWD/graalvm-ce-java11-21.2.0 $HOME/graalvm-ce-java11
+          ls -al $HOME/graalvm-ce-java11
           sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
           sudo gu upgrade -A || echo ''
           gu --version
@@ -69,6 +70,12 @@ jobs:
         if: matrix.lang == 'c'
         run: |
           sudo apt-get install -y libapr1 libapr1-dev
+      - name: Install racket
+        if: matrix.lang == 'racket'
+        run: |
+          sudo add-apt-repository ppa:plt/racket
+          sudo apt-get install -y racket
+          racket --version
       - name: Install fortran
         if: matrix.lang == 'fortran'
         run: |

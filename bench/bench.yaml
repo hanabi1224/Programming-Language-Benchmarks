@@ -105,6 +105,7 @@ problems:
         exclude_langs:
           - dart
           - javascript
+          - python
           - vlang
   - name: http-server
     unittests:
