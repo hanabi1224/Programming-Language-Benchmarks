@@ -7,8 +7,7 @@
       tracking-wide
       .leading-relaxed
       py-5
-      md:container
-      md:mx-auto
+      md:container md:mx-auto
       min-h-screen
       shadow-lg
       bg-gray-100
