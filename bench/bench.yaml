@@ -101,7 +101,7 @@ problems:
         output: 1000_out
     tests:
       - input: 2000
-      - input: 5000
+      - input: 4000
         exclude_langs:
           - dart
           - javascript
@@ -114,5 +114,5 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 500
       - input: 1000
+      - input: 2000

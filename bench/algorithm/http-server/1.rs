@@ -1,4 +1,5 @@
 use axum::prelude::*;
+use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, Sender};
 
@@ -13,7 +14,8 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
         .unwrap_or(10);
-    let port = 8080;
+    let mut rng = thread_rng();
+    let port = rng.gen_range(30000..40000);
     tokio_main(n, port)?;
     std::process::exit(0);
 }
