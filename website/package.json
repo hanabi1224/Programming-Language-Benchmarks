@@ -28,6 +28,7 @@
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
+    "@nuxtjs/web-vitals": "=0.1.4",
     "@tailwindcss/forms": "^0.3.3",
     "core-js": "^3.16.2",
     "find-versions": "^5.0.0",
