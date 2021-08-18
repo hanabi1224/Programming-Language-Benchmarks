@@ -32,7 +32,7 @@ problems:
     source:
       - 3.rs
 source_rename_to: main.rs
-compiler_version_command: deno --version
+compiler_version_command: rustc -V
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:

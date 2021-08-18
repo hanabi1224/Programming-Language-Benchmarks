@@ -114,5 +114,5 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 500
       - input: 1000
+      - input: 2000
