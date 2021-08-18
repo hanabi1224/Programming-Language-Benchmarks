@@ -29,10 +29,10 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.3.3",
-    "core-js": "^3.16.1",
+    "core-js": "^3.16.2",
     "find-versions": "^5.0.0",
     "lodash": "^4.17.21",
-    "nuxt": "^2.15.7",
+    "nuxt": "^2.15.8",
     "nuxt-property-decorator": "^2.9.1",
     "scss-google-fonts": "^1.0.0",
     "vue-class-component": "^7.2.6",
@@ -40,7 +40,7 @@
     "vue2-touch-events": "^3.2.2"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.15.7",
+    "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
@@ -60,13 +60,13 @@
     "fibers": "^5.0.0",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
-    "sass": "^1.37.5",
+    "sass": "^1.38.0",
     "sass-loader": "^10.2.0",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-scss": "^3.20.1",
-    "ts-jest": "^27.0.4",
+    "ts-jest": "^27.0.5",
     "vue-jest": "^3.0.7"
   }
 }

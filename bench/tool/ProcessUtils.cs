@@ -27,12 +27,12 @@ namespace BenchTool
                 return array.Single();
             }
 
-            var positiveCpuTimeRecords = array.Where(i => i.CpuTime.TotalMilliseconds > 0).ToList();
-            var avgCpuTimeUser = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeUser.TotalMilliseconds) : 0);
-            var avgCpuTimeKernel = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeKernel.TotalMilliseconds) : 0);
+            List<ProcessMeasurement> positiveCpuTimeRecords = array.Where(i => i.CpuTime.TotalMilliseconds > 0).ToList();
+            TimeSpan avgCpuTimeUser = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeUser.TotalMilliseconds) : 0);
+            TimeSpan avgCpuTimeKernel = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeKernel.TotalMilliseconds) : 0);
 
-            var positivePeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Where(i => i > 0).ToList();
-            var avgPeakMemoryBytes = positivePeakMemoryBytes.Count > 0 ? positivePeakMemoryBytes.Average() : 0;
+            List<long> positivePeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Where(i => i > 0).ToList();
+            double avgPeakMemoryBytes = positivePeakMemoryBytes.Count > 0 ? positivePeakMemoryBytes.Average() : 0;
 
             return new ProcessMeasurement
             {
@@ -73,7 +73,7 @@ namespace BenchTool
 
         private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        private static long s_ticksPerSecond;
+        private static readonly long s_ticksPerSecond;
 
         static ProcessUtils()
         {
@@ -81,7 +81,7 @@ namespace BenchTool
             {
                 // Look up the number of ticks per second in the system's configuration,
                 // then use that to convert to a TimeSpan
-                var ticksPerSecond = Interop.Sys.SysConf(Interop.Sys.SysConfName._SC_CLK_TCK);
+                long ticksPerSecond = Interop.Sys.SysConf(Interop.Sys.SysConfName._SC_CLK_TCK);
                 if (ticksPerSecond <= 0)
                 {
                     throw new Win32Exception();
@@ -101,17 +101,17 @@ namespace BenchTool
 
         private static async Task<IReadOnlySet<int>> GetChildProcessIdsLinuxAsync(int pid)
         {
-            var immediateChildren = await GetImmediateChildProcessIdsLinuxAsync(pid).ConfigureAwait(false);
+            IReadOnlySet<int> immediateChildren = await GetImmediateChildProcessIdsLinuxAsync(pid).ConfigureAwait(false);
             if (immediateChildren.Count == 0)
             {
                 return immediateChildren;
             }
 
-            var children = new HashSet<int>(immediateChildren);
-            foreach (var cpid in immediateChildren)
+            HashSet<int> children = new HashSet<int>(immediateChildren);
+            foreach (int cpid in immediateChildren)
             {
-                var c = await GetChildProcessIdsLinuxAsync(cpid).ConfigureAwait(false);
-                foreach (var cpid2 in c)
+                IReadOnlySet<int> c = await GetChildProcessIdsLinuxAsync(cpid).ConfigureAwait(false);
+                foreach (int cpid2 in c)
                 {
                     children.Add(cpid2);
                 }
@@ -122,20 +122,20 @@ namespace BenchTool
 
         private static async Task<IReadOnlySet<int>> GetImmediateChildProcessIdsLinuxAsync(int pid)
         {
-            var result = new HashSet<int>();
+            HashSet<int> result = new HashSet<int>();
             // Looking for child processes
-            var stdoutBuilder = new StringBuilder();
+            StringBuilder stdoutBuilder = new StringBuilder();
             // FIXME: child process lookup logic is not for windows here
             await RunCommandAsync(command: $"pgrep -P {pid}", stdOutBuilder: stdoutBuilder).ConfigureAwait(false);
-            var stdout = stdoutBuilder.ToString().Trim();
+            string stdout = stdoutBuilder.ToString().Trim();
             if (!stdout.IsEmptyOrWhiteSpace())
             {
-                var matches = Regex.Matches(stdout, @"\d+", RegexOptions.Compiled);
+                MatchCollection matches = Regex.Matches(stdout, @"\d+", RegexOptions.Compiled);
                 if (matches?.Count > 0)
                 {
                     foreach (Match m in matches)
                     {
-                        var cpid = int.Parse(m.Value);
+                        int cpid = int.Parse(m.Value);
                         if (cpid != pid)
                         {
                             result.Add(cpid);
@@ -153,36 +153,36 @@ namespace BenchTool
             bool forceCheckChildProcesses = false,
             CancellationToken token = default)
         {
-            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+            using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-            var m = new ProcessMeasurement();
+            ProcessMeasurement m = new ProcessMeasurement();
             startInfo.UseShellExecute = false;
-            using var p = new Process
+            using Process p = new Process
             {
                 StartInfo = startInfo,
             };
 
-            using var manualResetEvent = new ManualResetEventSlim(initialState: false);
-            var t = Task.Factory.StartNew(() =>
+            using ManualResetEventSlim manualResetEvent = new ManualResetEventSlim(initialState: false);
+            Task t = Task.Factory.StartNew(() =>
             {
                 IList<Process> childProcesses = null;
-                var nLoop = 0;
+                int nLoop = 0;
                 manualResetEvent.Wait(cts.Token);
-                var pid = p.Id;
+                int pid = p.Id;
                 while (!cts.Token.IsCancellationRequested)
                 {
                     try
                     {
-                        var isChildProcessCpuTimeCounted = false;
+                        bool isChildProcessCpuTimeCounted = false;
                         long totalMemoryBytes = 0;
                         if (s_isLinux)
                         {
-                            if (procfs.TryReadStatFile(pid, out var stat))
+                            if (procfs.TryReadStatFile(pid, out procfs.ParsedStat stat))
                             {
                                 m.CpuTimeUser = TicksToTimeSpanLinux(stat.utime + stat.cutime);
                                 m.CpuTimeKernel = TicksToTimeSpanLinux(stat.stime + stat.cstime);
                                 isChildProcessCpuTimeCounted = stat.cutime > 0 || stat.cstime > 0;
-                                if (procfs.TryReadStatusFile(pid, out var status))
+                                if (procfs.TryReadStatusFile(pid, out procfs.ParsedStatus status))
                                 {
                                     totalMemoryBytes = (long)status.VmRSS;
                                 }
@@ -202,10 +202,10 @@ namespace BenchTool
                         {
                             // Prevent 2nd check
                             childProcesses = new List<Process>();
-                            var childrenSet = GetChildProcessIdsLinuxAsync(pid).ConfigureAwait(false).GetAwaiter().GetResult();
+                            IReadOnlySet<int> childrenSet = GetChildProcessIdsLinuxAsync(pid).ConfigureAwait(false).GetAwaiter().GetResult();
                             if (childrenSet?.Count > 0)
                             {
-                                foreach (var cpid in childrenSet)
+                                foreach (int cpid in childrenSet)
                                 {
                                     try
                                     {
@@ -225,7 +225,7 @@ namespace BenchTool
 
                         if (childProcesses?.Count > 0)
                         {
-                            foreach (var cp in childProcesses)
+                            foreach (Process cp in childProcesses)
                             {
                                 try
                                 {
@@ -238,14 +238,14 @@ namespace BenchTool
                                             m.CpuTimeKernel += cp.PrivilegedProcessorTime;
                                             totalMemoryBytes += cp.WorkingSet64;
                                         }
-                                        else if (procfs.TryReadStatFile(cp.Id, out var cpstat))
+                                        else if (procfs.TryReadStatFile(cp.Id, out procfs.ParsedStat cpstat))
                                         {
                                             if (!isChildProcessCpuTimeCounted)
                                             {
                                                 m.CpuTimeUser += TicksToTimeSpanLinux(cpstat.utime);
                                                 m.CpuTimeKernel += TicksToTimeSpanLinux(cpstat.stime);
                                             }
-                                            if (procfs.TryReadStatusFile(cp.Id, out var cpstatus))
+                                            if (procfs.TryReadStatusFile(cp.Id, out procfs.ParsedStatus cpstatus))
                                             {
                                                 totalMemoryBytes += (long)cpstatus.VmRSS;
                                             }
@@ -300,8 +300,8 @@ namespace BenchTool
                 }
             }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
-            var sw = Stopwatch.StartNew();
-            var ret = await RunProcessAsync(
+            Stopwatch sw = Stopwatch.StartNew();
+            int ret = await RunProcessAsync(
                 p,
                 printOnConsole: false,
                 asyncRead: true,
@@ -330,7 +330,7 @@ namespace BenchTool
                 return;
             }
 
-            foreach (var command in commands)
+            foreach (string command in commands)
             {
                 await RunCommandAsync(
                     command: command,
@@ -355,10 +355,10 @@ namespace BenchTool
                 workingDir = Environment.CurrentDirectory;
             }
 
-            var psi = command.ConvertToCommand();
+            ProcessStartInfo psi = command.ConvertToCommand();
             psi.WorkingDirectory = workingDir;
 
-            var ret = await RunProcessAsync(
+            int ret = await RunProcessAsync(
                 psi,
                 useShellExecute: false,
                 printOnConsole: true,
@@ -381,10 +381,10 @@ namespace BenchTool
                 out string stdError,
                 CancellationToken token)
         {
-            var stdOutBuilder = new StringBuilder();
-            var stdErrorBuilder = new StringBuilder();
+            StringBuilder stdOutBuilder = new StringBuilder();
+            StringBuilder stdErrorBuilder = new StringBuilder();
 
-            var ret = RunProcessAsync(
+            int ret = RunProcessAsync(
                 startInfo: startInfo,
                 printOnConsole: printOnConsole,
                 asyncRead: asyncRead,
@@ -427,7 +427,7 @@ namespace BenchTool
         {
             startInfo.UseShellExecute = useShellExecute;
 
-            var p = new Process
+            Process p = new Process
             {
                 StartInfo = startInfo,
             };
@@ -453,11 +453,11 @@ namespace BenchTool
             await Task.Yield();
             using (p)
             {
-                var useShellExecute = p.StartInfo.UseShellExecute;
+                bool useShellExecute = p.StartInfo.UseShellExecute;
                 p.StartInfo.RedirectStandardOutput = !useShellExecute;
                 p.StartInfo.RedirectStandardError = !useShellExecute;
 
-                var prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
+                string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
                 Logger.Debug($"{prefix}: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
 
                 if (p.StartInfo.RedirectStandardOutput)
@@ -527,7 +527,7 @@ namespace BenchTool
                 {
                     if (!asyncRead && p.StartInfo.RedirectStandardOutput)
                     {
-                        var outRm = p.StandardOutput.ReadToEnd();
+                        string outRm = p.StandardOutput.ReadToEnd();
                         if (!outRm.IsEmptyOrWhiteSpace())
                         {
                             stdOutBuilder?.Append(outRm);

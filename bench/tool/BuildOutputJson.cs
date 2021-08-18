@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -36,13 +33,13 @@ namespace BenchTool
 
         public static BuildOutputJson LoadFrom(string dir)
         {
-            var path = GetFilePath(dir);
+            string path = GetFilePath(dir);
             if (!File.Exists(path))
             {
                 return new BuildOutputJson();
             }
 
-            var content = File.ReadAllText(path);
+            string content = File.ReadAllText(path);
             return JsonConvert.DeserializeObject<BuildOutputJson>(content);
         }
 
@@ -50,8 +47,8 @@ namespace BenchTool
         {
             Finished = DateTimeOffset.UtcNow;
             DurationMs = (long)(Finished - Start).TotalMilliseconds;
-            var path = GetFilePath(dir);
-            var contents = JsonConvert.SerializeObject(this, Formatting.Indented);
+            string path = GetFilePath(dir);
+            string contents = JsonConvert.SerializeObject(this, Formatting.Indented);
             return File.WriteAllTextAsync(path: path, contents: contents);
         }
     }
@@ -84,13 +81,13 @@ namespace BenchTool
 
         public static TestOutputJson LoadFrom(string dir)
         {
-            var path = GetFilePath(dir);
+            string path = GetFilePath(dir);
             if (!File.Exists(path))
             {
                 return new TestOutputJson();
             }
 
-            var content = File.ReadAllText(path);
+            string content = File.ReadAllText(path);
             return JsonConvert.DeserializeObject<TestOutputJson>(content);
         }
 
@@ -98,8 +95,8 @@ namespace BenchTool
         {
             Finished = DateTimeOffset.UtcNow;
             DurationMs = (long)(Finished - Start).TotalMilliseconds;
-            var path = GetFilePath(dir);
-            var contents = JsonConvert.SerializeObject(this, Formatting.Indented);
+            string path = GetFilePath(dir);
+            string contents = JsonConvert.SerializeObject(this, Formatting.Indented);
             return File.WriteAllTextAsync(path: path, contents: contents);
         }
     }

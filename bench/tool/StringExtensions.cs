@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System
 {
@@ -58,7 +54,7 @@ namespace System
 
         public static ProcessStartInfo ConvertToCommand(this string command)
         {
-            var array = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] array = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             return new ProcessStartInfo
             {
                 FileName = array[0],
