@@ -63,7 +63,7 @@ jobs:
           sudo chmod +x ./sbcl
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
           sudo ros install sbcl
-          sudo ros install ccl-bin
+          sbcl --version || echo ''
           ros version          
           ./sbcl --version
           sudo mv ./sbcl /usr/bin
