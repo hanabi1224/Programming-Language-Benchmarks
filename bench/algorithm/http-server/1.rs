@@ -1,4 +1,4 @@
-use axum::prelude::*;
+use axum::handler::post;
 use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, Sender};
@@ -39,7 +39,7 @@ async fn tokio_main(n: usize, port: usize) -> anyhow::Result<(), anyhow::Error> 
 }
 
 async fn run_server(port: usize) -> anyhow::Result<(), anyhow::Error> {
-    let app = route("/api", post(handler));
+    let app = axum::Router::new().route("/api", post(handler));
     axum::Server::bind(&format!("{}:{}", HOST, port).parse()?)
         .serve(app.into_make_service())
         .await?;
@@ -67,7 +67,7 @@ async fn send_once(api: &str, value: usize) -> anyhow::Result<usize, anyhow::Err
     Ok(resp_text.parse::<usize>()?)
 }
 
-async fn handler(payload: extract::Json<Payload>) -> String {
+async fn handler(payload: axum::Json<Payload>) -> String {
     format!("{}", payload.value)
 }
 
