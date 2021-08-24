@@ -59,7 +59,10 @@ yarn dev
 *The 1st step is to build source code from various of lanuages*
 ```bash
 cd bench
-dotnet run -p tool --task build
+# To build a subset
+dotnet run -p tool -- --task build --langs lisp,go --problems nbody,helloworld --force-rebuild
+# To build all
+dotnet run -p tool -- --task build
 ```
 
 ## Test
@@ -67,7 +70,10 @@ dotnet run -p tool --task build
 *The 2nd step is to test built binaries to ensure the correctness of their implementation*
 ```bash
 cd bench
-dotnet run -p tool --task test
+# To test a subset
+dotnet run -p tool -- --task test --langs lisp,go --problems nbody,helloworld
+# To test all
+dotnet run -p tool -- --task test
 ```
 
 ## Bench
@@ -75,13 +81,40 @@ dotnet run -p tool --task test
 *The 3rd step is to generate benchmarks*
 ```bash
 cd bench
-dotnet run -p tool --task bench
+# To bench a subset
+dotnet run -p tool -- --task bench --langs lisp,go --problems nbody,helloworld
+# To bench all
+dotnet run -p tool -- --task bench
 ```
 
 *For usage*
 ```bash
 cd bench
-dotnet run -p tool --help
+dotnet run -p tool -- -h
+
+BenchTool
+  Main function
+
+Usage:
+  BenchTool [options]
+
+Options:
+  --config <config>              Path to benchmark config file [default: bench.yaml]
+  --algorithm <algorithm>        Root path that contains all algorithm code [default: algorithm]
+  --include <include>            Root path that contains all include project templates [default: include]
+  --build-output <build-output>  Output folder of build step [default: build]
+  --task <task>                  Benchmark task to run, valid values: build, test, bench [default: build]
+  --force-pull-docker            A flag that indicates whether to force pull docker image even when it exists [default: False]
+  --force-rebuild                A flag that indicates whether to force rebuild [default: False]
+  --fail-fast                    A Flag that indicates whether to fail fast when error occurs [default: False]
+  --build-pool                   A flag that indicates whether builds that can run in parallel [default: False]
+  --verbose                      A Flag that indicates whether to print verbose infomation [default: False]
+  --no-docker                    A Flag that forces disabling docker [default: False]
+  --langs <langs>                Languages to incldue, e.g. --langs go csharp [default: ]
+  --problems <problems>          Problems to incldue, e.g. --problems binarytrees nbody [default: ]
+  --environments <environments>  OS environments to incldue, e.g. --environments linux windows [default: ]
+  --version                      Show version information
+  -?, -h, --help                 Show help and usage information
 ```
 
 ## Referesh website
