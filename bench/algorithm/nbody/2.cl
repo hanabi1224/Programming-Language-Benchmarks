@@ -143,5 +143,3 @@
                                          #+cmu  extensions:*command-line-strings*
 					 #+gcl  si::*command-args*)) "1"))))
     (nbody n)))
-    
-(main)

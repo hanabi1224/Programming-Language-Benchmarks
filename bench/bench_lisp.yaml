@@ -2,21 +2,36 @@ lang: lisp
 problems:
   - name: helloworld
     source:
-      - 1.lisp
+      - 1.cl
   - name: nbody
     source:
-      - 2.lisp
-source_rename_to: app.lisp
-compiler_version_command: sbcl --version
+      - 2.cl
+compiler_version_command:
 compiler_version_regex:
-runtime_version_parameter: --version
+runtime_version_parameter:
 runtime_version_regex:
+source_rename_to: app.cl
 environments:
   - os: linux
     compiler: sbcl
     version: latest
-    include:
-    build: mv app.lisp out
+    include: lisp
+    build: sbcl --non-interactive --no-userinit --load compile.cl
+    after_build:
+      - cp app.fasl out
+      - cp run.cl out
     out_dir: out
-    run_cmd: sbcl --non-interactive --no-userinit --load app.lisp
+    compiler_version_command: sbcl --version
+    runtime_version_parameter: --version
+    run_cmd: sbcl --non-interactive --no-userinit --load run.cl
     runtime_included: false
+  - os: linux
+    compiler: sbcl/exe
+    version: latest
+    include: lisp
+    build: sbcl --non-interactive --no-userinit --load bundle.cl
+    after_build:
+      - cp app out
+    out_dir: out
+    compiler_version_command: sbcl --version
+    run_cmd: app

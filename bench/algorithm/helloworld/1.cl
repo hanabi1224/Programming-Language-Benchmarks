@@ -5,5 +5,3 @@
                         #+cmu  extensions:*command-line-strings*
 					    #+gcl  si::*command-args*)) "")))
     (format t (concatenate 'string "Hello world " n "!"))))
-    
-(main)
