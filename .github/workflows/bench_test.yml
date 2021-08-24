@@ -57,7 +57,8 @@ jobs:
         run: |
           curl -L https://github.com/roswell/roswell/releases/download/v21.05.14.109/roswell_21.05.14.109-1_amd64.deb --output roswell.deb
           sudo dpkg -i roswell.deb
-          sudo ros version
+          sudo ros install sbcl-bin
+          ros version
           sbcl --version
       - name: Install fortran
         if: matrix.lang == 'fortran'
