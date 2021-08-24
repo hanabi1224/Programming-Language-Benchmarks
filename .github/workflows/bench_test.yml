@@ -58,7 +58,7 @@ jobs:
           LISP: sbcl-bin
         run: |
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          # sudo ros install sbcl-bin
+          sudo ros install sbcl-bin
           ros version
           sbcl --version
       - name: Install fortran
