@@ -60,9 +60,11 @@ jobs:
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
           sudo ros install sbcl-bin
           ros version
-          sudo echo '#!/usr/bin/sh\n\nros run -- $@' > /usr/bin/sbcl
-          sudo chmod +x /usr/bin/sbcl
-          cat /usr/bin/sbcl
+          echo '#!/usr/bin/sh\n\nros run -- $@' > ./sbcl
+          chmod +x ./sbcl
+          cat ./sbcl
+          ./sbcl --version
+          sudo mv ./sbcl /usr/bin
           sbcl --version
       - name: Install fortran
         if: matrix.lang == 'fortran'
