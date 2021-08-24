@@ -14,8 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-20.04]
-        # lang: [c, cpp, csharp, crystal, dart, elixir, fortran, go, haskell, haxe, java, javascript, julia, kotlin, lua, nim, ocaml, python, racket, ruby, rust, swift, typescript, vlang, zig]
-        lang: [racket]
+        # lang: [c, cpp, csharp, crystal, dart, elixir, fortran, go, haskell, haxe, java, javascript, julia, kotlin, lisp, lua, nim, ocaml, python, racket, ruby, rust, swift, typescript, vlang, zig]
+        lang: [lisp]
     steps:
       - uses: actions/checkout@v2
       - name: Install
@@ -52,6 +52,13 @@ jobs:
           sudo add-apt-repository ppa:plt/racket
           sudo apt-get install -y racket
           racket --version
+      - name: Install lisp
+        if: matrix.lang == 'lisp'
+        run: |
+          curl -L https://github.com/roswell/roswell/releases/download/v21.05.14.109/roswell_21.05.14.109-1_amd64.deb --output roswell.deb
+          sudo dpkg -i roswell.deb
+          sudo ros version
+          sbcl --version
       - name: Install fortran
         if: matrix.lang == 'fortran'
         run: |
