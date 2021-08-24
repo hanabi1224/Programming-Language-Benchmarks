@@ -57,12 +57,13 @@ jobs:
         env:
           LISP: sbcl-bin
         run: |
+          echo '#!/usr/bin/sh' > ./sbcl
+          echo 'ros run -- $@' >> ./sbcl
+          cat ./sbcl
+          sudo chmod +x ./sbcl
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
           sudo ros install sbcl-bin
-          ros version
-          echo '#!/usr/bin/sh\n\nros run -- $@' > ./sbcl
-          chmod +x ./sbcl
-          cat ./sbcl
+          ros version          
           ./sbcl --version
           sudo mv ./sbcl /usr/bin
           sbcl --version
