@@ -31,6 +31,7 @@ jobs:
             javascript,
             julia,
             kotlin,
+            lisp,
             lua,
             nim,
             ocaml,
@@ -71,6 +72,21 @@ jobs:
         if: matrix.lang == 'c'
         run: |
           sudo apt-get install -y libapr1 libapr1-dev
+      - name: Install lisp
+        if: matrix.lang == 'lisp'
+        env:
+          LISP: sbcl-bin
+        run: |
+          echo '#!/usr/bin/sh' > ./sbcl
+          echo 'ros run -- $@' >> ./sbcl
+          cat ./sbcl
+          sudo chmod +x ./sbcl
+          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+          sudo ros install sbcl-bin
+          ros version          
+          ./sbcl --version
+          sudo mv ./sbcl /usr/bin
+          sbcl --version
       - name: Install racket
         if: matrix.lang == 'racket'
         run: |

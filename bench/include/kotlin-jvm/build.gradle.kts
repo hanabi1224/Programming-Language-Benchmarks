@@ -1,11 +1,11 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 object Constants {
-    const val kotlinVersion = "1.5.21"
+    const val kotlinVersion = "1.5.30"
 }
 
 plugins {
-    val kotlinVersion = "1.5.21"
+    val kotlinVersion = "1.5.30"
     kotlin("jvm").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
     id("com.github.johnrengelman.shadow").version("7.0.0")
