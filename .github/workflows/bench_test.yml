@@ -68,6 +68,9 @@ jobs:
           ./sbcl --version
           sudo mv ./sbcl /usr/bin
           sbcl --version
+          echo $HOME
+          pushd $HOME/.roswell/local-projects
+          git clone https://github.com/marcoheisig/sb-simd.git
       - name: Install fortran
         if: matrix.lang == 'fortran'
         run: |
