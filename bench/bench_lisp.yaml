@@ -30,13 +30,13 @@ environments:
     runtime_version_parameter: --version
     run_cmd: sbcl --non-interactive --no-userinit --load run.cl
     runtime_included: false
-  - os: linux
-    compiler: sbcl/exe
-    version: latest
-    include: lisp
-    build: sbcl --non-interactive --no-userinit --load bundle.cl
-    after_build:
-      - cp app out
-    out_dir: out
-    compiler_version_command: sbcl --version
-    run_cmd: app
+#  - os: linux
+#    compiler: sbcl/exe
+#    version: latest
+#    include: lisp
+#    build: sbcl --non-interactive --no-userinit --load bundle.cl
+#    after_build:
+#      - cp app out
+#    out_dir: out
+#    compiler_version_command: sbcl --version
+#    run_cmd: app
