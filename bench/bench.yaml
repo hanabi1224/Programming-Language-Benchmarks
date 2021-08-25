@@ -34,6 +34,7 @@ problems:
     tests:
       - input: 500
       - input: 1000
+      - input: 5000
   - name: pidigits
     unittests:
       - input: 27
