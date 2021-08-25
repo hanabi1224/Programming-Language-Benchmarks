@@ -87,6 +87,9 @@ jobs:
           ./sbcl --version
           sudo mv ./sbcl /usr/bin
           sbcl --version
+          cd $HOME/.roswell/local-projects
+          git clone https://github.com/marcoheisig/sb-simd.git
+          sbcl --eval "(ql:quickload :sb-simd)" --eval "(exit)"
       - name: Install racket
         if: matrix.lang == 'racket'
         run: |
