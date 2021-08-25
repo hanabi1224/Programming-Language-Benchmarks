@@ -89,7 +89,7 @@ jobs:
           sbcl --version
           cd $HOME/.roswell/local-projects
           git clone https://github.com/marcoheisig/sb-simd.git
-          ros run --eval "(ql:quickload :sb-simd)" --eval "(exit)"
+          sbcl --eval "(ql:quickload :sb-simd)" --eval "(exit)"
       - name: Install racket
         if: matrix.lang == 'racket'
         run: |

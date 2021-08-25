@@ -21,7 +21,7 @@ environments:
     compiler: sbcl
     version: latest
     include: lisp
-    build: sbcl --non-interactive --no-userinit --load compile.cl
+    build: sbcl --non-interactive --load compile.cl
     after_build:
       - cp app.fasl out
       - cp run.cl out
