@@ -1,4 +1,4 @@
-lang: rust
+lang: wasm
 problems:
   - name: helloworld
     source:
