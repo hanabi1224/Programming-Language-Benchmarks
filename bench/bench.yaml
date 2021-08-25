@@ -32,11 +32,12 @@ problems:
       - input: 100
         output: 100_out
     tests:
-      #- input: 500
       - input: 1000
       - input: 3000
         exclude_langs:
-            - python
+          - python
+          - ruby
+          - wren
   - name: pidigits
     unittests:
       - input: 27
