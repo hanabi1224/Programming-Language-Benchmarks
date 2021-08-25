@@ -38,6 +38,7 @@ problems:
           - python
           - ruby
           - wren
+          - wasm
   - name: pidigits
     unittests:
       - input: 27

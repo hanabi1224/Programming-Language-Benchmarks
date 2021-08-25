@@ -157,7 +157,7 @@ export default class IndexPage extends Vue {
   }
 
   created() {
-    this.langs = this.$route.meta
+    this.langs = this.$route.meta as LangBenchResults[]
     this.problems = _.chain(this.langs)
       .map((i) => i.benchmarks)
       .flatten()
