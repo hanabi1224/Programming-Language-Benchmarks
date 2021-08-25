@@ -6,6 +6,7 @@ problems:
   - name: nbody
     source:
       - 2.cl
+      - 3.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
