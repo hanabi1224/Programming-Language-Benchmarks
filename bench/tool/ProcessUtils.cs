@@ -307,6 +307,7 @@ namespace BenchTool
                 asyncRead: true,
                 stdOutBuilder: null,
                 stdErrorBuilder: null,
+                env: null,
                 token,
                 onStart: () => manualResetEvent.Set()).ConfigureAwait(false);
 
@@ -322,6 +323,7 @@ namespace BenchTool
             string workingDir = null,
             bool asyncRead = false,
             bool ensureZeroExitCode = false,
+            IDictionary<string, string> env = null,
             CancellationToken token = default
             )
         {
@@ -337,6 +339,7 @@ namespace BenchTool
                     workingDir: workingDir,
                     asyncRead: asyncRead,
                     ensureZeroExitCode: ensureZeroExitCode,
+                    env: env,
                     token: token).ConfigureAwait(false);
             }
         }
@@ -348,6 +351,7 @@ namespace BenchTool
             bool ensureZeroExitCode = false,
             StringBuilder stdOutBuilder = null,
             StringBuilder stdErrorBuilder = null,
+            IDictionary<string, string> env = null,
             CancellationToken token = default)
         {
             if (workingDir.IsEmptyOrWhiteSpace())
@@ -365,6 +369,7 @@ namespace BenchTool
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
+                env: env,
                 token: token).ConfigureAwait(false);
 
             if (ensureZeroExitCode && ret != 0)
@@ -379,6 +384,7 @@ namespace BenchTool
                 bool asyncRead,
                 out string stdOut,
                 out string stdError,
+                IDictionary<string, string> env,
                 CancellationToken token)
         {
             StringBuilder stdOutBuilder = new StringBuilder();
@@ -390,6 +396,7 @@ namespace BenchTool
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
+                env: env,
                 token: token).ConfigureAwait(false).GetAwaiter().GetResult();
 
             stdOut = stdOutBuilder.ToString();
@@ -404,6 +411,7 @@ namespace BenchTool
             StringBuilder stdErrorBuilder,
             bool printOnConsole,
             bool asyncRead,
+            IDictionary<string, string> env,
             CancellationToken token)
         {
             return RunProcessAsync(
@@ -413,6 +421,7 @@ namespace BenchTool
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
+                env: env,
                 token: token);
         }
 
@@ -423,6 +432,7 @@ namespace BenchTool
             bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
+            IDictionary<string, string> env,
             CancellationToken token)
         {
             startInfo.UseShellExecute = useShellExecute;
@@ -438,6 +448,7 @@ namespace BenchTool
                 asyncRead: asyncRead,
                 stdOutBuilder: stdOutBuilder,
                 stdErrorBuilder: stdErrorBuilder,
+                env: env,
                 token: token);
         }
 
@@ -447,6 +458,7 @@ namespace BenchTool
             bool asyncRead,
             StringBuilder stdOutBuilder,
             StringBuilder stdErrorBuilder,
+            IDictionary<string, string> env,
             CancellationToken token,
             Action onStart = null)
         {
@@ -456,6 +468,13 @@ namespace BenchTool
                 bool useShellExecute = p.StartInfo.UseShellExecute;
                 p.StartInfo.RedirectStandardOutput = !useShellExecute;
                 p.StartInfo.RedirectStandardError = !useShellExecute;
+                if (env?.Count > 0)
+                {
+                    foreach (KeyValuePair<string, string> pair in env)
+                    {
+                        p.StartInfo.Environment[pair.Key] = pair.Value;
+                    }
+                }
 
                 string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
                 Logger.Debug($"{prefix}: {p.StartInfo.FileName} {p.StartInfo.Arguments}");

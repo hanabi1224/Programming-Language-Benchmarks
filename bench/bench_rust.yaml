@@ -56,12 +56,14 @@ environments:
     version: 1
     docker: rust:1-slim
     docker_volumns:
-      - /tmp/rust/target:/tmp/rust/target
+      - /tmp/rs/target:/tmp/rs/target
       - /tmp/.cargo/registry:/usr/local/cargo/registry
+    env:
+      RUSTFLAGS: -C target-cpu=native
     include: rust
     include_sub_dir: src
-    build: cargo build --release --target-dir /tmp/rust/target
+    build: cargo build --release --target-dir /tmp/rs/target -v
     after_build:
-      - sudo mv /tmp/rust/target/release/_app out
+      - sudo mv /tmp/rs/target/release/_app out
     out_dir: out
     run_cmd: _app
