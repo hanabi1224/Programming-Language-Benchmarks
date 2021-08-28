@@ -66,8 +66,12 @@ problems:
           - zig
   - name: mandelbrot
     unittests:
+      - input: 1
+        output: 1_out
       - input: 200
         output: 200_out
+      - input: 500
+        output: 500_out
     tests:
       - input: 4000
   - name: fannkuch-redux

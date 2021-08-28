@@ -51,6 +51,15 @@ jobs:
       - name: Install
         run: |
           echo '# placeholder' >> $PROFILE
+      - name: Install rust stable
+        uses: actions-rs/toolchain@v1
+        if: matrix.lang == 'rust' || matrix.lang == 'wasm'
+        with:
+          toolchain: stable
+          override: true
+      - name: Install rust nightly
+        if: matrix.lang == 'rust'
+        run: rustup update nightly
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: |
@@ -256,4 +265,4 @@ jobs:
         run: |
           yarn global add vercel
           export PATH="$(yarn global bin):$PATH"
-          vercel website --prod -f -c -C -t $VERCEL_PUBLISH_TOKEN
+          vercel website --prod -f --with-cache -c -C -t $VERCEL_PUBLISH_TOKEN

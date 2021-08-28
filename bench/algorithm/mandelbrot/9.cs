@@ -12,6 +12,8 @@
 using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 public class MandelBrot
@@ -49,6 +51,8 @@ public class MandelBrot
     public static unsafe void Main(string[] args)
     {
         var size = args.Length == 0 ? 200 : int.Parse(args[0]);
+        // Ensure image_Width_And_Height are multiples of 8.
+        size = (size + 7) / 8 * 8;
         Console.Out.WriteAsync(String.Concat("P4\n", size, " ", size, "\n"));
         var Crb = new double[size + 2];
         var lineLength = size >> 3;
@@ -77,7 +81,19 @@ public class MandelBrot
                     _pdata[y * lineLength + x] = GetByte(_Crb + x * 8, Ciby);
                 }
             });
-            Console.OpenStandardOutput().Write(data, 0, data.Length);
+            using var hasher = MD5.Create();
+            var hash = hasher.ComputeHash(data);
+            Console.WriteLine(ToHexString(hash));
         }
+    }
+
+    static string ToHexString(byte[] ba)
+    {
+        StringBuilder hex = new StringBuilder(ba.Length * 2);
+        foreach (byte b in ba)
+        {
+            hex.AppendFormat("{0:x2}", b);
+        }
+        return hex.ToString();
     }
 }

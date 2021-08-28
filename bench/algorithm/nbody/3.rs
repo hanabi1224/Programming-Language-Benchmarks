@@ -3,9 +3,11 @@
 //
 // contributed by the Rust Project Developers
 // contributed by TeXitoi
-// modified by hanabi1224 to use glam, remove borrow checker hack, do not derive copy, more compile time calculation
+// modified by hanabi1224 to use core_simd, remove borrow checker hack, do not derive copy, more compile time calculation
 
-use glam::{const_dvec3, DVec3};
+#![feature(portable_simd)]
+
+use core_simd::f64x4;
 use std::f64::consts::PI;
 
 const SOLAR_MASS: f64 = 4.0 * PI * PI;
@@ -16,8 +18,8 @@ const ADVANCE_DT: f64 = 0.01;
 macro_rules! planet {
     ($x:expr, $y:expr, $z:expr, $vx:expr, $vy:expr, $vz:expr, $mass_ratio:expr) => {{
         Planet {
-            position: const_dvec3!([$x, $y, $z]),
-            velocity: const_dvec3!([$vx, $vy, $vz]),
+            position: f64x4::from_array([$x, $y, $z, 0.0]),
+            velocity: f64x4::from_array([$vx, $vy, $vz, 0.0]),
             mass_ratio: $mass_ratio,
             mass: $mass_ratio * SOLAR_MASS,
             mass_half: $mass_ratio * SOLAR_MASS * 0.5,
@@ -72,8 +74,8 @@ const BODIES: [Planet; N_BODIES] = [
 
 #[derive(Clone)]
 struct Planet {
-    position: DVec3,
-    velocity: DVec3,
+    position: f64x4,
+    velocity: f64x4,
     mass_ratio: f64,
     mass: f64,
     mass_half: f64,
@@ -88,7 +90,7 @@ fn advance(bodies: &mut [Planet; N_BODIES], dt: f64, steps: i32) {
             for j in (i + 1)..N_BODIES {
                 let bj = &mut bodies[j];
                 let mut d = bi_position - bj.position;
-                let d2 = d.dot(d);
+                let d2 = dot(d);
                 let mag = dt / (d2 * d2.sqrt());
                 d *= mag;
                 bj.velocity += d * bi_mass;
@@ -109,10 +111,11 @@ fn energy(bodies: &[Planet; N_BODIES]) -> f64 {
     let mut e = 0.0;
     for i in 0..N_BODIES {
         let bi = &bodies[i];
-        e += bi.velocity.dot(bi.velocity) * bi.mass_half;
+        e += dot(bi.velocity) * bi.mass_half;
         for j in (i + 1)..N_BODIES {
             let bj = &bodies[j];
-            e -= bi.mass * bj.mass / bi.position.distance(bj.position);
+            let distance = dot(bi.position - bj.position).sqrt();
+            e -= bi.mass * bj.mass / distance;
         }
     }
     e
@@ -120,12 +123,17 @@ fn energy(bodies: &[Planet; N_BODIES]) -> f64 {
 
 #[inline]
 fn offset_momentum(bodies: &mut [Planet; N_BODIES]) {
-    let mut p = DVec3::default();
+    let mut p = f64x4::default();
     for bi in bodies.iter() {
         p -= bi.velocity * bi.mass_ratio;
     }
     let sun = &mut bodies[0];
     sun.velocity = p;
+}
+
+#[inline]
+fn dot(v: f64x4) -> f64 {
+    (v * v).horizontal_sum()
 }
 
 fn main() {
@@ -136,7 +144,6 @@ fn main() {
         .unwrap_or(1000);
 
     let mut bodies = BODIES.clone();
-
     offset_momentum(&mut bodies);
     println!("{:.9}", energy(&bodies));
 
