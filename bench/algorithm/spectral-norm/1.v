@@ -18,6 +18,7 @@ fn evala(i int, j int) int {
 	return ((i + j) * (i + j + 1) / 2 + i + 1)
 }
 
+[direct_array_access]
 fn times(mut v []f64, u []f64) {
 	for i in 0 .. v.len {
 		mut a := f64(0)
@@ -28,6 +29,7 @@ fn times(mut v []f64, u []f64) {
 	}
 }
 
+[direct_array_access]
 fn times_trans(mut v []f64, u []f64) {
 	for i in 0 .. v.len {
 		mut a := f64(0)
@@ -44,6 +46,7 @@ fn a_times_transp(mut v []f64, u []f64) {
 	times_trans(mut v, x)
 }
 
+[direct_array_access]
 fn main() {
 	mut n := 0
 	if os.args.len == 2 {

@@ -24,7 +24,10 @@ type F64x4 = NumericArray<f64, U4>;
 type I32x4 = NumericArray<i32, U4>;
 
 fn main() {
-    let n = std::env::args().nth(1).and_then(|n| n.parse().ok()).unwrap_or(100);
+    let n = std::env::args()
+        .nth(1)
+        .and_then(|n| n.parse().ok())
+        .unwrap_or(100);
     let answer = spectralnorm(n);
     println!("{:.9}", answer);
 }

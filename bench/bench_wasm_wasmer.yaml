@@ -13,6 +13,7 @@ problems:
   - name: spectral-norm
     source:
       - 1.rs
+      - 2.rs
   # - name: mandelbrot
   #   source:
   #     - 8.rs
