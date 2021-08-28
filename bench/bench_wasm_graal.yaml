@@ -9,6 +9,7 @@ problems:
   - name: nbody
     source:
       - 1.rs
+      - 2.rs
   - name: spectral-norm
     source:
       - 1.rs

@@ -24,6 +24,7 @@ wasm = [
 [dependencies]
 anyhow = "1"
 generic-array = "0"
+glam = "0"
 ibig = "0"
 lazy_static = "1"
 md5 = "0"
