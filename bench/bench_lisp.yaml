@@ -20,20 +20,20 @@ environments:
     compiler: sbcl
     version: latest
     include: lisp
-    build: sbcl --non-interactive --no-userinit --load compile.cl
+    build: sbcl --dynamic-space-size 8Gb --noinform --non-interactive --no-userinit --load compile.cl
     after_build:
       - cp app.fasl out
       - cp run.cl out
     out_dir: out
     compiler_version_command: sbcl --version
     runtime_version_parameter: --version
-    run_cmd: sbcl --non-interactive --no-userinit --load run.cl
+    run_cmd: sbcl --dynamic-space-size 8Gb --noinform --non-interactive --no-userinit --load run.cl
     runtime_included: false
   - os: linux
     compiler: sbcl/exe
     version: latest
     include: lisp
-    build: sbcl --non-interactive --no-userinit --load bundle.cl
+    build: sbcl --dynamic-space-size 8Gb --noinform --disable-debugger --non-interactive --no-userinit --load bundle.cl
     after_build:
       - cp app out
     out_dir: out
