@@ -32,11 +32,11 @@ static class Program
             serializer.Serialize(writer, data);
             using var hasher = MD5.Create();
             var hash = hasher.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
-            Console.WriteLine(ByteArrayToString(hash));
+            Console.WriteLine(ToHexString(hash));
         }
     }
 
-    static string ByteArrayToString(byte[] ba)
+    static string ToHexString(byte[] ba)
     {
         StringBuilder hex = new StringBuilder(ba.Length * 2);
         foreach (byte b in ba)

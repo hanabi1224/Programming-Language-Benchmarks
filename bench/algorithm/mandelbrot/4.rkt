@@ -5,6 +5,7 @@
 ;; contributed by Eli Barzilay
 ;; parallelized by Sam Tobin-Hochstadt
 
+(require file/md5)
 (require racket/require (for-syntax racket/base) racket/future
          (filtered-in (lambda (n) (regexp-replace #rx"unsafe-" n ""))
                        racket/unsafe/ops)
@@ -13,7 +14,8 @@
 
 (define LIMIT-SQR 4.0)
 (define ITERATIONS 50)
-(define N (command-line #:args (n) (string->number n)))
+(define N_INPUT (command-line #:args (n) (string->number n)))
+(define N (* (quotient (+ N_INPUT 7) 8) 8))
 (define N.0 (fx->fl N))
 (define 2/N (fl/ 2.0 N.0))
 (define Crs
@@ -57,4 +59,4 @@
                (when (fx> bitnum 0)
                  (bytes-set! bitmap aindex
                              (fxlshift byteacc (fx- 8 (fxand N #x7)))))]))))))
-(void (write-bytes bitmap))
+(void (write-bytes (md5 bitmap)))

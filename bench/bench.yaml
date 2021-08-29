@@ -32,11 +32,13 @@ problems:
       - input: 100
         output: 100_out
     tests:
-      #- input: 500
       - input: 1000
       - input: 3000
         exclude_langs:
-            - python
+          - python
+          - ruby
+          - wren
+          - wasm
   - name: pidigits
     unittests:
       - input: 27
@@ -64,8 +66,12 @@ problems:
           - zig
   - name: mandelbrot
     unittests:
+      - input: 1
+        output: 1_out
       - input: 200
         output: 200_out
+      - input: 500
+        output: 500_out
     tests:
       - input: 4000
   - name: fannkuch-redux

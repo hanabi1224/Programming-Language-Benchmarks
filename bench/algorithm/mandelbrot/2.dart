@@ -2,9 +2,12 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:crypto/crypto.dart' as crypto;
 
 void main(args) {
   int n = args.length > 0 ? int.parse(args[0]) : 200;
+  // Ensure image_Width_And_Height are multiples of 8.
+  n = (n + 7) ~/ 8 * 8;
 
   var threads = Platform.numberOfProcessors;
   final segmentFutures = <Future>[];
@@ -27,14 +30,18 @@ void main(args) {
     from += len;
   }
 
-  stdout.write('P4\n$n $n\n');
+  print('P4\n$n $n');
 
   Future.wait(segmentFutures).then((segments) {
+    var buffer = BytesBuilder(copy: false);
     for (var segment in segments) {
-      for (var line in segment) {
-        stdout.add(line);
+      for (Uint8List line in segment) {
+        buffer.add(line);
       }
     }
+    var bytes = buffer.takeBytes();
+    var hash = crypto.md5.convert(bytes);
+    print("$hash");
   });
 }
 
@@ -77,9 +84,9 @@ void calculateSegment(SendPort initialReplyTo) {
     int len = msg['len'];
     SendPort replyTo = msg['port'];
 
-    var lines = <Uint8List>[];
+    var lines = List<Uint8List>.filled(len, Uint8List(0));
     for (int i = 0; i < len; i++) {
-      lines.add(calculateLine(n, from + i));
+      lines[i] = calculateLine(n, from + i);
     }
     replyTo.send(lines);
     port.close();

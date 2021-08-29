@@ -42,6 +42,7 @@ jobs:
             swift,
             typescript,
             vlang,
+            wasm,
             wren,
             zig,
           ]
@@ -50,8 +51,17 @@ jobs:
       - name: Install
         run: |
           echo '# placeholder' >> $PROFILE
+      - name: Install rust stable
+        uses: actions-rs/toolchain@v1
+        if: matrix.lang == 'rust' || matrix.lang == 'wasm'
+        with:
+          toolchain: stable
+          override: true
+      - name: Install rust nightly
+        if: matrix.lang == 'rust'
+        run: rustup update nightly
       - name: Install graal
-        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'rust'
+        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: |
           # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
           # https://www.graalvm.org/docs/getting-started/
@@ -191,12 +201,12 @@ jobs:
           popd
           v --version
       - name: Install deno
-        if: matrix.lang == 'typescript' || matrix.lang == 'rust' || matrix.lang == 'wasm'
+        if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
           echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
       - name: Install wasm
-        if: matrix.lang == 'rust'
+        if: matrix.lang == 'wasm'
         run: |
           sudo gu install wasm
           sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
@@ -259,4 +269,4 @@ jobs:
         run: |
           yarn global add vercel
           export PATH="$(yarn global bin):$PATH"
-          vercel website --prod -f -c -C -t $VERCEL_PUBLISH_TOKEN
+          vercel website --prod -f --with-cache -c -C -t $VERCEL_PUBLISH_TOKEN

@@ -331,16 +331,24 @@ namespace BenchTool
                         additonalDockerVolumn = string.Join(" ", langEnvConfig.DockerVolumns.Select(v => $"-v {v}"));
                     }
 
-                    buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    string additionalDockerEnv = string.Empty;
+                    if (langEnvConfig.Env?.Count > 0)
+                    {
+                        additionalDockerEnv = string.Join(" ", langEnvConfig.Env.Select(p => $"--env {p.Key.Trim()}=\"{p.Value.Trim()}\""));
+                    }
+
+                    buildCommand = $"docker run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
                     await ProcessUtils.RunCommandAsync(
                         buildCommand,
-                        workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                        workingDir: tmpDir.FullPath,
+                        env: langEnvConfig.Env).ConfigureAwait(false);
                 }
                 else
                 {
                     await ProcessUtils.RunCommandsAsync(
                         buildCommand.Split("&&", StringSplitOptions.RemoveEmptyEntries),
-                        workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                        workingDir: tmpDir.FullPath,
+                        env: langEnvConfig.Env).ConfigureAwait(false);
                 }
             }
 
@@ -455,6 +463,7 @@ namespace BenchTool
                         asyncRead: false,
                         out string stdOut,
                         out string stdErr,
+                        env: null,
                         default);
                     if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                     {

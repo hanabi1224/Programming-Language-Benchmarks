@@ -85,6 +85,8 @@ namespace BenchTool
 
         public string[] DockerVolumns { get; set; }
 
+        public Dictionary<string, string> Env { get; set; }
+
         public string Include { get; set; }
 
         public string IncludeSubDir { get; set; }
