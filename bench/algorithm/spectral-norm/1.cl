@@ -86,7 +86,7 @@
                                              #+clisp ext:*args*
                                              #+cmu extensions:*command-line-strings*
                                              #+gcl  si::*command-args*))
-                                  "2000")))))
+                                  "3000")))))
     (declare (type fixnum n))
     (or (typep (* (- (* 2 n) 1) (- (* 2 n) 2)) 'fixnum)
         (error "The supplied value of 'n' breaks the optimizations in EVAL-A"))

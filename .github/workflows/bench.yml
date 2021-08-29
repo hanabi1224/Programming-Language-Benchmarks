@@ -82,14 +82,15 @@ jobs:
           cat ./sbcl
           sudo chmod +x ./sbcl
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          sudo ros install sbcl-bin
+          sudo ros install sbcl
           ros version          
           ./sbcl --version
           sudo mv ./sbcl /usr/bin
           sbcl --version
-          cd $HOME/.roswell/local-projects
-          git clone https://github.com/marcoheisig/sb-simd.git
-          sbcl --eval "(ql:quickload :sb-simd)" --eval "(exit)"
+          curl -O https://beta.quicklisp.org/quicklisp.lisp
+          sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
+          git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
+          sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
       - name: Install racket
         if: matrix.lang == 'racket'
         run: |

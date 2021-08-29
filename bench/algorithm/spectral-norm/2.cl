@@ -22,6 +22,7 @@
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+(require "asdf")
 (asdf:load-system :sb-simd)
 (use-package :sb-simd-avx)
 
