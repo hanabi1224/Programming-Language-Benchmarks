@@ -41,22 +41,6 @@ environments:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: adoptopenjdk-openj9
-  #   version: 8
-  #   docker: adoptopenjdk/openjdk8-openj9:slim
-  #   include:
-  #   build: javac app.java -d out && cp -r /opt/java/openjdk ./out
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: zuluopenjdk
-  #   version: 8
-  #   docker: azul/zulu-openjdk:8
-  #   include:
-  #   build: javac app.java -d out && cp -r /usr/lib/jvm/zulu8-ca-amd64 ./out/openjdk
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
     version: 11
@@ -73,14 +57,6 @@ environments:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: zuluopenjdk
-  #   version: 11
-  #   docker: azul/zulu-openjdk:11
-  #   include:
-  #   build: javac app.java -d out && cp -r /usr/lib/jvm/zulu11-ca-amd64 ./out/openjdk
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk
     version: 16
@@ -89,14 +65,6 @@ environments:
     build: javac app.java -d out && cp -r /opt/java/openjdk ./out
     out_dir: out
     run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: adoptopenjdk-openj9
-  #   version: 16
-  #   docker: adoptopenjdk/openjdk16-openj9:slim
-  #   include:
-  #   build: javac app.java -d out && cp -r /opt/java/openjdk ./out
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
   # - os: linux
   #   compiler: zuluopenjdk
   #   version: 16
