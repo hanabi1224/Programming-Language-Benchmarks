@@ -8,5 +8,5 @@
         :purify t
         ;; :compression t
         ;; this is the main function:
-        :toplevel #'mainc
+        :toplevel #'main
         :executable t))
