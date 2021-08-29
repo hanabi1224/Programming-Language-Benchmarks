@@ -72,7 +72,7 @@ void EvalAtATimesU(double *src, double *dst, double *tmp,
 }
 
 int GetThreadCount() {
-  return 2; //get_nprocs();
+  return get_nprocs();
 }
 
 double SpectralNorm(int N) {
