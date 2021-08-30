@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
@@ -29,6 +30,7 @@ namespace BenchTool
         private const string TaskBench = "bench";
 
         private static bool _verbose = false;
+
         /// <summary>
         /// Main function
         /// </summary>

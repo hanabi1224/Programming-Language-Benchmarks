@@ -52,12 +52,11 @@ environments:
     build: go mod init tmp.org/tmp/v2 && go build -o out/app
     out_dir: out
     run_cmd: app
-  - os: linux
-    compiler: go
-    version: rc
-    docker: golang:rc
-    include:
-    build: go mod init tmp.org/tmp/v2 && go build -o out/app
-    out_dir: out
-    run_cmd: app
-    
+  # - os: linux
+  #   compiler: go
+  #   version: rc
+  #   docker: golang:rc
+  #   include:
+  #   build: go mod init tmp.org/tmp/v2 && go build -o out/app
+  #   out_dir: out
+  #   run_cmd: app
