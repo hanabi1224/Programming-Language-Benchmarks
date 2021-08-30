@@ -19,7 +19,7 @@ problems:
   #   source:
   #     - 1.kt
   #     - 2.kt
-compiler_version_command: sh -c "./gradlew kotlinVersion"
+compiler_version_command: sh -c "./gradlew version"
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
