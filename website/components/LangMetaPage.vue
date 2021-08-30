@@ -364,10 +364,27 @@ export default class LangMetaPage extends Vue {
       } ${suffix}`
     }
 
-    const langsStrs = _.chain(this.langs)
-      .map((i) => i.langDisplay)
-      .uniq()
-      .value()
+    let langsStrs: string[] = []
+    if (this.problem) {
+      langsStrs = _.chain(this.langs)
+        .map((i) => i.langDisplay)
+        .uniq()
+        .value()
+      langsStrs.push(this.problem)
+    } else if (this.other) {
+      langsStrs = _.chain(this.lang?.benchmarks)
+        .map((i) => i.test)
+        .uniq()
+        .value()
+      langsStrs.push(this.lang!.langDisplay)
+      langsStrs.push(this.other.langDisplay)
+    } else {
+      langsStrs = _.chain(this.lang?.benchmarks)
+        .map((i) => i.test)
+        .uniq()
+        .value()
+      langsStrs.push(this.lang!.langDisplay)
+    }
 
     return {
       title,

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BenchTool
 {
@@ -88,6 +84,8 @@ namespace BenchTool
         public string Docker { get; set; }
 
         public string[] DockerVolumns { get; set; }
+
+        public Dictionary<string, string> Env { get; set; }
 
         public string Include { get; set; }
 

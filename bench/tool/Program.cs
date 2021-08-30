@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
 using Newtonsoft.Json;
 using NLog;
 using YamlDotNet.Serialization;
@@ -19,18 +18,19 @@ namespace BenchTool
     {
         private static Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        const string TimerPrefix = "[Timer] ";
+        private const string TimerPrefix = "[Timer] ";
 
         static Program()
         {
             NLogUtils.Configure();
         }
 
-        const string TaskBuild = "build";
-        const string TaskTest = "test";
-        const string TaskBench = "bench";
+        private const string TaskBuild = "build";
+        private const string TaskTest = "test";
+        private const string TaskBench = "bench";
 
         private static bool _verbose = false;
+
         /// <summary>
         /// Main function
         /// </summary>
@@ -64,7 +64,7 @@ namespace BenchTool
             string[] problems = null,
             string[] environments = null)
         {
-            var timer = Stopwatch.StartNew();
+            Stopwatch timer = Stopwatch.StartNew();
             _verbose = verbose;
             config.EnsureFileExists();
             algorithm.EnsureDirectoryExists();
@@ -77,32 +77,32 @@ namespace BenchTool
                 throw new NotSupportedException($"Unknown task: {task}");
             }
 
-            var yamlDeserializer = new DeserializerBuilder()
+            IDeserializer yamlDeserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
 
-            var yamlStr = File.ReadAllText(config);
-            var benchConfig = yamlDeserializer.Deserialize<YamlBenchmarkConfig>(yamlStr);
+            string yamlStr = File.ReadAllText(config);
+            YamlBenchmarkConfig benchConfig = yamlDeserializer.Deserialize<YamlBenchmarkConfig>(yamlStr);
             if (benchConfig.Langs == null)
             {
                 benchConfig.Langs = new List<YamlLangConfig>();
             }
-            var configDir = Path.GetDirectoryName(config);
-            foreach (var lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
+            string configDir = Path.GetDirectoryName(config);
+            foreach (string lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
             {
                 Logger.Debug($"Loading {lcPath}");
-                var lc = yamlDeserializer.Deserialize<YamlLangConfig>(File.ReadAllText(lcPath));
+                YamlLangConfig lc = yamlDeserializer.Deserialize<YamlLangConfig>(File.ReadAllText(lcPath));
                 benchConfig.Langs.Add(lc);
             }
 
-            var langConfigs = benchConfig.Langs;
-            var includedLanguages = new HashSet<string>(langs ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
-            var includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
-            var includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
+            List<YamlLangConfig> langConfigs = benchConfig.Langs;
+            HashSet<string> includedLanguages = new HashSet<string>(langs ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
+            HashSet<string> includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
+            HashSet<string> includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
-            var parallelTasks = new List<Task>();
-            var aggregatedExceptions = new List<Exception>();
-            foreach (var c in langConfigs.OrderBy(i => i.Lang))
+            List<Task> parallelTasks = new List<Task>();
+            List<Exception> aggregatedExceptions = new List<Exception>();
+            foreach (YamlLangConfig c in langConfigs.OrderBy(i => i.Lang))
             {
                 if (includedLanguages.Count > 0
                     && !includedLanguages.Contains(c.Lang))
@@ -110,7 +110,7 @@ namespace BenchTool
                     continue;
                 }
 
-                foreach (var env in c.Environments)
+                foreach (YamlLangEnvironmentConfig env in c.Environments)
                 {
                     if (includedOsEnvironments.Count > 0
                         && !includedOsEnvironments.Contains(env.Os))
@@ -118,7 +118,7 @@ namespace BenchTool
                         continue;
                     }
 
-                    foreach (var p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
+                    foreach (YamlLangProblemConfig p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
                     {
                         if (includedProblems.Count > 0
                             && !includedProblems.Contains(p.Name))
@@ -126,14 +126,14 @@ namespace BenchTool
                             continue;
                         }
 
-                        foreach (var codePath in p.Source ?? Enumerable.Empty<string>())
+                        foreach (string codePath in p.Source ?? Enumerable.Empty<string>())
                         {
-                            var allowParallel = task == TaskBuild && buildPool;
+                            bool allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
-                            var buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
+                            string buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
                             buildId = Regex.Replace(buildId, @"[\\\/\?]", "_", RegexOptions.Compiled);
                             Logger.Info($"Starting {task} task: {buildId}");
-                            var taskTimer = Stopwatch.StartNew();
+                            Stopwatch taskTimer = Stopwatch.StartNew();
 
                             switch (task)
                             {
@@ -150,7 +150,7 @@ namespace BenchTool
                                     continue;
                             }
 
-                            var jobExecutionTask = Task.Run(async () =>
+                            Task jobExecutionTask = Task.Run(async () =>
                             {
                                 try
                                 {
@@ -216,7 +216,7 @@ namespace BenchTool
             bool forceRebuild,
             bool noDocker)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
+            string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputDir, buildId);
             if (!forceRebuild
                 && buildOutput.IsDirectoryNotEmpty())
             {
@@ -224,36 +224,36 @@ namespace BenchTool
                 return;
             }
 
-            var buildOutputJson = new BuildOutputJson();
+            BuildOutputJson buildOutputJson = new BuildOutputJson();
 
             // Source code
-            var srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
+            string srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
             srcCodePath.EnsureFileExists();
 
             // Setup tmp build folder
-            using var tmpDir = new TempFolder(buildId);
+            using TempFolder tmpDir = new TempFolder(buildId);
 
             Logger.Debug($"Temp build folder: {tmpDir.FullPath}");
 
             // Copy Include folder
             if (!langEnvConfig.Include.IsEmptyOrWhiteSpace())
             {
-                var fromDir = Path.Combine(includeDir, langEnvConfig.Include);
+                string fromDir = Path.Combine(includeDir, langEnvConfig.Include);
                 fromDir.EnsureDirectoryExists();
 
                 await ProcessUtils.RunCommandAsync($"cp -a \"{fromDir}\"  \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
             }
 
-            var tmpBuildOutput = Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir ?? string.Empty);
+            string tmpBuildOutput = Path.Combine(tmpDir.FullPath, langEnvConfig.OutDir ?? string.Empty);
             tmpBuildOutput.CreateDirectoryIfNotExist();
 
-            var srcCodeDestDir = langEnvConfig.IncludeSubDir.IsEmptyOrWhiteSpace() ? tmpDir.FullPath : Path.Combine(tmpDir.FullPath, langEnvConfig.IncludeSubDir);
+            string srcCodeDestDir = langEnvConfig.IncludeSubDir.IsEmptyOrWhiteSpace() ? tmpDir.FullPath : Path.Combine(tmpDir.FullPath, langEnvConfig.IncludeSubDir);
             srcCodeDestDir.CreateDirectoryIfNotExist();
 
-            var srcCodeDestFileName = langEnvConfig.SourceRenameTo
+            string srcCodeDestFileName = langEnvConfig.SourceRenameTo
                 .FallBackTo(langConfig.SourceRenameTo)
                 .FallBackTo(Path.GetFileName(srcCodePath));
-            var srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
+            string srcCodeDestPath = Path.Combine(srcCodeDestDir, srcCodeDestFileName);
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             //File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
             await File.WriteAllTextAsync(path: srcCodeDestPath, await File.ReadAllTextAsync(srcCodePath).ConfigureAwait(false)).ConfigureAwait(false);
@@ -263,8 +263,8 @@ namespace BenchTool
             }
 
             // Docker setup
-            var docker = langEnvConfig.Docker;
-            var useDocker = !noDocker && !docker.IsEmptyOrWhiteSpace();
+            string docker = langEnvConfig.Docker;
+            bool useDocker = !noDocker && !docker.IsEmptyOrWhiteSpace();
             if (useDocker && forcePullDocker)
             {
                 await ProcessUtils.RunCommandAsync($"docker pull {docker}").ConfigureAwait(false);
@@ -276,7 +276,7 @@ namespace BenchTool
                 workingDir: tmpDir.FullPath).ConfigureAwait(false);
 
             // Check compiler version and save output
-            var compilerVersionCommand = langEnvConfig.CompilerVersionCommand.FallBackTo(langConfig.CompilerVersionCommand);
+            string compilerVersionCommand = langEnvConfig.CompilerVersionCommand.FallBackTo(langConfig.CompilerVersionCommand);
             if (!compilerVersionCommand.IsEmptyOrWhiteSpace())
             {
                 if (useDocker)
@@ -294,8 +294,8 @@ namespace BenchTool
                 }
 
                 {
-                    var stdOutBuilder = new StringBuilder();
-                    var stdErrorBuilder = new StringBuilder();
+                    StringBuilder stdOutBuilder = new StringBuilder();
+                    StringBuilder stdErrorBuilder = new StringBuilder();
                     await ProcessUtils.RunCommandAsync(
                         compilerVersionCommand,
                         workingDir: tmpDir.FullPath,
@@ -307,8 +307,8 @@ namespace BenchTool
 
                 if (buildOutputJson.CompilerVersionText?.Contains("Unable to find image", StringComparison.OrdinalIgnoreCase) == true)
                 {
-                    var stdOutBuilder = new StringBuilder();
-                    var stdErrorBuilder = new StringBuilder();
+                    StringBuilder stdOutBuilder = new StringBuilder();
+                    StringBuilder stdErrorBuilder = new StringBuilder();
                     await ProcessUtils.RunCommandAsync(
                         compilerVersionCommand,
                         workingDir: tmpDir.FullPath,
@@ -320,25 +320,38 @@ namespace BenchTool
             }
 
             // Build
-            var buildCommand = langEnvConfig.Build;
+            string buildCommand = langEnvConfig.Build;
             if (!buildCommand.IsEmptyOrWhiteSpace())
             {
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    var additonalDockerVolumn = string.Empty;
+                    string additonalDockerVolumn = string.Empty;
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT
                         && langEnvConfig.DockerVolumns?.Length > 0)
                     {
                         additonalDockerVolumn = string.Join(" ", langEnvConfig.DockerVolumns.Select(v => $"-v {v}"));
                     }
 
-                    buildCommand = $"docker run --rm {additonalDockerVolumn} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
-                }
+                    string additionalDockerEnv = string.Empty;
+                    if (langEnvConfig.Env?.Count > 0)
+                    {
+                        additionalDockerEnv = string.Join(" ", langEnvConfig.Env.Select(p => $"--env {p.Key.Trim()}=\"{p.Value.Trim()}\""));
+                    }
 
-                await ProcessUtils.RunCommandAsync(
-                    buildCommand,
-                    workingDir: tmpDir.FullPath).ConfigureAwait(false);
+                    buildCommand = $"docker run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    await ProcessUtils.RunCommandAsync(
+                        buildCommand,
+                        workingDir: tmpDir.FullPath,
+                        env: langEnvConfig.Env).ConfigureAwait(false);
+                }
+                else
+                {
+                    await ProcessUtils.RunCommandsAsync(
+                        buildCommand.Split("&&", StringSplitOptions.RemoveEmptyEntries),
+                        workingDir: tmpDir.FullPath,
+                        env: langEnvConfig.Env).ConfigureAwait(false);
+                }
             }
 
             // After Build
@@ -346,13 +359,13 @@ namespace BenchTool
                 langEnvConfig.AfterBuild,
                 workingDir: tmpDir.FullPath).ConfigureAwait(false);
 
-            var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             if (problemTestConfig.Data?.Length > 0)
             {
-                foreach (var fileName in problemTestConfig.Data)
+                foreach (string fileName in problemTestConfig.Data)
                 {
-                    var dataFileFromPath = Path.Combine(algorithmDir, problem.Name, fileName);
-                    var dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
+                    string dataFileFromPath = Path.Combine(algorithmDir, problem.Name, fileName);
+                    string dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
                     Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
                     File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
                 }
@@ -400,25 +413,25 @@ namespace BenchTool
             string algorithmDir,
             string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
+            string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
-            var testOutputJson = new TestOutputJson();
+            TestOutputJson testOutputJson = new TestOutputJson();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
-            var exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
                 exeName = Path.Combine(buildOutput, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
-            var runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
+            string runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
             if (!runtimeVersionParameter.IsEmptyOrWhiteSpace())
             {
-                var stdOutBuilder = new StringBuilder();
-                var stdErrorBuilder = new StringBuilder();
+                StringBuilder stdOutBuilder = new StringBuilder();
+                StringBuilder stdErrorBuilder = new StringBuilder();
                 await ProcessUtils.RunCommandAsync(
                     $"{exeName} {runtimeVersionParameter}",
                     workingDir: buildOutput,
@@ -428,30 +441,31 @@ namespace BenchTool
                 testOutputJson.RuntimeVersionText = stdOutBuilder.ToString().Trim().FallBackTo(stdErrorBuilder.ToString().Trim());
             }
 
-            var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
-            foreach (var test in problemTestConfig.Unittests)
+            YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            foreach (YamlBenchmarkProblemUnittestConfig test in problemTestConfig.Unittests)
             {
-                var expectedOutputPath = Path.Combine(algorithmDir, problem.Name, test.Output);
+                string expectedOutputPath = Path.Combine(algorithmDir, problem.Name, test.Output);
                 expectedOutputPath.EnsureFileExists();
 
-                var expectedOutput = File.ReadAllText(expectedOutputPath);
+                string expectedOutput = File.ReadAllText(expectedOutputPath);
 
-                var runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
+                string runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
 
-                var runPsi = runCommand.ConvertToCommand();
+                ProcessStartInfo runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
                 runPsi.WorkingDirectory = buildOutput;
 
                 // Test retry
                 Exception error = null;
-                for (var retry = 0; retry < 3; retry++)
+                for (int retry = 0; retry < 3; retry++)
                 {
                     ProcessUtils.RunProcess(
                         runPsi,
                         printOnConsole: false,
                         asyncRead: false,
-                        out var stdOut,
-                        out var stdErr,
+                        out string stdOut,
+                        out string stdErr,
+                        env: null,
                         default);
                     if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                     {
@@ -488,23 +502,23 @@ namespace BenchTool
                 string algorithmDir,
                 string buildOutputRoot)
         {
-            var buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
+            string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
             buildOutput.EnsureDirectoryExists();
 
-            var benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, "_results", langConfig.Lang);
+            string benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, "_results", langConfig.Lang);
             benchResultDir.CreateDirectoryIfNotExist();
 
             await ProcessUtils.RunCommandsAsync(langEnvConfig.BeforeRun, workingDir: buildOutput).ConfigureAwait(false);
 
-            var exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+            string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
                 exeName = Path.Combine(buildOutput, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
-            var problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
-            foreach (var test in problemTestConfig.Tests)
+            YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            foreach (YamlBenchmarkProblemTestConfig test in problemTestConfig.Tests)
             {
                 if (test.SkipOnPullRequest
                     && GithubActionUtils.IsPullRequest)
@@ -518,13 +532,13 @@ namespace BenchTool
                     continue;
                 }
 
-                var runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
+                string runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
 
-                var runPsi = runCommand.ConvertToCommand();
+                ProcessStartInfo runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
                 runPsi.WorkingDirectory = buildOutput;
 
-                var repeat = test.Repeat > 1 ? test.Repeat : 1;
+                int repeat = test.Repeat > 1 ? test.Repeat : 1;
 
                 // Speed up PR build
                 if (repeat > 1 && GithubActionUtils.IsPullRequest)
@@ -534,15 +548,15 @@ namespace BenchTool
                 }
 
                 ProcessMeasurement statsMeasurement = new ProcessMeasurement();
-                for (var nRetry = 0; nRetry < 5; nRetry++)
+                for (int nRetry = 0; nRetry < 5; nRetry++)
                 {
-                    var measurements = new List<ProcessMeasurement>(repeat);
-                    var maxRetries = 10;
-                    for (var i = 0; i < repeat && maxRetries > 0; i++)
+                    List<ProcessMeasurement> measurements = new List<ProcessMeasurement>(repeat);
+                    int maxRetries = 10;
+                    for (int i = 0; i < repeat && maxRetries > 0; i++)
                     {
                         try
                         {
-                            var measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
+                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
                             Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
                             measurements.Add(measurement);
                         }
@@ -573,7 +587,7 @@ namespace BenchTool
                     await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
                 }
 
-                var benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
+                string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                 await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
                 {
                     lang = langConfig.Lang,

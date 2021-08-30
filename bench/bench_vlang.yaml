@@ -9,9 +9,9 @@ problems:
   - name: nbody
     source:
       - 1.v
-  - name: pidigits
-    source:
-      - 1.v
+  # - name: pidigits
+  #   source:
+  #     - 1.v
   - name: fasta
     source:
       - 1.v
@@ -35,8 +35,8 @@ environments:
     version: latest
     include:
     include_sub_dir:
-    before_build:
-      - v install hanabi1224.biginteger
+    # before_build:
+    #   - v install hanabi1224.biginteger
     build: v -prod -gc boehm_full -cc clang app.v
     after_build:
       - mv app out

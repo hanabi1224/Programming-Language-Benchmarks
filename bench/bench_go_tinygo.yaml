@@ -19,9 +19,9 @@ problems:
   # - name: edigits
   #   source:
   #     - 1.go
-  - name: mandelbrot
-    source:
-      - 1.go
+  # - name: mandelbrot
+  #   source:
+  #     - 1.go
   - name: fannkuch-redux
     source:
       - 3.go

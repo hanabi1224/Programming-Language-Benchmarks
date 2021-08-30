@@ -1,11 +1,8 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
-object Constants {
-    const val kotlinVersion = "1.5.21"
-}
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-    val kotlinVersion = "1.5.21"
+    val kotlinVersion = "1.5.30"
     kotlin("multiplatform").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
     id("com.github.ben-manes.versions").version("0.39.0")
@@ -36,10 +33,10 @@ kotlin {
     }
 }
 
-tasks.register("kotlinVersion") {
+tasks.register("version") {
   doLast {
-    // $HOME/.konan/kotlin-native-prebuilt-linux-${Constants.kotlinVersion}/bin/kotlinc-native -version
-    println("Kotlin/Native ${Constants.kotlinVersion}")
+    val jreVersion = System.getProperty("java.runtime.version")
+    println("kotlinc-native ${KotlinCompilerVersion.VERSION} (JRE $jreVersion)")
   }
 }
 

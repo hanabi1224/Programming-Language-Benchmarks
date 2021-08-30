@@ -31,6 +31,7 @@ jobs:
             javascript,
             julia,
             kotlin,
+            lisp,
             lua,
             nim,
             ocaml,
@@ -41,6 +42,8 @@ jobs:
             swift,
             typescript,
             vlang,
+            wasm,
+            wren,
             zig,
           ]
     steps:
@@ -48,8 +51,17 @@ jobs:
       - name: Install
         run: |
           echo '# placeholder' >> $PROFILE
+      - name: Install rust stable
+        uses: actions-rs/toolchain@v1
+        if: matrix.lang == 'rust' || matrix.lang == 'wasm'
+        with:
+          toolchain: stable
+          override: true
+      - name: Install rust nightly
+        if: matrix.lang == 'rust'
+        run: rustup update nightly
       - name: Install graal
-        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'rust'
+        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: |
           # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
           # https://www.graalvm.org/docs/getting-started/
@@ -70,6 +82,25 @@ jobs:
         if: matrix.lang == 'c'
         run: |
           sudo apt-get install -y libapr1 libapr1-dev
+      - name: Install lisp
+        if: matrix.lang == 'lisp'
+        env:
+          LISP: sbcl-bin
+        run: |
+          echo '#!/usr/bin/sh' > ./sbcl
+          echo 'ros run -- $@' >> ./sbcl
+          cat ./sbcl
+          sudo chmod +x ./sbcl
+          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+          sudo ros install sbcl-bin
+          ros version          
+          ./sbcl --version
+          sudo mv ./sbcl /usr/bin
+          sbcl --version
+          curl -O https://beta.quicklisp.org/quicklisp.lisp
+          sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
+          #git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
+          #sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
       - name: Install racket
         if: matrix.lang == 'racket'
         run: |
@@ -86,10 +117,10 @@ jobs:
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
         run: |
-          wget https://download.java.net/java/early_access/loom/7/openjdk-17-loom+7-342_linux-x64_bin.tar.gz
-          tar -xvf openjdk-17-loom+7-342_linux-x64_bin.tar.gz
-          sudo ln -sf $PWD/jdk-17/bin/javac /usr/bin/loomjavac
-          sudo ln -sf $PWD/jdk-17/bin/java /usr/bin/loomjava
+          wget https://download.java.net/java/early_access/loom/2/openjdk-18-loom+2-74_linux-x64_bin.tar.gz
+          tar -xvf openjdk-18-loom+2-74_linux-x64_bin.tar.gz
+          sudo ln -sf $PWD/jdk-18/bin/javac /usr/bin/loomjavac
+          sudo ln -sf $PWD/jdk-18/bin/java /usr/bin/loomjava
           loomjavac -version
           loomjava -version
       - name: Install graalvm native-image
@@ -170,12 +201,12 @@ jobs:
           popd
           v --version
       - name: Install deno
-        if: matrix.lang == 'typescript' || matrix.lang == 'rust' || matrix.lang == 'wasm'
+        if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
         run: |
           curl -fsSL https://deno.land/x/install/install.sh | sh
           echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
       - name: Install wasm
-        if: matrix.lang == 'rust'
+        if: matrix.lang == 'wasm'
         run: |
           sudo gu install wasm
           sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
@@ -238,4 +269,4 @@ jobs:
         run: |
           yarn global add vercel
           export PATH="$(yarn global bin):$PATH"
-          vercel website --prod -f -c -C -t $VERCEL_PUBLISH_TOKEN
+          vercel website --prod -c -C -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'

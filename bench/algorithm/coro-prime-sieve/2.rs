@@ -25,10 +25,6 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
         receiver = receiver_next;
     }
     std::process::exit(0);
-    // for handle in &handles {
-    //     handle.abort();
-    // }
-    // Ok(())
 }
 
 async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {

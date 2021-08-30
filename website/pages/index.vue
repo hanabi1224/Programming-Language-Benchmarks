@@ -46,6 +46,12 @@
               runtimes of the same language with the same source code.
             </li>
             <li class="pt-5">
+              Facilitate benchmarking on real server environments as nowadays
+              more and more applications are deployed with docker/k8s. It's
+              likely to get a very different result from what you get on your
+              dev machine.
+            </li>
+            <li class="pt-5">
               A reference for CI setup / Dev environment setup / package
               management setup for different languages. Refer to
               <a
@@ -157,7 +163,7 @@ export default class IndexPage extends Vue {
   }
 
   created() {
-    this.langs = this.$route.meta
+    this.langs = this.$route.meta as LangBenchResults[]
     this.problems = _.chain(this.langs)
       .map((i) => i.benchmarks)
       .flatten()

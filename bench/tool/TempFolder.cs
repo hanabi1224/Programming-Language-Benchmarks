@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using NLog;
 
@@ -55,7 +51,7 @@ namespace BenchTool
         public string FullPath { get; private set; }
         public TempFile()
         {
-            var fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            string fileName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
             //FullPath = Path.Combine(Environment.CurrentDirectory, ".tmp", fileName);
             FullPath = Path.Combine(Path.GetTempPath(), fileName);
         }

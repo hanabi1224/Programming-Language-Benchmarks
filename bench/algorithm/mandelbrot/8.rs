@@ -14,7 +14,6 @@ extern crate rayon;
 use generic_array::typenum::consts::U8;
 use numeric_array::NumericArray as Arr;
 use rayon::prelude::*;
-use std::io::Write;
 
 // [f64;8]
 type Vecf64 = Arr<f64, U8>;
@@ -56,7 +55,7 @@ fn main() {
         .and_then(|n| n.parse().ok())
         .unwrap_or(200);
     // Round size to multiple of 8
-    let size = size / VLEN * VLEN;
+    let size = (size + VLEN - 1) / VLEN * VLEN;
 
     let inv = 2. / size as f64;
 
@@ -64,10 +63,6 @@ fn main() {
     for i in 0..size {
         xloc[i / VLEN][i % VLEN] = i as f64 * inv - 1.5;
     }
-
-    let stdout_unlocked = std::io::stdout();
-    // Main thread only can print to stdout
-    let mut stdout = stdout_unlocked.lock();
 
     println!("P4\n{} {}", size, size);
 
@@ -81,5 +76,6 @@ fn main() {
                 .for_each(|(i, inner_out)| mbrot8(inner_out, xloc[i], ci));
         });
 
-    let _ = stdout.write_all(&rows);
+    let digest = md5::compute(&rows);
+    println!("{:x}", digest);
 }

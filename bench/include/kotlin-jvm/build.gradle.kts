@@ -1,11 +1,9 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
-object Constants {
-    const val kotlinVersion = "1.5.21"
-}
+import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-    val kotlinVersion = "1.5.21"
+    val kotlinVersion = "1.5.30"
     kotlin("jvm").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
     id("com.github.johnrengelman.shadow").version("7.0.0")
@@ -29,19 +27,17 @@ dependencies {
     // implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    val ktor_version = "1.6.1"
+    val ktor_version = "1.6.3"
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
-    //    implementation("io.ktor:ktor-serialization:$ktor_version")
-    //    implementation("ch.qos.logback:logback-classic:1.2.3")
 }
 
-tasks.register("kotlinVersion") {
+tasks.register("version") {
     doLast {
-        // $HOME/.konan/kotlin-native-prebuilt-linux-${Constants.kotlinVersion}/bin/kotlinc-native
-        // -version
-        println("Kotlinc ${Constants.kotlinVersion}")
+        // https://github.com/JetBrains/kotlin/blob/master/compiler/cli/src/org/jetbrains/kotlin/cli/common/CLITool.kt#L178
+        val jreVersion = System.getProperty("java.runtime.version")
+        println("${K2JVMCompiler().executableScriptFileName()} ${KotlinCompilerVersion.VERSION} (JRE $jreVersion)")
     }
 }
 

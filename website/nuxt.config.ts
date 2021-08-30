@@ -10,7 +10,7 @@ const config: NuxtConfig = {
   loading: {
     color: 'cyan',
   },
-
+  cache: true,
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Benchmarks for programming languages and compilers',
@@ -68,7 +68,7 @@ const config: NuxtConfig = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    parallel: false,
+    parallel: true,
     extractCSS: true,
     optimizeCSS: true,
   },
@@ -147,11 +147,11 @@ if (process.env.APP_HOST_NAME) {
   config.buildModules?.push('@nuxtjs/sitemap')
   config.sitemap = {
     hostname: process.env.APP_HOST_NAME,
-    defaults: {
-      changefreq: 'weekly',
-      priority: 1,
-      lastmod: new Date(),
-    },
+    // defaults: {
+    //   changefreq: 'weekly',
+    //   priority: 1,
+    //   lastmod: new Date(),
+    // },
   }
 }
 

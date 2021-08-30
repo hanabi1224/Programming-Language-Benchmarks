@@ -7,10 +7,10 @@
 package main
 
 import (
+	"crypto/md5"
 	"flag"
 	"fmt"
 	"log"
-	"os"
 	"runtime"
 	"strconv"
 	"sync"
@@ -121,7 +121,10 @@ func main() {
 	}
 	wg.Wait()
 
-	// Output the image to stdout.
+	// Output the image size to stdout.
 	fmt.Printf("P4\n%d %d\n", image_Width_And_Height, image_Width_And_Height)
-	os.Stdout.Write(pixels)
+	hasher := md5.New()
+	hasher.Write(pixels)
+	// Output the image md5 hash to stdout.
+	fmt.Printf("%x\n", hasher.Sum(nil))
 }

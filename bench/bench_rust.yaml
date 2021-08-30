@@ -11,9 +11,12 @@ problems:
   - name: nbody
     source:
       - 1.rs
+      - 2.rs
+      - 7.rs
   - name: spectral-norm
     source:
-      - 1.rs
+      - 2.rs
+      - 3.rs
       - 7.rs
   - name: mandelbrot
     source:
@@ -40,23 +43,30 @@ problems:
     source:
       - 1.rs
       - 2.rs
+      - 3.rs
+      - 4.rs
+  - name: http-server
+    source:
+      - 1.rs
 source_rename_to: main.rs
-compiler_version_command: rustc -V
+compiler_version_command: rustc +stable -V
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
 environments:
   - os: linux
     compiler: rustc
-    version: 1
-    docker: rust:1-slim
-    docker_volumns:
-      - /tmp/rust/target:/tmp/rust/target
-      - /tmp/.cargo/registry:/usr/local/cargo/registry
+    version: stable
+    # docker: rust:1-slim
+    # docker_volumns:
+    #   - /tmp/rs/target:/tmp/rs/target
+    #   - /tmp/.cargo/registry:/usr/local/cargo/registry
+    env:
+      RUSTFLAGS: -C target-cpu=native
     include: rust
     include_sub_dir: src
-    build: cargo build --release --all-features --target-dir /tmp/rust/target
+    build: cargo +stable build --release --target-dir /tmp/rs/target -v
     after_build:
-      - sudo mv /tmp/rust/target/release/_app out
+      - sudo mv /tmp/rs/target/release/_app out
     out_dir: out
     run_cmd: _app
