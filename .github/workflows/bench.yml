@@ -50,6 +50,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install
         run: |
+          lscpu
           echo '# placeholder' >> $PROFILE
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
@@ -92,8 +93,8 @@ jobs:
           cat ./sbcl
           sudo chmod +x ./sbcl
           curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          sudo ros install sbcl
-          sudo ros use sbcl
+          sudo ros install sbcl-bin
+          sudo ros use sbcl-bin
           ros version          
           ./sbcl --version
           sudo mv ./sbcl /usr/bin

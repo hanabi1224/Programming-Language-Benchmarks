@@ -17,13 +17,15 @@ fn eval_a_times_u(comptime transpose: bool, au: []f64, u: []const f64) void {
     var i: usize = 0;
     while (i < au.len) : (i += 1) {
         var j: usize = 0;
+        var a: f64 = 0.0;
         while (j < au.len) : (j += 1) {
             if (transpose) {
-                au[i] += eval_a(j, i) * u[j];
+                a += eval_a(j, i) * u[j];
             } else {
-                au[i] += eval_a(i, j) * u[j];
+                a += eval_a(i, j) * u[j];
             }
         }
+        au[i] = a;
     }
 }
 
