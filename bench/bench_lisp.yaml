@@ -6,6 +6,7 @@ problems:
   - name: binarytrees
     source:
       - 1.cl
+      - 2.cl
   - name: nbody
     source:
       - 2.cl
@@ -23,7 +24,7 @@ environments:
     compiler: sbcl
     version: latest
     include: lisp
-    build: sbcl --dynamic-space-size 8Gb --noinform --disable-debugger --non-interactive --no-userinit --load bundle.cl
+    build: sbcl --dynamic-space-size 8Gb --noinform --disable-debugger --non-interactive --load bundle.cl
     after_build:
       - cp app out
     out_dir: out
