@@ -9,9 +9,10 @@ problems:
   - name: nbody
     source:
       - 1.v
-  # - name: pidigits
-  #   source:
-  #     - 1.v
+  - name: pidigits
+    source:
+      # - 1.v
+      - 2.v
   - name: fasta
     source:
       - 1.v
@@ -24,6 +25,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.v
+  - name: mandelbrot
+    source:
+      - 1.v
 compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -34,10 +38,7 @@ environments:
     compiler: vlang
     version: latest
     include:
-    include_sub_dir:
-    # before_build:
-    #   - v install hanabi1224.biginteger
-    build: v -prod -gc boehm_full -cc clang app.v
+    build: v -prod -gc boehm_full -cc clang-12 -autofree -stats app.v
     after_build:
       - mv app out
     out_dir: out

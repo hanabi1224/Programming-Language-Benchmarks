@@ -53,6 +53,7 @@ problems:
           - zig
           - nim
           - racket
+          - vlang
   - name: edigits
     unittests:
       - input: 227

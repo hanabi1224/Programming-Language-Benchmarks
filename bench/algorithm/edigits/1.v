@@ -2,8 +2,13 @@ module main
 
 import os
 import strconv
-import hanabi1224.biginteger
+import math.big
 import math
+
+const (
+	one = big.integer_from_int(1)
+	ten = big.integer_from_int(10)
+)
 
 fn main() {
 	mut n := 27
@@ -14,7 +19,7 @@ fn main() {
 	k := binary_search(n)
 	mut p, q := sum_terms(0, k - 1)
 	p += q
-	mut a := pow_big(biginteger.ten, u32(n - 1))
+	mut a := ten.pow(u32(n - 1))
 	answer := p * a / q
 	s := answer.str()
 	for i := 0; i < n; i += 10 {
@@ -30,25 +35,9 @@ fn main() {
 	}
 }
 
-fn pow_big(a biginteger.BigInteger, b u32) biginteger.BigInteger {
-	if b == 0 {
-		return biginteger.one
-	} else if b == 1 {
-		return a
-	}
-
-	half := b / 2
-	p := pow_big(a, half)
-	if half % 2 == 0 {
-		return p * p
-	} else {
-		return p * p * a
-	}
-}
-
-fn sum_terms(a int, b int) (biginteger.BigInteger, biginteger.BigInteger) {
+fn sum_terms(a int, b int) (big.Integer, big.Integer) {
 	if b == a + 1 {
-		return biginteger.one, biginteger.from_int(b)
+		return one, big.integer_from_int(b)
 	}
 	mid := (a + b) / 2
 	p_left, q_left := sum_terms(a, mid)
