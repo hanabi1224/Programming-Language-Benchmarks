@@ -111,6 +111,9 @@ namespace BenchTool
                     continue;
                 }
 
+                Logger.Info($"[{c.Lang}] Running task {task}...");
+                Stopwatch langTaskTimer = Stopwatch.StartNew();
+
                 foreach (YamlLangEnvironmentConfig env in c.Environments ?? Enumerable.Empty<YamlLangEnvironmentConfig>())
                 {
                     if (includedOsEnvironments.Count > 0
@@ -123,7 +126,11 @@ namespace BenchTool
                     {
                         await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput).ConfigureAwait(false);
                     }
-                    foreach (YamlLangProblemConfig p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
+                    if (c.Problems == null)
+                    {
+                        continue;
+                    }
+                    foreach (YamlLangProblemConfig p in c.Problems.OrderBy(_ => _.Name))
                     {
                         if (includedProblems.Count > 0
                             && !includedProblems.Contains(p.Name))
@@ -191,6 +198,9 @@ namespace BenchTool
                         }
                     }
                 }
+
+                langTaskTimer.Stop();
+                Logger.Info($"[{c.Lang}] Task {task} has finished in {langTaskTimer.Elapsed}");
             }
 
             if (parallelTasks?.Count > 0)
@@ -204,7 +214,7 @@ namespace BenchTool
             }
 
             timer.Stop();
-            Logger.Info($"{TimerPrefix}Task {task} finished in {timer.Elapsed}");
+            Logger.Info($"{TimerPrefix}Task {task} has finished in {timer.Elapsed}");
         }
 
         private static async Task BuildAsync(
