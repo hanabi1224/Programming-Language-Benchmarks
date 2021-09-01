@@ -7,6 +7,9 @@ problems:
     source:
       - 1.cl
       - 2.cl
+  - name: fannkuch-redux
+    source:
+      - 1.cl
   - name: nbody
     source:
       - 2.cl
