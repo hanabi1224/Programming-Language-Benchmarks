@@ -33,11 +33,12 @@ environments:
     compiler: Kotlin/jvm
     version: 16
     docker: adoptopenjdk/openjdk16:slim
+    docker_runtime_dir: /opt/java/openjdk
     include: kotlin-jvm
     include_sub_dir: src/main/kotlin
     before_build:
       - sh -c "./gradlew build"
-    build: cp build/libs/app-all.jar out/app.jar && cp -r /opt/java/openjdk ./out
+    build: cp build/libs/app-all.jar out/app.jar
     out_dir: out
     run_cmd: openjdk/bin/java -jar app.jar
   # - os: linux

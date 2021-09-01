@@ -22,3 +22,4 @@ environments:
     out_dir: out
     run_cmd: loomjava app
     runtime_included: false
+    allow_failure: true

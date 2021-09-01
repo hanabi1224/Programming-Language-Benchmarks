@@ -52,6 +52,7 @@ environments:
     docker_volumns:
       - /tmp/.nuget/packages:/root/.nuget/packages/
     include: dotnet6
-    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: _app
+    allow_failure: true

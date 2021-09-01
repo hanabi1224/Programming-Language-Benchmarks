@@ -25,7 +25,6 @@ environments:
     build: cp app.lua out
     out_dir: out
     run_cmd: lua app.lua
-    runtime_included: false
   - os: linux
     compiler: luajit
     version: latest
