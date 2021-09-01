@@ -21,6 +21,7 @@ environments:
   - os: linux
     compiler: lua
     version: latest
+    include: lua
     build: cp app.lua out
     out_dir: out
     run_cmd: lua app.lua
@@ -28,7 +29,7 @@ environments:
   - os: linux
     compiler: luajit
     version: latest
+    include: lua
     build: cp app.lua out
     out_dir: out
     run_cmd: luajit app.lua
-    runtime_included: false

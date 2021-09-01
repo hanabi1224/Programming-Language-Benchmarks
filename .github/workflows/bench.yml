@@ -143,11 +143,11 @@ jobs:
           cd /tmp
           sudo apt-get install lua5.3 -y
           lua -v
-          git clone https://github.com/LuaJIT/LuaJIT
-          cd LuaJIT
-          make && sudo make install
-          sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
-          luajit -v
+          # git clone https://github.com/LuaJIT/LuaJIT
+          # cd LuaJIT
+          # make && sudo make install
+          # sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
+          # luajit -v
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
         run: |
