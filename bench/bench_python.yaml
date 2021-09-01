@@ -27,7 +27,6 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.py
-      - 2.py
   - name: http-server
     source:
       - 1.py

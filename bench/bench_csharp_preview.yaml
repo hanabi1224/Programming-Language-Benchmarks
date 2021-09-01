@@ -34,7 +34,6 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.cs
-      - 2.cs
   # - name: http-server
   #   source:
   #     - 1.cs

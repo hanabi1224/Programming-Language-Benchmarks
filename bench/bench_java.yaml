@@ -33,24 +33,24 @@ runtime_version_parameter: -version
 runtime_version_regex:
 source_rename_to: app.java
 environments:
-  - os: linux
-    compiler: adoptopenjdk
-    version: 8
-    docker: adoptopenjdk/openjdk8:slim
-    docker_runtime_dir: /opt/java/openjdk
-    include:
-    build: javac app.java -d out
-    out_dir: out
-    run_cmd: openjdk/bin/java app
-  - os: linux
-    compiler: adoptopenjdk
-    version: 11
-    docker: adoptopenjdk/openjdk11:slim
-    docker_runtime_dir: /opt/java/openjdk
-    include:
-    build: javac app.java -d out
-    out_dir: out
-    run_cmd: openjdk/bin/java app
+  # - os: linux
+  #   compiler: adoptopenjdk
+  #   version: 8
+  #   docker: adoptopenjdk/openjdk8:slim
+  #   docker_runtime_dir: /opt/java/openjdk
+  #   include:
+  #   build: javac app.java -d out
+  #   out_dir: out
+  #   run_cmd: openjdk/bin/java app
+  # - os: linux
+  #   compiler: adoptopenjdk
+  #   version: 11
+  #   docker: adoptopenjdk/openjdk11:slim
+  #   docker_runtime_dir: /opt/java/openjdk
+  #   include:
+  #   build: javac app.java -d out
+  #   out_dir: out
+  #   run_cmd: openjdk/bin/java app
   - os: linux
     compiler: adoptopenjdk-openj9
     version: 16
