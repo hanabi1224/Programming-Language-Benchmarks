@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
-  bench:
+  build:
     runs-on: ${{ matrix.os }}
     env:
       PROFILE: /tmp/.tmpprofile
@@ -137,17 +137,6 @@ jobs:
           sudo gu install nodejs || echo 'graal nodejs already installed'
           sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
           graalnode --version
-      - name: Install lua
-        if: matrix.lang == 'lua'
-        run: |
-          cd /tmp
-          sudo apt-get install lua5.3 -y
-          lua -v
-          # git clone https://github.com/LuaJIT/LuaJIT
-          # cd LuaJIT
-          # make && sudo make install
-          # sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
-          # luajit -v
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
         run: |
@@ -230,18 +219,100 @@ jobs:
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: bench/build/**/*
+          if-no-files-found: error
+  bench:
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    env:
+      PROFILE: /tmp/.tmpprofile
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - name: Install
+        run: |
+          lscpu
+          echo '# placeholder' > $PROFILE
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: bench/build/
+      - name: Install dart
+        run: |
+          sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
+          sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
+          sudo apt-get update -y
+          sudo apt-get install dart -y
+          echo 'export PATH="$PATH:/usr/lib/dart/bin"' >> $PROFILE
+      - name: Install graal
+        run: |
+          echo $GRAALVM_11_ROOT
+          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
+          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
+          tar -xvf graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
+          sudo ln -sf $PWD/graalvm-ce-java11-21.2.0 $HOME/graalvm-ce-java11
+          ls -al $HOME/graalvm-ce-java11
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
+          sudo gu upgrade -A || echo ''
+          gu --version
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
+          graaljava -version
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
+          graaljavac -version
+      - name: Install graalnode
+        run: |
+          sudo gu install nodejs || echo 'graal nodejs already installed'
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
+          graalnode --version
+      - name: Install truffleruby
+        run: |
+          sudo gu install ruby
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
+          truffleruby --version
+      - name: Install wasm
+        run: |
+          sudo gu install wasm
+          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
+          graalwasm --version
+          curl https://get.wasmer.io -sSfL | sh
+          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
+          curl https://wasmtime.dev/install.sh -sSf | bash
+          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
+          cat $PROFILE
+      - name: Install ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install loom
+        run: |
+          # loom
+          wget https://download.java.net/java/early_access/loom/2/openjdk-18-loom+2-74_linux-x64_bin.tar.gz
+          tar -xvf openjdk-18-loom+2-74_linux-x64_bin.tar.gz
+          sudo ln -sf $PWD/jdk-18/bin/javac /usr/bin/loomjavac
+          sudo ln -sf $PWD/jdk-18/bin/java /usr/bin/loomjava
+          loomjavac -version
+          loomjava -version
       - name: Bench
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
+          dotnet run -c Release -p tool -- --task bench --ignore-missing
           popd
       - uses: actions/upload-artifact@v2
         with:
           name: log
-          path: bench/build/_results/**/*.json
+          path: bench/build/_results/**/*
           if-no-files-found: error
   publish:
+    if: github.ref == 'refs/heads/main'
     needs: [bench]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -249,8 +320,7 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
           # Artifact name
           name: log
