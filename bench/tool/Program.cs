@@ -394,6 +394,16 @@ namespace BenchTool
 
             if (!buildOutput.IsDirectoryNotEmpty())
             {
+                if (langEnvConfig.AllowFailure)
+                {
+                    Logger.Warn($"Build failed, but failure is configured to be ignored");
+                    if (Directory.Exists(buildOutput))
+                    {
+                        Directory.Delete(buildOutput, recursive: true);
+                    }
+                    return;
+                }
+
                 throw new DirectoryNotFoundException(buildOutput);
             }
 
@@ -416,9 +426,12 @@ namespace BenchTool
             bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
-            if (ignoreMissing && !Directory.Exists(buildOutput))
+            if (!Directory.Exists(buildOutput))
             {
-                return;
+                if (ignoreMissing || langEnvConfig.AllowFailure)
+                {
+                    return;
+                }
             }
             buildOutput.EnsureDirectoryExists();
 
@@ -510,9 +523,12 @@ namespace BenchTool
                 bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
-            if (ignoreMissing && !Directory.Exists(buildOutput))
+            if (!Directory.Exists(buildOutput))
             {
-                return;
+                if (ignoreMissing || langEnvConfig.AllowFailure)
+                {
+                    return;
+                }
             }
             buildOutput.EnsureDirectoryExists();
 

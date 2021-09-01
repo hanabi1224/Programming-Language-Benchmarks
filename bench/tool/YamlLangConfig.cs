@@ -106,5 +106,7 @@ namespace BenchTool
         public bool RuntimeIncluded { get; set; } = true;
 
         public bool ForceCheckChildProcesses { get; set; } = false;
+
+        public bool AllowFailure { get; set; } = false;
     }
 }
