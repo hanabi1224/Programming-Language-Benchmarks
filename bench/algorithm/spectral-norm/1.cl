@@ -26,11 +26,15 @@
 ;; 'n' above 11000.
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
+(deftype uint31 (&optional (bits 31))
+  `(unsigned-byte ,bits))
+
 (defmacro eval-A (i j)
-  `(let* ((n (+ ,i ,j))
-          (n+1 (1+ n)))
-     (declare (type (integer 0 22000) n n+1))
-     (/ (float (+ (ash (* n n+1) -1) ,i 1) 0d0))))
+  `(let* ((i+1   (1+ ,i))
+          (i+j   (+ ,i ,j))
+          (i+j+1 (+ i+1 ,j)))
+     (declare (type uint31 i+1 i+j i+j+1))
+     (/ (float (+ (ash (* i+j i+j+1) -1) i+1) 0d0))))
 
 (defun eval-At-times-u (u n Au start end)
   (declare (type fixnum n start end)
@@ -93,7 +97,7 @@
     (let ((u (make-array n :element-type 'double-float :initial-element 1.0d0))
           (v (make-array n :element-type 'double-float))
           (tmp (make-array n :element-type 'double-float)))
-      (declare (type (simple-array double-float) U V))
+      (declare (type (simple-array double-float) u v tmp))
       (dotimes (i 10)
         (eval-AtA-times-u u v tmp n 0 n)
         (eval-AtA-times-u v u tmp n 0 n))
