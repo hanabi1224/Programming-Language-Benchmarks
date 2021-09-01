@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
@@ -45,6 +44,7 @@ namespace BenchTool
         /// <param name="buildPool">A flag that indicates whether builds that can run in parallel</param>
         /// <param name="verbose">A Flag that indicates whether to print verbose infomation</param>
         /// <param name="noDocker">A Flag that forces disabling docker</param>
+        /// <param name="ignoreMissing">A Flag that indicates whether to ignore test/bench failure when build artifacts is missing</param>
         /// <param name="langs">Languages to incldue, e.g. --langs go csharp</param>
         /// <param name="problems">Problems to incldue, e.g. --problems binarytrees nbody</param>
         /// <param name="environments">OS environments to incldue, e.g. --environments linux windows</param>
@@ -60,6 +60,7 @@ namespace BenchTool
             bool buildPool = false,
             bool verbose = false,
             bool noDocker = false,
+            bool ignoreMissing = false,
             string[] langs = null,
             string[] problems = null,
             string[] environments = null)
@@ -141,10 +142,10 @@ namespace BenchTool
                                     rawJobExecutionTask = BuildAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild, noDocker: noDocker);
                                     break;
                                 case TaskTest:
-                                    rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput);
+                                    rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput, ignoreMissing: ignoreMissing);
                                     break;
                                 case TaskBench:
-                                    rawJobExecutionTask = BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput);
+                                    rawJobExecutionTask = BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput, ignoreMissing: ignoreMissing);
                                     break;
                                 default:
                                     continue;
@@ -411,9 +412,14 @@ namespace BenchTool
             YamlLangEnvironmentConfig langEnvConfig,
             YamlLangProblemConfig problem,
             string algorithmDir,
-            string buildOutputRoot)
+            string buildOutputRoot,
+            bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
+            if (ignoreMissing && !Directory.Exists(buildOutput))
+            {
+                return;
+            }
             buildOutput.EnsureDirectoryExists();
 
             TestOutputJson testOutputJson = new TestOutputJson();
@@ -500,9 +506,14 @@ namespace BenchTool
                 YamlLangProblemConfig problem,
                 string codePath,
                 string algorithmDir,
-                string buildOutputRoot)
+                string buildOutputRoot,
+                bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
+            if (ignoreMissing && !Directory.Exists(buildOutput))
+            {
+                return;
+            }
             buildOutput.EnsureDirectoryExists();
 
             string benchResultDir = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, "_results", langConfig.Lang);
