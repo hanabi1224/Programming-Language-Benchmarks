@@ -245,6 +245,10 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
     steps:
+      - name: Install
+        run: |
+          lscpu
+          echo '# placeholder' > $PROFILE
       - uses: actions/checkout@v2
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2
@@ -255,39 +259,12 @@ jobs:
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs cpp lisp
-          popd
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: bench/build/**/*
-          if-no-files-found: error
-  bench:
-    needs: [build]
-    runs-on: ${{ matrix.os }}
-    env:
-      PROFILE: /tmp/.tmpprofile
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [ubuntu-20.04]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: bench/build/
-      - name: Bench
-        run: |
-          source $PROFILE
-          pushd bench
-          dotnet run -c Release -p tool -- --task test --langs cpp lisp
+          dotnet run -c Release -p tool -- --task bench --langs cpp lisp
           popd
       - uses: actions/upload-artifact@v2
         with:
           name: log
-          path: bench/build/_results/**/*.json
+          path: bench/build/_results/**/*
           if-no-files-found: error
   publish:
     needs: [bench]
@@ -296,10 +273,6 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
     steps:
-      - name: Install
-        run: |
-          lscpu
-          echo '# placeholder' > $PROFILE
       - uses: actions/checkout@v2
       - name: Download a Build Artifact
         uses: actions/download-artifact@v2
