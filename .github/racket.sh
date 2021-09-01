@@ -1,5 +1,5 @@
 #!/usr/bin/sh
 
-add-apt-repository ppa:plt/racket
-apt-get install -y racket
+sudo add-apt-repository ppa:plt/racket
+sudo apt-get install -y racket
 racket --version

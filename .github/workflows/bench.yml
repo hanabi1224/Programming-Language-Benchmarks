@@ -63,39 +63,39 @@ jobs:
         run: rustup update nightly
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
-        run: sudo ./.github/graalvm.sh
+        run: ./.github/graalvm.sh
       - name: Install c deps
         if: matrix.lang == 'c'
-        run: sudo ./.github/c.sh
+        run: ./.github/c.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
           LISP: sbcl-bin
-        run: sudo ./.github/lisp.sh
+        run: ./.github/lisp.sh
       - name: Install racket
         if: matrix.lang == 'racket'
-        run: sudo ./.github/racket.sh
+        run: ./.github/racket.sh
       - name: Install fortran
         if: matrix.lang == 'fortran'
-        run: sudo ./.github/fortran.sh
+        run: ./.github/fortran.sh
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
-        run: sudo ./.github/loom.sh
+        run: ./.github/loom.sh
       - name: Install graalvm native-image
         if: matrix.lang == 'java'
-        run: sudo ./.github/graalvm-native-image.sh
+        run: ./.github/graalvm-native-image.sh
       - name: Install graalnode
         if: matrix.lang == 'javascript'
-        run: sudo ./.github/graalvm-node.sh
+        run: ./.github/graalvm-node.sh
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
-        run: sudo ./.github/zig.sh
+        run: ./.github/zig.sh
       - name: Install crystal
         if: matrix.lang == 'crystal'
-        run: sudo ./.github/crystal.sh
+        run: ./.github/crystal.sh
       - name: Install python
         if: matrix.lang == 'python'
-        run: sudo ./.github/python.sh
+        run: ./.github/python.sh
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
@@ -104,19 +104,19 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install truffleruby
         if: matrix.lang == 'ruby'
-        run: sudo ./.github/truffleruby.sh
+        run: ./.github/truffleruby.sh
       # - name: Install dart
       #   if: matrix.lang == 'dart'
       #   run: sudo ./.github/dart.sh
       - name: Install vlang
         if: matrix.lang == 'vlang'
-        run: sudo ./.github/v.sh
+        run: ./.github/v.sh
       - name: Install deno
         if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
-        run: sudo ./.github/deno.sh
+        run: ./.github/deno.sh
       - name: Install wasm
         if: matrix.lang == 'wasm'
-        run: sudo ./.github/wasm.sh
+        run: ./.github/wasm.sh
       - name: Build
         run: |
           source $PROFILE
@@ -130,6 +130,7 @@ jobs:
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/main'
         with:
           name: build
           path: bench/build/**/*
@@ -154,11 +155,12 @@ jobs:
         with:
           name: build
           path: bench/build/
-      - run: sudo ./.github/graalvm.sh
-      - run: sudo ./.github/graalvm-node.sh
-      - run: sudo ./.github/truffleruby.sh
-      - run: sudo ./.github/wasm.sh
-      - run: sudo ./.github/loom.sh
+      - run: ./.github/graalvm.sh
+      - run: ./.github/graalvm-node.sh
+      - run: ./.github/truffleruby.sh
+      - run: ./.github/wasm.sh
+      - run: ./.github/loom.sh
+      - run: ./.github/racket.sh
       # - run: sudo ./.github/dart.sh
       - uses: ruby/setup-ruby@v1
         with:
