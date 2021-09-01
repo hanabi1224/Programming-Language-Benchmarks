@@ -25,8 +25,9 @@ problems:
     tests:
       - input: 500000
       - input: 5000000
-        # exclude_langs:
-        #   - python
+        exclude_langs:
+          - python
+          - wren
   - name: spectral-norm
     unittests:
       - input: 100
@@ -38,6 +39,7 @@ problems:
           - python
           - ruby
           - wren
+          - lua
   - name: pidigits
     unittests:
       - input: 27
@@ -50,6 +52,7 @@ problems:
         exclude_langs:
           - zig
           - nim
+          - racket
   - name: edigits
     unittests:
       - input: 227
@@ -111,6 +114,7 @@ problems:
       - input: 2000
       - input: 4000
         exclude_langs:
+          - d
           - dart
           - javascript
           - python
