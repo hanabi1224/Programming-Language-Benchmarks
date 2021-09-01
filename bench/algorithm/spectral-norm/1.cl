@@ -16,7 +16,8 @@
 ;;      * use right shift instead of truncate for division in eval-A
 ;;      * redefine eval-A as a macro
 ;;    Optimize declaration and get-thread-count added by Bela Pecsek
-
+;;      * eval-A macro slightly improved
+;;      * uint31 type defined
 
 ;; This is our most expensive function.  Optimized with the knowledge
 ;; that 'n' will never be "huge".  This will break if 'n' exceeds
