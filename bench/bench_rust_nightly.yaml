@@ -30,3 +30,4 @@ environments:
       - sudo mv /tmp/rsn/target/release/_app out
     out_dir: out
     run_cmd: _app
+    allow_failure: true

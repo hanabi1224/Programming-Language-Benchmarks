@@ -13,9 +13,6 @@ problems:
   - name: spectral-norm
     source:
       - 3.cs
-  - name: coro-prime-sieve
-    source:
-      - 2.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

@@ -35,8 +35,8 @@ environments:
     compiler: julia
     version: latest
     docker: julia
+    docker_runtime_dir: /usr/local/julia
     include: julia
-    include_sub_dir: out
-    build: cp -a /usr/local/julia out
+    build: cp c.jl out
     out_dir: out
     run_cmd: julia/bin/julia -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl

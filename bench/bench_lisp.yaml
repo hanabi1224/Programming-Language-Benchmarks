@@ -23,6 +23,7 @@ environments:
   - os: linux
     compiler: sbcl
     version: latest
+    # docker: fukamachi/sbcl:latest-ubuntu
     include: lisp
     build: sbcl --dynamic-space-size 8Gb --noinform --disable-debugger --non-interactive --load bundle.cl
     after_build:

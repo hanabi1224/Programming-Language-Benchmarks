@@ -27,7 +27,6 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.py
-      - 2.py
   - name: http-server
     source:
       - 1.py
@@ -52,10 +51,10 @@ environments:
     compiler: pypy
     version: 3
     docker: pypy:3-slim
+    docker_runtime_dir: /opt/pypy/
     runtime_version_parameter: -V
     include:
-    include_sub_dir: out
-    build: cp -a /opt/pypy/ ./out
+    build: cp c.py out
     out_dir: out
     run_cmd: pypy/bin/pypy3 c.py
     force_check_child_processes: true
