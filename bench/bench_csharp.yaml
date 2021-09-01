@@ -52,7 +52,7 @@ environments:
     docker_volumns:
       - /tmp/.nuget/packages:/root/.nuget/packages/
     include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f net5 --self-contained -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f net5 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: _app
   - os: linux
@@ -63,6 +63,6 @@ environments:
     docker_volumns:
       - /tmp/.nuget/packages:/root/.nuget/packages/
     include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f netcoreapp3.1 --self-contained -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f netcoreapp3.1 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: _app

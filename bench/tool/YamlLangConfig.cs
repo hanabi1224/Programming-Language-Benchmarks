@@ -83,6 +83,10 @@ namespace BenchTool
 
         public string Docker { get; set; }
 
+        public string DockerRuntimeDir { get; set; }
+
+        public string DockerRuntimeFile { get; set; }
+
         public string[] DockerVolumns { get; set; }
 
         public Dictionary<string, string> Env { get; set; }

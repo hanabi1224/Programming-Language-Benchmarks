@@ -111,7 +111,7 @@ namespace BenchTool
                     continue;
                 }
 
-                foreach (YamlLangEnvironmentConfig env in c.Environments)
+                foreach (YamlLangEnvironmentConfig env in c.Environments ?? Enumerable.Empty<YamlLangEnvironmentConfig>())
                 {
                     if (includedOsEnvironments.Count > 0
                         && !includedOsEnvironments.Contains(env.Os))
@@ -119,6 +119,10 @@ namespace BenchTool
                         continue;
                     }
 
+                    if (!noDocker && task == TaskBuild)
+                    {
+                        await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput).ConfigureAwait(false);
+                    }
                     foreach (YamlLangProblemConfig p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
                     {
                         if (includedProblems.Count > 0
@@ -442,7 +446,8 @@ namespace BenchTool
             string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
-                exeName = Path.Combine(buildOutput, exeName);
+                string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
+                exeName = Path.Combine(exeRoot, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
@@ -540,7 +545,8 @@ namespace BenchTool
             string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
-                exeName = Path.Combine(buildOutput, exeName);
+                string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
+                exeName = Path.Combine(exeRoot, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
@@ -636,6 +642,70 @@ namespace BenchTool
                     testLog = TestOutputJson.LoadFrom(buildOutput),
                 }, Formatting.Indented)).ConfigureAwait(false);
             }
+        }
+
+        private static async Task SetupDockerProvidedRuntimeAsync(
+            YamlLangEnvironmentConfig langEnvConfig,
+            string buildOutputRoot)
+        {
+            string dir = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: null);
+            if (string.IsNullOrEmpty(dir))
+            {
+                return;
+            }
+            if (Directory.Exists(dir))
+            {
+                try
+                {
+                    Directory.Delete(dir, recursive: true);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
+            }
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            const string DockerTmpDir = "/tmp/runtime";
+            string cmd = $"docker run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.Docker}";
+            if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
+            {
+                cmd = $"{cmd} cp -a {langEnvConfig.DockerRuntimeDir} .";
+            }
+            else
+            {
+                cmd = $"{cmd} cp  {langEnvConfig.DockerRuntimeFile} .";
+            }
+            await ProcessUtils.RunCommandAsync(cmd).ConfigureAwait(false);
+        }
+
+        private static string GetIncludedRuntimeRoot(
+            YamlLangEnvironmentConfig langEnvConfig,
+            string buildOutputRoot,
+            string buildOutput)
+        {
+            if (!string.IsNullOrEmpty(langEnvConfig.Docker))
+            {
+                if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir)
+                    || !string.IsNullOrEmpty(langEnvConfig.DockerRuntimeFile))
+                {
+                    string dir = Path.Combine(buildOutputRoot, "_runtimes_", GetDirNameFromDockerName(langEnvConfig.Docker));
+                    // Make dir absolute
+                    if (!dir.StartsWith('/') && !dir.Contains(":\\"))
+                    {
+                        dir = Path.Combine(Environment.CurrentDirectory, dir);
+                    }
+                    return dir;
+                }
+            }
+            return buildOutput;
+        }
+
+        private static string GetDirNameFromDockerName(string docker)
+        {
+            return Regex.Replace(docker, @"[:/\\]", "_");
         }
     }
 }
