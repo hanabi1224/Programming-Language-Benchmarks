@@ -20,22 +20,22 @@ source_rename_to: app.cpp
 environments:
   - os: linux
     compiler: clang++
-    compiler_version_command: clang++ --version
-    version: latest
+    compiler_version_command: clang++-12 --version
+    version: 12
     docker:
     include: cpp
-    build: clang++ @app.rsp
+    build: clang++-12 @app.rsp
     after_build:
       - mv app out
     out_dir: out
     run_cmd: app
   - os: linux
     compiler: g++
-    compiler_version_command: g++-10 --version
-    version: 10
-    docker:
+    compiler_version_command: g++ --version
+    version: latest
+    docker: gcc
     include: cpp
-    build: g++-10 @app.rsp
+    build: g++ @app.rsp
     after_build:
       - mv app out
     out_dir: out
