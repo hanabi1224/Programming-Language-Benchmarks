@@ -55,7 +55,7 @@ environments:
     compiler_version_command: native-image --version
     before_build:
       - graaljavac app.java
-    build: native-image --static app
+    build: native-image --static -da -dsa --initialize-at-build-time=app --native-image-info app
     after_build:
       - cp app out
     out_dir: out

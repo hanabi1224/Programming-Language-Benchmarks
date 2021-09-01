@@ -67,6 +67,9 @@ jobs:
       - name: Install c deps
         if: matrix.lang == 'c'
         run: ./.github/c.sh
+      - name: Install cpp deps
+        if: matrix.lang == 'cpp'
+        run: ./.github/cpp.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
@@ -135,6 +138,15 @@ jobs:
           name: build
           path: bench/build/**/*
           if-no-files-found: error
+  gate:
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - run: echo 'dummy step as PR gate'
   bench:
     if: github.ref == 'refs/heads/main'
     needs: [build]
