@@ -63,102 +63,39 @@ jobs:
         run: rustup update nightly
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
-        run: |
-          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
-          # https://www.graalvm.org/docs/getting-started/
-          echo $GRAALVM_11_ROOT
-          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          tar -xvf graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          sudo ln -sf $PWD/graalvm-ce-java11-21.2.0 $HOME/graalvm-ce-java11
-          ls -al $HOME/graalvm-ce-java11
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
-          sudo gu upgrade -A || echo ''
-          gu --version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
-          graaljava -version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
-          graaljavac -version
+        run: sudo ./.github/graalvm.sh
       - name: Install c deps
         if: matrix.lang == 'c'
-        run: |
-          sudo apt-get install -y libapr1 libapr1-dev
+        run: sudo ./.github/c.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
           LISP: sbcl-bin
-        run: |
-          echo '#!/usr/bin/sh' > ./sbcl
-          echo 'ros run -- $@' >> ./sbcl
-          cat ./sbcl
-          sudo chmod +x ./sbcl
-          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          sudo ros install sbcl-bin
-          sudo ros use sbcl-bin
-          ros version          
-          ./sbcl --version
-          sudo mv ./sbcl /usr/bin
-          sbcl --version
-          curl -O https://beta.quicklisp.org/quicklisp.lisp
-          sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
-          #git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
-          #sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
+        run: sudo ./.github/lisp.sh
       - name: Install racket
         if: matrix.lang == 'racket'
-        run: |
-          sudo add-apt-repository ppa:plt/racket
-          sudo apt-get install -y racket
-          racket --version
+        run: sudo ./.github/racket.sh
       - name: Install fortran
         if: matrix.lang == 'fortran'
-        run: |
-          gfortran-9 --version
-          gfortran-10 --version
-          sudo apt-get install -y flang libgmp-dev
-          flang --version
+        run: sudo ./.github/fortran.sh
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
-        run: |
-          wget https://download.java.net/java/early_access/loom/2/openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          tar -xvf openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          sudo ln -sf $PWD/jdk-18/bin/javac /usr/bin/loomjavac
-          sudo ln -sf $PWD/jdk-18/bin/java /usr/bin/loomjava
-          loomjavac -version
-          loomjava -version
+        run: sudo ./.github/loom.sh
       - name: Install graalvm native-image
         if: matrix.lang == 'java'
-        run: |
-          sudo gu install native-image
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/native-image /usr/bin/native-image
-          native-image --version
+        run: sudo ./.github/graalvm-native-image.sh
       - name: Install graalnode
         if: matrix.lang == 'javascript'
-        run: |
-          sudo gu install nodejs || echo 'graal nodejs already installed'
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
-          graalnode --version
+        run: sudo ./.github/graalvm-node.sh
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
-        run: |
-          sudo snap install zig --classic --edge
-          zig version
+        run: sudo ./.github/zig.sh
       - name: Install crystal
         if: matrix.lang == 'crystal'
-        run: |
-          # https://crystal-lang.org/install/on_ubuntu/
-          curl -fsSL https://crystal-lang.org/install.sh | sudo bash
-          sudo apt install -y libgmp-dev
-          crystal version
+        run: sudo ./.github/crystal.sh
       - name: Install python
         if: matrix.lang == 'python'
-        run: |
-          cd /tmp
-          wget https://github.com/pyston/pyston/releases/download/pyston_2.2/pyston_2.2_20.04.deb
-          sudo apt install -y ./pyston_2.2_20.04.deb
-          pyston -V
-          sudo gu install python
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/graalpython /usr/bin/graalpython
-          graalpython --version
+        run: sudo ./.github/python.sh
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
@@ -167,46 +104,19 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install truffleruby
         if: matrix.lang == 'ruby'
-        run: |
-          sudo gu install ruby
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
-          truffleruby --version
+        run: sudo ./.github/truffleruby.sh
       # - name: Install dart
       #   if: matrix.lang == 'dart'
-      #   run: |
-      #     sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-      #     sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-      #     sudo apt-get update -y
-      #     sudo apt-get install dart -y
-      #     echo 'export PATH="$PATH:/usr/lib/dart/bin"' >> $PROFILE
+      #   run: sudo ./.github/dart.sh
       - name: Install vlang
         if: matrix.lang == 'vlang'
-        run: |
-          docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
-          sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
-          sudo apt install -y libgc-dev
-          git clone https://github.com/vlang/v /tmp/vlang
-          pushd /tmp/vlang
-          make && ./v -version
-          sudo ./v symlink
-          popd
-          v --version
+        run: sudo ./.github/v.sh
       - name: Install deno
         if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
-        run: |
-          curl -fsSL https://deno.land/x/install/install.sh | sh
-          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
+        run: sudo ./.github/deno.sh
       - name: Install wasm
         if: matrix.lang == 'wasm'
-        run: |
-          sudo gu install wasm
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
-          graalwasm --version
-          curl https://get.wasmer.io -sSfL | sh
-          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
-          curl https://wasmtime.dev/install.sh -sSf | bash
-          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
-          cat $PROFILE
+        run: sudo ./.github/wasm.sh
       - name: Build
         run: |
           source $PROFILE
@@ -244,55 +154,16 @@ jobs:
         with:
           name: build
           path: bench/build/
-      - name: Install graal
-        run: |
-          echo $GRAALVM_11_ROOT
-          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          tar -xvf graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          sudo ln -sf $PWD/graalvm-ce-java11-21.2.0 $HOME/graalvm-ce-java11
-          ls -al $HOME/graalvm-ce-java11
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
-          sudo gu upgrade -A || echo ''
-          gu --version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
-          graaljava -version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
-          graaljavac -version
-      - name: Install graalnode
-        run: |
-          sudo gu install nodejs || echo 'graal nodejs already installed'
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
-          graalnode --version
-      - name: Install truffleruby
-        run: |
-          sudo gu install ruby
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
-          truffleruby --version
-      - name: Install wasm
-        run: |
-          sudo gu install wasm
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
-          graalwasm --version
-          curl https://get.wasmer.io -sSfL | sh
-          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
-          curl https://wasmtime.dev/install.sh -sSf | bash
-          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
-          cat $PROFILE
-      - name: Install ruby
-        uses: ruby/setup-ruby@v1
+      - run: sudo ./.github/graalvm.sh
+      - run: sudo ./.github/graalvm-node.sh
+      - run: sudo ./.github/truffleruby.sh
+      - run: sudo ./.github/wasm.sh
+      - run: sudo ./.github/loom.sh
+      # - run: sudo ./.github/dart.sh
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Install loom
-        run: |
-          # loom
-          wget https://download.java.net/java/early_access/loom/2/openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          tar -xvf openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          sudo ln -sf $PWD/jdk-18/bin/javac /usr/bin/loomjavac
-          sudo ln -sf $PWD/jdk-18/bin/java /usr/bin/loomjava
-          loomjavac -version
-          loomjava -version
       - name: Bench
         run: |
           source $PROFILE
