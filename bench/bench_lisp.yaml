@@ -1,5 +1,9 @@
 lang: lisp
 problems:
+  - name: raybench
+    source:
+      - 1.cl
+      - 2.cl
   - name: helloworld
     source:
       - 1.cl
