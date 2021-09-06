@@ -25,7 +25,7 @@ application {
 
 dependencies {
     // implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
     val ktor_version = "1.6.3"
     implementation("io.ktor:ktor-server-core:$ktor_version")
