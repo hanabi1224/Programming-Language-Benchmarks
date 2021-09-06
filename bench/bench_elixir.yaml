@@ -23,9 +23,11 @@ environments:
     compiler: elixir
     version: latest
     docker: elixir
+    env:
+      MIX_ENV: prod
     include: elixir
     include_sub_dir: lib
-    build: mix local.hex --force && mix deps.get && MIX_ENV=prod mix escript.build --overwrite
+    build: mix local.hex --force && mix deps.get && mix escript.build --overwrite
     after_build:
       - mv app out
     out_dir: out

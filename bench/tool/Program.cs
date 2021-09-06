@@ -599,9 +599,17 @@ namespace BenchTool
                     {
                         try
                         {
-                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
-                            Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                            measurements.Add(measurement);
+                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses, timeoutSeconds: test.TimeoutSeconds).ConfigureAwait(false);
+                            if (measurement != null && measurement.Elapsed.TotalMilliseconds > 0)
+                            {
+                                Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                                measurements.Add(measurement);
+                            }
+                            else
+                            {
+                                measurements.Clear();
+                                break;
+                            }
                         }
                         catch (Exception e)
                         {
@@ -609,6 +617,10 @@ namespace BenchTool
                             i--;
                             maxRetries--;
                         }
+                    }
+                    if (measurements.Count < 1)
+                    {
+                        break;
                     }
 
                     statsMeasurement = measurements.GetAverageStats();
@@ -630,27 +642,34 @@ namespace BenchTool
                     await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
                 }
 
-                string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
-                await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
+                if (statsMeasurement.Elapsed.TotalMilliseconds > 0)
                 {
-                    lang = langConfig.Lang,
-                    os = langEnvConfig.Os,
-                    compiler = langEnvConfig.Compiler,
-                    compilerVersion = langEnvConfig.Version,
-                    test = problem.Name,
-                    code = codePath,
-                    input = test.Input,
-                    timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
-                    timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
-                    memBytes = statsMeasurement.PeakMemoryBytes,
-                    cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
-                    cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
-                    cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
-                    //appveyorBuildId = AppveyorUtils.BuildId,
-                    githubRunId = GithubActionUtils.RunId,
-                    buildLog = BuildOutputJson.LoadFrom(buildOutput),
-                    testLog = TestOutputJson.LoadFrom(buildOutput),
-                }, Formatting.Indented)).ConfigureAwait(false);
+                    string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
+                    await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
+                    {
+                        lang = langConfig.Lang,
+                        os = langEnvConfig.Os,
+                        compiler = langEnvConfig.Compiler,
+                        compilerVersion = langEnvConfig.Version,
+                        test = problem.Name,
+                        code = codePath,
+                        input = test.Input,
+                        timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
+                        timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
+                        memBytes = statsMeasurement.PeakMemoryBytes,
+                        cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
+                        cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
+                        cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
+                        //appveyorBuildId = AppveyorUtils.BuildId,
+                        githubRunId = GithubActionUtils.RunId,
+                        buildLog = BuildOutputJson.LoadFrom(buildOutput),
+                        testLog = TestOutputJson.LoadFrom(buildOutput),
+                    }, Formatting.Indented)).ConfigureAwait(false);
+                }
+                else
+                {
+                    Logger.Error("No valid benchmark results is produced.");
+                }
             }
         }
 
