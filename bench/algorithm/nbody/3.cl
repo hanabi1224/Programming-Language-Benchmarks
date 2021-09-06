@@ -24,6 +24,9 @@
 
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 (setf *block-compile-default* t)
+(setf sb-ext:*inline-expansion-limit* 1000)
+(sb-int:set-floating-point-modes :traps (list :divide-by-zero))
+(declaim (sb-ext:muffle-conditions style-warning))
 
 (defconstant +days-per-year+ 365.24d0)
 (defconstant +solar-mass+ (* 4d0 pi pi))
