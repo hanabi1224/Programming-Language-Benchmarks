@@ -28,6 +28,7 @@ problems:
         exclude_langs:
           - python
           - wren
+          - lua
   - name: spectral-norm
     unittests:
       - input: 100
@@ -93,8 +94,8 @@ problems:
     tests:
       - input: 250000
       - input: 2500000
-        # exclude_langs:
-        #   - python
+        exclude_langs:
+          - python
   - name: json-serde
     data:
       - sample.json
@@ -129,3 +130,6 @@ problems:
     tests:
       - input: 1000
       - input: 2000
+        exclude_langs:
+          - rust
+          - python
