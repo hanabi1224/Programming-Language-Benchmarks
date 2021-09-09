@@ -9,7 +9,7 @@ export LISP=sbcl #-bin
 #sudo ros install sbcl-bin
 #sudo ros use sbcl-bin
 #ros version
-git clone git clone git://git.code.sf.net/p/sbcl/sbcl
+git clone git://git.code.sf.net/p/sbcl/sbcl
 cd sbcl
 sh ./make.sh --prefix=/usr/bin -fancy
 sh ./install.sh
