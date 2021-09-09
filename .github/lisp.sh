@@ -1,5 +1,6 @@
 #!/usr/bin/sh
 
+sudo apt install sbcl
 export LISP=sbcl-bin
 echo '#!/usr/bin/sh' >./sbcl
 echo 'ros run -- $@' >>./sbcl
@@ -25,3 +26,4 @@ sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --
 git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
 git clone https://github.com/marcoheisig/sb-simd.git $HOME/.roswell/local-projects/sb-simd
 sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
+sbcl --version
