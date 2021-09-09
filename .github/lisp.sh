@@ -18,7 +18,7 @@ sh ./install.sh
 cd $HOME
 sudo rm /usr/bin/sbcl
 export $PATH=$HOME/bin:$PATH
-sudo cp $HOME/bin/sbcl /usr/bin
+#sudo cp $HOME/bin/sbcl /usr/bin
 sbcl --version
 curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
