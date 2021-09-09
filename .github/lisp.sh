@@ -11,7 +11,7 @@ export LISP=sbcl #-bin
 #ros version
 git clone git://git.code.sf.net/p/sbcl/sbcl
 cd sbcl
-sh ./make.sh --prefix=/usr/bin -fancy
+sh ./make.sh --prefix=/usr/bin --fancy
 sh ./install.sh
 ./sbcl --version
 sudo mv ./sbcl /usr/bin
