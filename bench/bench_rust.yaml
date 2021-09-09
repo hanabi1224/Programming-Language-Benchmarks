@@ -45,6 +45,7 @@ problems:
       - 2.rs
       - 3.rs
       - 4.rs
+      - 5.rs
   - name: http-server
     source:
       - 1.rs

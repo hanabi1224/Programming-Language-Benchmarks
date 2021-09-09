@@ -8,6 +8,7 @@ version = "0.1.0"
 default = [
   "async-std",
   "tokio/full",
+  "flume",
   "async-channel",
   "async-executor",
   "futures-lite",
@@ -46,6 +47,7 @@ async-channel = {version = "1", optional = true}
 async-executor = {version = "1", optional = true}
 async-std = {version = "1", optional = true}
 axum = {version = "0.2", optional = true}
+flume = {version = "0", optional = true}
 futures-lite = {version = "1", optional = true}
 reqwest = {version = "0", optional = true, default-features = false, features = ["json"]}
 tokio = {version = "1", optional = true}
