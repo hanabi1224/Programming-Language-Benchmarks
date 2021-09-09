@@ -17,7 +17,7 @@ sh ./make.sh --prefix=$HOME --fancy
 sh ./install.sh
 cd $HOME
 sudo rm /usr/bin/sbcl
-export $PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$PATH
 #sudo cp $HOME/bin/sbcl /usr/bin
 sbcl --version
 curl -O https://beta.quicklisp.org/quicklisp.lisp
