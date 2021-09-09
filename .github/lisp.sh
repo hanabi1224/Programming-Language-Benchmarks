@@ -12,7 +12,7 @@ ros version
 ./sbcl --version
 sudo mv ./sbcl /usr/bin
 sbcl --version
-;curl -O https://beta.quicklisp.org/quicklisp.lisp
-;sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
+#curl -O https://beta.quicklisp.org/quicklisp.lisp
+#sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
 git https://github.com/bpecsek/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
 sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
