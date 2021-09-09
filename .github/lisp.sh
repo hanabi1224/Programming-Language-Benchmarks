@@ -3,8 +3,8 @@
 export LISP=sbcl #-bin
 #echo '#!/usr/bin/sh' >./sbcl
 #echo 'ros run -- $@' >>./sbcl
-cat ./sbcl
-sudo chmod +x ./sbcl
+#cat ./sbcl
+#sudo chmod +x ./sbcl
 #curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
 #sudo ros install sbcl-bin
 #sudo ros use sbcl-bin
