@@ -6,7 +6,7 @@ echo 'ros run -- $@' >>./sbcl
 cat ./sbcl
 sudo chmod +x ./sbcl
 curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-sudo ros install sbcl-bin --without-immobile-code
+sudo ros install sbcl-bin
 sudo ros use sbcl-bin
 ros version
 ./sbcl --version
