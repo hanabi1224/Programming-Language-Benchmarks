@@ -1,14 +1,14 @@
 #!/usr/bin/sh
 
-export LISP=sbcl #-bin
-#echo '#!/usr/bin/sh' >./sbcl
-#echo 'ros run -- $@' >>./sbcl
-#cat ./sbcl
-#sudo chmod +x ./sbcl
-#curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-#sudo ros install sbcl-bin
-#sudo ros use sbcl-bin
-#ros version
+export LISP=sbcl-bin
+echo '#!/usr/bin/sh' >./sbcl
+echo 'ros run -- $@' >>./sbcl
+cat ./sbcl
+sudo chmod +x ./sbcl
+curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
+sudo ros install sbcl-bin
+sudo ros use sbcl-bin
+ros version
 git clone git://git.code.sf.net/p/sbcl/sbcl
 cd sbcl
 sh ./make.sh --prefix=/usr/bin --fancy
