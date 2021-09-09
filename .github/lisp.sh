@@ -10,9 +10,10 @@ sudo ros install sbcl-bin
 sudo ros use sbcl-bin
 ros version
 git clone git://git.code.sf.net/p/sbcl/sbcl $HOME/sbcl-2.1.8
-cd sbcl-2.1.8
+cd $HOME/sbcl-2.1.8
 sh ./make.sh --prefix=/usr --fancy
 sh ./install.sh
+cd $HOME
 ./sbcl --version
 #sudo mv ./sbcl /usr/bin
 sbcl --version
