@@ -10,7 +10,7 @@ sudo apt install sbcl
 #ros version
 sbcl --version
 #sudo mv ./sbcl /usr/bin
-git clone git://git.code.sf.net/p/sbcl/sbcl
+git clone git://git.code.sf.net/p/sbcl/sbcl $HOME/sbcl
 cd $HOME/sbcl
 sh ./make.sh --prefix=/usr --fancy
 sudo sh ./install.sh
