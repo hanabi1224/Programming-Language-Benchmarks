@@ -24,9 +24,8 @@
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (require 'asdf)
-  (asdf:load-system :sb-simd)
-  (use-package :sb-simd-avx2))
+ (ql:quickload :sb-simd)
+ (use-package :sb-simd-avx))
 
 (declaim (ftype (function (f64.4 f64.4) f64.4) eval-A)
          (inline eval-A))
