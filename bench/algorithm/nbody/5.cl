@@ -78,23 +78,23 @@
 
   (defparameter *sun* (make-body 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0
 			         +solar-mass+))
-  (defparameter *system* (list *sun* *jupiter* *saturn* *uranus* *neptune*))
+  (defparameter *system* (list *sun* *jupiter* *saturn* *uranus* *neptune*)))
 
-  ;; Declarations and iteration of 'advance' function is based on GCC#8 and GCC#2
-  ;; Figure out how many total different interactions there are between each
-  ;; body and every other body. Some of the calculations for these
-  ;; interactions will be calculated two at a time by using x86 SSE
-  ;; instructions and because of that it will also be useful to have a
-  ;; ROUNDED_INTERACTIONS_COUNT that is equal to the next highest even number
-  ;; which is equal to or greater than INTERACTIONS_COUNT.
-  (defconstant +BODIES_COUNT+ (length *system*))
-  (defconstant +INTERACTIONS_COUNT+ (/ (* +BODIES_COUNT+
-					      (1- +BODIES_COUNT+)) 2))
-  (defconstant +ROUNDED_INTERACTIONS_COUNT+ (+ +INTERACTIONS_COUNT+
-						   (mod +INTERACTIONS_COUNT+ 2)))
-  ;; Based on GCC #2
-  (defconstant +DT+ 0.01d0)
-  (defconstant +RECIP_DT+ (/ +dt+)))
+;; Declarations and iteration of 'advance' function is based on GCC#8 and GCC#2
+;; Figure out how many total different interactions there are between each
+;; body and every other body. Some of the calculations for these
+;; interactions will be calculated two at a time by using x86 SSE
+;; instructions and because of that it will also be useful to have a
+;; ROUNDED_INTERACTIONS_COUNT that is equal to the next highest even number
+;; which is equal to or greater than INTERACTIONS_COUNT.
+(defconstant +BODIES_COUNT+ (length *system*))
+(defconstant +INTERACTIONS_COUNT+ (/ (* +BODIES_COUNT+
+					(1- +BODIES_COUNT+)) 2))
+(defconstant +ROUNDED_INTERACTIONS_COUNT+ (+ +INTERACTIONS_COUNT+
+					     (mod +INTERACTIONS_COUNT+ 2)))
+;; Based on GCC #2
+(defconstant +DT+ 0.01d0)
+(defconstant +RECIP_DT+ (/ +dt+))
 
 
 ;; Type declarations

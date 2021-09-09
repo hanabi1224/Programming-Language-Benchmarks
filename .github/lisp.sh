@@ -16,6 +16,13 @@ cd $HOME/sbcl-2.1.8
 sh ./make.sh --prefix=$HOME --fancy
 sh ./install.sh
 cd $HOME
+rm sbcl
+sudo rm /usr/bin/sbcl
+export LISP=sbcl
+echo '#!/usr/bin/sh' >./sbcl
+echo '$HOME/bin/sbcl -- $@' >>./sbcl
+cat ./sbcl
+sudo cp ./sbcl /usr/bin
 sbcl --version
 curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
