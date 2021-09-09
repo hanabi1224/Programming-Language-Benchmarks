@@ -22,6 +22,7 @@
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
+(setf *block-compile-default* t)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
  (ql:quickload :sb-simd)
