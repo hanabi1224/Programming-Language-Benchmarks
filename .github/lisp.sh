@@ -13,7 +13,7 @@ sbcl --version
 sudo mv ./sbcl /usr/bin
 git clone git://git.code.sf.net/p/sbcl/sbcl $HOME/sbcl-2.1.8
 cd $HOME/sbcl-2.1.8
-sh ./make.sh --prefix=/usr --fancy
+sh ./make.sh --prefix=$HOME --fancy
 sh ./install.sh
 cd $HOME
 sbcl --version
