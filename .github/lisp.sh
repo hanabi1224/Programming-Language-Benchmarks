@@ -1,21 +1,11 @@
 #!/usr/bin/sh
 sudo apt install sbcl
-#export LISP=sbcl-bin
-#echo '#!/usr/bin/sh' >./sbcl
-#echo 'ros run -- $@' >>./sbcl
-#cat ./sbcl 
-#sudo chmod +x ./sbcl
-#curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-#sudo ros use sbcl-bin
-#ros version
 sbcl --version
-#sudo mv ./sbcl /usr/bin
-git clone git://git.code.sf.net/p/sbcl/sbcl $HOME/sbcl
+git clone https://github.com/bpecsek/sbcl.git $HOME/sbcl
 cd $HOME/sbcl
 sh ./make.sh --prefix=/usr --fancy
 sudo sh ./install.sh
 cd $HOME
-#sudo cp $HOME/bin/sbcl /usr/bin
 sbcl --version
 curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
