@@ -17,6 +17,7 @@ problems:
     source:
       - 2.rs
       - 3.rs
+      - 5.rs
       - 7.rs
   - name: mandelbrot
     source:
