@@ -1,5 +1,5 @@
-;;;   The Computer Language Benchmarks Game
-;;;   http://benchmarksgame.alioth.debian.org/
+;;   The Computer Language Benchmarks Game
+;;   https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
 ;;;
 ;;; contributed by Patrick Frankenberger
 ;;; modified by Juho Snellman 2005-11-18
@@ -16,13 +16,8 @@
 ;;;     INCF/DECF where appropriate, break very long lines, etc)
 ;;; modified by Marko Kocic 
 ;;;   * add optimization declarations
-;;; modified by Bela Pecsek
-;;;   * code modification useing scaling method and use dt 1.0d0
-;;;   * calculate magnitude by (/ 1.0d0 (* dist_sq distance))
-;;;   * precompute mass * mag instead of dx,y,z * mag 
-;;; sbcl --load nbody3.lisp --no-userinit --eval "(setf *block-compile-default* t)" --eval "(save-lisp-and-die \"nbody3.core\" :executable t :purify t :toplevel (lambda () (main) (quit)))"
 
-(declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+(declaim (optimize (speed 3)(safety 0)(space 0)(debug 0)))
 (setf *block-compile-default* t)
 
 (defconstant +days-per-year+ 365.24d0)
@@ -31,8 +26,9 @@
 (defstruct (body (:type (vector double-float))
                  (:conc-name nil)
                  (:constructor make-body (x y z vx vy vz mass)))
-  x y z vx vy vz mass)
-
+  x y z
+  vx vy vz
+  mass)
 (deftype body () '(vector double-float 7))
 
 (defparameter *jupiter*
@@ -72,45 +68,44 @@
              (* 5.15138902046611451d-05 +solar-mass+)))
 
 (defparameter *sun*
-  (make-body 0d0 0d0 0d0 0d0 0d0 0d0 +solar-mass+))
+  (make-body 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 +solar-mass+))
 
 (declaim (inline applyforces))
-(defun applyforces (a b)
+(defun applyforces (a b dt)
+  (declare (type body a b) (type double-float dt))
   (let* ((dx (- (x a) (x b)))
          (dy (- (y a) (y b)))
          (dz (- (z a) (z b)))
-	 (posdelta_sq (+ (* dx dx) (* dy dy) (* dz dz)))
-	 (distance (sqrt posdelta_sq))
-	 (mag (/ (* posdelta_sq distance)))
-	 (massmag-b (* mag (mass b)))
-	 (massmag-a (* mag (mass a))))
-    (declare (body a b)(double-float dx dy dz)
-	     ((double-float 0d0) posdelta_sq distance
-	      mag massmag-a massmag-b))
-    (decf (vx a) (* dx massmag-b))
-    (decf (vy a) (* dy massmag-b))
-    (decf (vz a) (* dz massmag-b))
-    (incf (vx b) (* dx massmag-a))
-    (incf (vy b) (* dy massmag-a))
-    (incf (vz b) (* dz massmag-a))))
-
-(declaim (inline advance))
-(defun advance (system)
-  (loop for (a . rest) on system do
-    (dolist (b rest)
-          (applyforces a b)))
-  (dolist (a system)
-    (incf (x a) (vx a))
-    (incf (y a) (vy a))
-    (incf (z a) (vz a)))
+	 (distance (sqrt (+ (* dx dx) (* dy dy) (* dz dz))))
+	 (mag (/ dt (* distance distance distance)))
+         (dxmag (* dx mag))
+         (dymag (* dy mag))
+         (dzmag (* dz mag)))
+    (decf (vx a) (* dxmag (mass b)))
+    (decf (vy a) (* dymag (mass b)))
+    (decf (vz a) (* dzmag (mass b)))
+    (incf (vx b) (* dxmag (mass a)))
+    (incf (vy b) (* dymag (mass a)))
+    (incf (vz b) (* dzmag (mass a))))
   nil)
 
-(declaim (inline energy))
+(defun advance (system dt)
+  (declare (double-float dt))
+  (loop for (a . rest) on system do
+        (dolist (b rest)
+          (applyforces a b dt)))
+  (dolist (b system)
+    (incf (x b) (* dt (vx b)))
+    (incf (y b) (* dt (vy b)))
+    (incf (z b) (* dt (vz b))))
+  nil)
+
 (defun energy (system)
-    (let ((e 0d0))
+  (let ((e 0.0d0))
     (declare (double-float e))
-      (loop for (a . rest) on system do
-          (incf e (* 0.5d0 (mass a)
+    (loop for (a . rest) on system do
+          (incf e (* 0.5d0
+                     (mass a)
                      (+ (* (vx a) (vx a))
                         (* (vy a) (vy a))
                         (* (vz a) (vz a)))))
@@ -118,45 +113,30 @@
             (let* ((dx (- (x a) (x b)))
                    (dy (- (y a) (y b)))
                    (dz (- (z a) (z b)))
-		   (dist (sqrt (+ (* dx dx) (* dy dy) (* dz dz)))))
+                   (dist (sqrt (+ (* dx dx) (* dy dy) (* dz dz)))))
               (decf e (/ (* (mass a) (mass b)) dist)))))
     e))
 
 (defun offset-momentum (system)
-  (let ((px 0d0)
-	(py 0d0)
-	(pz 0d0)
-	(sun (car system)))
+  (let ((px 0.0d0)
+	(py 0.0d0)
+	(pz 0.0d0))
     (dolist (p system)
       (incf px (* (vx p) (mass p)))
       (incf py (* (vy p) (mass p)))
       (incf pz (* (vz p) (mass p))))
-    (setf (vx sun) (/ (- px) +solar-mass+)
-          (vy sun) (/ (- py) +solar-mass+)
-          (vz sun) (/ (- pz) +solar-mass+))
+    (setf (vx (car system)) (/ (- px) +solar-mass+)
+          (vy (car system)) (/ (- py) +solar-mass+)
+          (vz (car system)) (/ (- pz) +solar-mass+))
     nil))
-
-(defun body-scale (system scale)
-  (dolist (p system)
-    (declare (type body p)
-	     (type list system))
-    (setf (mass p) (* (mass p) (* scale scale))
-	  (vx p) (* (vx p) scale)
-	  (vy p) (* (vy p) scale)
-	  (vz p) (* (vz p) scale))))
-
-(defconstant +DT+ 0.01d0)
-(defconstant +RECIP_DT+ (/ 1d0 +DT+))
 
 (defun nbody (n)
   (declare (fixnum n))
   (let ((system (list *sun* *jupiter* *saturn* *uranus* *neptune*)))
     (offset-momentum system)
     (format t "~,9F~%" (energy system))
-    (body-scale system +DT+)
     (dotimes (i n)
-      (advance system))
-    (body-scale system +RECIP_DT+)
+      (advance system 0.01d0))
     (format t "~,9F~%" (energy system))))
 
 (defun main ()

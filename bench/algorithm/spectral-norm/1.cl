@@ -20,6 +20,7 @@
 ;;      * uint31 type defined
 ;;      * double-float values are always positive 
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+(setf *block-compile-default* t)
 
 (deftype uint31 (&optional (bits 31)) `(unsigned-byte ,bits))
 (deftype d+ () '(double-float 0d0))

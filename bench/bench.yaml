@@ -33,8 +33,9 @@ problems:
       - input: 100
         output: 100_out
     tests:
-      - input: 1000
-      - input: 3000
+      - input: 2000
+      - input: 4000
+      - input: 8000
         exclude_langs:
           - python
           - ruby
