@@ -26,7 +26,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
  (ql:quickload :sb-simd)
- (use-package :sb-simd-avx))
+ (use-package :sb-simd-avx2))
 
 (declaim (ftype (function (f64.4 f64.4) f64.4) eval-A)
          (inline eval-A))
