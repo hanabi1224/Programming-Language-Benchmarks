@@ -16,7 +16,7 @@
 ;;      * use right shift instead of truncate for division in eval-A
 ;;      * redefine eval-A as a macro
 ;;    Modified by Bela Pecsek
-;;      * Using AVX calculations
+;;      * Substantially rewritten using AVX calculations
 ;;      * Improvement in type declarations
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
@@ -25,8 +25,8 @@
 (setf *block-compile-default* t)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
- (ql:quickload :sb-simd)
- (use-package :sb-simd-avx2))
+  (ql:quickload :sb-simd)
+  (use-package :sb-simd-avx2))
 
 (declaim (ftype (function (f64.4 f64.4) f64.4) eval-A)
          (inline eval-A))
@@ -39,9 +39,9 @@
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
-  (loop for i of-type fixnum from begin below end by 4
-        do (let* ((src-0 (f64.4 (aref src 0)))
-                  (ti    (f64.4+ (f64.4 i) (make-f64.4 0 1 2 3)))
+  (loop for i from begin below end by 4
+        with src-0 of-type f64 = (aref src 0)
+        do (let* ((ti    (f64.4+ (f64.4 i) (make-f64.4 0 1 2 3)))
                   (eA    (eval-A ti (f64.4 0)))
 		  (sum   (f64.4/ src-0 eA)))
 	     (loop for j from 1 below length
@@ -53,8 +53,8 @@
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 4
-        do (let* ((src-0 (f64.4 (aref src 0)))
-                  (ti    (f64.4+ (f64.4 i) (make-f64.4 1 2 3 4)))
+        with src-0 of-type f64 = (aref src 0)
+        do (let* ((ti    (f64.4+ (f64.4 i) (make-f64.4 1 2 3 4)))
                   (eAt   (eval-A (f64.4 0) (f64.4+ ti (f64.4 -1))))
 		  (sum   (f64.4/ src-0 eAt)))
 	     (loop for j from 1 below length
@@ -93,6 +93,7 @@
 	(execute-parallel start end (lambda (start end)
 				      (eval-At-times-u tmp dst start end n)))))
 
+(declaim (ftype (function (u32) f64) spectralnorm))
 (defun spectralnorm (n)
   (let ((u   (make-array (+ n 3) :element-type 'f64 :initial-element 1d0))
         (v   (make-array (+ n 3) :element-type 'f64))
