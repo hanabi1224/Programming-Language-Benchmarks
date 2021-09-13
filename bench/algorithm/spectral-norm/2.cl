@@ -25,6 +25,7 @@
 (setf *block-compile-default* t)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  
   (ql:quickload :sb-simd)
   (use-package :sb-simd-avx2))
 

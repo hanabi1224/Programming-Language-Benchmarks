@@ -52,16 +52,16 @@ environments:
     build: dart pub get && dart compile exe app.dart -o out/app
     out_dir: out
     run_cmd: app
-  - os: linux
-    compiler: dart
-    version: beta
-    docker: dart:beta
-    include: dart
-    include_sub_dir:
-    build: dart pub get && dart compile exe app.dart -o out/app
-    out_dir: out
-    run_cmd: app
-    allow_failure: true
+  # - os: linux
+  #   compiler: dart
+  #   version: beta
+  #   docker: dart:beta
+  #   include: dart
+  #   include_sub_dir:
+  #   build: dart pub get && dart compile exe app.dart -o out/app
+  #   out_dir: out
+  #   run_cmd: app
+  #   allow_failure: true
   # - os: linux
   #   compiler: dart/aot
   #   version: latest
