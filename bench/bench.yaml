@@ -1,5 +1,9 @@
 udocker: false
 problems:
+  - name: nsieve
+    unittests:
+      - input: 4
+        output: 4_out
   - name: helloworld
     unittests:
       - input: T_T

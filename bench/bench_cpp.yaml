@@ -15,6 +15,9 @@ problems:
       - 6.cpp
       - 7.cpp
       - 8.cpp
+  - name: nsieve
+    source:
+      - 1.cpp
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
