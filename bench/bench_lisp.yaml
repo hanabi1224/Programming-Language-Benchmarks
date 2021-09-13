@@ -22,6 +22,10 @@ problems:
     source:
       - 1.cl
       - 2.cl
+  - name: nsieve
+    source:
+      - 1.cl
+      - 2.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
