@@ -10,6 +10,9 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.cl
+  - name: fasta
+    source:
+      - 1.cl
   - name: nbody
     source:
       - 1.cl

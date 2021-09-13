@@ -1,5 +1,8 @@
 lang: cpp
 problems:
+  #- name: fannkuch-redux
+  #  source:
+  #    - 1.cpp
   - name: helloworld
     source:
       - 1.cpp

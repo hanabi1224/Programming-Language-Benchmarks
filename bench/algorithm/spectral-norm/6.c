@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <x86intrin.h>
+#include <emmintrin.h>
 
 // compute values of A 4 at a time instead of 1
 static inline __m256d eval_A(__m128i i, __m128i j) {
