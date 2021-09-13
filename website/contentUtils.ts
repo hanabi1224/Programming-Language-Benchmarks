@@ -42,7 +42,9 @@ export function mergeLangBenchResults(benchResults: BenchResult[]) {
 }
 
 export function getFullCompilerVersion(i: BenchResult) {
-  return (i.testLog?.runtimeVersion ?? '') + (i.buildLog?.compilerVersion ?? '')
+  const a = i.testLog?.runtimeVersion ?? ''
+  const b = i.buildLog?.compilerVersion ?? ''
+  return `${a}\n${b}`.trim()
 }
 
 export function getRealShortCompilerVersion(i: BenchResult) {

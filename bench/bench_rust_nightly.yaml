@@ -11,8 +11,6 @@ problems:
       - 3.rs
   - name: spectral-norm
     source:
-      - 5.rs
-      - 7.rs
       - 8.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +nightly -V
@@ -24,7 +22,7 @@ environments:
     compiler: rustc
     version: nightly
     env:
-      RUSTFLAGS: -C target-cpu=native
+      RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
     include: rust
     include_sub_dir: src
     build: cargo +nightly build --release --features nightly --target-dir /tmp/rsn/target -v
