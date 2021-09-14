@@ -5,8 +5,8 @@ problems:
       - input: 4
         output: 4_out
     tests:
-      - input: 4
       - input: 10
+      - input: 11
   - name: helloworld
     unittests:
       - input: T_T

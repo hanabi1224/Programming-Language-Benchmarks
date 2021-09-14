@@ -38,6 +38,9 @@ problems:
   - name: http-server
     source:
       - 1.go
+  - name: nsieve
+    source:
+      - 1.go
 compiler_version_command: go version
 compiler_version_regex:
 runtime_version_parameter:
