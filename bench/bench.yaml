@@ -4,6 +4,9 @@ problems:
     unittests:
       - input: 4
         output: 4_out
+    tests:
+      - input: 4
+      - input: 10
   - name: helloworld
     unittests:
       - input: T_T
@@ -29,9 +32,6 @@ problems:
     tests:
       - input: 500000
       - input: 5000000
-        exclude_langs:
-          - python
-          - wren
   - name: spectral-norm
     unittests:
       - input: 100
@@ -40,11 +40,6 @@ problems:
       - input: 2000
       - input: 4000
       - input: 8000
-        exclude_langs:
-          - python
-          - ruby
-          - wren
-          - lua
   - name: pidigits
     unittests:
       - input: 27
@@ -54,11 +49,6 @@ problems:
     tests:
       - input: 4000
       - input: 8000
-        exclude_langs:
-          - zig
-          - nim
-          - racket
-          - vlang
   - name: edigits
     unittests:
       - input: 227
@@ -68,10 +58,6 @@ problems:
     tests:
       - input: 100000
       - input: 250001
-        exclude_langs:
-          - elixir
-          - nim
-          - zig
   - name: mandelbrot
     unittests:
       - input: 1
@@ -81,7 +67,8 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 4000
+      - input: 1000
+      - input: 8000
   - name: fannkuch-redux
     unittests:
       - input: 7
@@ -98,8 +85,6 @@ problems:
     tests:
       - input: 250000
       - input: 2500000
-        # exclude_langs:
-        #   - python
   - name: json-serde
     data:
       - sample.json
@@ -117,14 +102,11 @@ problems:
       - input: 1000
         output: 1000_out
     tests:
-      - input: 2000
+      - input: 1000
       - input: 4000
         exclude_langs:
           - d
-          - dart
           - javascript
-          - python
-          - vlang
   - name: http-server
     unittests:
       - input: 100
@@ -132,5 +114,5 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 1000
-      - input: 2000
+      - input: 500
+      - input: 3000
