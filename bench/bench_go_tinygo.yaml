@@ -31,6 +31,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.go
+  - name: nsieve
+    source:
+      - 1.go
 compiler_version_command: tinygo version
 compiler_version_regex:
 runtime_version_parameter:

@@ -103,6 +103,7 @@ namespace BenchTool
 
             List<Task> parallelTasks = new List<Task>();
             List<Exception> aggregatedExceptions = new List<Exception>();
+            HashSet<string> SetupDockerProvidedRuntimeDedupContext = new HashSet<string>();
             foreach (YamlLangConfig c in langConfigs.OrderBy(i => i.Lang))
             {
                 if (includedLanguages.Count > 0
@@ -122,14 +123,11 @@ namespace BenchTool
                         continue;
                     }
 
-                    if (!noDocker && task == TaskBuild)
-                    {
-                        await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput).ConfigureAwait(false);
-                    }
                     if (c.Problems == null)
                     {
                         continue;
                     }
+
                     foreach (YamlLangProblemConfig p in c.Problems.OrderBy(_ => _.Name))
                     {
                         if (includedProblems.Count > 0
@@ -140,6 +138,11 @@ namespace BenchTool
 
                         foreach (string codePath in p.Source ?? Enumerable.Empty<string>())
                         {
+                            if (!noDocker && task == TaskBuild)
+                            {
+                                await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput, dedupContext: SetupDockerProvidedRuntimeDedupContext).ConfigureAwait(false);
+                            }
+
                             bool allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
                             string buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
@@ -675,10 +678,12 @@ namespace BenchTool
 
         private static async Task SetupDockerProvidedRuntimeAsync(
             YamlLangEnvironmentConfig langEnvConfig,
-            string buildOutputRoot)
+            string buildOutputRoot,
+            HashSet<string> dedupContext)
         {
             string dir = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: null);
-            if (string.IsNullOrEmpty(dir))
+            if (string.IsNullOrEmpty(dir)
+                || dedupContext.Contains(dir))
             {
                 return;
             }
@@ -708,6 +713,7 @@ namespace BenchTool
                 cmd = $"{cmd} cp  {langEnvConfig.DockerRuntimeFile} .";
             }
             await ProcessUtils.RunCommandAsync(cmd).ConfigureAwait(false);
+            dedupContext.Add(dir);
         }
 
         private static string GetIncludedRuntimeRoot(

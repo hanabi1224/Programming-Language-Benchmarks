@@ -25,6 +25,9 @@ problems:
   # - name: edigits
   #   source:
   #     - 1.rs
+  - name: nsieve
+    source:
+      - 1.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
 compiler_version_regex:
