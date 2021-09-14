@@ -13,11 +13,11 @@
 	      (setf (aref a j) nil))
        and count t)))
 
-(defun main ()
+(defun main (&optional n-supplied)
   (let* ((args #+sbcl sb-ext:*posix-argv*
                #+cmu  extensions:*command-line-strings*
 	       #+gcl  si::*command-args*)
-	 (n (parse-integer (car (last args)))))
+	 (n (or n-supplied (parse-integer (car (last args))))))
   (loop for k from n downto (- n 2) 
      for m = (* 10000 (expt 2 k)) do
        (format t "Primes up to~T~8<~d~>~T~8<~d~>~%" m (nsieve m)))))
