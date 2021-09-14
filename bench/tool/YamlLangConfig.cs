@@ -35,7 +35,7 @@ namespace BenchTool
 
         public int Repeat { get; set; } = 3;
 
-        public int TimeoutSeconds { get; set; } = 10;
+        public int TimeoutSeconds { get; set; } = 5;
 
         public bool SkipOnPullRequest { get; set; } = false;
 
