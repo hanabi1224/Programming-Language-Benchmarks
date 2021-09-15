@@ -41,7 +41,7 @@ jobs:
             rust,
             swift,
             typescript,
-            vlang,
+            v,
             wasm,
             wren,
             zig,
@@ -116,8 +116,8 @@ jobs:
       # - name: Install dart
       #   if: matrix.lang == 'dart'
       #   run: sudo ./.github/dart.sh
-      - name: Install vlang
-        if: matrix.lang == 'vlang'
+      - name: Install v
+        if: matrix.lang == 'v'
         run: ./.github/v.sh
       - name: Install deno
         if: matrix.lang == 'typescript' || matrix.lang == 'wasm'

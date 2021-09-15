@@ -1,11 +1,13 @@
+use bitvec::prelude::*;
+
 fn nsieve(n: usize) {
     let mut count = 0;
-    let mut flags = vec![true; n];
+    let mut flags = bitvec![LocalBits, u8; 1; n];
     for i in 2..n {
         if flags[i] {
             count += 1;
             for j in ((i << 1)..n).step_by(i) {
-                flags[j] = false;
+                flags.set(j, false);
             }
         }
     }

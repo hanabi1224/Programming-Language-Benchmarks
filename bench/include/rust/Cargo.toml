@@ -27,6 +27,7 @@ wasm = [
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 anyhow = "1"
+bitvec = "0"
 generic-array = "0"
 glam = "0"
 ibig = "0"

@@ -60,12 +60,12 @@
     "fibers": "^5.0.0",
     "jest": "^27.2.0",
     "prettier": "^2.4.0",
-    "sass": "^1.39.2",
+    "sass": "^1.41.0",
     "sass-loader": "^10.2.0",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
-    "stylelint-scss": "^3.20.1",
+    "stylelint-scss": "^3.21.0",
     "ts-jest": "^27.0.5",
     "vue-jest": "^3.0.7"
   }

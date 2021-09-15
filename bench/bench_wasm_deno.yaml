@@ -35,6 +35,7 @@ problems:
   - name: nsieve
     source:
       - 1.rs
+      - 2.rs
 source_rename_to: main.rs
 compiler_version_command: deno --version
 compiler_version_regex:

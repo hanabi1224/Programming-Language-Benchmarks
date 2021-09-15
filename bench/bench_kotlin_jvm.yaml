@@ -30,19 +30,19 @@ source_rename_to: main.kt
 environments:
   - os: linux
     compiler: Kotlin/jvm
-    version: 16
-    docker: adoptopenjdk/openjdk16:slim
-    docker_runtime_dir: /opt/java/openjdk
+    version: 17
+    docker: openjdk:17-slim
+    docker_runtime_dir: /usr/local/openjdk-17
     include: kotlin-jvm
     include_sub_dir: src/main/kotlin
     before_build:
       - sh -c "./gradlew build"
     build: cp build/libs/app-all.jar out/app.jar
     out_dir: out
-    run_cmd: openjdk/bin/java -jar app.jar
+    run_cmd: openjdk-17/bin/java -jar app.jar
   # - os: linux
   #   compiler: Kotlin/loom
-  #   version: 17
+  #   version: latest
   #   docker:
   #   include: kotlin-jvm
   #   include_sub_dir: src/main/kotlin
