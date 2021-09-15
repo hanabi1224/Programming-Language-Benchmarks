@@ -27,6 +27,9 @@ problems:
       - 1.cl
       - 2.cl
       - 3.cl
+  - name: mandelbrot
+    source:
+      - 1.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
