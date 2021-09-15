@@ -101,6 +101,16 @@ namespace BenchTool
             HashSet<string> includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             HashSet<string> includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
+            CpuInfo cpuInfo = await CpuInfo.LsCpuAsync().ConfigureAwait(false);
+            if (cpuInfo != null)
+            {
+                Logger.Info(cpuInfo.ToString());
+                if (GithubActionUtils.IsGithubBuild && task == TaskBench && cpuInfo.Model < 80)
+                {
+                    throw new Exception("[github action] Fail intentionally on old cpu model prior to skylake, please retry.");
+                }
+            }
+
             List<Task> parallelTasks = new List<Task>();
             List<Exception> aggregatedExceptions = new List<Exception>();
             HashSet<string> SetupDockerProvidedRuntimeDedupContext = new HashSet<string>();
