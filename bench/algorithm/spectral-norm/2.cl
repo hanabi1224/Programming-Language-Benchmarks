@@ -22,6 +22,7 @@
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
+(setf *block-compile-default* t)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   
@@ -55,7 +56,7 @@
   (loop for i from begin below end by 4
         with src-0 of-type f64 = (aref src 0)
         do (let* ((ti    (f64.4+ (f64.4 i) (make-f64.4 1 2 3 4)))
-                  (eAt   (eval-A (f64.4 0) (f64.4- ti (f64.4 1))))
+                  (eAt   (eval-A (f64.4 0) (f64.4+ ti (f64.4 -1))))
 		  (sum   (f64.4/ src-0 eAt)))
 	     (loop for j from 1 below length
                    do (let ((src-j (aref src j))
@@ -69,20 +70,18 @@
   (progn (define-alien-routine sysconf long (name int))
          (sysconf 84)))
 
-(declaim (ftype (function (u32 u32 function) null) execute-parallel))
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
   (let* ((n    (truncate (- end start) (get-thread-count)))
          (step (- n (mod n 2))))
-    (declare (type u32 n step))
-    (mapcar #'sb-thread:join-thread
-            (loop for i from start below end by step
-                  collecting (let ((start i)
-                                   (end (min end (+ i step))))
-                               (sb-thread:make-thread
-			        (lambda () (funcall function start end))))
-                  of-type thread))))
+    (loop for i from start below end by step
+          collecting (let ((start i)
+                           (end (min end (+ i step))))
+                       (sb-thread:make-thread
+			(lambda () (funcall function start end))))
+            into threads
+          finally (mapcar #'sb-thread:join-thread threads))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
@@ -107,9 +106,8 @@
     (sqrt (/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
-  (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
-                                             "5000")))))
-    (declare (type u32 n))
+  (let ((n (or n-supplied (parse-integer (or (car (last #+sbcl sb-ext:*posix-argv*))
+                                  "5000")))))
     (if (< n 16)
         (error "The supplied value of 'n' must be at least 16")
         (format t "~11,9F~%" (spectralnorm n)))))
