@@ -10,6 +10,9 @@ problems:
   - name: spectral-norm
     source:
       # - 6.cpp
+  - name: nsieve
+    source:
+      - 1.cpp
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:
