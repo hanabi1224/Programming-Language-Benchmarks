@@ -27,6 +27,7 @@ problems:
   - name: nsieve
     source:
       - 1.zig
+      - 2.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:

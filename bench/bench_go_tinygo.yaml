@@ -34,6 +34,7 @@ problems:
   - name: nsieve
     source:
       - 1.go
+      - 2.go
 compiler_version_command: tinygo version
 compiler_version_regex:
 runtime_version_parameter:
@@ -45,6 +46,6 @@ environments:
     version: latest
     docker: tinygo/tinygo
     include:
-    build: tinygo build -o out/app app.go
+    build: go mod init tmp.org/tmp/v2 && go mod tidy && tinygo build -o out/app app.go
     out_dir: out
     run_cmd: app

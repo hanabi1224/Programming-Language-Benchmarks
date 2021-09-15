@@ -55,6 +55,7 @@ problems:
   - name: nsieve
     source:
       - 1.rs
+      - 2.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +stable -V
 compiler_version_regex:
