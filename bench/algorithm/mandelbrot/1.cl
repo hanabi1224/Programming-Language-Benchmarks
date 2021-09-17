@@ -53,7 +53,7 @@
 			   (inst vmulpd y y x))
 			  ((not (location= r y))
 			   (if (sc-is x fp-complex-double-immediate)
-			       (inst movapd r (get-constant x))
+			       (inst vmovapd r (get-constant x))
 			       (move r x))
 			   (inst vmulpd r r y))))))
 
@@ -101,7 +101,7 @@
 		      (:info)
 		      (:generator ,cdcost (generate ,cdinst ,test movmskpd
 					            fp-complex-double-immediate
-					            movapd))))))
+					            vmovapd))))))
       (frob :le cmppd cmple-movmskpd 3)))
 
   (declaim (inline vops::cmple-movmskpdv vops::complex-double-float/sse-*

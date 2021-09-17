@@ -13,6 +13,7 @@ problems:
   - name: fasta
     source:
       - 1.cl
+      - 2.cl
   - name: nbody
     source:
       - 1.cl
