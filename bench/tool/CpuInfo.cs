@@ -37,11 +37,15 @@ namespace BenchTool
         public static async Task<CpuInfo> LsCpuAsync()
         {
             StringBuilder stdout = new StringBuilder();
-            await ProcessUtils.RunCommandAsync("lscpu", stdOutBuilder: stdout).ConfigureAwait(false);
-            if (TryParse(stdout.ToString(), out CpuInfo cpuInfo))
+            try
             {
-                return cpuInfo;
+                await ProcessUtils.RunCommandAsync("lscpu", stdOutBuilder: stdout).ConfigureAwait(false);
+                if (TryParse(stdout.ToString(), out CpuInfo cpuInfo))
+                {
+                    return cpuInfo;
+                }
             }
+            catch { }
             return null;
         }
     }
