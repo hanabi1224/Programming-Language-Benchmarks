@@ -123,7 +123,7 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (f64 (f64/ (f64 (f64.4-vdot u v)) (f64 (f64.4-vdot v v)))))))
+    (sqrt (/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
