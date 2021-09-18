@@ -5,7 +5,7 @@ problems:
       - 1.v
   - name: binarytrees
     source:
-      - 1.v
+      # - 1.v
   - name: nbody
     source:
       - 1.v
@@ -27,7 +27,7 @@ problems:
       - 1.v
   - name: mandelbrot
     source:
-      - 1.v
+      # - 1.v
   - name: nsieve
     source:
       - 1.v
@@ -47,3 +47,4 @@ environments:
       - mv app out
     out_dir: out
     run_cmd: app
+    allow_failure: true
