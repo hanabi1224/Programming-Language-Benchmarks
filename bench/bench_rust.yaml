@@ -8,6 +8,7 @@ problems:
       - 1.rs
       - 2.rs
       - 3.rs
+      - 4.rs
   - name: nbody
     source:
       - 1.rs
@@ -17,6 +18,7 @@ problems:
     source:
       - 2.rs
       - 3.rs
+      - 5.rs
       - 7.rs
   - name: mandelbrot
     source:
@@ -36,6 +38,7 @@ problems:
   - name: edigits
     source:
       - 1.rs
+      - 2.rs
   - name: json-serde
     source:
       - 1.rs
@@ -45,9 +48,14 @@ problems:
       - 2.rs
       - 3.rs
       - 4.rs
+      - 5.rs
   - name: http-server
     source:
       - 1.rs
+  - name: nsieve
+    source:
+      - 1.rs
+      - 2.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +stable -V
 compiler_version_regex:
@@ -62,7 +70,7 @@ environments:
     #   - /tmp/rs/target:/tmp/rs/target
     #   - /tmp/.cargo/registry:/usr/local/cargo/registry
     env:
-      RUSTFLAGS: -C target-cpu=native
+      RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
     include: rust
     include_sub_dir: src
     build: cargo +stable build --release --target-dir /tmp/rs/target -v

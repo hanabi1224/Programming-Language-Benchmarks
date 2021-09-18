@@ -34,10 +34,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.cs
-      - 2.cs
-  # - name: http-server
-  #   source:
-  #     - 1.cs
+  - name: http-server
+    source:
+      - 1.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -52,6 +51,7 @@ environments:
     docker_volumns:
       - /tmp/.nuget/packages:/root/.nuget/packages/
     include: dotnet6
-    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: _app
+    allow_failure: true

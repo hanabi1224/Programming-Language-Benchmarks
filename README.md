@@ -9,7 +9,7 @@
 The idea is to build an automatic process for benchmark generation and pulishing. 
 
 ### Comparable numbers
-*It currently use CI to generate benchmark results to garantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job*
+*It currently use CI to generate benchmark results to guarantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job*
 
 ### Automatic publish
 

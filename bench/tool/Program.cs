@@ -101,8 +101,19 @@ namespace BenchTool
             HashSet<string> includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             HashSet<string> includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
+            CpuInfo cpuInfo = await CpuInfo.LsCpuAsync().ConfigureAwait(false);
+            if (cpuInfo != null)
+            {
+                Logger.Info(cpuInfo.ToString());
+                if (GithubActionUtils.IsGithubBuild && task == TaskBench && cpuInfo.Model < 80)
+                {
+                    throw new Exception("[github action] Fail intentionally on old cpu model prior to skylake, please retry.");
+                }
+            }
+
             List<Task> parallelTasks = new List<Task>();
             List<Exception> aggregatedExceptions = new List<Exception>();
+            HashSet<string> SetupDockerProvidedRuntimeDedupContext = new HashSet<string>();
             foreach (YamlLangConfig c in langConfigs.OrderBy(i => i.Lang))
             {
                 if (includedLanguages.Count > 0
@@ -111,7 +122,10 @@ namespace BenchTool
                     continue;
                 }
 
-                foreach (YamlLangEnvironmentConfig env in c.Environments)
+                Logger.Info($"[{c.Lang}] Running task {task}...");
+                Stopwatch langTaskTimer = Stopwatch.StartNew();
+
+                foreach (YamlLangEnvironmentConfig env in c.Environments ?? Enumerable.Empty<YamlLangEnvironmentConfig>())
                 {
                     if (includedOsEnvironments.Count > 0
                         && !includedOsEnvironments.Contains(env.Os))
@@ -119,7 +133,12 @@ namespace BenchTool
                         continue;
                     }
 
-                    foreach (YamlLangProblemConfig p in c.Problems ?? Enumerable.Empty<YamlLangProblemConfig>())
+                    if (c.Problems == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (YamlLangProblemConfig p in c.Problems.OrderBy(_ => _.Name))
                     {
                         if (includedProblems.Count > 0
                             && !includedProblems.Contains(p.Name))
@@ -129,6 +148,11 @@ namespace BenchTool
 
                         foreach (string codePath in p.Source ?? Enumerable.Empty<string>())
                         {
+                            if (!noDocker && task == TaskBuild)
+                            {
+                                await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput, dedupContext: SetupDockerProvidedRuntimeDedupContext).ConfigureAwait(false);
+                            }
+
                             bool allowParallel = task == TaskBuild && buildPool;
                             Task rawJobExecutionTask = null;
                             string buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
@@ -187,6 +211,9 @@ namespace BenchTool
                         }
                     }
                 }
+
+                langTaskTimer.Stop();
+                Logger.Info($"[{c.Lang}] Task {task} has finished in {langTaskTimer.Elapsed}");
             }
 
             if (parallelTasks?.Count > 0)
@@ -200,7 +227,7 @@ namespace BenchTool
             }
 
             timer.Stop();
-            Logger.Info($"{TimerPrefix}Task {task} finished in {timer.Elapsed}");
+            Logger.Info($"{TimerPrefix}Task {task} has finished in {timer.Elapsed}");
         }
 
         private static async Task BuildAsync(
@@ -394,6 +421,16 @@ namespace BenchTool
 
             if (!buildOutput.IsDirectoryNotEmpty())
             {
+                if (langEnvConfig.AllowFailure)
+                {
+                    Logger.Warn($"Build failed, but failure is configured to be ignored");
+                    if (Directory.Exists(buildOutput))
+                    {
+                        Directory.Delete(buildOutput, recursive: true);
+                    }
+                    return;
+                }
+
                 throw new DirectoryNotFoundException(buildOutput);
             }
 
@@ -416,9 +453,12 @@ namespace BenchTool
             bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
-            if (ignoreMissing && !Directory.Exists(buildOutput))
+            if (!Directory.Exists(buildOutput))
             {
-                return;
+                if (ignoreMissing || langEnvConfig.AllowFailure)
+                {
+                    return;
+                }
             }
             buildOutput.EnsureDirectoryExists();
 
@@ -429,7 +469,8 @@ namespace BenchTool
             string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
-                exeName = Path.Combine(buildOutput, exeName);
+                string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
+                exeName = Path.Combine(exeRoot, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
@@ -484,7 +525,8 @@ namespace BenchTool
                         error = new Exception($"Test Failed: {buildId}"
                             + $"\nInput: {test.Input}"
                             + $"\nExpected output path: {expectedOutputPath}"
-                            + $"\n Output:\n{stdOut}"
+                            + $"\n Std Out:\n{stdOut}"
+                            + $"\n Std Err:\n{stdErr}"
                             + $"\n Expected output:\n{expectedOutput}");
                     }
                 }
@@ -510,9 +552,12 @@ namespace BenchTool
                 bool ignoreMissing)
         {
             string buildOutput = Path.Combine(Environment.CurrentDirectory, buildOutputRoot, buildId);
-            if (ignoreMissing && !Directory.Exists(buildOutput))
+            if (!Directory.Exists(buildOutput))
             {
-                return;
+                if (ignoreMissing || langEnvConfig.AllowFailure)
+                {
+                    return;
+                }
             }
             buildOutput.EnsureDirectoryExists();
 
@@ -524,7 +569,8 @@ namespace BenchTool
             string exeName = langEnvConfig.RunCmd.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
             if (langEnvConfig.RuntimeIncluded)
             {
-                exeName = Path.Combine(buildOutput, exeName);
+                string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
+                exeName = Path.Combine(exeRoot, exeName);
                 await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
@@ -567,9 +613,17 @@ namespace BenchTool
                     {
                         try
                         {
-                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses).ConfigureAwait(false);
-                            Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                            measurements.Add(measurement);
+                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses, timeoutSeconds: test.TimeoutSeconds).ConfigureAwait(false);
+                            if (measurement != null && measurement.Elapsed.TotalMilliseconds > 0)
+                            {
+                                Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                                measurements.Add(measurement);
+                            }
+                            else
+                            {
+                                measurements.Clear();
+                                break;
+                            }
                         }
                         catch (Exception e)
                         {
@@ -577,6 +631,10 @@ namespace BenchTool
                             i--;
                             maxRetries--;
                         }
+                    }
+                    if (measurements.Count < 1)
+                    {
+                        break;
                     }
 
                     statsMeasurement = measurements.GetAverageStats();
@@ -598,28 +656,102 @@ namespace BenchTool
                     await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
                 }
 
-                string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
-                await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
+                if (statsMeasurement.Elapsed.TotalMilliseconds > 0)
                 {
-                    lang = langConfig.Lang,
-                    os = langEnvConfig.Os,
-                    compiler = langEnvConfig.Compiler,
-                    compilerVersion = langEnvConfig.Version,
-                    test = problem.Name,
-                    code = codePath,
-                    input = test.Input,
-                    timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
-                    timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
-                    memBytes = statsMeasurement.PeakMemoryBytes,
-                    cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
-                    cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
-                    cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
-                    //appveyorBuildId = AppveyorUtils.BuildId,
-                    githubRunId = GithubActionUtils.RunId,
-                    buildLog = BuildOutputJson.LoadFrom(buildOutput),
-                    testLog = TestOutputJson.LoadFrom(buildOutput),
-                }, Formatting.Indented)).ConfigureAwait(false);
+                    string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
+                    await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
+                    {
+                        lang = langConfig.Lang,
+                        os = langEnvConfig.Os,
+                        compiler = langEnvConfig.Compiler,
+                        compilerVersion = langEnvConfig.Version,
+                        test = problem.Name,
+                        code = codePath,
+                        input = test.Input,
+                        timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
+                        timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
+                        memBytes = statsMeasurement.PeakMemoryBytes,
+                        cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
+                        cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
+                        cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
+                        //appveyorBuildId = AppveyorUtils.BuildId,
+                        githubRunId = GithubActionUtils.RunId,
+                        buildLog = BuildOutputJson.LoadFrom(buildOutput),
+                        testLog = TestOutputJson.LoadFrom(buildOutput),
+                    }, Formatting.Indented)).ConfigureAwait(false);
+                }
+                else
+                {
+                    Logger.Error("No valid benchmark results is produced.");
+                }
             }
+        }
+
+        private static async Task SetupDockerProvidedRuntimeAsync(
+            YamlLangEnvironmentConfig langEnvConfig,
+            string buildOutputRoot,
+            HashSet<string> dedupContext)
+        {
+            string dir = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: null);
+            if (string.IsNullOrEmpty(dir)
+                || dedupContext.Contains(dir))
+            {
+                return;
+            }
+            if (Directory.Exists(dir))
+            {
+                try
+                {
+                    Directory.Delete(dir, recursive: true);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
+            }
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            const string DockerTmpDir = "/tmp/runtime";
+            string cmd = $"docker run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.Docker}";
+            if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
+            {
+                cmd = $"{cmd} cp -a {langEnvConfig.DockerRuntimeDir} .";
+            }
+            else
+            {
+                cmd = $"{cmd} cp  {langEnvConfig.DockerRuntimeFile} .";
+            }
+            await ProcessUtils.RunCommandAsync(cmd).ConfigureAwait(false);
+            dedupContext.Add(dir);
+        }
+
+        private static string GetIncludedRuntimeRoot(
+            YamlLangEnvironmentConfig langEnvConfig,
+            string buildOutputRoot,
+            string buildOutput)
+        {
+            if (!string.IsNullOrEmpty(langEnvConfig.Docker))
+            {
+                if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir)
+                    || !string.IsNullOrEmpty(langEnvConfig.DockerRuntimeFile))
+                {
+                    string dir = Path.Combine(buildOutputRoot, "_runtimes_", GetDirNameFromDockerName(langEnvConfig.Docker));
+                    // Make dir absolute
+                    if (!dir.StartsWith('/') && !dir.Contains(":\\"))
+                    {
+                        dir = Path.Combine(Environment.CurrentDirectory, dir);
+                    }
+                    return dir;
+                }
+            }
+            return buildOutput;
+        }
+
+        private static string GetDirNameFromDockerName(string docker)
+        {
+            return Regex.Replace(docker, @"[:/\\]", "_");
         }
     }
 }

@@ -22,7 +22,7 @@ environments:
     compiler: rustc
     version: nightly
     env:
-      RUSTFLAGS: -C target-cpu=native
+      RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
     include: rust
     include_sub_dir: src
     build: cargo +nightly build --release --features nightly --target-dir /tmp/rsn/target -v
@@ -30,3 +30,4 @@ environments:
       - sudo mv /tmp/rsn/target/release/_app out
     out_dir: out
     run_cmd: _app
+    allow_failure: true

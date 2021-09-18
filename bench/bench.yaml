@@ -1,5 +1,12 @@
 udocker: false
 problems:
+  - name: nsieve
+    unittests:
+      - input: 4
+        output: 4_out
+    tests:
+      - input: 10
+      - input: 12
   - name: helloworld
     unittests:
       - input: T_T
@@ -25,19 +32,14 @@ problems:
     tests:
       - input: 500000
       - input: 5000000
-        # exclude_langs:
-        #   - python
   - name: spectral-norm
     unittests:
       - input: 100
         output: 100_out
     tests:
-      - input: 1000
-      - input: 3000
-        exclude_langs:
-          - python
-          - ruby
-          - wren
+      - input: 2000
+      - input: 4000
+      - input: 8000
   - name: pidigits
     unittests:
       - input: 27
@@ -47,9 +49,6 @@ problems:
     tests:
       - input: 4000
       - input: 8000
-        exclude_langs:
-          - zig
-          - nim
   - name: edigits
     unittests:
       - input: 227
@@ -59,10 +58,6 @@ problems:
     tests:
       - input: 100000
       - input: 250001
-        exclude_langs:
-          - elixir
-          - nim
-          - zig
   - name: mandelbrot
     unittests:
       - input: 1
@@ -72,7 +67,8 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 4000
+      - input: 1000
+      - input: 8000
   - name: fannkuch-redux
     unittests:
       - input: 7
@@ -89,8 +85,6 @@ problems:
     tests:
       - input: 250000
       - input: 2500000
-        # exclude_langs:
-        #   - python
   - name: json-serde
     data:
       - sample.json
@@ -108,13 +102,11 @@ problems:
       - input: 1000
         output: 1000_out
     tests:
-      - input: 2000
+      - input: 1000
       - input: 4000
         exclude_langs:
-          - dart
+          - d
           - javascript
-          - python
-          - vlang
   - name: http-server
     unittests:
       - input: 100
@@ -122,5 +114,5 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 1000
-      - input: 2000
+      - input: 500
+      - input: 3000

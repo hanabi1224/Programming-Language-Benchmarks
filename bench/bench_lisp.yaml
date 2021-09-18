@@ -7,11 +7,28 @@ problems:
     source:
       - 1.cl
       - 2.cl
+  - name: fannkuch-redux
+    source:
+      - 1.cl
+  - name: fasta
+    source:
+      - 1.cl
+      - 2.cl
   - name: nbody
     source:
+      - 1.cl
       - 2.cl
       - 3.cl
   - name: spectral-norm
+    source:
+      - 1.cl
+      - 2.cl
+  - name: nsieve
+    source:
+      - 1.cl
+      - 2.cl
+      - 3.cl
+  - name: mandelbrot
     source:
       - 1.cl
 compiler_version_command:

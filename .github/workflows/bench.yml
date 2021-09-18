@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
-  bench:
+  build:
     runs-on: ${{ matrix.os }}
     env:
       PROFILE: /tmp/.tmpprofile
@@ -41,7 +41,7 @@ jobs:
             rust,
             swift,
             typescript,
-            vlang,
+            v,
             wasm,
             wren,
             zig,
@@ -50,8 +50,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install
         run: |
-          lscpu
+          lscpu          
           echo '# placeholder' >> $PROFILE
+          sudo apt-get update -y
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -60,116 +61,50 @@ jobs:
           override: true
       - name: Install rust nightly
         if: matrix.lang == 'rust'
-        run: rustup update nightly
+        run: |
+          # https://github.com/rust-lang/portable-simd/issues/156
+          # rustup update nightly-2021-08-28
+          # sudo ln -sf $HOME/.rustup/toolchains/nightly-2021-08-28-x86_64-unknown-linux-gnu $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu
+          rustup update nightly
+          cargo +nightly --version
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
-        run: |
-          # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
-          # https://www.graalvm.org/docs/getting-started/
-          echo $GRAALVM_11_ROOT
-          # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-          wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.2.0/graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          tar -xvf graalvm-ce-java11-linux-amd64-21.2.0.tar.gz
-          sudo ln -sf $PWD/graalvm-ce-java11-21.2.0 $HOME/graalvm-ce-java11
-          ls -al $HOME/graalvm-ce-java11
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/gu /usr/bin/gu
-          sudo gu upgrade -A || echo ''
-          gu --version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/java /usr/bin/graaljava
-          graaljava -version
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/javac /usr/bin/graaljavac
-          graaljavac -version
+        run: ./.github/graalvm.sh
       - name: Install c deps
         if: matrix.lang == 'c'
-        run: |
-          sudo apt-get install -y libapr1 libapr1-dev
+        run: ./.github/c.sh
+      - name: Install cpp deps
+        if: matrix.lang == 'cpp'
+        run: ./.github/cpp.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
           LISP: sbcl-bin
-        run: |
-          echo '#!/usr/bin/sh' > ./sbcl
-          echo 'ros run -- $@' >> ./sbcl
-          cat ./sbcl
-          sudo chmod +x ./sbcl
-          curl -L https://raw.githubusercontent.com/roswell/roswell/master/scripts/install-for-ci.sh | sh
-          sudo ros install sbcl-bin
-          sudo ros use sbcl-bin
-          ros version          
-          ./sbcl --version
-          sudo mv ./sbcl /usr/bin
-          sbcl --version
-          curl -O https://beta.quicklisp.org/quicklisp.lisp
-          sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
-          #git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
-          #sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
+        run: ./.github/lisp.sh
       - name: Install racket
         if: matrix.lang == 'racket'
-        run: |
-          sudo add-apt-repository ppa:plt/racket
-          sudo apt-get install -y racket
-          racket --version
+        run: ./.github/racket.sh
       - name: Install fortran
         if: matrix.lang == 'fortran'
-        run: |
-          gfortran-9 --version
-          gfortran-10 --version
-          sudo apt-get install -y flang libgmp-dev
-          flang --version
+        run: ./.github/fortran.sh
       - name: Install loom
         if: matrix.lang == 'java' || matrix.lang == 'kotlin'
-        run: |
-          wget https://download.java.net/java/early_access/loom/2/openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          tar -xvf openjdk-18-loom+2-74_linux-x64_bin.tar.gz
-          sudo ln -sf $PWD/jdk-18/bin/javac /usr/bin/loomjavac
-          sudo ln -sf $PWD/jdk-18/bin/java /usr/bin/loomjava
-          loomjavac -version
-          loomjava -version
+        run: ./.github/loom.sh
       - name: Install graalvm native-image
         if: matrix.lang == 'java'
-        run: |
-          sudo gu install native-image
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/native-image /usr/bin/native-image
-          native-image --version
+        run: ./.github/graalvm-native-image.sh
       - name: Install graalnode
         if: matrix.lang == 'javascript'
-        run: |
-          sudo gu install nodejs || echo 'graal nodejs already installed'
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/node /usr/bin/graalnode
-          graalnode --version
-      - name: Install lua
-        if: matrix.lang == 'lua'
-        run: |
-          cd /tmp
-          sudo apt-get install lua5.3 -y
-          lua -v
-          git clone https://github.com/LuaJIT/LuaJIT
-          cd LuaJIT
-          make && sudo make install
-          sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
-          luajit -v
+        run: ./.github/graalvm-node.sh
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
-        run: |
-          sudo snap install zig --classic --edge
-          zig version
+        run: ./.github/zig.sh
       - name: Install crystal
         if: matrix.lang == 'crystal'
-        run: |
-          # https://crystal-lang.org/install/on_ubuntu/
-          curl -fsSL https://crystal-lang.org/install.sh | sudo bash
-          sudo apt install -y libgmp-dev
-          crystal version
+        run: ./.github/crystal.sh
       - name: Install python
         if: matrix.lang == 'python'
-        run: |
-          cd /tmp
-          wget https://github.com/pyston/pyston/releases/download/pyston_2.2/pyston_2.2_20.04.deb
-          sudo apt install -y ./pyston_2.2_20.04.deb
-          pyston -V
-          sudo gu install python
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/graalpython /usr/bin/graalpython
-          graalpython --version
+        run: ./.github/python.sh
       - name: Install ruby
         if: matrix.lang == 'ruby'
         uses: ruby/setup-ruby@v1
@@ -178,46 +113,19 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Install truffleruby
         if: matrix.lang == 'ruby'
-        run: |
-          sudo gu install ruby
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/truffleruby /usr/bin/truffleruby
-          truffleruby --version
-      - name: Install dart
-        if: matrix.lang == 'dart'
-        run: |
-          sudo sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -'
-          sudo sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list'
-          sudo apt-get update -y
-          sudo apt-get install dart -y
-          echo 'export PATH="$PATH:/usr/lib/dart/bin"' >> $PROFILE
-      - name: Install vlang
-        if: matrix.lang == 'vlang'
-        run: |
-          docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
-          sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
-          sudo apt install -y libgc-dev
-          git clone https://github.com/vlang/v /tmp/vlang
-          pushd /tmp/vlang
-          make && ./v -version
-          sudo ./v symlink
-          popd
-          v --version
+        run: ./.github/truffleruby.sh
+      # - name: Install dart
+      #   if: matrix.lang == 'dart'
+      #   run: sudo ./.github/dart.sh
+      - name: Install v
+        if: matrix.lang == 'v'
+        run: ./.github/v.sh
       - name: Install deno
         if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
-        run: |
-          curl -fsSL https://deno.land/x/install/install.sh | sh
-          echo 'export PATH=$HOME/.deno/bin:$PATH' >> $PROFILE
+        run: ./.github/deno.sh
       - name: Install wasm
         if: matrix.lang == 'wasm'
-        run: |
-          sudo gu install wasm
-          sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
-          graalwasm --version
-          curl https://get.wasmer.io -sSfL | sh
-          cat $HOME/.wasmer/wasmer.sh >> $PROFILE
-          curl https://wasmtime.dev/install.sh -sSf | bash
-          echo 'PATH=$HOME/.wasmtime/bin:$PATH' >> $PROFILE
-          cat $PROFILE
+        run: ./.github/wasm.sh
       - name: Build
         run: |
           source $PROFILE
@@ -230,18 +138,65 @@ jobs:
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
           popd
+      - uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: build
+          path: bench/build/**/*
+          if-no-files-found: error
+  gate:
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - run: echo 'dummy step as PR gate'
+  bench:
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    runs-on: ${{ matrix.os }}
+    env:
+      PROFILE: /tmp/.tmpprofile
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - name: Install
+        run: |
+          lscpu
+          echo '# placeholder' > $PROFILE
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: bench/build/
+      - run: ./.github/graalvm.sh
+      - run: ./.github/graalvm-node.sh
+      - run: ./.github/truffleruby.sh
+      - run: ./.github/wasm.sh
+      - run: ./.github/loom.sh
+      - run: ./.github/racket.sh
+      # - run: sudo ./.github/dart.sh
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Bench
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
+          dotnet run -c Release -p tool -- --task bench --ignore-missing
           popd
       - uses: actions/upload-artifact@v2
         with:
           name: log
-          path: bench/build/_results/**/*.json
+          path: bench/build/_results/**/*
           if-no-files-found: error
   publish:
+    if: github.ref == 'refs/heads/main'
     needs: [bench]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -249,8 +204,7 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
-      - name: Download a Build Artifact
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
           # Artifact name
           name: log

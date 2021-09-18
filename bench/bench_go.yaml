@@ -38,6 +38,10 @@ problems:
   - name: http-server
     source:
       - 1.go
+  - name: nsieve
+    source:
+      - 1.go
+      - 2.go
 compiler_version_command: go version
 compiler_version_regex:
 runtime_version_parameter:
@@ -49,7 +53,7 @@ environments:
     version: latest
     docker: golang
     include:
-    build: go mod init tmp.org/tmp/v2 && go build -o out/app
+    build: go mod init tmp.org/tmp/v2 && go mod tidy && go build -o out/app
     out_dir: out
     run_cmd: app
   # - os: linux

@@ -65,9 +65,9 @@ install:
     # - popd
     # end haxe && hashlink
     # begin tmp vlang installation
-    - mkdir /tmp/hostlib/
-    - docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
-    - sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
+    # - mkdir /tmp/hostlib/
+    # - docker run --rm -v /tmp/hostlib/:/working/ -w /working/ thevlang/vlang:alpine cp /lib/ld-musl-x86_64.so.1 .
+    # - sudo cp /tmp/hostlib/ld-musl-x86_64.so.1 /lib/
     # - git clone https://github.com/vlang/v /tmp/vlang
     # - pushd /tmp/vlang
     # - make && ./v -version

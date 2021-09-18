@@ -24,7 +24,7 @@ fn main() {
 		seed: 42
 	}
 
-	mut iub := map{
+	mut iub := {
 		byte(`a`): 0.27
 		byte(`c`): 0.12
 		byte(`g`): 0.12
@@ -42,7 +42,7 @@ fn main() {
 		byte(`Y`): 0.02
 	}
 
-	mut homosapiens := map{
+	mut homosapiens := {
 		byte(`a`): 0.3029549426680
 		byte(`c`): 0.1979883004921
 		byte(`g`): 0.1975473066391

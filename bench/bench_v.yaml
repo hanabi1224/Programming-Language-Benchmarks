@@ -1,17 +1,18 @@
-lang: vlang
+lang: v
 problems:
   - name: helloworld
     source:
       - 1.v
   - name: binarytrees
     source:
-      - 1.v
+      # - 1.v
   - name: nbody
     source:
       - 1.v
-  # - name: pidigits
-  #   source:
-  #     - 1.v
+  - name: pidigits
+    source:
+      # - 1.v
+      - 2.v
   - name: fasta
     source:
       - 1.v
@@ -24,6 +25,13 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.v
+  - name: mandelbrot
+    source:
+      # - 1.v
+  - name: nsieve
+    source:
+      - 1.v
+      - 2.v
 compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -31,14 +39,12 @@ runtime_version_regex:
 source_rename_to: app.v
 environments:
   - os: linux
-    compiler: vlang
+    compiler: v
     version: latest
     include:
-    include_sub_dir:
-    # before_build:
-    #   - v install hanabi1224.biginteger
-    build: v -prod -gc boehm_full -cc clang app.v
+    build: v -prod -gc boehm_full -cc clang-12 -autofree -stats app.v
     after_build:
       - mv app out
     out_dir: out
     run_cmd: app
+    allow_failure: true

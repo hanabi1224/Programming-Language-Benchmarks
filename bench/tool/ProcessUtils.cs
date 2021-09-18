@@ -31,8 +31,7 @@ namespace BenchTool
             TimeSpan avgCpuTimeUser = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeUser.TotalMilliseconds) : 0);
             TimeSpan avgCpuTimeKernel = TimeSpan.FromMilliseconds(positiveCpuTimeRecords.Count > 0 ? positiveCpuTimeRecords.Average(i => i.CpuTimeKernel.TotalMilliseconds) : 0);
 
-            List<long> positivePeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Where(i => i > 0).ToList();
-            double avgPeakMemoryBytes = positivePeakMemoryBytes.Count > 0 ? positivePeakMemoryBytes.Average() : 0;
+            double maxPeakMemoryBytes = array.Select(i => i.PeakMemoryBytes).Max();
 
             return new ProcessMeasurement
             {
@@ -40,7 +39,7 @@ namespace BenchTool
                 ElapsedStdDevMS = Statistics.StandardDeviation(array.Select(i => i.Elapsed.TotalMilliseconds)),
                 CpuTimeKernel = avgCpuTimeKernel,
                 CpuTimeUser = avgCpuTimeUser,
-                PeakMemoryBytes = (long)Math.Round(avgPeakMemoryBytes),
+                PeakMemoryBytes = (long)Math.Round(maxPeakMemoryBytes),
             };
         }
     }
@@ -151,9 +150,14 @@ namespace BenchTool
             ProcessStartInfo startInfo,
             int sampleIntervalMS = 3,
             bool forceCheckChildProcesses = false,
+            double timeoutSeconds = 0.0,
             CancellationToken token = default)
         {
             using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+            if (timeoutSeconds > 0)
+            {
+                cts.CancelAfter(TimeSpan.FromSeconds(timeoutSeconds));
+            }
 
             ProcessMeasurement m = new ProcessMeasurement();
             startInfo.UseShellExecute = false;
@@ -308,14 +312,13 @@ namespace BenchTool
                 stdOutBuilder: null,
                 stdErrorBuilder: null,
                 env: null,
-                token,
+                cts.Token,
                 onStart: () => manualResetEvent.Set()).ConfigureAwait(false);
-
             sw.Stop();
             cts.Cancel();
             m.Elapsed = sw.Elapsed;
             await t.ConfigureAwait(false);
-            return m;
+            return ret < 0 ? null : m;
         }
 
         public static async Task RunCommandsAsync(
@@ -562,7 +565,22 @@ namespace BenchTool
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e);
+                    if (!(e is TaskCanceledException))
+                    {
+                        Logger.Error(e);
+                    }
+                    try
+                    {
+                        if (!p.HasExited)
+                        {
+                            Logger.Warn("Killing dangling processes");
+                            p.Kill(true);
+                        }
+                    }
+                    catch (Exception innerExc)
+                    {
+                        Logger.Error(innerExc);
+                    }
                     return -1;
                 }
             }

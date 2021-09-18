@@ -3,7 +3,7 @@
     <menu-button @toggle="toggleMenu"></menu-button>
     <aside :class="sideBarClass">
       <h2 title="Benchmarks for other computer languages" class="text-xl">
-        Benchmarks
+        Languages
       </h2>
       <ul class="text-base">
         <li
@@ -25,7 +25,7 @@
             languages and their different compilers or runtime
           </p>
           <p class="pt-5">
-            It currently uses CI to generate benchmark results to garantee all
+            It currently uses CI to generate benchmark results to guarantee all
             the numbers are generated from the same environment at nearly the
             same time. All benchmark tests are executed in a single CI job
           </p>

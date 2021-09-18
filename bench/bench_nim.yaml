@@ -12,6 +12,20 @@ problems:
   - name: edigits
     source:
       - 1.nim
+  - name: spectral-norm
+    source:
+      - 1.nim
+      - 2.nim
+  - name: nsieve
+    source:
+      - 1.nim
+      - 2.nim
+  - name: mandelbrot
+    source:
+      - 1.nim
+  - name: fasta
+    source:
+      - 1.nim
 compiler_version_command: nim --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -24,8 +38,9 @@ environments:
     docker: nimlang/nim
     include: nim
     include_sub_dir:
-    # before_build:
-    build: nimble build app -y -d:danger -d:nimCoroutines --threads:on && cp app out
-    # after_build:
+    before_build:
+    build: nimble build app -y -x:off -a:off -d:release -d:danger -d:nimCoroutines --threads:on --verbose
+    after_build:
+      - cp app out
     out_dir: out
     run_cmd: app

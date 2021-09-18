@@ -43,16 +43,14 @@ runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: app.dart
 environments:
-  - os: linux
-    compiler: dart/jit
-    version: latest
-    docker:
-    include: dart
-    include_sub_dir:
-    before_build:
-      - dart pub get
-    build: dart compile jit-snapshot app.dart -o out/app.jit
-    out_dir: out
-    run_cmd: dart run app.jit
-    runtime_included: false
-    runtime_version_parameter: --version
+  # - os: linux
+  #   compiler: dart/jit
+  #   version: latest
+  #   docker: dart
+  #   docker_runtime_dir: /usr/lib/dart
+  #   include: dart
+  #   include_sub_dir:
+  #   build: dart pub get && dart compile jit-snapshot app.dart -o out/app.jit
+  #   out_dir: out
+  #   run_cmd: dart/bin/dart run app.jit
+  #   runtime_version_parameter: --version

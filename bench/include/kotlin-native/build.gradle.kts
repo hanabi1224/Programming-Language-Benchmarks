@@ -26,7 +26,7 @@ kotlin {
           dependencies {
               implementation(libs.bignum)
               // implementation("com.ionspin.kotlin:bignum:0.3.1")
-              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
               implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
           }
       }
