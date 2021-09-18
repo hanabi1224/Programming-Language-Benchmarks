@@ -50,8 +50,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install
         run: |
-          lscpu
+          lscpu          
           echo '# placeholder' >> $PROFILE
+          sudo apt-get update -y
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
