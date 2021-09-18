@@ -525,7 +525,8 @@ namespace BenchTool
                         error = new Exception($"Test Failed: {buildId}"
                             + $"\nInput: {test.Input}"
                             + $"\nExpected output path: {expectedOutputPath}"
-                            + $"\n Output:\n{stdOut}"
+                            + $"\n Std Out:\n{stdOut}"
+                            + $"\n Std Err:\n{stdErr}"
                             + $"\n Expected output:\n{expectedOutput}");
                     }
                 }
