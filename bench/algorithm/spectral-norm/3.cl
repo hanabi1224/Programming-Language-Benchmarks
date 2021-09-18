@@ -21,7 +21,7 @@
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
-;;      * Using f32.8 in eval-A and returning 2 f64.4 
+;;      * Using s32.8 in eval-A and returning 2 f64.4 
 
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
