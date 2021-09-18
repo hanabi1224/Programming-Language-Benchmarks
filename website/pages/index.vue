@@ -3,7 +3,7 @@
     <menu-button @toggle="toggleMenu"></menu-button>
     <aside :class="sideBarClass">
       <h2 title="Benchmarks for other computer languages" class="text-xl">
-        Benchmarks
+        Languages
       </h2>
       <ul class="text-base">
         <li
