@@ -6,21 +6,22 @@
 ;;;   resulting in further 10-12% speed gain
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
-(deftype uint62 (&optional (bits 62)) `(unsigned-byte ,bits))
+(deftype uint31 () '(unsigned-byte 31))
 
-(declaim (ftype (function (uint62) uint62) nsieve))
+(declaim (ftype (function (uint31) (values uint31 &optional)) nsieve))
 (defun nsieve (m)
-  (let ((a (make-array m :initial-element 1 :element-type 'bit)))
-    (declare (type simple-bit-vector a))
+  (let ((a (make-array m :element-type '(unsigned-byte 1) :initial-element 0)))
+    (declare (type (simple-array (unsigned-byte 1) (*)) a))
     (loop for i from 2 below m
-          when (= (sbit a i) 1)
-            do (loop for j of-type uint62 from (ash i 1) below m by i
-                     do (setf (sbit a j) 0))
+          when (zerop (aref a i))
+            do (loop for j from (ash i 1) below m by i
+                     do (setf (aref a j) 1))
             and count t)))
 
+(declaim (ftype (function (&optional (integer 0 16)) null) main))
 (defun main (&optional n-supplied)
   (let* ((n (or n-supplied (parse-integer (car (last sb-ext:*posix-argv*))))))
-    (declare ((integer 0 32) n))
-    (loop for i below 3
-          for m = (ash 10000 (- n i))
+    (declare ((integer 0 16) n))
+    (loop for k of-type (integer 0 16) from n downto (- n 2) 
+          for m = (* 10000 (expt 2 k))
           do (format t "Primes up to~T~8<~d~>~T~8<~d~>~%" m (nsieve m)))))
