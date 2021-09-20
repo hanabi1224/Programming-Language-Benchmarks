@@ -28,7 +28,7 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)  
   
   (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx2))
+  (use-package  :sb-simd-avx2))
 
 (declaim (ftype (function (s32.8 s32.8) (values f64.4 f64.4)) eval-A)
          (inline eval-A))
@@ -36,14 +36,14 @@
   (let* ((i+1   (s32.8+ i (s32.8 1)))
          (i+j   (s32.8+ i j))
          (i+j+1 (s32.8+ i+1 j))
-         (evala  (s32.8+ (s32.8-shiftr (s32.8-mullo i+j i+j+1) 1) i+1)))
+         (evala (s32.8+ (s32.8-shiftr (s32.8-mullo i+j i+j+1) 1) i+1)))
     (values (f64.4-from-s32.4 (s32.8-extract128 evala 0))
             (f64.4-from-s32.4 (s32.8-extract128 evala 1)))))
 
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 8
+  (loop for i from begin below end by 8
         with src-0 of-type f64 = (aref src 0)
         do (multiple-value-bind (eA0 eA1)
                (eval-A (s32.8+ (s32.8 i) (make-s32.8 0 1 2 3 4 5 6 7)) (s32.8 0))
@@ -51,20 +51,20 @@
 	            (ti1  (f64.4+ (f64.4 i) (make-f64.4 4 5 6 7)))
                     (sum0 (f64.4/ (f64.4 src-0) eA0))
 		    (sum1 (f64.4/ (f64.4 src-0) eA1)))
-	       (loop for j of-type u32 from 1 below length
+	       (loop for j from 1 below length
 		     do (let* ((src-j  (aref src j))
                                (j     (f64.4 j))
 			       (idx0  (f64.4+ eA0 ti0 j))
 			       (idx1  (f64.4+ eA1 ti1 j)))
 			  (setf eA0 idx0
                                 eA1 idx1)
-			  (f64.4-incf sum0 (f64.4/ (f64.4 src-j) idx0))
-			  (f64.4-incf sum1 (f64.4/ (f64.4 src-j) idx1))))
+			  (setf sum0 (f64.4+ sum0 (f64.4/ (f64.4 src-j) idx0)))
+			  (setf sum1 (f64.4+ sum1 (f64.4/ (f64.4 src-j) idx1)))))
                (setf (f64.4-aref dst i) sum0)
                (setf (f64.4-aref dst (+ i 4)) sum1)))))
 
 (defun eval-At-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 8
+  (loop for i from begin below end by 8
         with src-0 of-type f64 = (aref src 0)
 	do  (multiple-value-bind (eAt0 eAt1)
                 (eval-A (s32.8 0) (s32.8+ (s32.8 i) (make-s32.8 0 1 2 3 4 5 6 7)))
@@ -72,15 +72,15 @@
 		     (ti1   (f64.4+ (f64.4 i) (make-f64.4 5 6 7 8)))
                      (sum0  (f64.4/ (f64.4 src-0) eAt0))
 		     (sum1  (f64.4/ (f64.4 src-0) eAt1)))
-	        (loop for j of-type u32 from 1 below length
+	        (loop for j from 1 below length
 		      do (let* ((src-j  (aref src j))
                                 (j     (f64.4 j))
                                 (idx0  (f64.4+ eAt0 ti0 j))
 			        (idx1  (f64.4+ eAt1 ti1 j)))
 			   (setf eAt0 idx0
                                  eAt1 idx1)
-			   (f64.4-incf sum0 (f64.4/ (f64.4 src-j) idx0))
-			   (f64.4-incf sum1 (f64.4/ (f64.4 src-j) idx1))))
+			   (setf sum0 (f64.4+ sum0 (f64.4/ (f64.4 src-j) idx0)))
+			   (setf sum1 (f64.4+ sum1 (f64.4/ (f64.4 src-j) idx1)))))
                 (setf (f64.4-aref dst i) sum0)
                 (setf (f64.4-aref dst (+ i 4)) sum1)))))
 

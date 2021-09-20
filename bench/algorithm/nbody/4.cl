@@ -20,15 +20,15 @@
 ;;;   * advance function written using AVX
 ;;; modified by Béla Pecsek - 2021-09-11
 ;;;   * converted to use sb-simd
+;;;   * further optimization using sb-simd f64 scalar operations
 
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 (setf *block-compile-default* t)
 
 (in-package #:cl-user)
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (asdf:load-system :sb-simd)
-  (use-package :sb-simd-avx)
+  (ql:quickload :sb-simd :silent t)
+  (use-package :sb-simd-avx2)
 
   (defconstant +DAYS-PER-YEAR+ 365.24d0)
   (defconstant +SOLAR-MASS+ (* 4d0 pi pi))
@@ -87,20 +87,16 @@
 ;; ROUNDED_INTERACTIONS_COUNT that is equal to the next highest even number
 ;; which is equal to or greater than INTERACTIONS_COUNT.
 (defconstant +BODIES_COUNT+ (length *system*))
-(defconstant +INTERACTIONS_COUNT+ (/ (* +BODIES_COUNT+
-					(1- +BODIES_COUNT+)) 2))
+(defconstant +INTERACTIONS_COUNT+ (/ (* +BODIES_COUNT+ (1- +BODIES_COUNT+)) 2))
 (defconstant +ROUNDED_INTERACTIONS_COUNT+ (+ +INTERACTIONS_COUNT+
 					     (mod +INTERACTIONS_COUNT+ 4)))
 ;; Based on GCC #2
 (defconstant +DT+ 0.01d0)
 (defconstant +RECIP_DT+ (/ +dt+))
 
-
 ;; Type declarations
-(deftype position_deltas () `(simple-array double-float
-					   (,+ROUNDED_INTERACTIONS_COUNT+)))
-(deftype magnitudes () `(simple-array double-float
-				      (,+ROUNDED_INTERACTIONS_COUNT+)))
+(deftype position_deltas () `(simple-array f64 (,+ROUNDED_INTERACTIONS_COUNT+)))
+(deftype magnitudes      () `(simple-array f64 (,+ROUNDED_INTERACTIONS_COUNT+)))
 
 ;; Based on GCC #8 and GCC #2
 ;; Advances with timestem dt = 1.0d0
@@ -114,22 +110,22 @@
   (declare (type list system)
 	   (type fixnum n))
   (let ((position_Deltas-x (make-array +ROUNDED_INTERACTIONS_COUNT+
-			 :element-type 'double-float :initial-element 1.0d0))
+			 :element-type 'f64 :initial-element 1.0d0))
 	(position_Deltas-y (make-array +ROUNDED_INTERACTIONS_COUNT+
-			 :element-type 'double-float :initial-element 1.0d0))
+			 :element-type 'f64 :initial-element 1.0d0))
 	(position_Deltas-z (make-array +ROUNDED_INTERACTIONS_COUNT+
-			 :element-type 'double-float :initial-element 1.0d0))
+			 :element-type 'f64 :initial-element 1.0d0))
         (magnitudes (make-array +ROUNDED_INTERACTIONS_COUNT+
-			 :element-type 'double-float :initial-element 1.0d0)))
+			 :element-type 'f64 :initial-element 1.0d0)))
     (flet ((position-deltas ()
 	     ;; Calculate the position_Deltas between the bodies for each
 	     ;; interaction.
 	     (loop with i of-type fixnum = 0 for (a . rest) on system 
 		   do (dolist (b rest)
 			;; (declare (type position_deltas pdx pdy pdz))
-			(setf (aref position_Deltas-x i) (- (x a) (x b))
-			      (aref position_Deltas-y i) (- (y a) (y b))
-			      (aref position_Deltas-z i) (- (z a) (z b)))
+			(setf (aref position_Deltas-x i) (f64- (x a) (x b))
+			      (aref position_Deltas-y i) (f64- (y a) (y b))
+			      (aref position_Deltas-z i) (f64- (z a) (z b)))
 			(incf i))))
 	   (force-magnitudes ()
 	     ;; Calculate the magnitudes of force between the bodies for each
@@ -142,7 +138,8 @@
 			     (distance_Squared (f64.4+ (f64.4* pdx pdx)
                                                        (f64.4* pdy pdy)
 						       (f64.4* pdz pdz)))
-			     (magnitude (f64.4/ (f64.4* (f64.4-sqrt distance_Squared)
+                             (distance_Reciprocal (f64.4-sqrt distance_Squared))
+			     (magnitude (f64.4/ (f64.4* distance_Reciprocal
 						        distance_Squared))))
 			(setf (f64.4-aref magnitudes i) magnitude)))
              (vzeroupper))
@@ -157,14 +154,14 @@
 			       (mag-i (aref magnitudes i))
 			       ;; Precompute products of mass and magnitude
 			       ;; to be reused a couple of times
-			       (mass*mag-a (* (mass a) mag-i))  
-			       (mass*mag-b (* (mass b) mag-i)))
-			  (decf (vx a) (* pdx-i mass*mag-b)) 
-			  (decf (vy a) (* pdy-i mass*mag-b))
-			  (decf (vz a) (* pdz-i mass*mag-b))
-			  (incf (vx b) (* pdx-i mass*mag-a))
-			  (incf (vy b) (* pdy-i mass*mag-a)) 
-			  (incf (vz b) (* pdz-i mass*mag-a)))	               
+			       (mass*mag-a (f64* (mass a) mag-i))  
+			       (mass*mag-b (f64* (mass b) mag-i)))
+			  (decf (vx a) (f64* pdx-i mass*mag-b)) 
+			  (decf (vy a) (f64* pdy-i mass*mag-b))
+			  (decf (vz a) (f64* pdz-i mass*mag-b))
+			  (incf (vx b) (f64* pdx-i mass*mag-a))
+			  (incf (vy b) (f64* pdy-i mass*mag-a)) 
+			  (incf (vz b) (f64* pdz-i mass*mag-a)))	               
 			(incf i))))
 	   (positions ()
 	     ;; Use the updated velocities to update the positions for all
@@ -180,20 +177,21 @@
 ;; Output the total energy of the system.
 (defun output_Energy (system)
     (let ((e 0.0d0))
-      (declare (type double-float e))
+      (declare (type f64 e))
       (loop for (a . rest) on system do
 	;; Add the kinetic energy for each body.
-        (incf e (* 0.5d0 (mass a)
-                   (+ (* (vx a) (vx a))
-                      (* (vy a) (vy a))
-                      (* (vz a) (vz a)))))
+        (incf e (f64* 0.5d0 (mass a)
+                      (f64+ (f64* (vx a) (vx a))
+                            (f64* (vy a) (vy a))
+                            (f64* (vz a) (vz a)))))
         (dolist (b rest)
 	  ;; Add the potential energy between this body and every other bodies
-          (let* ((dx (- (x a) (x b)))
-                 (dy (- (y a) (y b)))
-                 (dz (- (z a) (z b)))
-                 (dist (sqrt (+ (* dx dx) (* dy dy) (* dz dz)))))
-            (decf e (/ (the double-float (* (mass a) (mass b))) dist)))))
+          (let* ((dx (f64- (x a) (x b)))
+                 (dy (f64- (y a) (y b)))
+                 (dz (f64- (z a) (z b)))
+                 (dist (sqrt (f64+ (f64* dx dx) (f64* dy dy) (f64* dz dz)))))
+            (declare (f64 dx dy dz dist))
+            (decf e (f64/ (the f64 (f64* (mass a) (mass b))) dist)))))
       (format t "~,9f~%" e))) ;; Output the total energy of the system.
 
 ;; Calculate the momentum of each body and conserve momentum of the system by
@@ -204,13 +202,14 @@
 	(py 0.0d0)
 	(pz 0.0d0)
         (sun (car system)))
+    (declare (type f64 px py pz))
     (dolist (p system)
-      (incf px (* (vx p) (mass p)))
-      (incf py (* (vy p) (mass p)))
-      (incf pz (* (vz p) (mass p))))
-    (setf (vx sun) (/ (- px) +solar-mass+)
-          (vy sun) (/ (- py) +solar-mass+)
-          (vz sun) (/ (- pz) +solar-mass+))
+      (incf px (f64* (vx p) (mass p)))
+      (incf py (f64* (vy p) (mass p)))
+      (incf pz (f64* (vz p) (mass p))))
+    (setf (vx sun) (f64/ (- px) +solar-mass+)
+          (vy sun) (f64/ (- py) +solar-mass+)
+          (vz sun) (f64/ (- pz) +solar-mass+))
     nil))
 
 ;; Rescale certain properties of bodies. That allows doing
@@ -218,13 +217,13 @@
 ;; When all advances done, rescale bodies back to obtain correct energy.
 (defun scale_bodies (system scale)
   (declare (type list system)
-	   (type double-float scale))
+	   (type f64 scale))
   (dolist (p system)
     (declare (type body p))
-    (setf (mass p) (* (mass p) (* scale scale))
-	  (vx p) (* (vx p) scale)
-	  (vy p) (* (vy p) scale)
-	  (vz p) (* (vz p) scale))
+    (setf (mass p) (f64* (mass p) (f64* scale scale))
+	  (vx p)   (f64* (vx p) scale)
+	  (vy p)   (f64* (vy p) scale)
+	  (vz p)   (f64* (vz p) scale))
     nil))
 
 (defun nbody (n)

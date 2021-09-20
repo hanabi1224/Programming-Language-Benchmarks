@@ -20,6 +20,7 @@ problems:
       - 2.jl
   - name: spectral-norm
     source:
+      - 2.jl
       - 3.jl
   - name: pidigits
     source:
