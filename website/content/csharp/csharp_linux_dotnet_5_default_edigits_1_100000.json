@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5",
+  "test": "edigits",
+  "code": "1.cs",
+  "input": "100000",
+  "timeMS": 821.1133,
+  "timeStdDevMS": 7.112746610370257,
+  "memBytes": 49176576,
+  "cpuTimeMS": 796.6666,
+  "cpuTimeUserMS": 780.0,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "5.0.400",
+    "start": "2021-09-21T18:30:46.6716652+00:00",
+    "finished": "2021-09-21T18:30:52.4779843+00:00",
+    "durationMs": 5806
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:04:35.7571219+00:00",
+    "finished": "2021-09-21T19:04:35.9303643+00:00",
+    "durationMs": 173
+  }
+}

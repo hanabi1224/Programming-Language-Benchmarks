@@ -1,0 +1,28 @@
+{
+  "lang": "swift",
+  "os": "linux",
+  "compiler": "swift",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "3.swift",
+  "input": "250000",
+  "timeMS": 59.1987,
+  "timeStdDevMS": 2.6249473410591158,
+  "memBytes": 13205504,
+  "cpuTimeMS": 36.6666,
+  "cpuTimeUserMS": 36.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Swift version 5.4.2 (swift-5.4.2-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T18:52:19.803825+00:00",
+    "finished": "2021-09-21T18:52:30.2860273+00:00",
+    "durationMs": 10482
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:36:26.6200038+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

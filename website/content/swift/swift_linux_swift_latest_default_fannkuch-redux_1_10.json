@@ -1,0 +1,28 @@
+{
+  "lang": "swift",
+  "os": "linux",
+  "compiler": "swift",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.swift",
+  "input": "10",
+  "timeMS": 255.4855,
+  "timeStdDevMS": 6.643263087017792,
+  "memBytes": 2514944,
+  "cpuTimeMS": 243.3333,
+  "cpuTimeUserMS": 243.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Swift version 5.4.2 (swift-5.4.2-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T18:52:10.1955013+00:00",
+    "finished": "2021-09-21T18:52:19.7970015+00:00",
+    "durationMs": 9601
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:36:17.3210254+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

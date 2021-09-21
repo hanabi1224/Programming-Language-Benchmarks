@@ -1,0 +1,28 @@
+{
+  "lang": "ruby",
+  "os": "linux",
+  "compiler": "ruby/jit",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "1.rb",
+  "input": "8000",
+  "timeMS": 3597.9911,
+  "timeStdDevMS": 7.301754869207593,
+  "memBytes": 150016000,
+  "cpuTimeMS": 3580.0,
+  "cpuTimeUserMS": 3540.0,
+  "cpuTimeKernelMS": 40.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:47:15.9665042+00:00",
+    "finished": "2021-09-21T18:47:15.9732972+00:00",
+    "durationMs": 6
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:34:08.9378555+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

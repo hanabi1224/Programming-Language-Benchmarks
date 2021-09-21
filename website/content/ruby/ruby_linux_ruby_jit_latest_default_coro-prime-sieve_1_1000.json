@@ -1,0 +1,28 @@
+{
+  "lang": "ruby",
+  "os": "linux",
+  "compiler": "ruby/jit",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.rb",
+  "input": "1000",
+  "timeMS": 242.5226,
+  "timeStdDevMS": 2.4263325912441025,
+  "memBytes": 27340800,
+  "cpuTimeMS": 223.3333,
+  "cpuTimeUserMS": 210.0,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:47:15.935889+00:00",
+    "finished": "2021-09-21T18:47:15.9407075+00:00",
+    "durationMs": 4
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:33:19.3088492+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

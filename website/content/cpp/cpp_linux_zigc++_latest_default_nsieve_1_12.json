@@ -1,0 +1,28 @@
+{
+  "lang": "cpp",
+  "os": "linux",
+  "compiler": "zigc++",
+  "compilerVersion": "latest",
+  "test": "nsieve",
+  "code": "1.cpp",
+  "input": "12",
+  "timeMS": 794.1477,
+  "timeStdDevMS": 2.289920682032482,
+  "memBytes": 42889216,
+  "cpuTimeMS": 779.9999,
+  "cpuTimeUserMS": 773.3333,
+  "cpuTimeKernelMS": 6.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "0.8.1",
+    "start": "2021-09-21T18:27:33.4748449+00:00",
+    "finished": "2021-09-21T18:27:38.5221754+00:00",
+    "durationMs": 5047
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:23.9694045+00:00",
+    "finished": "2021-09-21T18:57:23.9737649+00:00",
+    "durationMs": 4
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "v",
+  "os": "linux",
+  "compiler": "v",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.v",
+  "input": "11",
+  "timeMS": 2567.6066,
+  "timeStdDevMS": 6.662627761626636,
+  "memBytes": 2314240,
+  "cpuTimeMS": 2560.0,
+  "cpuTimeUserMS": 2560.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "V 0.2.4 41fc4c5",
+    "start": "2021-09-21T18:53:00.8911322+00:00",
+    "finished": "2021-09-21T18:53:04.1606063+00:00",
+    "durationMs": 3269
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:36:58.87377+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

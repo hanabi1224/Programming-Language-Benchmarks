@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "edigits",
+  "code": "1.go",
+  "input": "100000",
+  "timeMS": 47.7508,
+  "timeStdDevMS": 0.4058338453111042,
+  "memBytes": 7241728,
+  "cpuTimeMS": 43.3333,
+  "cpuTimeUserMS": 43.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "go version go1.17 linux/amd64",
+    "start": "2021-09-21T18:34:59.3452353+00:00",
+    "finished": "2021-09-21T18:35:00.720577+00:00",
+    "durationMs": 1375
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:39.9561279+00:00",
+    "finished": "2021-09-21T18:57:39.9622666+00:00",
+    "durationMs": 6
+  }
+}

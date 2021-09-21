@@ -1,0 +1,28 @@
+{
+  "lang": "c",
+  "os": "linux",
+  "compiler": "gcc",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "2.c",
+  "input": "14",
+  "timeMS": 18.5758,
+  "timeStdDevMS": 8.79419770435788,
+  "memBytes": 4321280,
+  "cpuTimeMS": 36.6666,
+  "cpuTimeUserMS": 36.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "gcc (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "start": "2021-09-21T18:26:22.0637209+00:00",
+    "finished": "2021-09-21T18:26:27.480094+00:00",
+    "durationMs": 5416
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:23.7243109+00:00",
+    "finished": "2021-09-21T18:57:23.7274352+00:00",
+    "durationMs": 3
+  }
+}

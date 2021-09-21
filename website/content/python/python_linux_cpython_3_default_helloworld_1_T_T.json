@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3",
+  "test": "helloworld",
+  "code": "1.py",
+  "input": "T_T",
+  "timeMS": 49.8221,
+  "timeStdDevMS": 5.482413143548704,
+  "memBytes": 14368768,
+  "cpuTimeMS": 39.0,
+  "cpuTimeUserMS": 38.0,
+  "cpuTimeKernelMS": 1.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Python 3.9.6",
+    "start": "2021-09-21T18:46:06.2209891+00:00",
+    "finished": "2021-09-21T18:46:15.3311043+00:00",
+    "durationMs": 9110
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:58:05.0857322+00:00",
+    "finished": "2021-09-21T18:58:05.1894765+00:00",
+    "durationMs": 103
+  }
+}

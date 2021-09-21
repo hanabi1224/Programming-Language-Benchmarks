@@ -1,0 +1,28 @@
+{
+  "lang": "wren",
+  "os": "linux",
+  "compiler": "wren",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.wren",
+  "input": "1000",
+  "timeMS": 44.997,
+  "timeStdDevMS": 0.13003618727108196,
+  "memBytes": 1175552,
+  "cpuTimeMS": 36.6666,
+  "cpuTimeUserMS": 36.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:56:19.6453478+00:00",
+    "finished": "2021-09-21T18:56:19.649947+00:00",
+    "durationMs": 4
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:38:47.3196044+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

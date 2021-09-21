@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5",
+  "test": "pidigits",
+  "code": "1.cs",
+  "input": "8000",
+  "timeMS": 4379.585,
+  "timeStdDevMS": 10.428742330853128,
+  "memBytes": 54292480,
+  "cpuTimeMS": 4916.6665,
+  "cpuTimeUserMS": 4789.9999,
+  "cpuTimeKernelMS": 126.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "5.0.400",
+    "start": "2021-09-21T18:31:33.5432977+00:00",
+    "finished": "2021-09-21T18:31:39.7014631+00:00",
+    "durationMs": 6158
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:04:39.5143944+00:00",
+    "finished": "2021-09-21T19:04:39.7269372+00:00",
+    "durationMs": 212
+  }
+}

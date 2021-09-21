@@ -1,0 +1,28 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "test": "pidigits",
+  "code": "2.rs",
+  "input": "4000",
+  "timeMS": 326.2208,
+  "timeStdDevMS": 0.9968787890210005,
+  "memBytes": 2613248,
+  "cpuTimeMS": 310.0,
+  "cpuTimeUserMS": 310.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "rustc 1.54.0 (a178d0322 2021-07-26)",
+    "start": "2021-09-21T18:51:41.5569811+00:00",
+    "finished": "2021-09-21T18:51:46.6484561+00:00",
+    "durationMs": 5091
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:35:44.3159327+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

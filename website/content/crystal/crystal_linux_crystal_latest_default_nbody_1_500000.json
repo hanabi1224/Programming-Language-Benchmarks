@@ -1,0 +1,28 @@
+{
+  "lang": "crystal",
+  "os": "linux",
+  "compiler": "crystal",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "1.cr",
+  "input": "500000",
+  "timeMS": 58.8836,
+  "timeStdDevMS": 0.9040274018708359,
+  "memBytes": 3612672,
+  "cpuTimeMS": 50.0,
+  "cpuTimeUserMS": 50.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Crystal 1.1.1 [6d9a1d583] (2021-07-26)\n\nLLVM: 10.0.1\nDefault target: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T18:29:33.7490818+00:00",
+    "finished": "2021-09-21T18:29:45.3556179+00:00",
+    "durationMs": 11606
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:25.5695765+00:00",
+    "finished": "2021-09-21T18:57:25.5775235+00:00",
+    "durationMs": 7
+  }
+}

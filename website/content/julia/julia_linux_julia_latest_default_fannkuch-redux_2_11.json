@@ -1,0 +1,28 @@
+{
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "2.jl",
+  "input": "11",
+  "timeMS": 2398.8468,
+  "timeStdDevMS": 2.6234319132264945,
+  "memBytes": 216084480,
+  "cpuTimeMS": 2669.9999,
+  "cpuTimeUserMS": 2486.6666,
+  "cpuTimeKernelMS": 183.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:15.2959997+00:00",
+    "finished": "2021-09-21T18:37:15.9038786+00:00",
+    "durationMs": 607
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.6.2",
+    "start": "2021-09-21T18:57:50.1746581+00:00",
+    "finished": "2021-09-21T18:57:51.2353081+00:00",
+    "durationMs": 1060
+  }
+}

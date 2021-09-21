@@ -1,0 +1,28 @@
+{
+  "lang": "dart",
+  "os": "linux",
+  "compiler": "dart",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.dart",
+  "input": "4000",
+  "timeMS": 1313.5505,
+  "timeStdDevMS": 1.6388413844338636,
+  "memBytes": 10526720,
+  "cpuTimeMS": 1303.3333,
+  "cpuTimeUserMS": 1303.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Dart SDK version: 2.13.4 (stable) (Wed Jun 23 13:08:41 2021 +0200) on \"linux_x64\"",
+    "start": "2021-09-21T18:34:26.9026892+00:00",
+    "finished": "2021-09-21T18:34:32.4164571+00:00",
+    "durationMs": 5513
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:39.8285301+00:00",
+    "finished": "2021-09-21T18:57:39.8398714+00:00",
+    "durationMs": 11
+  }
+}

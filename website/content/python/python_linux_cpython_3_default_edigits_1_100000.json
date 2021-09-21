@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3",
+  "test": "edigits",
+  "code": "1.py",
+  "input": "100000",
+  "timeMS": 383.6289,
+  "timeStdDevMS": 5.3150352171928095,
+  "memBytes": 14786560,
+  "cpuTimeMS": 370.0,
+  "cpuTimeUserMS": 370.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Python 3.9.6",
+    "start": "2021-09-21T18:45:48.4204218+00:00",
+    "finished": "2021-09-21T18:45:57.412057+00:00",
+    "durationMs": 8991
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:58:04.8906804+00:00",
+    "finished": "2021-09-21T18:58:04.9946+00:00",
+    "durationMs": 103
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.jl",
+  "input": "T_T",
+  "timeMS": 124.2343,
+  "timeStdDevMS": 0.43655511412268355,
+  "memBytes": 163123200,
+  "cpuTimeMS": 129.0,
+  "cpuTimeUserMS": 86.0,
+  "cpuTimeKernelMS": 43.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:16.4398397+00:00",
+    "finished": "2021-09-21T18:37:17.0402383+00:00",
+    "durationMs": 600
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.6.2",
+    "start": "2021-09-21T18:57:51.7927802+00:00",
+    "finished": "2021-09-21T18:57:52.0659975+00:00",
+    "durationMs": 273
+  }
+}

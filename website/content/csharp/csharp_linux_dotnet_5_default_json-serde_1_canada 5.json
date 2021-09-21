@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5",
+  "test": "json-serde",
+  "code": "1.cs",
+  "input": "canada 5",
+  "timeMS": 1143.9549,
+  "timeStdDevMS": 9.9314565343323,
+  "memBytes": 346234880,
+  "cpuTimeMS": 1303.3333,
+  "cpuTimeUserMS": 1180.0,
+  "cpuTimeKernelMS": 123.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "5.0.400",
+    "start": "2021-09-21T18:31:15.7049716+00:00",
+    "finished": "2021-09-21T18:31:21.6028355+00:00",
+    "durationMs": 5897
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:04:37.776261+00:00",
+    "finished": "2021-09-21T19:04:38.9823825+00:00",
+    "durationMs": 1206
+  }
+}

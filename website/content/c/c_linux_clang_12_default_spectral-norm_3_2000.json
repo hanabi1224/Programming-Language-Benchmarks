@@ -1,0 +1,28 @@
+{
+  "lang": "c",
+  "os": "linux",
+  "compiler": "clang",
+  "compilerVersion": "12",
+  "test": "spectral-norm",
+  "code": "3.c",
+  "input": "2000",
+  "timeMS": 65.9972,
+  "timeStdDevMS": 1.7267286536492397,
+  "memBytes": 3555328,
+  "cpuTimeMS": 233.3333,
+  "cpuTimeUserMS": 233.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Ubuntu clang version 12.0.0-3ubuntu1~21.04.2\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2021-09-21T18:26:21.1543927+00:00",
+    "finished": "2021-09-21T18:26:21.3049548+00:00",
+    "durationMs": 150
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:23.7062183+00:00",
+    "finished": "2021-09-21T18:57:23.7097841+00:00",
+    "durationMs": 3
+  }
+}

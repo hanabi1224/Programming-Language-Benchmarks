@@ -1,0 +1,28 @@
+{
+  "lang": "c",
+  "os": "linux",
+  "compiler": "gcc",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "3.c",
+  "input": "4000",
+  "timeMS": 234.5051,
+  "timeStdDevMS": 1.6984595265514344,
+  "memBytes": 1417216,
+  "cpuTimeMS": 896.6666,
+  "cpuTimeUserMS": 896.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "gcc (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "start": "2021-09-21T18:26:51.1390623+00:00",
+    "finished": "2021-09-21T18:26:55.6422621+00:00",
+    "durationMs": 4503
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:23.7580083+00:00",
+    "finished": "2021-09-21T18:57:23.7658784+00:00",
+    "durationMs": 7
+  }
+}

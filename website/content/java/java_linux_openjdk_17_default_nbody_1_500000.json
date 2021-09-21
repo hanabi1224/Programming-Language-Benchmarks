@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "openjdk",
+  "compilerVersion": "17",
+  "test": "nbody",
+  "code": "1.java",
+  "input": "500000",
+  "timeMS": 119.5637,
+  "timeStdDevMS": 41.96988763689191,
+  "memBytes": 40345600,
+  "cpuTimeMS": 133.3333,
+  "cpuTimeUserMS": 120.0,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "javac 17",
+    "start": "2021-09-21T18:36:27.1949859+00:00",
+    "finished": "2021-09-21T18:36:28.9802567+00:00",
+    "durationMs": 1785
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"17\" 2021-09-14\nOpenJDK Runtime Environment (build 17+35-2724)\nOpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)",
+    "start": "2021-09-21T18:57:42.4589067+00:00",
+    "finished": "2021-09-21T18:57:42.5775734+00:00",
+    "durationMs": 118
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "nim",
+  "os": "linux",
+  "compiler": "nim",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "1.nim",
+  "input": "250000",
+  "timeMS": 79.3408,
+  "timeStdDevMS": 5.239054529524707,
+  "memBytes": 897024,
+  "cpuTimeMS": 63.3333,
+  "cpuTimeUserMS": 50.0,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Nim Compiler Version 1.4.8 [Linux: amd64]\nCompiled at 2021-05-25\nCopyright (c) 2006-2021 by Andreas Rumpf\n\ngit hash: 44e653a9314e1b8503f0fa4a8a34c3380b26fff3\nactive boot switches: -d:release -d:danger",
+    "start": "2021-09-21T18:40:45.7442382+00:00",
+    "finished": "2021-09-21T18:40:53.9583824+00:00",
+    "durationMs": 8214
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:58:03.6131117+00:00",
+    "finished": "2021-09-21T18:58:03.6154643+00:00",
+    "durationMs": 2
+  }
+}

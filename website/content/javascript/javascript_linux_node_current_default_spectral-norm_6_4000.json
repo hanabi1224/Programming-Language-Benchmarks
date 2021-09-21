@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "current",
+  "test": "spectral-norm",
+  "code": "6.js",
+  "input": "4000",
+  "timeMS": 487.2684,
+  "timeStdDevMS": 18.653559887860553,
+  "memBytes": 70115328,
+  "cpuTimeMS": 1553.3333,
+  "cpuTimeUserMS": 1540.0,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:12.7386422+00:00",
+    "finished": "2021-09-21T18:37:13.3253032+00:00",
+    "durationMs": 586
+  },
+  "testLog": {
+    "runtimeVersion": "v16.8.0",
+    "start": "2021-09-21T18:57:49.4085015+00:00",
+    "finished": "2021-09-21T18:57:49.5642915+00:00",
+    "durationMs": 155
+  }
+}

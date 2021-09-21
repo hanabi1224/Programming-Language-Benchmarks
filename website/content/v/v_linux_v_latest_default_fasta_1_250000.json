@@ -1,0 +1,28 @@
+{
+  "lang": "v",
+  "os": "linux",
+  "compiler": "v",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "1.v",
+  "input": "250000",
+  "timeMS": 92.9761,
+  "timeStdDevMS": 5.5239399963552565,
+  "memBytes": 2584576,
+  "cpuTimeMS": 73.3332,
+  "cpuTimeUserMS": 66.6666,
+  "cpuTimeKernelMS": 6.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "V 0.2.4 41fc4c5",
+    "start": "2021-09-21T18:53:04.1706178+00:00",
+    "finished": "2021-09-21T18:53:07.5046206+00:00",
+    "durationMs": 3334
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:36:59.158803+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

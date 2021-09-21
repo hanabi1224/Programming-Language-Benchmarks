@@ -1,0 +1,28 @@
+{
+  "lang": "crystal",
+  "os": "linux",
+  "compiler": "crystal",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.cr",
+  "input": "4000",
+  "timeMS": 2245.7896,
+  "timeStdDevMS": 51.045051231338526,
+  "memBytes": 21135360,
+  "cpuTimeMS": 2230.0,
+  "cpuTimeUserMS": 2200.0,
+  "cpuTimeKernelMS": 30.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Crystal 1.1.1 [6d9a1d583] (2021-07-26)\n\nLLVM: 10.0.1\nDefault target: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T18:27:49.1983096+00:00",
+    "finished": "2021-09-21T18:27:58.6742383+00:00",
+    "durationMs": 9475
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:23.9830236+00:00",
+    "finished": "2021-09-21T18:57:24.0708814+00:00",
+    "durationMs": 87
+  }
+}

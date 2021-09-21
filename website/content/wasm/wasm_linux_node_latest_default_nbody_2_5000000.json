@@ -1,0 +1,28 @@
+{
+  "lang": "wasm",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "2.rs",
+  "input": "5000000",
+  "timeMS": 551.0869,
+  "timeStdDevMS": 4.655643270626977,
+  "memBytes": 45375488,
+  "cpuTimeMS": 593.3333,
+  "cpuTimeUserMS": 583.3333,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "rustc 1.56.0-nightly (ac50a5335 2021-08-27)",
+    "start": "2021-09-21T18:56:10.9570741+00:00",
+    "finished": "2021-09-21T18:56:12.8726811+00:00",
+    "durationMs": 1915
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:38:05.3026671+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

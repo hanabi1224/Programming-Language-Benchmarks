@@ -1,0 +1,28 @@
+{
+  "lang": "dart",
+  "os": "linux",
+  "compiler": "dart",
+  "compilerVersion": "latest",
+  "test": "mandelbrot",
+  "code": "2.dart",
+  "input": "8000",
+  "timeMS": 2418.2903,
+  "timeStdDevMS": 19.90297440710792,
+  "memBytes": 50372608,
+  "cpuTimeMS": 6319.9999,
+  "cpuTimeUserMS": 6303.3333,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "Dart SDK version: 2.13.4 (stable) (Wed Jun 23 13:08:41 2021 +0200) on \"linux_x64\"",
+    "start": "2021-09-21T18:34:09.4059082+00:00",
+    "finished": "2021-09-21T18:34:15.4065759+00:00",
+    "durationMs": 6000
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:39.7446994+00:00",
+    "finished": "2021-09-21T18:57:39.7900862+00:00",
+    "durationMs": 45
+  }
+}

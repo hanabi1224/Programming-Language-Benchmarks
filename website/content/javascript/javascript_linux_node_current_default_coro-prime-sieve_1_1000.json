@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "current",
+  "test": "coro-prime-sieve",
+  "code": "1.js",
+  "input": "1000",
+  "timeMS": 193.5742,
+  "timeStdDevMS": 6.7731789082626195,
+  "memBytes": 53374976,
+  "cpuTimeMS": 200.0,
+  "cpuTimeUserMS": 190.0,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:09.5763475+00:00",
+    "finished": "2021-09-21T18:37:10.1041605+00:00",
+    "durationMs": 527
+  },
+  "testLog": {
+    "runtimeVersion": "v16.8.0",
+    "start": "2021-09-21T18:57:48.0888687+00:00",
+    "finished": "2021-09-21T18:57:48.2816677+00:00",
+    "durationMs": 192
+  }
+}

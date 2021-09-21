@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "pypy",
+  "compilerVersion": "3",
+  "test": "binarytrees",
+  "code": "1.py",
+  "input": "18",
+  "timeMS": 1763.0492,
+  "timeStdDevMS": 9.7930407342835,
+  "memBytes": 114065408,
+  "cpuTimeMS": 3966.6666,
+  "cpuTimeUserMS": 3800.0,
+  "cpuTimeKernelMS": 166.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:47:10.1286068+00:00",
+    "finished": "2021-09-21T18:47:10.5833929+00:00",
+    "durationMs": 454
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:30:16.9957116+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

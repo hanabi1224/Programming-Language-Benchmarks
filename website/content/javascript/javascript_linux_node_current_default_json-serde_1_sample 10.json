@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "current",
+  "test": "json-serde",
+  "code": "1.js",
+  "input": "sample 10",
+  "timeMS": 43.4428,
+  "timeStdDevMS": 1.7287184569308318,
+  "memBytes": 34975744,
+  "cpuTimeMS": 30.0,
+  "cpuTimeUserMS": 30.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:11.2102534+00:00",
+    "finished": "2021-09-21T18:37:11.7924031+00:00",
+    "durationMs": 582
+  },
+  "testLog": {
+    "runtimeVersion": "v16.8.0",
+    "start": "2021-09-21T18:57:48.9515258+00:00",
+    "finished": "2021-09-21T18:57:49.2396975+00:00",
+    "durationMs": 288
+  }
+}

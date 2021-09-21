@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "5",
+  "test": "fannkuch-redux",
+  "code": "9.cs",
+  "input": "11",
+  "timeMS": 585.2821,
+  "timeStdDevMS": 0.8530528881611708,
+  "memBytes": 35397632,
+  "cpuTimeMS": 2076.6666,
+  "cpuTimeUserMS": 2066.6666,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "5.0.400",
+    "start": "2021-09-21T18:30:52.4889221+00:00",
+    "finished": "2021-09-21T18:30:58.0676341+00:00",
+    "durationMs": 5578
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:04:35.9317465+00:00",
+    "finished": "2021-09-21T19:04:36.24066+00:00",
+    "durationMs": 308
+  }
+}

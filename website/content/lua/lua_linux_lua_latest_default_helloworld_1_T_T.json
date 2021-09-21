@@ -1,0 +1,28 @@
+{
+  "lang": "lua",
+  "os": "linux",
+  "compiler": "lua",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.lua",
+  "input": "T_T",
+  "timeMS": 1.032,
+  "timeStdDevMS": 0.28894043676854925,
+  "memBytes": 1523712,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:40:36.2168315+00:00",
+    "finished": "2021-09-21T18:40:36.2219756+00:00",
+    "durationMs": 5
+  },
+  "testLog": {
+    "runtimeVersion": "Lua 5.4.3  Copyright (C) 1994-2021 Lua.org, PUC-Rio",
+    "start": "2021-09-21T18:58:03.500148+00:00",
+    "finished": "2021-09-21T18:58:03.5046715+00:00",
+    "durationMs": 4
+  }
+}

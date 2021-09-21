@@ -1,0 +1,28 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "test": "binarytrees",
+  "code": "3.rs",
+  "input": "14",
+  "timeMS": 77.2585,
+  "timeStdDevMS": 0.16987202045460925,
+  "memBytes": 5242880,
+  "cpuTimeMS": 70.0,
+  "cpuTimeUserMS": 70.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "rustc 1.54.0 (a178d0322 2021-07-26)",
+    "start": "2021-09-21T18:48:48.3506228+00:00",
+    "finished": "2021-09-21T18:48:52.3415764+00:00",
+    "durationMs": 3990
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:34:26.9177081+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

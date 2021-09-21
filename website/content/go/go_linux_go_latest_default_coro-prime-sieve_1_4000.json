@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.go",
+  "input": "4000",
+  "timeMS": 553.6445,
+  "timeStdDevMS": 21.64988630739971,
+  "memBytes": 12713984,
+  "cpuTimeMS": 1989.9999,
+  "cpuTimeUserMS": 1966.6666,
+  "cpuTimeKernelMS": 23.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "go version go1.17 linux/amd64",
+    "start": "2021-09-21T18:34:58.1466056+00:00",
+    "finished": "2021-09-21T18:34:59.3432128+00:00",
+    "durationMs": 1196
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:39.9009557+00:00",
+    "finished": "2021-09-21T18:57:39.9546498+00:00",
+    "durationMs": 53
+  }
+}

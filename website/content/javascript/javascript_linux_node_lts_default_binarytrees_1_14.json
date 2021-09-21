@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "lts",
+  "test": "binarytrees",
+  "code": "1.js",
+  "input": "14",
+  "timeMS": 232.8753,
+  "timeStdDevMS": 20.92416687716225,
+  "memBytes": 95096832,
+  "cpuTimeMS": 483.3333,
+  "cpuTimeUserMS": 440.0,
+  "cpuTimeKernelMS": 43.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:37:04.033663+00:00",
+    "finished": "2021-09-21T18:37:04.5123293+00:00",
+    "durationMs": 478
+  },
+  "testLog": {
+    "runtimeVersion": "v14.17.5",
+    "start": "2021-09-21T18:57:46.1545057+00:00",
+    "finished": "2021-09-21T18:57:46.3224644+00:00",
+    "durationMs": 167
+  }
+}

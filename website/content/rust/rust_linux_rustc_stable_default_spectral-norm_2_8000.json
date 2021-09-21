@@ -1,0 +1,28 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "test": "spectral-norm",
+  "code": "2.rs",
+  "input": "8000",
+  "timeMS": 4746.6529,
+  "timeStdDevMS": 2.8989388455091554,
+  "memBytes": 2314240,
+  "cpuTimeMS": 4736.6666,
+  "cpuTimeUserMS": 4736.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "rustc 1.54.0 (a178d0322 2021-07-26)",
+    "start": "2021-09-21T18:51:46.6500089+00:00",
+    "finished": "2021-09-21T18:51:51.2609799+00:00",
+    "durationMs": 4610
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T19:36:07.5143849+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}

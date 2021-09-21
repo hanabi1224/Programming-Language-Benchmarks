@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "openjdk",
+  "compilerVersion": "18",
+  "test": "pidigits",
+  "code": "1.java",
+  "input": "8000",
+  "timeMS": 4394.955,
+  "timeStdDevMS": 44.182241452231814,
+  "memBytes": 433201152,
+  "cpuTimeMS": 5066.6666,
+  "cpuTimeUserMS": 4913.3333,
+  "cpuTimeKernelMS": 153.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "javac 18-ea",
+    "start": "2021-09-21T18:37:00.1469293+00:00",
+    "finished": "2021-09-21T18:37:01.7983767+00:00",
+    "durationMs": 1651
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"18-ea\" 2022-03-15\nOpenJDK Runtime Environment (build 18-ea+14-756)\nOpenJDK 64-Bit Server VM (build 18-ea+14-756, mixed mode, sharing)",
+    "start": "2021-09-21T18:57:45.9672301+00:00",
+    "finished": "2021-09-21T18:57:46.0420289+00:00",
+    "durationMs": 74
+  }
+}

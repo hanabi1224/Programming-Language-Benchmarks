@@ -1,0 +1,28 @@
+{
+  "lang": "lisp",
+  "os": "linux",
+  "compiler": "sbcl",
+  "compilerVersion": "latest",
+  "test": "mandelbrot",
+  "code": "1.cl",
+  "input": "8000",
+  "timeMS": 882.1172,
+  "timeStdDevMS": 11.361653280369584,
+  "memBytes": 48340992,
+  "cpuTimeMS": 3239.9999,
+  "cpuTimeUserMS": 3236.6666,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "SBCL 2.1.8.12-1066cf2c3",
+    "start": "2021-09-21T18:39:43.2734015+00:00",
+    "finished": "2021-09-21T18:39:48.4027637+00:00",
+    "durationMs": 5129
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:58:03.257569+00:00",
+    "finished": "2021-09-21T18:58:03.2996357+00:00",
+    "durationMs": 42
+  }
+}

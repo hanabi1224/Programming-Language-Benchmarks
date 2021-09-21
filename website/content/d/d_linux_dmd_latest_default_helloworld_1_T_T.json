@@ -1,0 +1,28 @@
+{
+  "lang": "d",
+  "os": "linux",
+  "compiler": "dmd",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.d",
+  "input": "T_T",
+  "timeMS": 1.6797,
+  "timeStdDevMS": 0.9480977682824816,
+  "memBytes": 3977216,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
+    "start": "2021-09-21T18:33:15.1328319+00:00",
+    "finished": "2021-09-21T18:33:16.8544023+00:00",
+    "durationMs": 1721
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T18:57:35.4546811+00:00",
+    "finished": "2021-09-21T18:57:35.4638739+00:00",
+    "durationMs": 9
+  }
+}

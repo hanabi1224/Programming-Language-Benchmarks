@@ -1,0 +1,28 @@
+{
+  "lang": "lua",
+  "os": "linux",
+  "compiler": "luajit",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.lua",
+  "input": "2000",
+  "timeMS": 290.1475,
+  "timeStdDevMS": 2.6251430037237466,
+  "memBytes": 2281472,
+  "cpuTimeMS": 280.0,
+  "cpuTimeUserMS": 280.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T18:40:36.2560407+00:00",
+    "finished": "2021-09-21T18:40:36.26206+00:00",
+    "durationMs": 6
+  },
+  "testLog": {
+    "runtimeVersion": "LuaJIT 2.1.0-beta3 -- Copyright (C) 2005-2021 Mike Pall. https://luajit.org/",
+    "start": "2021-09-21T18:58:03.5984913+00:00",
+    "finished": "2021-09-21T18:58:03.602786+00:00",
+    "durationMs": 4
+  }
+}

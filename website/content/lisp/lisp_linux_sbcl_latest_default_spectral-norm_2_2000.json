@@ -1,0 +1,28 @@
+{
+  "lang": "lisp",
+  "os": "linux",
+  "compiler": "sbcl",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "2.cl",
+  "input": "2000",
+  "timeMS": 53.5092,
+  "timeStdDevMS": 5.625783202363916,
+  "memBytes": 34893824,
+  "cpuTimeMS": 106.6666,
+  "cpuTimeUserMS": 103.3333,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "SBCL 2.1.8.12-1066cf2c3",
+    "start": "2021-09-21T20:02:44.2122339+00:00",
+    "finished": "2021-09-21T20:02:50.2908087+00:00",
+    "durationMs": 6078
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T20:21:34.9056373+00:00",
+    "finished": "0001-01-01T00:00:00+00:00",
+    "durationMs": 0
+  }
+}
