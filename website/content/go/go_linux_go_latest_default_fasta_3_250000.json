@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "3.go",
+  "input": "250000",
+  "timeMS": 65.1102,
+  "timeStdDevMS": 5.870834775679979,
+  "memBytes": 3489792,
+  "cpuTimeMS": 40.0,
+  "cpuTimeUserMS": 40.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "go version go1.17.1 linux/amd64",
+    "start": "2021-09-21T08:50:15.2620703+00:00",
+    "finished": "2021-09-21T08:50:16.4505209+00:00",
+    "durationMs": 1188
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:30.2431651+00:00",
+    "finished": "2021-09-21T08:50:30.2997255+00:00",
+    "durationMs": 56
+  }
+}

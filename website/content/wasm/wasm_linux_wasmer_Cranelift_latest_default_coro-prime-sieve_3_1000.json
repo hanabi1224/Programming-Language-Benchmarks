@@ -1,0 +1,28 @@
+{
+  "lang": "wasm",
+  "os": "linux",
+  "compiler": "wasmer/Cranelift",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "3.rs",
+  "input": "1000",
+  "timeMS": 241.1736,
+  "timeStdDevMS": 43.358246872346356,
+  "memBytes": 32735232,
+  "cpuTimeMS": 233.3333,
+  "cpuTimeUserMS": 190.0,
+  "cpuTimeKernelMS": 43.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "rustc 1.55.0 (c8dfcfe04 2021-09-06)",
+    "start": "2021-09-21T08:57:29.2243587+00:00",
+    "finished": "2021-09-21T08:57:33.1184263+00:00",
+    "durationMs": 3894
+  },
+  "testLog": {
+    "runtimeVersion": "wasmer 2.0.0",
+    "start": "2021-09-21T08:58:21.8356081+00:00",
+    "finished": "2021-09-21T08:58:22.2681433+00:00",
+    "durationMs": 432
+  }
+}

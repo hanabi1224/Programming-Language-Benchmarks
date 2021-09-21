@@ -1,0 +1,28 @@
+{
+  "lang": "ocaml",
+  "os": "linux",
+  "compiler": "ocamlc",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "5.ml",
+  "input": "14",
+  "timeMS": 23.363,
+  "timeStdDevMS": 1.9468887898388043,
+  "memBytes": 5849088,
+  "cpuTimeMS": 13.3333,
+  "cpuTimeUserMS": 13.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "4.12.0",
+    "start": "2021-09-21T08:48:54.5111402+00:00",
+    "finished": "2021-09-21T08:50:44.5105739+00:00",
+    "durationMs": 109999
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:53:28.5100832+00:00",
+    "finished": "2021-09-21T08:53:28.5233873+00:00",
+    "durationMs": 13
+  }
+}

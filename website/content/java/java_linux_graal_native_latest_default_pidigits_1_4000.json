@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "graal/native",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "1.java",
+  "input": "4000",
+  "timeMS": 2106.3696,
+  "timeStdDevMS": 22.658526723730507,
+  "memBytes": 276209664,
+  "cpuTimeMS": 2033.3333,
+  "cpuTimeUserMS": 1893.3333,
+  "cpuTimeKernelMS": 140.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "GraalVM 21.2.0 Java 11 CE (Java Version 11.0.12+6-jvmci-21.2-b08)",
+    "start": "2021-09-21T08:56:52.0998702+00:00",
+    "finished": "2021-09-21T08:57:50.5781551+00:00",
+    "durationMs": 58478
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T09:00:13.4237522+00:00",
+    "finished": "2021-09-21T09:00:13.4303829+00:00",
+    "durationMs": 6
+  }
+}

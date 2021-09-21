@@ -1,0 +1,28 @@
+{
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "3.jl",
+  "input": "8000",
+  "timeMS": 3492.5071,
+  "timeStdDevMS": 0.4904295158325897,
+  "memBytes": 198758400,
+  "cpuTimeMS": 3576.6666,
+  "cpuTimeUserMS": 3453.3333,
+  "cpuTimeKernelMS": 123.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:49:13.5170762+00:00",
+    "finished": "2021-09-21T08:49:13.9412844+00:00",
+    "durationMs": 424
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.6.2",
+    "start": "2021-09-21T08:49:22.090719+00:00",
+    "finished": "2021-09-21T08:49:22.5457684+00:00",
+    "durationMs": 455
+  }
+}

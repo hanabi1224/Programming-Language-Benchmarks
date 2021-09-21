@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "graal/native",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.java",
+  "input": "11",
+  "timeMS": 2040.8552,
+  "timeStdDevMS": 10.057922399945927,
+  "memBytes": 9183232,
+  "cpuTimeMS": 3996.6666,
+  "cpuTimeUserMS": 3996.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "GraalVM 21.2.0 Java 11 CE (Java Version 11.0.12+6-jvmci-21.2-b08)",
+    "start": "2021-09-21T08:51:48.0599291+00:00",
+    "finished": "2021-09-21T08:52:49.0109491+00:00",
+    "durationMs": 60951
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T09:00:13.1486562+00:00",
+    "finished": "2021-09-21T09:00:13.3704995+00:00",
+    "durationMs": 221
+  }
+}

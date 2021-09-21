@@ -1,0 +1,28 @@
+{
+  "lang": "v",
+  "os": "linux",
+  "compiler": "v",
+  "compilerVersion": "latest",
+  "test": "nsieve",
+  "code": "1.v",
+  "input": "10",
+  "timeMS": 118.8719,
+  "timeStdDevMS": 0.5425826603692107,
+  "memBytes": 21323776,
+  "cpuTimeMS": 113.3333,
+  "cpuTimeUserMS": 113.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "V 0.2.4 e4bd230",
+    "start": "2021-09-21T08:51:56.5646815+00:00",
+    "finished": "2021-09-21T08:52:00.3301035+00:00",
+    "durationMs": 3765
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:13.7888085+00:00",
+    "finished": "2021-09-21T08:52:13.7946349+00:00",
+    "durationMs": 5
+  }
+}

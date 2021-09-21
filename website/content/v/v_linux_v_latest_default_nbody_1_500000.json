@@ -1,0 +1,28 @@
+{
+  "lang": "v",
+  "os": "linux",
+  "compiler": "v",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "1.v",
+  "input": "500000",
+  "timeMS": 274.2389,
+  "timeStdDevMS": 44.75384174016053,
+  "memBytes": 2527232,
+  "cpuTimeMS": 70.0,
+  "cpuTimeUserMS": 70.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "V 0.2.4 e4bd230",
+    "start": "2021-09-21T08:51:52.304143+00:00",
+    "finished": "2021-09-21T08:51:56.5629272+00:00",
+    "durationMs": 4258
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:13.3745367+00:00",
+    "finished": "2021-09-21T08:52:13.7876214+00:00",
+    "durationMs": 413
+  }
+}

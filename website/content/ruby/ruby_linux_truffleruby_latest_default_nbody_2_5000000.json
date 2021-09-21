@@ -1,0 +1,28 @@
+{
+  "lang": "ruby",
+  "os": "linux",
+  "compiler": "truffleruby",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "2.rb",
+  "input": "5000000",
+  "timeMS": 1454.686,
+  "timeStdDevMS": 7.4162594293439446,
+  "memBytes": 596881408,
+  "cpuTimeMS": 1929.9999,
+  "cpuTimeUserMS": 1686.6666,
+  "cpuTimeKernelMS": 243.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:50:12.5588633+00:00",
+    "finished": "2021-09-21T08:50:12.5623481+00:00",
+    "durationMs": 3
+  },
+  "testLog": {
+    "runtimeVersion": "truffleruby 21.2.0.1, like ruby 2.7.3, GraalVM CE Native [x86_64-linux]",
+    "start": "2021-09-21T08:50:24.3603491+00:00",
+    "finished": "2021-09-21T08:50:24.6430138+00:00",
+    "durationMs": 282
+  }
+}

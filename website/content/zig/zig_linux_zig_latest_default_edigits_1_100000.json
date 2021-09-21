@@ -1,0 +1,28 @@
+{
+  "lang": "zig",
+  "os": "linux",
+  "compiler": "zig",
+  "compilerVersion": "latest",
+  "test": "edigits",
+  "code": "1.zig",
+  "input": "100000",
+  "timeMS": 3397.2153,
+  "timeStdDevMS": 15.659572667966597,
+  "memBytes": 671744,
+  "cpuTimeMS": 3369.9999,
+  "cpuTimeUserMS": 3289.9999,
+  "cpuTimeKernelMS": 80.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "0.9.0-dev.1095+2a728f6e5",
+    "start": "2021-09-21T08:51:21.0389342+00:00",
+    "finished": "2021-09-21T08:51:33.4272657+00:00",
+    "durationMs": 12388
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:38.9560682+00:00",
+    "finished": "2021-09-21T08:52:38.9647052+00:00",
+    "durationMs": 8
+  }
+}

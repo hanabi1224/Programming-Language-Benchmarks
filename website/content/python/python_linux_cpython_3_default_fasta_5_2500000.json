@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3",
+  "test": "fasta",
+  "code": "5.py",
+  "input": "2500000",
+  "timeMS": 4595.8118,
+  "timeStdDevMS": 24.450308938130142,
+  "memBytes": 198762496,
+  "cpuTimeMS": 53.3333,
+  "cpuTimeUserMS": 43.3333,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Python 3.9.7",
+    "start": "2021-09-21T08:50:12.6426803+00:00",
+    "finished": "2021-09-21T08:50:22.6423317+00:00",
+    "durationMs": 9999
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:51:51.1084448+00:00",
+    "finished": "2021-09-21T08:51:51.2322248+00:00",
+    "durationMs": 123
+  }
+}

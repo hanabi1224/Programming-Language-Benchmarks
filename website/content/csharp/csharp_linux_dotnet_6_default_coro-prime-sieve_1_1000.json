@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "6",
+  "test": "coro-prime-sieve",
+  "code": "1.cs",
+  "input": "1000",
+  "timeMS": 438.5689,
+  "timeStdDevMS": 38.986331201717356,
+  "memBytes": 75763712,
+  "cpuTimeMS": 639.9999,
+  "cpuTimeUserMS": 603.3333,
+  "cpuTimeKernelMS": 36.6666,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "6.0.100-rc.1.21458.32",
+    "start": "2021-09-21T08:49:25.6788218+00:00",
+    "finished": "2021-09-21T08:49:32.7782836+00:00",
+    "durationMs": 7099
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:43.8575383+00:00",
+    "finished": "2021-09-21T08:52:44.2966762+00:00",
+    "durationMs": 439
+  }
+}

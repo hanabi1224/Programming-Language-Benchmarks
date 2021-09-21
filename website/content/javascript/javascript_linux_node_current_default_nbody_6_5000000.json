@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node",
+  "compilerVersion": "current",
+  "test": "nbody",
+  "code": "6.js",
+  "input": "5000000",
+  "timeMS": 761.0752,
+  "timeStdDevMS": 10.443983301563257,
+  "memBytes": 39735296,
+  "cpuTimeMS": 753.3333,
+  "cpuTimeUserMS": 750.0,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:49:39.2153552+00:00",
+    "finished": "2021-09-21T08:49:39.7263964+00:00",
+    "durationMs": 511
+  },
+  "testLog": {
+    "runtimeVersion": "v16.9.1",
+    "start": "2021-09-21T08:49:52.1039759+00:00",
+    "finished": "2021-09-21T08:49:52.2316793+00:00",
+    "durationMs": 127
+  }
+}

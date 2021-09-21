@@ -1,0 +1,28 @@
+{
+  "lang": "lisp",
+  "os": "linux",
+  "compiler": "sbcl",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.cl",
+  "input": "10",
+  "timeMS": 139.2549,
+  "timeStdDevMS": 3.2798412161769854,
+  "memBytes": 43819008,
+  "cpuTimeMS": 230.0,
+  "cpuTimeUserMS": 230.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "SBCL 2.1.8.12-1066cf2c3",
+    "start": "2021-09-21T08:53:50.8404874+00:00",
+    "finished": "2021-09-21T08:53:53.2824017+00:00",
+    "durationMs": 2441
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:54:35.6332335+00:00",
+    "finished": "2021-09-21T08:54:35.8259548+00:00",
+    "durationMs": 192
+  }
+}

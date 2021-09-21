@@ -1,0 +1,28 @@
+{
+  "lang": "wasm",
+  "os": "linux",
+  "compiler": "wasm/graal",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "1.rs",
+  "input": "500000",
+  "timeMS": 701.2781,
+  "timeStdDevMS": 5.514936287332162,
+  "memBytes": 142819328,
+  "cpuTimeMS": 820.0,
+  "cpuTimeUserMS": 780.0,
+  "cpuTimeKernelMS": 40.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "rustc 1.55.0 (c8dfcfe04 2021-09-06)",
+    "start": "2021-09-21T08:54:36.6052303+00:00",
+    "finished": "2021-09-21T08:54:38.8395625+00:00",
+    "durationMs": 2234
+  },
+  "testLog": {
+    "runtimeVersion": "WebAssembly (GraalVM CE Native 21.2.0)",
+    "start": "2021-09-21T08:58:00.6790941+00:00",
+    "finished": "2021-09-21T08:58:01.0216265+00:00",
+    "durationMs": 342
+  }
+}

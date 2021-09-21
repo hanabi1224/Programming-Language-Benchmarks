@@ -1,0 +1,28 @@
+{
+  "lang": "crystal",
+  "os": "linux",
+  "compiler": "crystal",
+  "compilerVersion": "latest",
+  "test": "edigits",
+  "code": "1.cr",
+  "input": "250001",
+  "timeMS": 88.8172,
+  "timeStdDevMS": 6.552506653436775,
+  "memBytes": 9605120,
+  "cpuTimeMS": 69.9999,
+  "cpuTimeUserMS": 56.6666,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Crystal 1.1.1 [6d9a1d583] (2021-07-26)\n\nLLVM: 10.0.1\nDefault target: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T08:49:42.3506595+00:00",
+    "finished": "2021-09-21T08:49:54.0936101+00:00",
+    "durationMs": 11742
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:17.4723776+00:00",
+    "finished": "2021-09-21T08:52:17.4794301+00:00",
+    "durationMs": 7
+  }
+}

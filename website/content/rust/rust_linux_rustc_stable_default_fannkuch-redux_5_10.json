@@ -1,0 +1,28 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "test": "fannkuch-redux",
+  "code": "5.rs",
+  "input": "10",
+  "timeMS": 99.7097,
+  "timeStdDevMS": 1.0327769233156379,
+  "memBytes": 712704,
+  "cpuTimeMS": 170.0,
+  "cpuTimeUserMS": 170.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "rustc 1.55.0 (c8dfcfe04 2021-09-06)",
+    "start": "2021-09-21T08:57:46.8254122+00:00",
+    "finished": "2021-09-21T08:57:54.1757186+00:00",
+    "durationMs": 7350
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T09:00:50.7617438+00:00",
+    "finished": "2021-09-21T09:00:50.8843846+00:00",
+    "durationMs": 122
+  }
+}

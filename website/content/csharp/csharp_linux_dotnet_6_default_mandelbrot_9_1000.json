@@ -1,0 +1,28 @@
+{
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet",
+  "compilerVersion": "6",
+  "test": "mandelbrot",
+  "code": "9.cs",
+  "input": "1000",
+  "timeMS": 109.3864,
+  "timeStdDevMS": 46.05181422770805,
+  "memBytes": 36372480,
+  "cpuTimeMS": 106.6666,
+  "cpuTimeUserMS": 93.3333,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "6.0.100-rc.1.21458.32",
+    "start": "2021-09-21T08:50:13.7351827+00:00",
+    "finished": "2021-09-21T08:50:20.4781057+00:00",
+    "durationMs": 6742
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:46.9885922+00:00",
+    "finished": "2021-09-21T08:52:47.2113332+00:00",
+    "durationMs": 222
+  }
+}

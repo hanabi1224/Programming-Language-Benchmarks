@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "mandelbrot",
+  "code": "1.go",
+  "input": "1000",
+  "timeMS": 46.3898,
+  "timeStdDevMS": 4.110133786549205,
+  "memBytes": 3592192,
+  "cpuTimeMS": 70.0,
+  "cpuTimeUserMS": 70.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "go version go1.17.1 linux/amd64",
+    "start": "2021-09-21T08:50:20.0019765+00:00",
+    "finished": "2021-09-21T08:50:21.1500831+00:00",
+    "durationMs": 1148
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:30.8111821+00:00",
+    "finished": "2021-09-21T08:50:30.838585+00:00",
+    "durationMs": 27
+  }
+}

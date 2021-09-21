@@ -1,0 +1,28 @@
+{
+  "lang": "nim",
+  "os": "linux",
+  "compiler": "nim",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.nim",
+  "input": "8000",
+  "timeMS": 3434.5993,
+  "timeStdDevMS": 2.646534165659093,
+  "memBytes": 3362816,
+  "cpuTimeMS": 3423.3333,
+  "cpuTimeUserMS": 3423.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Nim Compiler Version 1.4.8 [Linux: amd64]\nCompiled at 2021-05-25\nCopyright (c) 2006-2021 by Andreas Rumpf\n\ngit hash: 44e653a9314e1b8503f0fa4a8a34c3380b26fff3\nactive boot switches: -d:release -d:danger",
+    "start": "2021-09-21T08:50:03.3482217+00:00",
+    "finished": "2021-09-21T08:50:11.3856032+00:00",
+    "durationMs": 8037
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:21.3040973+00:00",
+    "finished": "2021-09-21T08:50:21.3068317+00:00",
+    "durationMs": 2
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "cpython",
+  "compilerVersion": "3",
+  "test": "pidigits",
+  "code": "4.py",
+  "input": "4000",
+  "timeMS": 616.7255,
+  "timeStdDevMS": 26.446914019660788,
+  "memBytes": 684032,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Python 3.9.7",
+    "start": "2021-09-21T08:51:13.3500364+00:00",
+    "finished": "2021-09-21T08:51:23.6413999+00:00",
+    "durationMs": 10291
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:51:53.9808641+00:00",
+    "finished": "2021-09-21T08:51:54.1203559+00:00",
+    "durationMs": 139
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "wasm",
+  "os": "linux",
+  "compiler": "wasmedgec",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "1.rs",
+  "input": "500000",
+  "timeMS": 62.8958,
+  "timeStdDevMS": 0.9532292711270082,
+  "memBytes": 13967360,
+  "cpuTimeMS": 50.0,
+  "cpuTimeUserMS": 50.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "rustc 1.55.0 (c8dfcfe04 2021-09-06)",
+    "start": "2021-09-21T08:52:53.8210601+00:00",
+    "finished": "2021-09-21T08:52:58.658357+00:00",
+    "durationMs": 4837
+  },
+  "testLog": {
+    "runtimeVersion": "wasmedge version 0.8.2",
+    "start": "2021-09-21T08:57:58.6475687+00:00",
+    "finished": "2021-09-21T08:57:58.6862276+00:00",
+    "durationMs": 38
+  }
+}

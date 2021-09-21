@@ -1,0 +1,28 @@
+{
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "1.jl",
+  "input": "4000",
+  "timeMS": 896.8025,
+  "timeStdDevMS": 49.971907885964555,
+  "memBytes": 266711040,
+  "cpuTimeMS": 923.3333,
+  "cpuTimeUserMS": 763.3333,
+  "cpuTimeKernelMS": 160.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:49:12.2140658+00:00",
+    "finished": "2021-09-21T08:49:12.6524085+00:00",
+    "durationMs": 438
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.6.2",
+    "start": "2021-09-21T08:49:20.2872895+00:00",
+    "finished": "2021-09-21T08:49:21.1404747+00:00",
+    "durationMs": 853
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "ocaml",
+  "os": "linux",
+  "compiler": "ocamlc",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "2.ml",
+  "input": "11",
+  "timeMS": 3461.1608,
+  "timeStdDevMS": 5.171500817944705,
+  "memBytes": 1253376,
+  "cpuTimeMS": 3450.0,
+  "cpuTimeUserMS": 3450.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "4.12.0",
+    "start": "2021-09-21T08:50:44.6202295+00:00",
+    "finished": "2021-09-21T08:51:16.8566103+00:00",
+    "durationMs": 32236
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:53:28.6267653+00:00",
+    "finished": "2021-09-21T08:53:28.9690803+00:00",
+    "durationMs": 342
+  }
+}

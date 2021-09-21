@@ -1,0 +1,28 @@
+{
+  "lang": "haxe",
+  "os": "linux",
+  "compiler": "haxe/hashlink",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.hx",
+  "input": "2000",
+  "timeMS": 2848.0552,
+  "timeStdDevMS": 2.6166680040334254,
+  "memBytes": 4038656,
+  "cpuTimeMS": 2830.0,
+  "cpuTimeUserMS": 2830.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "4.2.3",
+    "start": "2021-09-21T08:49:18.1150779+00:00",
+    "finished": "2021-09-21T08:49:19.4902738+00:00",
+    "durationMs": 1375
+  },
+  "testLog": {
+    "runtimeVersion": "1.12.0",
+    "start": "2021-09-21T08:49:22.2247654+00:00",
+    "finished": "2021-09-21T08:49:22.2425604+00:00",
+    "durationMs": 17
+  }
+}

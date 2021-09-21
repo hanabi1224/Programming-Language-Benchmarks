@@ -1,0 +1,28 @@
+{
+  "lang": "cpp",
+  "os": "linux",
+  "compiler": "clang++",
+  "compilerVersion": "12",
+  "test": "nsieve",
+  "code": "1.cpp",
+  "input": "10",
+  "timeMS": 119.2333,
+  "timeStdDevMS": 1.3682362222949747,
+  "memBytes": 13668352,
+  "cpuTimeMS": 103.3333,
+  "cpuTimeUserMS": 103.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Ubuntu clang version 12.0.0-3ubuntu1~20.04.3\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2021-09-21T08:50:30.2736609+00:00",
+    "finished": "2021-09-21T08:50:31.4894452+00:00",
+    "durationMs": 1215
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:56.3573447+00:00",
+    "finished": "2021-09-21T08:50:56.3627943+00:00",
+    "durationMs": 5
+  }
+}

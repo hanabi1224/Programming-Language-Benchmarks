@@ -1,0 +1,28 @@
+{
+  "lang": "haxe",
+  "os": "linux",
+  "compiler": "haxe/hashlink",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "1.hx",
+  "input": "250000",
+  "timeMS": 1206.0352,
+  "timeStdDevMS": 27.200515623299196,
+  "memBytes": 3944448,
+  "cpuTimeMS": 943.3332,
+  "cpuTimeUserMS": 809.9999,
+  "cpuTimeKernelMS": 133.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "4.2.3",
+    "start": "2021-09-21T08:49:07.349439+00:00",
+    "finished": "2021-09-21T08:49:15.2462051+00:00",
+    "durationMs": 7896
+  },
+  "testLog": {
+    "runtimeVersion": "1.12.0",
+    "start": "2021-09-21T08:49:22.0509552+00:00",
+    "finished": "2021-09-21T08:49:22.0751784+00:00",
+    "durationMs": 24
+  }
+}

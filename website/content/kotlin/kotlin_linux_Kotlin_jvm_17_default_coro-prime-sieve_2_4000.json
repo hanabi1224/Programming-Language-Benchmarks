@@ -1,0 +1,28 @@
+{
+  "lang": "kotlin",
+  "os": "linux",
+  "compiler": "Kotlin/jvm",
+  "compilerVersion": "17",
+  "test": "coro-prime-sieve",
+  "code": "2.kt",
+  "input": "4000",
+  "timeMS": 3012.3335,
+  "timeStdDevMS": 207.12939129013836,
+  "memBytes": 188542976,
+  "cpuTimeMS": 5646.6666,
+  "cpuTimeUserMS": 5543.3333,
+  "cpuTimeKernelMS": 103.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:50:34.2965146+00:00",
+    "finished": "2021-09-21T08:50:42.0742768+00:00",
+    "durationMs": 7777
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"17\" 2021-09-14\nOpenJDK Runtime Environment (build 17+35-2724)\nOpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)",
+    "start": "2021-09-21T08:54:32.7117667+00:00",
+    "finished": "2021-09-21T08:54:33.8897645+00:00",
+    "durationMs": 1177
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "openjdk/zgc",
+  "compilerVersion": "17",
+  "test": "edigits",
+  "code": "1.java",
+  "input": "100000",
+  "timeMS": 601.5386,
+  "timeStdDevMS": 14.110937177003413,
+  "memBytes": 249536512,
+  "cpuTimeMS": 970.0,
+  "cpuTimeUserMS": 800.0,
+  "cpuTimeKernelMS": 170.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "javac 17",
+    "start": "2021-09-21T08:59:22.9411574+00:00",
+    "finished": "2021-09-21T08:59:24.7549208+00:00",
+    "durationMs": 1813
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"17\" 2021-09-14\nOpenJDK Runtime Environment (build 17+35-2724)\nOpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)",
+    "start": "2021-09-21T09:00:17.8145016+00:00",
+    "finished": "2021-09-21T09:00:18.1550033+00:00",
+    "durationMs": 340
+  }
+}

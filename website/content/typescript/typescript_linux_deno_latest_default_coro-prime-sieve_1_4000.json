@@ -1,0 +1,28 @@
+{
+  "lang": "typescript",
+  "os": "linux",
+  "compiler": "deno",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.ts",
+  "input": "4000",
+  "timeMS": 2216.3199,
+  "timeStdDevMS": 25.586278830459214,
+  "memBytes": 67141632,
+  "cpuTimeMS": 2229.9999,
+  "cpuTimeUserMS": 2176.6666,
+  "cpuTimeKernelMS": 53.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "deno 1.14.0 (release, x86_64-unknown-linux-gnu)\nv8 9.4.146.15\ntypescript 4.4.2",
+    "start": "2021-09-21T08:50:21.968198+00:00",
+    "finished": "2021-09-21T08:50:22.8003369+00:00",
+    "durationMs": 832
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:33.1877435+00:00",
+    "finished": "2021-09-21T08:50:33.4145322+00:00",
+    "durationMs": 226
+  }
+}

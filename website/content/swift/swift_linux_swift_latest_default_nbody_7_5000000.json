@@ -1,0 +1,28 @@
+{
+  "lang": "swift",
+  "os": "linux",
+  "compiler": "swift",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "7.swift",
+  "input": "5000000",
+  "timeMS": 417.4306,
+  "timeStdDevMS": 0.9349290900027323,
+  "memBytes": 5488640,
+  "cpuTimeMS": 406.6666,
+  "cpuTimeUserMS": 406.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Swift version 5.4.3 (swift-5.4.3-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-09-21T08:51:02.4654131+00:00",
+    "finished": "2021-09-21T08:51:12.9768472+00:00",
+    "durationMs": 10511
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:51:24.9481953+00:00",
+    "finished": "2021-09-21T08:51:24.9540167+00:00",
+    "durationMs": 5
+  }
+}

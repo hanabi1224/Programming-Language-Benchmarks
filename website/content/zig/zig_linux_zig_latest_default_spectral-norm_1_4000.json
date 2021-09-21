@@ -1,0 +1,28 @@
+{
+  "lang": "zig",
+  "os": "linux",
+  "compiler": "zig",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "1.zig",
+  "input": "4000",
+  "timeMS": 865.2755,
+  "timeStdDevMS": 0.6547034468622629,
+  "memBytes": 147456,
+  "cpuTimeMS": 856.6666,
+  "cpuTimeUserMS": 856.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "0.9.0-dev.1095+2a728f6e5",
+    "start": "2021-09-21T08:52:27.4734788+00:00",
+    "finished": "2021-09-21T08:52:36.9868019+00:00",
+    "durationMs": 9513
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:39.3323957+00:00",
+    "finished": "2021-09-21T08:52:39.3352572+00:00",
+    "durationMs": 2
+  }
+}

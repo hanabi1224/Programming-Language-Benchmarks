@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "tinygo",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "3.go",
+  "input": "11",
+  "timeMS": 2904.9972,
+  "timeStdDevMS": 0.5452950669131769,
+  "memBytes": 48902144,
+  "cpuTimeMS": 2893.3332,
+  "cpuTimeUserMS": 2876.6666,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "tinygo version 0.19.0 linux/amd64 (using go version go1.16.5 and LLVM version 11.0.0)",
+    "start": "2021-09-21T08:49:24.9738343+00:00",
+    "finished": "2021-09-21T08:49:30.9134958+00:00",
+    "durationMs": 5939
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:29.5082848+00:00",
+    "finished": "2021-09-21T08:50:29.9542984+00:00",
+    "durationMs": 446
+  }
+}

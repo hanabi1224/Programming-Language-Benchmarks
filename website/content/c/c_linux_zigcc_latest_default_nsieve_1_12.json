@@ -1,0 +1,28 @@
+{
+  "lang": "c",
+  "os": "linux",
+  "compiler": "zigcc",
+  "compilerVersion": "latest",
+  "test": "nsieve",
+  "code": "1.c",
+  "input": "12",
+  "timeMS": 882.5714,
+  "timeStdDevMS": 11.329879982300515,
+  "memBytes": 42954752,
+  "cpuTimeMS": 863.3332,
+  "cpuTimeUserMS": 846.6666,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "0.9.0-dev.1095+2a728f6e5",
+    "start": "2021-09-21T08:50:24.0219783+00:00",
+    "finished": "2021-09-21T08:50:24.2407544+00:00",
+    "durationMs": 218
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:26.9228235+00:00",
+    "finished": "2021-09-21T08:50:26.9271473+00:00",
+    "durationMs": 4
+  }
+}

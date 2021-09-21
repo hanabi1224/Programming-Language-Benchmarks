@@ -1,0 +1,28 @@
+{
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "nightly",
+  "test": "helloworld",
+  "code": "1.rs",
+  "input": "T_T",
+  "timeMS": 1.6213,
+  "timeStdDevMS": 0.7242771446989982,
+  "memBytes": 708608,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "rustc 1.57.0-nightly (5ecc8ad84 2021-09-19)",
+    "start": "2021-09-21T08:50:20.6076847+00:00",
+    "finished": "2021-09-21T08:53:12.8921228+00:00",
+    "durationMs": 172284
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T09:00:49.2193309+00:00",
+    "finished": "2021-09-21T09:00:49.2346678+00:00",
+    "durationMs": 15
+  }
+}

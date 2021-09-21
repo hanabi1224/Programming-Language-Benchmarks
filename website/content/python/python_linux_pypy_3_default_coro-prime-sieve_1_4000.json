@@ -1,0 +1,28 @@
+{
+  "lang": "python",
+  "os": "linux",
+  "compiler": "pypy",
+  "compilerVersion": "3",
+  "test": "coro-prime-sieve",
+  "code": "1.py",
+  "input": "4000",
+  "timeMS": 1332.1641,
+  "timeStdDevMS": 21.059696035397355,
+  "memBytes": 232542208,
+  "cpuTimeMS": 1313.3333,
+  "cpuTimeUserMS": 1240.0,
+  "cpuTimeKernelMS": 73.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:51:42.5607761+00:00",
+    "finished": "2021-09-21T08:51:43.0679592+00:00",
+    "durationMs": 507
+  },
+  "testLog": {
+    "runtimeVersion": "Python 3.7.10 (77787b8f4c49, May 15 2021, 11:50:33)\n[PyPy 7.3.5 with GCC 7.3.1 20180303 (Red Hat 7.3.1-5)]",
+    "start": "2021-09-21T08:51:55.0186736+00:00",
+    "finished": "2021-09-21T08:51:55.6292213+00:00",
+    "durationMs": 610
+  }
+}

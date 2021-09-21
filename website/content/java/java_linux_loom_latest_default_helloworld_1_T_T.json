@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "loom",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.java",
+  "input": "T_T",
+  "timeMS": 45.9613,
+  "timeStdDevMS": 0.8306876456018539,
+  "memBytes": 36651008,
+  "cpuTimeMS": 35.0,
+  "cpuTimeUserMS": 31.0,
+  "cpuTimeKernelMS": 4.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "javac 18-loom",
+    "start": "2021-09-21T08:58:51.5516965+00:00",
+    "finished": "2021-09-21T08:58:52.5397141+00:00",
+    "durationMs": 988
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"18-loom\" 2022-03-15\nOpenJDK Runtime Environment (build 18-loom+2-74)\nOpenJDK 64-Bit Server VM (build 18-loom+2-74, mixed mode, sharing)",
+    "start": "2021-09-21T09:00:15.6287233+00:00",
+    "finished": "2021-09-21T09:00:15.7763898+00:00",
+    "durationMs": 147
+  }
+}

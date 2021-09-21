@@ -1,0 +1,28 @@
+{
+  "lang": "lua",
+  "os": "linux",
+  "compiler": "luajit",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "4.lua",
+  "input": "14",
+  "timeMS": 194.1457,
+  "timeStdDevMS": 1.28391404047677,
+  "memBytes": 11132928,
+  "cpuTimeMS": 306.6666,
+  "cpuTimeUserMS": 276.6666,
+  "cpuTimeKernelMS": 30.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-09-21T08:48:54.7301794+00:00",
+    "finished": "2021-09-21T08:48:54.736195+00:00",
+    "durationMs": 6
+  },
+  "testLog": {
+    "runtimeVersion": "LuaJIT 2.1.0-beta3 -- Copyright (C) 2005-2021 Mike Pall. https://luajit.org/",
+    "start": "2021-09-21T08:48:57.0234374+00:00",
+    "finished": "2021-09-21T08:48:57.0620134+00:00",
+    "durationMs": 38
+  }
+}

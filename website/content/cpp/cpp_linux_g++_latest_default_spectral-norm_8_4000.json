@@ -1,0 +1,28 @@
+{
+  "lang": "cpp",
+  "os": "linux",
+  "compiler": "g++",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "8.cpp",
+  "input": "4000",
+  "timeMS": 226.1331,
+  "timeStdDevMS": 0.447563146382719,
+  "memBytes": 1683456,
+  "cpuTimeMS": 433.3333,
+  "cpuTimeUserMS": 433.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "g++ (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "start": "2021-09-21T08:50:51.8845179+00:00",
+    "finished": "2021-09-21T08:50:53.7785425+00:00",
+    "durationMs": 1894
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:56.4345407+00:00",
+    "finished": "2021-09-21T08:50:56.438742+00:00",
+    "durationMs": 4
+  }
+}

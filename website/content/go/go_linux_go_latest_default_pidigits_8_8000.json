@@ -1,0 +1,28 @@
+{
+  "lang": "go",
+  "os": "linux",
+  "compiler": "go",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "8.go",
+  "input": "8000",
+  "timeMS": 1249.1544,
+  "timeStdDevMS": 2.9374054577691675,
+  "memBytes": 8974336,
+  "cpuTimeMS": 1236.6666,
+  "cpuTimeUserMS": 1233.3333,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "go version go1.17.1 linux/amd64",
+    "start": "2021-09-21T08:50:24.9634018+00:00",
+    "finished": "2021-09-21T08:50:26.0185482+00:00",
+    "durationMs": 1055
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:30.872207+00:00",
+    "finished": "2021-09-21T08:50:30.8773031+00:00",
+    "durationMs": 5
+  }
+}

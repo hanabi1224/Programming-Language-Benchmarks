@@ -1,0 +1,28 @@
+{
+  "lang": "dart",
+  "os": "linux",
+  "compiler": "dart",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "2.dart",
+  "input": "8000",
+  "timeMS": 2612.7048,
+  "timeStdDevMS": 582.0334616884152,
+  "memBytes": 23240704,
+  "cpuTimeMS": 1953.3332,
+  "cpuTimeUserMS": 1886.6666,
+  "cpuTimeKernelMS": 66.6666,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "Dart SDK version: 2.14.2 (stable) (Wed Sep 15 12:32:06 2021 +0200) on \"linux_x64\"",
+    "start": "2021-09-21T08:50:16.7831848+00:00",
+    "finished": "2021-09-21T08:50:23.1318404+00:00",
+    "durationMs": 6348
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:43.1638605+00:00",
+    "finished": "2021-09-21T08:50:43.195674+00:00",
+    "durationMs": 31
+  }
+}

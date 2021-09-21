@@ -1,0 +1,28 @@
+{
+  "lang": "v",
+  "os": "linux",
+  "compiler": "v",
+  "compilerVersion": "latest",
+  "test": "coro-prime-sieve",
+  "code": "1.v",
+  "input": "1000",
+  "timeMS": 2225.1324,
+  "timeStdDevMS": 476.8407894764142,
+  "memBytes": 23605248,
+  "cpuTimeMS": 4219.9999,
+  "cpuTimeUserMS": 1996.6666,
+  "cpuTimeKernelMS": 2223.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "V 0.2.4 e4bd230",
+    "start": "2021-09-21T08:51:30.8276367+00:00",
+    "finished": "2021-09-21T08:51:41.0013753+00:00",
+    "durationMs": 10173
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:52:11.1107692+00:00",
+    "finished": "2021-09-21T08:52:12.9953821+00:00",
+    "durationMs": 1884
+  }
+}

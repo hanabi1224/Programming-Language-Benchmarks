@@ -1,0 +1,28 @@
+{
+  "lang": "java",
+  "os": "linux",
+  "compiler": "openjdk",
+  "compilerVersion": "17",
+  "test": "fannkuch-redux",
+  "code": "1.java",
+  "input": "11",
+  "timeMS": 1438.5707,
+  "timeStdDevMS": 7.523188258311642,
+  "memBytes": 39346176,
+  "cpuTimeMS": 2746.6666,
+  "cpuTimeUserMS": 2733.3333,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "javac 17",
+    "start": "2021-09-21T08:59:08.6397404+00:00",
+    "finished": "2021-09-21T08:59:10.4235208+00:00",
+    "durationMs": 1783
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"17\" 2021-09-14\nOpenJDK Runtime Environment (build 17+35-2724)\nOpenJDK 64-Bit Server VM (build 17+35-2724, mixed mode, sharing)",
+    "start": "2021-09-21T09:00:16.0915806+00:00",
+    "finished": "2021-09-21T09:00:16.4531879+00:00",
+    "durationMs": 361
+  }
+}

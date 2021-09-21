@@ -1,0 +1,28 @@
+{
+  "lang": "typescript",
+  "os": "linux",
+  "compiler": "deno",
+  "compilerVersion": "latest",
+  "test": "json-serde",
+  "code": "1.ts",
+  "input": "canada 5",
+  "timeMS": 561.4706,
+  "timeStdDevMS": 4.325400370293354,
+  "memBytes": 129187840,
+  "cpuTimeMS": 673.3333,
+  "cpuTimeUserMS": 613.3333,
+  "cpuTimeKernelMS": 60.0,
+  "githubRunId": "1256876823",
+  "buildLog": {
+    "compilerVersion": "deno 1.14.0 (release, x86_64-unknown-linux-gnu)\nv8 9.4.146.15\ntypescript 4.4.2",
+    "start": "2021-09-21T08:50:25.4419757+00:00",
+    "finished": "2021-09-21T08:50:27.354184+00:00",
+    "durationMs": 1912
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-09-21T08:50:34.0900055+00:00",
+    "finished": "2021-09-21T08:50:34.5858476+00:00",
+    "durationMs": 495
+  }
+}
