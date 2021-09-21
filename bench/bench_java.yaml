@@ -51,15 +51,15 @@ environments:
   #   build: javac app.java -d out
   #   out_dir: out
   #   run_cmd: openjdk/bin/java app
-  - os: linux
-    compiler: openj9
-    version: 16
-    docker: adoptopenjdk/openjdk16-openj9:slim
-    docker_runtime_dir: /opt/java/openjdk
-    include:
-    build: javac app.java -d out
-    out_dir: out
-    run_cmd: openjdk/bin/java app
+  # - os: linux
+  #   compiler: openj9
+  #   version: 16
+  #   docker: adoptopenjdk/openjdk16-openj9
+  #   docker_runtime_dir: /opt/java/openjdk
+  #   include:
+  #   build: javac app.java -d out
+  #   out_dir: out
+  #   run_cmd: openjdk/bin/java app
   - os: linux
     compiler: openjdk
     version: 17
