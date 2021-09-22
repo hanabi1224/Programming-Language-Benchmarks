@@ -10,12 +10,12 @@
 
 (declaim (ftype (function (uint31) (values uint31 &optional)) nsieve))
 (defun nsieve (m)
-  (let ((a (make-array m :element-type '(unsigned-byte 1) :initial-element 0)))
-    (declare (type (simple-array (unsigned-byte 1) (*)) a))
+  (let ((a (make-array m :element-type 'bit :initial-element 0)))
+    (declare (type simple-bit-vector a))
     (loop for i from 2 below m
-          when (zerop (aref a i))
+          when (zerop (sbit a i))
             do (loop for j from (ash i 1) below m by i
-                     do (setf (aref a j) 1))
+                     do (setf (sbit a j) 1))
             and count t)))
 
 (declaim (ftype (function (&optional (integer 0 16)) null) main))
