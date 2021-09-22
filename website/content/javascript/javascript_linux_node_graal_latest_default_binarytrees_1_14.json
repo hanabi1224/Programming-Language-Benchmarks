@@ -1,0 +1,28 @@
+{
+  "lang": "javascript",
+  "os": "linux",
+  "compiler": "node/graal",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "1.js",
+  "input": "14",
+  "timeMS": 4953.8668,
+  "timeStdDevMS": 133.7506307027119,
+  "memBytes": 907295403,
+  "cpuTimeMS": 8799.9999,
+  "cpuTimeUserMS": 8326.6666,
+  "cpuTimeKernelMS": 473.3333,
+  "githubRunId": "916110912",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-06-07T20:12:36.4103458+00:00",
+    "finished": "2021-06-07T20:12:36.4220784+00:00",
+    "durationMs": 11
+  },
+  "testLog": {
+    "runtimeVersion": "v14.16.1",
+    "start": "2021-06-07T20:12:41.3533882+00:00",
+    "finished": "2021-06-07T20:12:43.0172499+00:00",
+    "durationMs": 1663
+  }
+}
