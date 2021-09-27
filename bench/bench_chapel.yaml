@@ -23,7 +23,7 @@ environments:
     compiler_version_command: chpl --version
     version: latest
     docker: chapel/chapel
-    include: chapel
+    include:
     build: chpl --fast --static -o out/app app.chpl
     out_dir: out
-    run_cmd: run.sh
+    run_cmd: app --n
