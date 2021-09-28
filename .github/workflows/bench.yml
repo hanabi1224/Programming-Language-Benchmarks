@@ -17,6 +17,7 @@ jobs:
         lang:
           [
             c,
+            chapel,
             cpp,
             csharp,
             crystal,

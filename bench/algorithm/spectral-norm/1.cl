@@ -18,7 +18,8 @@
 ;;    Optimize declaration and get-thread-count added by Bela Pecsek
 ;;      * eval-A macro slightly improved
 ;;      * uint31 type defined
-;;      * double-float values are always positive 
+;;      * double-float values are always positive
+;;      * threading slightly modified - 2021-09-19
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 (setf *block-compile-default* t)
 
@@ -56,14 +57,13 @@
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
   (let* ((num-threads (get-thread-count)))
-    (loop with step = (truncate (- end start) num-threads)
-          for index from start below end by step
-          collecting (let ((start index)
-                           (end (min end (+ index step))))
-                       (sb-thread:make-thread
-                        (lambda () (funcall function start end))))
-            into threads
-          finally (mapcar #'sb-thread:join-thread threads))))
+    (mapcar #'sb-thread:join-thread
+            (loop with step = (truncate (- end start) num-threads)
+                  for index from start below end by step
+                  collecting (let ((start index)
+                                   (end (min end (+ index step))))
+                               (sb-thread:make-thread
+                                (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function )

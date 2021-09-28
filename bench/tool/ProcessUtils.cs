@@ -501,6 +501,10 @@ namespace BenchTool
                         }
                     };
                 }
+                else
+                {
+                    p.StartInfo.StandardOutputEncoding = null;
+                }
 
                 if (p.StartInfo.RedirectStandardError)
                 {
@@ -520,6 +524,10 @@ namespace BenchTool
                             }
                         }
                     };
+                }
+                else
+                {
+                    p.StartInfo.StandardErrorEncoding = null;
                 }
 
                 p.Start();

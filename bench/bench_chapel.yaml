@@ -1,0 +1,35 @@
+lang: chapel
+problems:
+  - name: helloworld
+    source:
+      - 1.chpl
+  - name: binarytrees
+    source:
+      - 3.chpl
+  - name: nbody
+    source:
+      - 2.chpl
+  - name: spectral-norm
+    source:
+      - 1.chpl
+  - name: pidigits
+    source:
+      - 2.chpl
+  - name: fasta
+    source:
+      - 5.chpl
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.chpl
+environments:
+  - os: linux
+    compiler: chpl
+    compiler_version_command: chpl --version
+    version: latest
+    docker: chapel/chapel
+    include:
+    build: chpl --fast --static -o out/app app.chpl
+    out_dir: out
+    run_cmd: app --n

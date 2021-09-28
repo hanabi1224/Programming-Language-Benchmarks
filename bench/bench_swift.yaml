@@ -27,8 +27,8 @@ environments:
     docker: swift:focal
     include: swift
     include_sub_dir: Sources/app
-    build: swift build -c release -Xswiftc -static-executable
+    build: swift build -c release -v -Xswiftc -static-executable -Xswiftc -Ounchecked
     after_build:
-      - cp .build/x86_64-unknown-linux-gnu/release/app out
+      - cp .build/release/app out
     out_dir: out
     run_cmd: app
