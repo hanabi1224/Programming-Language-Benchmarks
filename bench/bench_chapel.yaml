@@ -12,6 +12,12 @@ problems:
   - name: spectral-norm
     source:
       - 1.chpl
+  - name: pidigits
+    source:
+      - 2.chpl
+  - name: fasta
+    source:
+      - 5.chpl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
