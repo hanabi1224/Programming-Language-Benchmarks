@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 sudo apt install sbcl
 sbcl --version
-git clone https://github.com/bpecsek/sbcl.git $HOME/sbcl
+git clone git://git.code.sf.net/p/sbcl/sbcl $HOME/sbcl
 cd $HOME/sbcl
 sh ./make.sh --prefix=/usr --fancy
 sudo sh ./install.sh
