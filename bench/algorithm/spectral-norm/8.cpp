@@ -6,11 +6,8 @@
 // OpenMP parallelize by The Anh Tran
 // Add SSE by The Anh Tran
 // Additional SSE optimization by Krzysztof Jakubowski
-// Converted to AVX by Bela Pecsek
-
-// g++ -pipe -O3  -fomit-frame-pointer -march=native -fopenmp -mavx \
-// ./spectralnorm.cpp-2.c++ -o spectralnorm.gpp-2.c++.o && \
-// g++ spectralnorm.gpp-2.c++.o -o spectralnorm.gpp-2.gpp_run -fopenmp
+// Converted to AVX and rewtitten by Bela Pecsek
+//  * Using simd operations in EvalA 
 
 #include <cmath>
 #include <cstdlib>
