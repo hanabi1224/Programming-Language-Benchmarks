@@ -45,8 +45,7 @@ type LangBenchResults = {
 }
 
 type LangPageMeta = {
-  lang?: LangBenchResults
-  all?: LangBenchResults[]
-  other?: LangBenchResults
+  lang?: string
+  other?: string
   problem?: string
 }

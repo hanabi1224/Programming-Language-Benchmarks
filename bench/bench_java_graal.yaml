@@ -40,9 +40,6 @@ environments:
     include:
     compiler_version_command: graaljavac -version
     runtime_version_parameter: -version
-    # before_build:
-    #   - sh -c "sudo ln -sf $GRAALVM_11_ROOT/bin/javac /usr/bin/graaljavac"
-    #   - sh -c "sudo ln -sf $GRAALVM_11_ROOT/bin/java /usr/bin/graaljava"
     build: graaljavac app.java -d out
     out_dir: out
     run_cmd: graaljava app

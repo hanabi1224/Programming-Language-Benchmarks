@@ -15,7 +15,9 @@ export async function getLangBenchResults($content: contentFunc) {
   return mergeLangBenchResults(benchResults)
 }
 
-export function mergeLangBenchResults(benchResults: BenchResult[]) {
+export function mergeLangBenchResults(
+  benchResults: BenchResult[]
+): LangBenchResults[] {
   benchResults = _.chain(benchResults)
     .filter((i) => !!i.lang)
     .value()

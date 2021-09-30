@@ -81,9 +81,6 @@ const config: NuxtConfig = {
   router: {
     async extendRoutes(routes, resolve) {
       const langBenchResults = await getLangBenchResults($content)
-      routes.forEach((r) => {
-        r.meta = langBenchResults
-      })
 
       langBenchResults.forEach((l) => {
         routes.push({
@@ -91,7 +88,7 @@ const config: NuxtConfig = {
           path: `/${l.lang}`,
           component: resolve(__dirname, 'components/LangMetaPage.vue'),
           meta: {
-            lang: l,
+            lang: l.lang,
           } as LangPageMeta,
         })
 
@@ -102,8 +99,8 @@ const config: NuxtConfig = {
               path: `/${l.lang}-vs-${l2.lang}`,
               component: resolve(__dirname, 'components/LangMetaPage.vue'),
               meta: {
-                lang: l,
-                other: l2,
+                lang: l.lang,
+                other: l2.lang,
               } as LangPageMeta,
             })
           }
@@ -123,7 +120,6 @@ const config: NuxtConfig = {
           component: resolve(__dirname, 'components/LangMetaPage.vue'),
           meta: {
             problem: p,
-            all: langBenchResults,
           } as LangPageMeta,
         })
       })

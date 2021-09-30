@@ -135,6 +135,13 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
 import MenuButton from './../components/MenuButton.vue'
+import { mergeLangBenchResults } from '~/contentUtils'
+
+function requireAll(requireContext: any) {
+  const r = requireContext.keys().map(requireContext)
+  return mergeLangBenchResults(r)
+}
+const langs = requireAll((require as any).context('../content', true, /.json$/))
 
 Component.registerHooks(['head'])
 
@@ -145,7 +152,7 @@ Component.registerHooks(['head'])
 })
 export default class IndexPage extends Vue {
   isMenuOn = false
-  langs: LangBenchResults[] = []
+  langs: LangBenchResults[] = langs
   problems: string[] = []
 
   toggleMenu() {
@@ -163,7 +170,6 @@ export default class IndexPage extends Vue {
   }
 
   created() {
-    this.langs = this.$route.meta as LangBenchResults[]
     this.problems = _.chain(this.langs)
       .map((i) => i.benchmarks)
       .flatten()
