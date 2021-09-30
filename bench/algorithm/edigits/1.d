@@ -24,11 +24,11 @@ void main(string[] args)
         auto end = i + 10;
         writeln(format("%s\t:%d", s[i .. end], end));
     }
-    auto rem_len = n - 1 - i;
+    auto rem_len = n - i;
     if (rem_len > 0)
     {
         auto padding = "";
-        for (auto j = 1; j < 10 - rem_len; j++)
+        for (auto j = 0; j < 10 - rem_len; j++)
         {
             padding ~= " ";
         }
