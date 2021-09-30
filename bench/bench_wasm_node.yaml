@@ -45,15 +45,11 @@ environments:
   - os: linux
     compiler: node
     version: latest
-    # docker: rust:1-slim
-    # docker_volumns:
-    #   - /tmp/rust/target:/tmp/rust/target
-    #   - /tmp/.cargo/registry:/usr/local/cargo/registry
     include: rust
     include_sub_dir: src
-    build: rustup target add wasm32-wasi && cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rust/target
+    build: rustup target add wasm32-wasi && cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
     after_build:
-      - sudo mv /tmp/rust/target/wasm32-wasi/release/_app.wasm out
+      - sudo mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
       - cp wrapper.js out
       - ls -al out
     out_dir: out
