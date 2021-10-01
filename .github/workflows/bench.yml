@@ -106,6 +106,9 @@ jobs:
         run: ./.github/crystal.sh
       - uses: shogo82148/actions-setup-perl@v1
         if: matrix.lang == 'perl'
+        with:
+          perl-version: "5"
+          multi-thread: true
       - name: Install python
         if: matrix.lang == 'python'
         run: ./.github/python.sh
@@ -185,6 +188,9 @@ jobs:
       - run: ./.github/racket.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5"
+          multi-thread: true
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
