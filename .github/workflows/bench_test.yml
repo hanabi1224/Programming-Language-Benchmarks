@@ -35,6 +35,7 @@ jobs:
             # lua,
             # nim,
             # ocaml,
+            # perl,
             # python,
             # racket,
             # ruby,
@@ -102,6 +103,11 @@ jobs:
       - name: Install crystal
         if: matrix.lang == 'crystal'
         run: ./.github/crystal.sh
+      - uses: shogo82148/actions-setup-perl@v1
+        if: matrix.lang == 'perl'
+        with:
+          perl-version: "5"
+          multi-thread: true
       - name: Install python
         if: matrix.lang == 'python'
         run: ./.github/python.sh
