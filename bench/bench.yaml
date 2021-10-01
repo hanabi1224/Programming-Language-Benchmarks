@@ -14,8 +14,8 @@ problems:
       - input: QwQ
         output: QwQ_out
     tests:
-      - input: T_T
-        repeat: 10
+      - input: QwQ
+        repeat: 5
   - name: binarytrees
     unittests:
       - input: 10
@@ -36,6 +36,8 @@ problems:
     unittests:
       - input: 100
         output: 100_out
+      # - input: 101
+      #   output: 101_out
     tests:
       - input: 2000
       - input: 4000

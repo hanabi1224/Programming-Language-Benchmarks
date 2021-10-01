@@ -39,6 +39,9 @@ func main() {
 	for i := 0; i < n; i++ {
 		prime := <-ch
 		fmt.Println(prime)
+		if i >= n-1 {
+			break
+		}
 		ch1 := make(chan int, 1)
 		go Filter(ch, ch1, prime)
 		ch = ch1

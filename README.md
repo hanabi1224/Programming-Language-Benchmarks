@@ -61,7 +61,7 @@ yarn dev
 ```bash
 cd bench
 # To build a subset
-dotnet run -p tool -- --task build --langs lisp,go --problems nbody,helloworld --force-rebuild
+dotnet run -p tool -- --task build --langs lisp go --problems nbody helloworld --force-rebuild
 # To build all
 dotnet run -p tool -- --task build
 ```
@@ -72,7 +72,7 @@ dotnet run -p tool -- --task build
 ```bash
 cd bench
 # To test a subset
-dotnet run -p tool -- --task test --langs lisp,go --problems nbody,helloworld
+dotnet run -p tool -- --task test --langs lisp go --problems nbody helloworld
 # To test all
 dotnet run -p tool -- --task test
 ```
@@ -83,7 +83,7 @@ dotnet run -p tool -- --task test
 ```bash
 cd bench
 # To bench a subset
-dotnet run -p tool -- --task bench --langs lisp,go --problems nbody,helloworld
+dotnet run -p tool -- --task bench --langs lisp go --problems nbody helloworld
 # To bench all
 dotnet run -p tool -- --task bench
 ```
