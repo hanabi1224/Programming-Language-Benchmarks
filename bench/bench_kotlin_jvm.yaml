@@ -22,6 +22,7 @@ problems:
   - name: http-server
     source:
       - 1.kt
+      - 2.kt
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -version
@@ -39,7 +40,7 @@ environments:
       - sh -c "./gradlew build"
     build: cp build/libs/app-all.jar out/app.jar
     out_dir: out
-    run_cmd: openjdk-17/bin/java -jar app.jar
+    run_cmd: openjdk-17/bin/java -XX:+UseParallelGC -Xlog:all=off -jar app.jar
   # - os: linux
   #   compiler: Kotlin/loom
   #   version: latest

@@ -79,6 +79,15 @@ environments:
     out_dir: out
     run_cmd: openjdk-17/bin/java -XX:+UseZGC -Xlog:all=off app
   - os: linux
+    compiler: openjdk/parallelgc
+    version: 17
+    docker: openjdk:17-slim
+    docker_runtime_dir: /usr/local/openjdk-17
+    include:
+    build: javac app.java -d out
+    out_dir: out
+    run_cmd: openjdk-17/bin/java -XX:+UseParallelGC -Xlog:all=off app
+  - os: linux
     compiler: openjdk
     version: 18
     docker: openjdk:18-slim

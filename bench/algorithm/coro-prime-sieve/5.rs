@@ -25,7 +25,7 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
         handles.push(tokio::spawn(filter(receiver, sender_next, prime)));
         receiver = receiver_next;
     }
-    std::process::exit(0);
+    std::process::exit(0)
 }
 
 async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {

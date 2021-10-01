@@ -1,0 +1,30 @@
+lang: perl
+problems:
+  - name: helloworld
+    source:
+      - 1.pl
+  - name: binarytrees
+    source:
+      - 1.pl
+  - name: nbody
+    source:
+      - 2.pl
+  - name: fasta
+    source:
+      - 1.pl
+  - name: spectral-norm
+    source:
+      - 4.pl
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter: --version
+runtime_version_regex:
+source_rename_to: app.pl
+environments:
+  - os: linux
+    compiler: perl
+    version: latest
+    build: cp app.pl out
+    out_dir: out
+    run_cmd: perl app.pl
+    runtime_included: false

@@ -15,9 +15,6 @@ default = [
   "axum",
   "reqwest",
 ]
-nightly = [
-  "core_simd",
-]
 wasm = [
   "tokio/rt",
   "tokio/sync",
@@ -53,8 +50,6 @@ flume = {version = "0", optional = true}
 futures-lite = {version = "1", optional = true}
 reqwest = {version = "0", optional = true, default-features = false, features = ["json"]}
 tokio = {version = "1", optional = true}
-
-core_simd = {git = "https://github.com/rust-lang/portable-simd", optional = true}
 
 [profile.release]
 codegen-units = 1
