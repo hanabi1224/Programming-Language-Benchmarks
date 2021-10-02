@@ -39,7 +39,7 @@ problems:
       # - input: 101
       #   output: 101_out
     tests:
-      - input: 2000
+      - input: 1000
       - input: 4000
       - input: 8000
   - name: pidigits
@@ -107,7 +107,6 @@ problems:
       - input: 1000
       - input: 4000
         exclude_langs:
-          - d
           - javascript
   - name: http-server
     unittests:

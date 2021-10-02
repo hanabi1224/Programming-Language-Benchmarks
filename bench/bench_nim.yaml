@@ -29,6 +29,9 @@ problems:
   - name: http-server
     source:
       - 1.nim
+  # - name: coro-prime-sieve
+  #   source:
+  #     - 1.nim
 compiler_version_command: nim --version
 compiler_version_regex:
 runtime_version_parameter:
