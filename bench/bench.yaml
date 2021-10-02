@@ -97,8 +97,8 @@ problems:
       - input: canada 3
         output: canada_3_out
     tests:
-      - input: sample 10
-      - input: canada 5
+      - input: sample 5000
+      - input: canada 15
   - name: coro-prime-sieve
     unittests:
       - input: 1000

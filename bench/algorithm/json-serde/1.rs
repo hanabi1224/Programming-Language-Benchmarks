@@ -1,5 +1,3 @@
-use serde::Serialize;
-// use serde::Deserialize;
 use std::fs;
 
 fn main() {
@@ -11,21 +9,24 @@ fn main() {
         .nth(2)
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
-        .unwrap_or(3);
+        .unwrap_or(10);
     let json_str = fs::read_to_string(format!("{}.json", file_name))
         .expect("Something went wrong reading the file");
-    for i in 0..n {
+    let json: serde_json::Value = serde_json::from_str(&json_str).unwrap();
+    print_hash(&json);
+    let mut array = Vec::with_capacity(n);
+    for _i in 0..n {
         let json: serde_json::Value = serde_json::from_str(&json_str).unwrap();
-        let indent = vec![b' '; i + 1];
-        let formatter = serde_json::ser::PrettyFormatter::with_indent(&indent);
-        let buf = Vec::new();
-        let mut ser = serde_json::Serializer::with_formatter(buf, formatter);
-        json.serialize(&mut ser).unwrap();
-        let bytes = ser.into_inner();
-        let digest = md5::compute(&bytes);
-        // println!("{}", String::from_utf8(bytes).unwrap());
-        println!("{:x}", digest);
+        array.push(json);
     }
+    let array = serde_json::json!(array);
+    print_hash(&array);
+}
+
+fn print_hash(data: &serde_json::Value) {
+    let bytes = serde_json::to_vec(data).unwrap();
+    let digest = md5::compute(&bytes);
+    println!("{:x}", digest);
 }
 
 // #[derive(Deserialize, Serialize, Debug, Default)]
