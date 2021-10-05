@@ -23,9 +23,9 @@ environments:
     version: nightly
     env:
       RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
-    include: rust
+    include: rust-nightly
     include_sub_dir: src
-    build: cargo +nightly build --release --features nightly --target-dir /tmp/rsn/target -v
+    build: cargo +nightly build --release --target-dir /tmp/rsn/target -v
     after_build:
       - sudo mv /tmp/rsn/target/release/_app out
     out_dir: out

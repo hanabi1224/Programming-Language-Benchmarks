@@ -31,6 +31,7 @@ problems:
   - name: json-serde
     source:
       - 1.cs
+      - 2.cs
   - name: coro-prime-sieve
     source:
       - 1.cs

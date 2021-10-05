@@ -31,6 +31,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.go
+  # - name: json-serde
+  #   source:
+  #     - 1.go
   - name: nsieve
     source:
       - 1.go

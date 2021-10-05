@@ -223,7 +223,6 @@ export default class LangMetaPage extends Vue {
 
   activeBenchmarks: BenchResult[] = []
 
-  langOptions: string[] = []
   testOptions: string[] = []
 
   osOptions: string[] = []
@@ -401,8 +400,12 @@ export default class LangMetaPage extends Vue {
   created() {
     this.meta = this.$route.meta
     this.problem = this.meta?.problem
-    this.lang = this.meta?.lang
-    this.other = this.meta?.other
+    if (this.meta?.lang) {
+      this.lang = _.chain(langs).find({ lang: this.meta.lang }).value()
+    }
+    if (this.meta?.other) {
+      this.other = _.chain(langs).find({ lang: this.meta.other }).value()
+    }
 
     this.activeBenchmarks =
       this.lang?.benchmarks ??
@@ -412,10 +415,6 @@ export default class LangMetaPage extends Vue {
         .orderBy(['input', 'timeMS'], ['asc', 'asc'])
         .value()
 
-    this.langOptions = _.chain(this.meta?.all)
-      .map((i) => i.lang)
-      .uniq()
-      .value()
     this.testOptions = _.chain(this.activeBenchmarks)
       .map((i) => i.test)
       .uniq()

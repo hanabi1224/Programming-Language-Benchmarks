@@ -12,6 +12,18 @@ problems:
   - name: spectral-norm
     source:
       - 1.chpl
+  - name: pidigits
+    source:
+      - 2.chpl
+  - name: edigits
+    source:
+      - 1.chpl
+  - name: fasta
+    source:
+      - 5.chpl
+  - name: coro-prime-sieve
+    source:
+      - 1.chpl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -23,7 +35,10 @@ environments:
     compiler_version_command: chpl --version
     version: latest
     docker: chapel/chapel
-    include:
-    build: chpl --fast --static -o out/app app.chpl
+    include: chapel
+    include_sub_dir: src
+    build: mason build --release --show --static
+    after_build:
+      - cp target/release/app out
     out_dir: out
     run_cmd: app --n

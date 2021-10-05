@@ -31,6 +31,9 @@ problems:
   - name: http-server
     source:
       - 1.cr
+  # - name: json-serde
+  #   source:
+  #     - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:
@@ -46,6 +49,5 @@ environments:
     before_build:
       - shards install
     build: shards build --release
-    # after_build:
     out_dir: bin
     run_cmd: app

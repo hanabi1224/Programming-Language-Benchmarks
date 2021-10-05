@@ -5,7 +5,7 @@ problems:
       - 1.v
   - name: binarytrees
     source:
-      # - 1.v
+      - 1.v
   - name: nbody
     source:
       - 1.v
@@ -25,9 +25,12 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.v
+  # - name: json-serde
+  #   source:
+  #     - 1.v
   - name: mandelbrot
     source:
-      # - 1.v
+      - 1.v
   - name: nsieve
     source:
       - 1.v
@@ -42,7 +45,7 @@ environments:
     compiler: v
     version: latest
     include:
-    build: v -prod -gc boehm_full -cc clang-12 -autofree -stats app.v
+    build: v -prod -gc boehm_full -cc clang-12 -stats app.v
     after_build:
       - mv app out
     out_dir: out
