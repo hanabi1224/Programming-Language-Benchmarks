@@ -111,6 +111,11 @@ jobs:
           multi-thread: true
       - name: Install python
         if: matrix.lang == 'python'
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install python ext
+        if: matrix.lang == 'python'
         run: ./.github/python.sh
       - name: Install ruby
         if: matrix.lang == 'ruby'
@@ -191,6 +196,9 @@ jobs:
         with:
           perl-version: "5"
           multi-thread: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3 # Not needed with a .ruby-version file

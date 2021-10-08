@@ -38,17 +38,21 @@ environments:
   - os: linux
     compiler: cpython
     version: 3
-    compiler_version_command: python -V
-    docker: python:3
+    # compiler_version_command: python -V
+    runtime_version_parameter: -V
+    # docker: python:3
     include:
-    include_sub_dir:
     before_build:
       - rm -r dist
-    build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
-    after_build:
-      - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
-    out_dir: dist/_app
-    run_cmd: _app
+    # build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
+    build: cp c.py out
+    # after_build:
+    #   - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
+    # out_dir: dist/_app
+    out_dir: out
+    # run_cmd: _app
+    run_cmd: python3 c.py
+    runtime_included: false
     force_check_child_processes: true
   - os: linux
     compiler: pypy

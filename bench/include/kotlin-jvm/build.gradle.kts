@@ -6,7 +6,7 @@ plugins {
     val kotlinVersion = "1.5.31"
     kotlin("jvm").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
-    id("com.github.johnrengelman.shadow").version("7.0.0")
+    id("com.github.johnrengelman.shadow").version("7.1.0")
     id("com.github.ben-manes.versions").version("0.39.0")
     java
     application
