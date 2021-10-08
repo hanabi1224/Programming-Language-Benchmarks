@@ -24,7 +24,7 @@ problems:
     source:
       - 1.cl
       - 2.cl
-      #- 3.cl
+      - 3.cl
   - name: nsieve
     source:
       - 1.cl
@@ -51,3 +51,4 @@ environments:
     out_dir: out
     compiler_version_command: sbcl --version
     run_cmd: app
+    allow_failure: true
