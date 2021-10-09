@@ -6,6 +6,7 @@ import java.util.concurrent.SynchronousQueue;
 
 final class app {
   private static Executor pool = new ForkJoinPool(1);
+
   public static void main(String[] args) {
     int n = 100;
     if (args.length > 0) {
@@ -22,7 +23,8 @@ final class app {
         System.out.println(prime);
         final var inQueue = queue;
         final var outQueue = new SynchronousQueue<Integer>();
-        threads.add(Thread.ofVirtual().scheduler(pool).start(() -> filter(inQueue, outQueue, prime)));
+        threads.add(
+            Thread.ofVirtual().scheduler(pool).start(() -> filter(inQueue, outQueue, prime)));
         queue = outQueue;
       }
     } catch (InterruptedException e) {
