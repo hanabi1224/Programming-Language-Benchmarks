@@ -3,7 +3,7 @@ sudo apt install sbcl
 sbcl --version
 git clone https://github.com/sbcl/sbcl $HOME/sbcl
 cd $HOME/sbcl
-git checkout sbcl-2.1.9
+git checkout sbcl-2.1.8
 sh ./make.sh --prefix=/usr --fancy
 sudo sh ./install.sh
 cd $HOME
