@@ -45,7 +45,7 @@ environments:
     compiler: v
     version: latest
     include:
-    build: v -prod -gc boehm_full -cc clang-12 -stats app.v
+    build: v -prod -gc boehm_full -cc clang-13 -stats app.v
     after_build:
       - mv app out
     out_dir: out

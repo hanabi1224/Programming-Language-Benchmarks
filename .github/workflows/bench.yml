@@ -72,12 +72,15 @@ jobs:
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: ./.github/graalvm.sh
-      - name: Install c deps
-        if: matrix.lang == 'c'
-        run: ./.github/c.sh
-      - name: Install cpp deps
-        if: matrix.lang == 'cpp'
-        run: ./.github/cpp.sh
+      - name: Install clang
+        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
+        run: ./.github/clang.sh
+      # - name: Install c deps
+      #   if: matrix.lang == 'c'
+      #   run: ./.github/c.sh
+      # - name: Install cpp deps
+      #   if: matrix.lang == 'cpp'
+      #   run: ./.github/cpp.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
