@@ -26,11 +26,11 @@ source_rename_to: app.cpp
 environments:
   - os: linux
     compiler: clang++
-    compiler_version_command: clang++-12 --version
-    version: 12
+    compiler_version_command: clang++-13 --version
+    version: 13
     docker:
     include: cpp
-    build: clang++-12 @app.rsp
+    build: clang++-13 @app.rsp
     after_build:
       - mv app out
     out_dir: out
