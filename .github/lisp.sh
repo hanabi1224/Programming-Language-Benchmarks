@@ -12,7 +12,7 @@ curl -O https://beta.quicklisp.org/quicklisp.lisp
 sbcl --noinform --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --eval "(ql-util:without-prompting (ql:add-to-init-file))" --eval "(exit)"
 git clone https://github.com/marcoheisig/sb-simd.git $HOME/quicklisp/local-projects/sb-simd
 cd $HOME/quicklisp/local-projects/sb-simd
-git checkout 7c432699affd21516940009bab9e05e1695eee8b
+git checkout b19964199af483fe43e6dbf03313aea89f050b31 #7c432699affd21516940009bab9e05e1695eee8b
 cd $HOME
 sbcl --noinform --eval "(ql:quickload :sb-simd)" --eval "(exit)"
 sbcl --version
