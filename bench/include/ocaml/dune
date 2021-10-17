@@ -1,5 +1,16 @@
 (executable
  (name app)
- (ocamlopt_flags -O3 -inline 100 -nodynlink -noassert -unsafe -fPIC)
- (modes byte exe)
-)
+ (libraries res)
+ (ocamlopt_flags
+  -verbose
+  -inline
+  100
+  -O3
+  unix.cmxa
+  -cc
+  "gcc -pipe -Wall -O3 -fomit-frame-pointer -march=skylake -mno-avx512f -fopenmp"
+  -nodynlink
+  -noassert
+  -unsafe
+  -fPIC)
+ (modes byte exe))

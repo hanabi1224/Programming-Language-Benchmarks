@@ -258,8 +258,14 @@ namespace BenchTool
             string srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
             srcCodePath.EnsureFileExists();
 
+            var tmpRoot = Path.Combine(Path.GetTempPath(), "__benchmarks");
+            if (!Directory.Exists(tmpRoot))
+            {
+                Directory.CreateDirectory(tmpRoot);
+            }
+
             // Setup tmp build folder
-            using TempFolder tmpDir = new TempFolder(buildId);
+            using TempFolder tmpDir = new TempFolder(Path.Combine("__benchmarks", buildId));
 
             Logger.Debug($"Temp build folder: {tmpDir.FullPath}");
 
