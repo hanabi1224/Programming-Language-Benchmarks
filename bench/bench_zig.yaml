@@ -40,7 +40,6 @@ environments:
     version: latest
     docker:
     include: zig
-    build: zig build
-    # after_build:
+    build: zig build -Dcpu=skylake --verbose-llvm-cpu-features
     out_dir: out
     run_cmd: app
