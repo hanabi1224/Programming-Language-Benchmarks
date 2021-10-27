@@ -9,6 +9,7 @@ problems:
   - name: nbody
     source:
       - 1.zig
+      - 2.zig
   - name: spectral-norm
     source:
       - 1.zig
