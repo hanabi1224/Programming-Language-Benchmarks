@@ -25,6 +25,7 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.zig
+      - 2.zig
   - name: nsieve
     source:
       - 1.zig
