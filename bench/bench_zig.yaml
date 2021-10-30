@@ -13,6 +13,7 @@ problems:
   - name: spectral-norm
     source:
       - 1.zig
+      - 2.zig
   - name: pidigits
     source:
       - 1.zig
