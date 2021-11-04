@@ -22,6 +22,9 @@ problems:
     source:
       - 1.ml
       - 2.ml
+  - name: mandelbrot
+    source:
+      - 6.ml
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

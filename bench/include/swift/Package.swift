@@ -8,9 +8,8 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/leif-ibsen/BigInt.git", "1.2.5"..<"1.2.6"),
-        // .package(url: "https://github.com/leif-ibsen/BigInt.git", .upToNextMajor(from: "1.2.6")),
-        .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.5.0"))
+        .package(url: "https://github.com/attaswift/BigInt.git", from: "5.3.0")
+        // .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.5.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -19,7 +18,7 @@ let package = Package(
             name: "app",
             dependencies: [
                 "BigInt",
-                .product(name: "Swifter", package: "swifter")
+                // .product(name: "Swifter", package: "swifter")
             ]),
         // .testTarget(
         //     name: "appTests",

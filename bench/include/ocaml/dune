@@ -1,12 +1,11 @@
 (executable
  (name app)
- (libraries res)
+ (libraries unix res yojson)
  (ocamlopt_flags
   -verbose
   -inline
   100
   -O3
-  unix.cmxa
   -cc
   "gcc -pipe -Wall -O3 -fomit-frame-pointer -march=skylake -mno-avx512f -fopenmp"
   -nodynlink
