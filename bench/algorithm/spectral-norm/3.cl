@@ -14,10 +14,11 @@
 ;;      * Distribute work across multiple cores on SBCL
 ;;    Modified by Witali Kusnezow 2008-12-02
 ;;      * use right shift instead of truncate for division in eval-A
-;;      * redefine eval-A as a macroc
+;;      * redefine eval-A as a macro
 ;;    Modified by Bela Pecsek
-;;      * Using SSE calculation on two lanes
+;;      * Using SSE calculations
 ;;      * Improvement in type declarations
+;;      * Redefine eval-A as inlined function using sse simd
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
@@ -38,12 +39,12 @@
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 2
+  (loop for i from begin below end by 2
         with src-0 of-type f64 = (aref src 0)
 	do (let* ((ti0   (make-f64.2 (+ i 0) (+ i 1)))
 		  (eA0   (eval-A ti0 (f64.2 0)))
 		  (sum0  (f64.2/ src-0 eA0)))
-	     (loop for j of-type u32 from 1 below length
+	     (loop for j from 1 below length
 		   do (let* ((src-j (aref src j))
                              (j    (f64.2 j))
 			     (idx0 (f64.2+ eA0 ti0 j)))
@@ -52,12 +53,12 @@
              (setf (f64.2-aref dst i) sum0))))
 
 (defun eval-At-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 2
+  (loop for i from begin below end by 2
         with src-0 of-type f64 = (aref src 0)
 	do (let* ((ti0   (make-f64.2 (+ i 1) (+ i 2)))
                   (eAt0  (eval-A (f64.2 0) (f64.2+ ti0 (f64.2 -1))))
                   (sum0  (f64.2/ src-0 eAt0)))
-	     (loop for j of-type u32 from 1 below length
+	     (loop for j from 1 below length
                    do (let* ((src-j (aref src j))
                              (j     (f64.2 j))
 			     (idx0  (f64.2+ eAt0 ti0 j)))
