@@ -40,4 +40,4 @@ environments:
     include: julia
     build: cp c.jl out
     out_dir: out
-    run_cmd: julia/bin/julia -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl
+    run_cmd: julia/bin/julia -t auto -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl
