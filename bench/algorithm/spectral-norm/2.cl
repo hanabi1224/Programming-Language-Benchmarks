@@ -24,44 +24,43 @@
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  
   (ql:quickload :sb-simd)
   (use-package :sb-simd-avx))
 
 (declaim (ftype (function (f64.4 f64.4) f64.4) eval-A)
          (inline eval-A))
 (defun eval-A (i j)
-  (let* ((i+1   (f64.4+ i (f64.4 1)))
+  (let* ((i+1   (f64.4+ i 1))
          (i+j   (f64.4+ i j))
          (i+j+1 (f64.4+ i+1 j)))
-    (f64.4+ (f64.4* i+j i+j+1 (f64.4 0.5)) i+1)))
+    (f64.4+ (f64.4* i+j i+j+1 0.5) i+1)))
 
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
   (loop for i from begin below end by 4
         with src-0 of-type f64 = (aref src 0)
-        do (let* ((ti    (f64.4+ (f64.4 i) (make-f64.4 0 1 2 3)))
+        do (let* ((ti    (f64.4+ i (make-f64.4 0 1 2 3)))
                   (eA    (eval-A ti (f64.4 0)))
 		  (sum   (f64.4/ src-0 eA)))
 	     (loop for j from 1 below length
 		   do (let ((src-j (aref src j))
-                            (idx (f64.4+ eA ti (f64.4 j))))
+                            (idx (f64.4+ eA ti j)))
 			(setf eA idx)
-			(f64.4-incf sum (f64.4/ (f64.4 src-j) idx))))
+			(f64.4-incf sum (f64.4/ src-j idx))))
 	     (setf (f64.4-aref dst i) sum))))
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 4
         with src-0 of-type f64 = (aref src 0)
-        do (let* ((ti    (f64.4+ (f64.4 i) (make-f64.4 1 2 3 4)))
-                  (eAt   (eval-A (f64.4 0) (f64.4- ti (f64.4 1))))
+        do (let* ((ti    (f64.4+ i (make-f64.4 1 2 3 4)))
+                  (eAt   (eval-A (f64.4 0) (f64.4- ti 1)))
 		  (sum   (f64.4/ src-0 eAt)))
 	     (loop for j from 1 below length
                    do (let ((src-j (aref src j))
-                            (idx (f64.4+ eAt ti (f64.4 j))))
+                            (idx (f64.4+ eAt ti j)))
 			(setf eAt idx)
-			(f64.4-incf sum (f64.4/ (f64.4 src-j) idx))))
+			(f64.4-incf sum (f64.4/ src-j idx))))
 	     (setf (f64.4-aref dst i) sum))))
 
 #+sb-thread
@@ -104,7 +103,7 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (/ (f64.4-vdot u v) (f64.4-vdot v v)))))
+    (sqrt (f64/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))

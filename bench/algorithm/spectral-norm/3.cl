@@ -31,10 +31,10 @@
 (declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
          (inline eval-A))
 (defun eval-A (i j)
-  (let* ((i+1   (f64.2+ i (f64.2 1)))
+  (let* ((i+1   (f64.2+ i 1))
          (i+j   (f64.2+ i j))
          (i+j+1 (f64.2+ i+1 j)))
-    (f64.2+ (f64.2* i+j i+j+1 (f64.2 0.5)) i+1)))
+    (f64.2+ (f64.2* i+j i+j+1 0.5) i+1)))
 
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
@@ -46,24 +46,22 @@
 		  (sum0  (f64.2/ src-0 eA0)))
 	     (loop for j from 1 below length
 		   do (let* ((src-j (aref src j))
-                             (j    (f64.2 j))
 			     (idx0 (f64.2+ eA0 ti0 j)))
 			(setf eA0 idx0)
-			(f64.2-incf sum0 (f64.2/ (f64.2 src-j) idx0))))
+			(f64.2-incf sum0 (f64.2/ src-j idx0))))
              (setf (f64.2-aref dst i) sum0))))
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 2
         with src-0 of-type f64 = (aref src 0)
 	do (let* ((ti0   (make-f64.2 (+ i 1) (+ i 2)))
-                  (eAt0  (eval-A (f64.2 0) (f64.2+ ti0 (f64.2 -1))))
+                  (eAt0  (eval-A (f64.2 0) (f64.2- ti0 1)))
                   (sum0  (f64.2/ src-0 eAt0)))
 	     (loop for j from 1 below length
                    do (let* ((src-j (aref src j))
-                             (j     (f64.2 j))
 			     (idx0  (f64.2+ eAt0 ti0 j)))
 			(setf eAt0 idx0)
-			(f64.2-incf sum0 (f64.2/ (f64.2 src-j) idx0))))
+			(f64.2-incf sum0 (f64.2/ src-j idx0))))
 	     (setf (f64.2-aref dst i) sum0))))
 
 (declaim (ftype (function () (integer 1 256)) get-thread-count))
