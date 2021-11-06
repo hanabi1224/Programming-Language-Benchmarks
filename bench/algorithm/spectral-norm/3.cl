@@ -40,26 +40,22 @@
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
   (loop for i from begin below end by 2
-        ;with src-0 of-type f64 = (aref src 0)
 	do (let* ((ti   (f64.2+ i (make-f64.2 0 1)))
 		  (eA   (eval-A ti (f64.2 0)))
 		  (sum  (f64.2/ (aref src 0) eA)))
 	     (loop for j from 1 below length
-		   do (let* (;(src-j (aref src j))
-			     (idx (f64.2+ eA ti j)))
+		   do (let* ((idx (f64.2+ eA ti j)))
 			(setf eA idx)
 			(f64.2-incf sum (f64.2/ (aref src j) idx))))
              (setf (f64.2-aref dst i) sum))))
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 2
-        ;with src-0 of-type f64 = (aref src 0)
 	do (let* ((ti   (f64.2+ i (make-f64.2 1 2)))
                   (eAt  (eval-A (f64.2 0) (f64.2- ti 1)))
                   (sum  (f64.2/ (aref src 0) eAt)))
 	     (loop for j from 1 below length
-                   do (let* (;(src-j (aref src j))
-			     (idx  (f64.2+ eAt ti j)))
+                   do (let* ((idx  (f64.2+ eAt ti j)))
 			(setf eAt idx)
 			(f64.2-incf sum (f64.2/ (aref src j) idx))))
 	     (setf (f64.2-aref dst i) sum))))
