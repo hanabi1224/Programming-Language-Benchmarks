@@ -40,31 +40,30 @@
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
   (loop for i from begin below end by 2
-        with src-0 of-type f64 = (aref src 0)
-	do (let* ((ti0   (make-f64.2 (+ i 0) (+ i 1)))
-		  (eA0   (eval-A ti0 (f64.2 0)))
-		  (sum0  (f64.2/ src-0 eA0)))
+        ;with src-0 of-type f64 = (aref src 0)
+	do (let* ((ti   (f64.2+ i (make-f64.2 0 1)))
+		  (eA   (eval-A ti (f64.2 0)))
+		  (sum  (f64.2/ (aref src 0) eA)))
 	     (loop for j from 1 below length
-		   do (let* ((src-j (aref src j))
-			     (idx0 (f64.2+ eA0 ti0 j)))
-			(setf eA0 idx0)
-			(f64.2-incf sum0 (f64.2/ src-j idx0))))
-             (setf (f64.2-aref dst i) sum0))))
+		   do (let* (;(src-j (aref src j))
+			     (idx (f64.2+ eA ti j)))
+			(setf eA idx)
+			(f64.2-incf sum (f64.2/ (aref src j) idx))))
+             (setf (f64.2-aref dst i) sum))))
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 2
-        with src-0 of-type f64 = (aref src 0)
-	do (let* ((ti0   (make-f64.2 (+ i 1) (+ i 2)))
-                  (eAt0  (eval-A (f64.2 0) (f64.2- ti0 1)))
-                  (sum0  (f64.2/ src-0 eAt0)))
+        ;with src-0 of-type f64 = (aref src 0)
+	do (let* ((ti   (f64.2+ i (make-f64.2 1 2)))
+                  (eAt  (eval-A (f64.2 0) (f64.2- ti 1)))
+                  (sum  (f64.2/ (aref src 0) eAt)))
 	     (loop for j from 1 below length
-                   do (let* ((src-j (aref src j))
-			     (idx0  (f64.2+ eAt0 ti0 j)))
-			(setf eAt0 idx0)
-			(f64.2-incf sum0 (f64.2/ src-j idx0))))
-	     (setf (f64.2-aref dst i) sum0))))
+                   do (let* (;(src-j (aref src j))
+			     (idx  (f64.2+ eAt ti j)))
+			(setf eAt idx)
+			(f64.2-incf sum (f64.2/ (aref src j) idx))))
+	     (setf (f64.2-aref dst i) sum))))
 
-(declaim (ftype (function () (integer 1 256)) get-thread-count))
 #+sb-thread
 (defun get-thread-count ()
   (progn (define-alien-routine sysconf long (name int))
@@ -74,14 +73,16 @@
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
-  (let* ((n (truncate (- end start) (get-thread-count)))
+  (let* ((n    (truncate (- end start) (get-thread-count)))
          (step (- n (mod n 2))))
-    (loop for i from start below end by step
-          collecting (let ((start i)
-                           (end (min end (+ i step))))
-                       (sb-thread:make-thread
-			(lambda () (funcall function start end))))
-            into threads          finally (mapcar #'sb-thread:join-thread threads))))
+    (declare (type u32 n step))
+    (mapcar #'sb-thread:join-thread
+            (loop for i from start below end by step
+                  collecting (let ((start i)
+                                   (end (min end (+ i step))))
+                               (sb-thread:make-thread
+			        (lambda () (funcall function start end))))
+                  of-type thread))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
