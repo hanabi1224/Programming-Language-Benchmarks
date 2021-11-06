@@ -26,7 +26,7 @@ problems:
       - 2.cl
       - 3.cl
       - 4.cl
-      - 5.cl
+      #- 5.cl
   - name: nsieve
     source:
       - 1.cl

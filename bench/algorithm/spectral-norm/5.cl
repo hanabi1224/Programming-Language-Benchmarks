@@ -26,7 +26,7 @@
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)  
-  (ql:quickload :sb-simd)
+  (ql:quickload :sb-simd :silent t)
   (use-package  :sb-simd-avx2))
 
 (declaim (ftype (function (s32.8 s32.8) (values f64.4 f64.4)) eval-A)
@@ -120,7 +120,7 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (/ (f64.4-vdot u v) (f64.4-vdot v v)))))
+    (sqrt (f64/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
