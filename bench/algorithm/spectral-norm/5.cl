@@ -51,11 +51,10 @@
                     (sum0 (f64.4/ src-0 eA0))
 		    (sum1 (f64.4/ src-0 eA1)))
 	       (loop for j from 1 below length
-		     do (let* ((src-j  (aref src j))
-			       (idx0  (f64.4+ eA0 ti0 j))
-			       (idx1  (f64.4+ eA1 ti1 j)))
-			  (setf eA0 idx0
-                                eA1 idx1)
+		     do (let ((src-j (aref src j))
+                              (idx0  (f64.4+ eA0 ti0 j))
+			      (idx1  (f64.4+ eA1 ti1 j)))
+			  (setf eA0 idx0 eA1 idx1)
 			  (setf sum0 (f64.4+ sum0 (f64.4/ src-j idx0)))
 			  (setf sum1 (f64.4+ sum1 (f64.4/ src-j idx1)))))
                (setf (f64.4-aref dst i) sum0)
@@ -71,11 +70,10 @@
                      (sum0  (f64.4/ src-0 eAt0))
 		     (sum1  (f64.4/ src-0 eAt1)))
 	        (loop for j from 1 below length
-		      do (let* ((src-j  (aref src j))
-                                (idx0  (f64.4+ eAt0 ti0 j))
-			        (idx1  (f64.4+ eAt1 ti1 j)))
-			   (setf eAt0 idx0
-                                 eAt1 idx1)
+		      do (let ((src-j (aref src j))
+                               (idx0  (f64.4+ eAt0 ti0 j))
+			       (idx1  (f64.4+ eAt1 ti1 j)))
+			   (setf eAt0 idx0 eAt1 idx1)
 			   (setf sum0 (f64.4+ sum0 (f64.4/ src-j idx0)))
 			   (setf sum1 (f64.4+ sum1 (f64.4/ src-j idx1)))))
                 (setf (f64.4-aref dst i) sum0)
@@ -97,8 +95,7 @@
                   collecting (let ((start i)
                                    (end (min end (+ i step))))
                                (sb-thread:make-thread
-			        (lambda () (funcall function start end))))
-                  of-type thread))))
+			        (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
@@ -113,9 +110,9 @@
 
 (declaim (ftype (function (u32) f64) spectralnorm))
 (defun spectralnorm (n)
-  (let ((u   (make-array (+ n 3) :element-type 'f64 :initial-element 1d0))
-        (v   (make-array (+ n 3) :element-type 'f64))
-        (tmp (make-array (+ n 3) :element-type 'f64)))
+  (let ((u   (make-array (+ n 7) :element-type 'f64 :initial-element 1d0))
+        (v   (make-array (+ n 7) :element-type 'f64))
+        (tmp (make-array (+ n 7) :element-type 'f64)))
     (declare (type f64vec u v tmp))
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)

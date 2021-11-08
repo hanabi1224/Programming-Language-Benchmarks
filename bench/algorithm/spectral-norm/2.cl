@@ -25,7 +25,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx))
+  (use-package :sb-simd-avx2))
 
 (declaim (ftype (function (f64.4 f64.4) f64.4) eval-A)
          (inline eval-A))
@@ -80,8 +80,7 @@
                   collecting (let ((start i)
                                    (end (min end (+ i step))))
                                (sb-thread:make-thread
-			        (lambda () (funcall function start end))))
-                  of-type thread))))
+			        (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)

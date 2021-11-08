@@ -20,13 +20,11 @@
 ;;      * Improvement in type declarations
 ;;      * Redefine eval-A as inlined function using sse simd
 ;;      * Changed code to be compatible with sb-simd
-;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
-;;        in the hot loops
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx))
+  (use-package :sb-simd-sse2))
 
 (declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
          (inline eval-A))
@@ -77,8 +75,7 @@
                   collecting (let ((start i)
                                    (end (min end (+ i step))))
                                (sb-thread:make-thread
-			        (lambda () (funcall function start end))))
-                  of-type thread))))
+			        (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
@@ -95,14 +92,20 @@
 
 (declaim (ftype (function (u32) f64) spectralnorm))
 (defun spectralnorm (n)
-  (let ((u   (make-array (+ n 3) :element-type 'f64 :initial-element 1d0))
-        (v   (make-array (+ n 3) :element-type 'f64))
-        (tmp (make-array (+ n 3) :element-type 'f64)))
+  (let ((u   (make-array (+ n 1) :element-type 'f64 :initial-element 1d0))
+        (v   (make-array (+ n 1) :element-type 'f64))
+        (tmp (make-array (+ n 1) :element-type 'f64)))
     (declare (type f64vec u v tmp))
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (f64/ (f64.2-vdot u v) (f64.2-vdot v v)))))
+    (let ((vBv 0d0)
+          (vv  0d0))
+      (loop for i below n do
+        (let ((aref-vi (aref v i)))
+          (incf vBv (* (aref u i) aref-vi))
+          (incf vv  (* aref-vi aref-vi))))
+      (sqrt (/ vBv vv)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
