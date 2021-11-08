@@ -141,17 +141,18 @@ jobs:
       - name: Install wasm
         if: matrix.lang == 'wasm'
         run: ./.github/wasm.sh
+      - run: dotnet --info
       - name: Build
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
+          dotnet run -c Release --project tool -- --task build --langs ${{ matrix.lang }} 
           popd
       - name: Test
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
+          dotnet run -c Release --project tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - uses: actions/upload-artifact@v2
         if: github.ref == 'refs/heads/main'
@@ -210,7 +211,7 @@ jobs:
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --ignore-missing
+          dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
       - uses: actions/upload-artifact@v2
         with:
