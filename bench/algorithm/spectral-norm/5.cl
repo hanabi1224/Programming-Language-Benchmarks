@@ -16,49 +16,70 @@
 ;;      * use right shift instead of truncate for division in eval-A
 ;;      * redefine eval-A as a macro
 ;;    Modified by Bela Pecsek
-;;      * Using SSE calculations
+;;      * Using AVX calculation in two lanes
 ;;      * Improvement in type declarations
-;;      * Redefine eval-A as inlined function using sse simd
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
+;;      * Using s32.8 in eval-A and returning 2 f64.4 
+
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx))
+(eval-when (:compile-toplevel :load-toplevel :execute)  
+  (ql:quickload :sb-simd :silent t)
+  (use-package  :sb-simd-avx2))
 
-(declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
+(declaim (ftype (function (s32.8 s32.8) (values f64.4 f64.4)) eval-A)
          (inline eval-A))
 (defun eval-A (i j)
-  (let* ((i+1   (f64.2+ i 1))
-         (i+j   (f64.2+ i j))
-         (i+j+1 (f64.2+ i+1 j)))
-    (f64.2+ (f64.2* i+j i+j+1 0.5) i+1)))
+  (let* ((i+1   (s32.8+ i 1))
+         (i+j   (s32.8+ i j))
+         (i+j+1 (s32.8+ i+1 j))
+         (evala (s32.8+ (s32.8-shiftr (s32.8-mullo i+j i+j+1) 1) i+1)))
+    (values (f64.4-from-s32.4 (s32.8-extract128 evala 0))
+            (f64.4-from-s32.4 (s32.8-extract128 evala 1)))))
 
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (src dst begin end length)
-  (loop for i from begin below end by 2
-	do (let* ((ti   (f64.2+ i (make-f64.2 0 1)))
-		  (eA   (eval-A ti (f64.2 0)))
-		  (sum  (f64.2/ (aref src 0) eA)))
-	     (loop for j from 1 below length
-		   do (let* ((idx (f64.2+ eA ti j)))
-			(setf eA idx)
-			(f64.2-incf sum (f64.2/ (aref src j) idx))))
-             (setf (f64.2-aref dst i) sum))))
+  (loop for i from begin below end by 8
+        with src-0 of-type f64 = (aref src 0)
+        do (multiple-value-bind (eA0 eA1)
+               (eval-A (s32.8+ i (make-s32.8 0 1 2 3 4 5 6 7)) (s32.8 0))
+             (let* ((ti0  (f64.4+ i (make-f64.4 0 1 2 3)))
+	            (ti1  (f64.4+ i (make-f64.4 4 5 6 7)))
+                    (sum0 (f64.4/ src-0 eA0))
+		    (sum1 (f64.4/ src-0 eA1)))
+	       (loop for j from 1 below length
+		     do (let* ((src-j  (aref src j))
+			       (idx0  (f64.4+ eA0 ti0 j))
+			       (idx1  (f64.4+ eA1 ti1 j)))
+			  (setf eA0 idx0
+                                eA1 idx1)
+			  (setf sum0 (f64.4+ sum0 (f64.4/ src-j idx0)))
+			  (setf sum1 (f64.4+ sum1 (f64.4/ src-j idx1)))))
+               (setf (f64.4-aref dst i) sum0)
+               (setf (f64.4-aref dst (+ i 4)) sum1)))))
 
 (defun eval-At-times-u (src dst begin end length)
-  (loop for i from begin below end by 2
-	do (let* ((ti   (f64.2+ i (make-f64.2 1 2)))
-                  (eAt  (eval-A (f64.2 0) (f64.2- ti 1)))
-                  (sum  (f64.2/ (aref src 0) eAt)))
-	     (loop for j from 1 below length
-                   do (let* ((idx  (f64.2+ eAt ti j)))
-			(setf eAt idx)
-			(f64.2-incf sum (f64.2/ (aref src j) idx))))
-	     (setf (f64.2-aref dst i) sum))))
+  (loop for i from begin below end by 8
+        with src-0 of-type f64 = (aref src 0)
+	do  (multiple-value-bind (eAt0 eAt1)
+                (eval-A (s32.8 0) (s32.8+ i (make-s32.8 0 1 2 3 4 5 6 7)))
+              (let* ((ti0   (f64.4+ i (make-f64.4 1 2 3 4)))
+		     (ti1   (f64.4+ i (make-f64.4 5 6 7 8)))
+                     (sum0  (f64.4/ src-0 eAt0))
+		     (sum1  (f64.4/ src-0 eAt1)))
+	        (loop for j from 1 below length
+		      do (let* ((src-j  (aref src j))
+                                (idx0  (f64.4+ eAt0 ti0 j))
+			        (idx1  (f64.4+ eAt1 ti1 j)))
+			   (setf eAt0 idx0
+                                 eAt1 idx1)
+			   (setf sum0 (f64.4+ sum0 (f64.4/ src-j idx0)))
+			   (setf sum1 (f64.4+ sum1 (f64.4/ src-j idx1)))))
+                (setf (f64.4-aref dst i) sum0)
+                (setf (f64.4-aref dst (+ i 4)) sum1)))))
 
 #+sb-thread
 (defun get-thread-count ()
@@ -71,7 +92,6 @@
   (declare (optimize (speed 0)))
   (let* ((n    (truncate (- end start) (get-thread-count)))
          (step (- n (mod n 2))))
-    (declare (type u32 n step))
     (mapcar #'sb-thread:join-thread
             (loop for i from start below end by step
                   collecting (let ((start i)
@@ -84,8 +104,6 @@
 (defun execute-parallel (start end function)
   (funcall function start end))
 
-(declaim (ftype (function (f64vec f64vec f64vec u32 u32 u32) null)
-                eval-AtA-times-u))
 (defun eval-AtA-times-u (src dst tmp start end N)
       (progn
 	(execute-parallel start end (lambda (start end)
@@ -102,7 +120,7 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (f64/ (f64.2-vdot u v) (f64.2-vdot v v)))))
+    (sqrt (f64/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))

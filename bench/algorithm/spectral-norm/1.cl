@@ -25,7 +25,7 @@
 
 (deftype uint31 (&optional (bits 31)) `(unsigned-byte ,bits))
 (deftype d+ () '(double-float 0d0))
-(deftype array-d+ () '(simple-array d+))
+(deftype array-d+ () '(simple-array d+ (*)))
 
 (defmacro eval-A (i j)
   `(let* ((i+1   (1+ ,i))
