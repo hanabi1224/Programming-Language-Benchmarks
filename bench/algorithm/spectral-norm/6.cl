@@ -16,7 +16,7 @@
 ;;      * use right shift instead of truncate for division in eval-A
 ;;      * redefine eval-A as a macro
 ;;    Modified by Bela Pecsek
-;;      * Using SSE calculations and SSE2 only instruction sets
+;;      * Using SSE registers but AVX2 VEX vector instruction sets
 ;;      * Improvement in type declarations
 ;;      * Redefine eval-A as inlined function using sse simd
 ;;      * Changed code to be compatible with sb-simd
@@ -24,7 +24,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd)
-  (use-package :sb-simd-sse2))
+  (use-package :sb-simd-avx2))
 
 (declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
          (inline eval-A))
