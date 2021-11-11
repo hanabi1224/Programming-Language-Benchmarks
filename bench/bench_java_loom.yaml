@@ -6,7 +6,6 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.java
-      - 2.java
 compiler_version_command: loomjavac -version
 compiler_version_regex:
 runtime_version_parameter: -version
@@ -18,8 +17,8 @@ environments:
     version: latest
     docker:
     include:
-    build: loomjavac app.java -d out
+    build: loomjavac app.java --enable-preview --release 18 -d out
     out_dir: out
-    run_cmd: loomjava app
+    run_cmd: loomjava --enable-preview app
     runtime_included: false
     allow_failure: true
