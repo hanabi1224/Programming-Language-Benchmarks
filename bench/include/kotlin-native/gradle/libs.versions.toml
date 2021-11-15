@@ -1,6 +1,6 @@
 [versions]
 
 [libraries]
-bignum = {module = "com.ionspin.kotlin:bignum", version = "0.3.2"}
+bignum = {module = "com.ionspin.kotlin:bignum", version = "0.3.3"}
 
 [bundles]

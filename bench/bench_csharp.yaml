@@ -38,6 +38,7 @@ problems:
   - name: http-server
     source:
       - 1.cs
+      - 2.cs
   - name: nsieve
     source:
       - 1.cs
