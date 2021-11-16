@@ -3,9 +3,12 @@ import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-    val kotlinVersion = "1.5.31"
+    val kotlinVersion = "1.6.0"
     kotlin("jvm").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
+    // kotlin("plugin.spring").version(kotlinVersion)
+    // id("org.springframework.boot").version("2.5.6")
+    // id("io.spring.dependency-management").version("1.0.11.RELEASE")
     id("com.github.johnrengelman.shadow").version("7.1.0")
     id("com.github.ben-manes.versions").version("0.39.0")
     java
@@ -26,7 +29,7 @@ application {
 dependencies {
     // implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     val ktor_version = "1.6.5"
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")

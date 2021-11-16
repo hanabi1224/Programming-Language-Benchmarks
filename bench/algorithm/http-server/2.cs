@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 static class Program
@@ -40,10 +34,17 @@ static class Program
         }
 
         var port = 30000 + new Random().Next(10000);
-        var server = CreateWebHostBuilder(port).Build();
-        using var cts = new CancellationTokenSource();
-        _ = Task.Factory.StartNew(() => server.Start(), TaskCreationOptions.LongRunning);
-        // _ = server.RunAsync(cts.Token);
+        var app = CreateWebApplication(port);
+        app.MapPost("/", async ctx =>
+        {
+            using var sr = new StreamReader(ctx.Request.Body);
+            var bodyText = await sr.ReadToEndAsync().ConfigureAwait(false);
+            var payload = JsonSerializer.Deserialize<Payload>(bodyText);
+            ctx.Response.StatusCode = 200;
+            await ctx.Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes(payload.Value.ToString())).ConfigureAwait(false);
+        });
+
+        using var serverTask = app.RunAsync();
         var sum = 0;
         var api = $"http://localhost:{port}/";
         var tasks = new List<Task<int>>(n);
@@ -57,7 +58,7 @@ static class Program
             sum += await task.ConfigureAwait(false);
         }
         Console.WriteLine(sum);
-        System.Environment.Exit(0);
+        Environment.Exit(0);
     }
 
     private static async Task<int> SendAsync(string api, int value)
@@ -76,32 +77,18 @@ static class Program
         }
     }
 
-    private static IWebHostBuilder CreateWebHostBuilder(int port)
+    private static WebApplication CreateWebApplication(int port)
     {
-        return WebHost.CreateDefaultBuilder()
-            .SuppressStatusMessages(true)
-            .ConfigureLogging((context, logging) =>
-            {
-                logging.ClearProviders();
-            })
-            .UseKestrel(options =>
-            {
-                options.Limits.MaxRequestBodySize = null;
-                options.ListenLocalhost(port);
-            })
-            .UseStartup<Startup>();
-    }
-}
-
-public sealed class MyController : Controller
-{
-    [Route("/")]
-    public async Task<int> PostAsync()
-    {
-        using var sr = new StreamReader(Request.Body);
-        var bodyText = await sr.ReadToEndAsync().ConfigureAwait(false);
-        var payload = JsonSerializer.Deserialize<Payload>(bodyText);
-        return payload.Value;
+        var builder = WebApplication.CreateBuilder();
+        builder.WebHost.ConfigureLogging((context, logging) =>
+        {
+            logging.ClearProviders();
+        }).UseKestrel(options =>
+        {
+            options.Limits.MaxRequestBodySize = null;
+            options.ListenLocalhost(port);
+        });
+        return builder.Build();
     }
 }
 
@@ -109,30 +96,4 @@ public struct Payload
 {
     [JsonPropertyName("value")]
     public int Value { get; set; }
-}
-
-public sealed class Startup
-{
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddMvcCore().AddApplicationPart(Assembly.GetExecutingAssembly());
-    }
-
-    public void Configure(
-        IApplicationBuilder app,
-        IWebHostEnvironment env)
-    {
-        app.UseRouting();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
-    }
 }
