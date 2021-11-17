@@ -38,19 +38,23 @@ environments:
   - os: linux
     compiler: cpython
     version: 3
-    # compiler_version_command: python -V
     runtime_version_parameter: -V
-    # docker: python:3
+    include:
+    build: cp c.py out
+    out_dir: out
+    run_cmd: python3 c.py
+    runtime_included: false
+    force_check_child_processes: true
+  - os: linux
+    compiler: pyjion
+    version: 3
+    runtime_version_parameter: -V
     include:
     before_build:
-      - rm -r dist
-    # build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
-    build: cp c.py out
-    # after_build:
-    #   - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
-    # out_dir: dist/_app
+      - sh -c "echo 'import pyjion' > out/c.py"
+      - sh -c "echo 'pyjion.enable()' >> out/c.py"
+    build: sh -c "cat c.py >> out/c.py"
     out_dir: out
-    # run_cmd: _app
     run_cmd: python3 c.py
     runtime_included: false
     force_check_child_processes: true
@@ -65,14 +69,3 @@ environments:
     out_dir: out
     run_cmd: pypy/bin/pypy3 c.py
     force_check_child_processes: true
-  # - os: linux
-  #   compiler: pyston
-  #   version: latest
-  #   docker:
-  #   runtime_version_parameter: -V
-  #   include:
-  #   build: cp c.py out
-  #   out_dir: out
-  #   run_cmd: pyston c.py
-  #   runtime_included: false
-  #   force_check_child_processes: true
