@@ -55,6 +55,7 @@ jobs:
           lscpu          
           echo '# placeholder' >> $PROFILE
           sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -184,6 +185,8 @@ jobs:
         run: |
           lscpu
           echo '# placeholder' > $PROFILE
+          sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
@@ -203,6 +206,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.x"
+      - run: ./.github/python.sh
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
