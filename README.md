@@ -49,7 +49,7 @@ yarn dev
 
 [docker](https://www.docker.com/)
 
-[net5](https://dotnet.microsoft.com/)
+[net6](https://dotnet.microsoft.com/)
 
 [node LTS](https://nodejs.org/)
 

@@ -55,6 +55,7 @@ jobs:
           lscpu          
           echo '# placeholder' >> $PROFILE
           sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -184,6 +185,8 @@ jobs:
         run: |
           lscpu
           echo '# placeholder' > $PROFILE
+          sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
