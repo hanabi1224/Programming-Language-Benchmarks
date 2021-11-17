@@ -15,10 +15,12 @@ fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: any
 }
 
 fn baseIdx(i: vec4) vec4 {
+    @setFloatMode(.Optimized);
     return i*(i + vec1to4(1))*vec1to4(0.5) + vec1to4(1);
 }
 
 fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
+    @setFloatMode(.Optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
     var ti = vec1to4(@intToFloat(f64, first*4)) + if (transpose) vec4{1, 2, 3, 4} else vec4{0, 1, 2, 3};
     for (dst) |*res| {
@@ -52,6 +54,7 @@ fn setOnes(first: usize, last: usize, dst: []vec4) void {
 }
 
 fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4, total_vbv: *f64, total_vv: *f64) void {
+    @setFloatMode(.Optimized);
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
     for (v[first..last]) |f, i| {
