@@ -15,6 +15,7 @@ problems:
   - name: pidigits
     source:
       - 1n.kt
+      - 2n.kt
   # - name: coro-prime-sieve
   #   source:
   #     - 1.kt

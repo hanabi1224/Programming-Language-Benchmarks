@@ -2,35 +2,32 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-    val kotlinVersion = "1.6.0"
-    kotlin("multiplatform").version(kotlinVersion)
-    kotlin("plugin.serialization").version(kotlinVersion)
-    id("com.github.ben-manes.versions").version("0.39.0")
+  val kotlinVersion = "1.6.0"
+  kotlin("multiplatform").version(kotlinVersion)
+  kotlin("plugin.serialization").version(kotlinVersion)
+  id("com.github.ben-manes.versions").version("0.39.0")
 }
 
 repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
+  google()
+  mavenCentral()
+  gradlePluginPortal()
 }
 
 kotlin {
-  linuxX64("native") {
-    binaries {
-      executable("_app")
-    }
-  }
+  linuxX64("native") { binaries { executable("_app") } }
 
   sourceSets {
-      val commonMain by getting {
-          dependencies {
-              implementation(libs.bignum)
-              // implementation("com.ionspin.kotlin:bignum:0.3.1")
-              implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-              implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-          }
+    val commonMain by getting {
+      dependencies {
+        implementation(libs.bignum)
+        implementation(libs.kbignum)
+        // implementation("com.ionspin.kotlin:bignum:0.3.1")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
       }
     }
+  }
 }
 
 tasks.register("version") {
@@ -40,9 +37,7 @@ tasks.register("version") {
   }
 }
 
-tasks.register("du") {
-    dependsOn("dependencyUpdates")
-}
+tasks.register("du") { dependsOn("dependencyUpdates") }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
   rejectVersionIf { isNonStable(candidate.version) && !isNonStable(currentVersion) }
