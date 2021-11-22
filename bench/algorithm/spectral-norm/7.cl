@@ -21,16 +21,17 @@
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
-;;      * eval-A changed to macro taking one argument and using fma instruction
-;;        eval-a-times.u and eval-at-times-u changed acordingly
+;;      * Optimized eval-A to use i only and FMA
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd)
   (use-package :sb-simd-avx2))
 
-(defmacro eval-A (i)
-  `(sb-simd-avx2::f64.4-fmadd231 (f64.4 1) (f64.4* ,i 0.5) (f64.4+ ,i 1)))
+(declaim (ftype (function (f64.4) f64.4) eval-A)
+         (inline eval-A))
+(defun eval-A (i)
+  (sb-simd-avx2::f64.4-fmadd231 (f64.4 1) (f64.4* i 0.5) (f64.4+ i 1)))
 
 (declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
                 eval-A-times-u eval-At-times-u))
@@ -38,22 +39,22 @@
   (loop for i from begin below end by 4
         do (let* ((ti  (f64.4+ i (make-f64.4 0 1 2 3)))
                   (eA  (f64.4+ (eval-A ti) ti))
-		  (sum (f64.4/ (f64-aref src 0) eA)))
+		  (sum (f64.4/ (aref src 0) eA)))
 	     (loop for j from 1 below length
 		   do (let ((idx (f64.4+ eA ti j)))
 			(setf eA idx)
-			(f64.4-incf sum (f64.4/ (f64-aref src j) idx))))
+			(f64.4-incf sum (f64.4/ (aref src j) idx))))
 	     (setf (f64.4-aref dst i) sum))))
 
 (defun eval-At-times-u (src dst begin end length)
   (loop for i from begin below end by 4
         do (let* ((ti  (f64.4+ i (make-f64.4 1 2 3 4)))
                   (eAt (eval-A (f64.4- ti 1)))
-		  (sum (f64.4/ (f64-aref src 0) eAt)))
+		  (sum (f64.4/ (aref src 0) eAt)))
 	     (loop for j from 1 below length
                    do (let ((idx (f64.4+ eAt ti j)))
 			(setf eAt idx)
-			(f64.4-incf sum (f64.4/ (f64-aref src j) idx))))
+			(f64.4-incf sum (f64.4/ (aref src j) idx))))
 	     (setf (f64.4-aref dst i) sum))))
 #+sb-thread
 (defun get-thread-count ()
