@@ -43,7 +43,7 @@ if paramCount() > 0:
 let k = binary_search(n)
 var (p, q) = sum_terms(0, k-1)
 p += q
-var a = TEN.pow(n - 1)
+var a = TEN.pow(initBigInt(n - 1))
 let answer = p * a div q
 let str = answer.toString(10)
 var i = 0;
