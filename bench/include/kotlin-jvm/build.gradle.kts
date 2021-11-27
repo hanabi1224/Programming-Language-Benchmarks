@@ -30,7 +30,7 @@ dependencies {
     // implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-    val ktor_version = "1.6.5"
+    val ktor_version = "1.6.6"
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     // implementation("io.ktor:ktor-client-apache:$ktor_version")
