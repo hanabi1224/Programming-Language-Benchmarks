@@ -31,12 +31,12 @@ environments:
     build: gfortran-10 -O3 -march=skylake -mno-avx512f -fomit-frame-pointer -fopenmp -lpthread -lgmp -o out/app app.f90
     out_dir: out
     run_cmd: app
-#  - os: linux
-#    compiler: flang
-#    compiler_version_command: flang --version
-#    version: latest
-#    docker:
-#    include:
-#    build: flang -O3 -static -lgmp -o out/app app.f90
-#    out_dir: out
-#    run_cmd: app
+  - os: linux
+    compiler: flang
+    compiler_version_command: flang --version
+    version: 7
+    docker:
+    include:
+    build: flang -O3 -march=skylake -fopenmp -L/usr/lib/llvm-7/lib/ -fopenmp-simd -mp -lgmp -o out/app app.f90
+    out_dir: out
+    run_cmd: app
