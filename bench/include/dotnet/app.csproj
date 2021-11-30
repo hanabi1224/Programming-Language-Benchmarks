@@ -5,6 +5,8 @@
         <LangVersion>latest</LangVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <ServerGarbageCollection>true</ServerGarbageCollection>
+        <TieredCompilation>true</TieredCompilation>
+        <PublishReadyToRun>true</PublishReadyToRun>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.*" />
