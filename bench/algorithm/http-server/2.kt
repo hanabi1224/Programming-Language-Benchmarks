@@ -7,11 +7,10 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 import kotlin.random.Random
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.channels.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
@@ -26,7 +25,7 @@ fun main(args: Array<String>) {
     val api = "http://localhost:$port/api"
     var sum = 0
     runBlocking {
-        val tasks = (1..n).map { i -> async(Dispatchers.Default) { sendRequest(api, i) } }
+        val tasks = (1..n).map { i -> async(Dispatchers.IO) { sendRequest(api, i) } }
         tasks.forEach { t -> sum += t.await() }
     }
     println(sum)
@@ -47,7 +46,7 @@ suspend fun sendRequest(api: String, value: Int): Int {
 }
 
 fun runServer(port: Int): ApplicationEngine {
-    return embeddedServer(Netty, host = "localhost", port = port) {
+    return embeddedServer(CIO, host = "localhost", port = port) {
                 routing {
                     post("/api") {
                         val payloadText = call.receiveText()

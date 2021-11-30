@@ -7,11 +7,10 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 import kotlin.random.Random
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.channels.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
@@ -28,7 +27,7 @@ fun main(args: Array<String>) {
     runBlocking {
         val channel = Channel<Int>(n)
         for (i in 1..n) {
-            launch(Dispatchers.Default) { sendRequest(api, i, channel) }
+            launch(Dispatchers.IO) { sendRequest(api, i, channel) }
         }
         repeat(n) { sum += channel.receive() }
     }
@@ -52,7 +51,7 @@ suspend fun sendRequest(api: String, value: Int, channel: SendChannel<Int>) {
 }
 
 fun runServer(port: Int): ApplicationEngine {
-    return embeddedServer(Netty, host = "localhost", port = port) {
+    return embeddedServer(CIO, host = "localhost", port = port) {
                 routing {
                     post("/api") {
                         val payloadText = call.receiveText()

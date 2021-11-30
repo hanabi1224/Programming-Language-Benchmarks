@@ -8,13 +8,13 @@
 // contributed by Cristi Cobzarenco (@cristicbz)
 // contributed by Andre Bogus
 // contributed by Ryohei Machida
-// modified by hanabi1224, use core_simd on nightly rust
+// modified by hanabi1224, use portable_simd on nightly rust
 
 #![feature(portable_simd)]
 
-use core_simd::Simd;
 use rayon::prelude::*;
 use std::ops::*;
+use std::simd::Simd;
 
 const LANES: usize = 4;
 const LANES_I64: i64 = LANES as i64;

@@ -30,9 +30,10 @@ dependencies {
     // implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-    val ktor_version = "1.6.5"
+    val ktor_version = "1.6.6"
     implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    // implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-cio:$ktor_version")
     // implementation("io.ktor:ktor-client-apache:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     // implementation("io.ktor:ktor-client-java:$ktor_version")
@@ -44,13 +45,13 @@ tasks.register("version") {
     doLast {
         // https://github.com/JetBrains/kotlin/blob/master/compiler/cli/src/org/jetbrains/kotlin/cli/common/CLITool.kt#L178
         val jreVersion = System.getProperty("java.runtime.version")
-        println("${K2JVMCompiler().executableScriptFileName()} ${KotlinCompilerVersion.VERSION} (JRE $jreVersion)")
+        println(
+                "${K2JVMCompiler().executableScriptFileName()} ${KotlinCompilerVersion.VERSION} (JRE $jreVersion)"
+        )
     }
 }
 
-tasks.register("du") {
-    dependsOn("dependencyUpdates")
-}
+tasks.register("du") { dependsOn("dependencyUpdates") }
 
 tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
     rejectVersionIf { isNonStable(candidate.version) && !isNonStable(currentVersion) }

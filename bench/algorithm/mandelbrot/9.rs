@@ -5,7 +5,7 @@
 // contributed by TeXitoi
 // contributed by Volodymyr M. Lisivka
 // contributed by Michael Cicotti
-// modified by hanabi1224, ues core_simd on nightly rust
+// modified by hanabi1224, use portable_simd on nightly rust
 
 #![feature(portable_simd)]
 

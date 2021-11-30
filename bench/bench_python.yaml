@@ -50,10 +50,9 @@ environments:
     compiler: pyjion
     version: 3
     runtime_version_parameter: -V
-    include:
+    include: python
     before_build:
-      - sh -c "echo 'import pyjion' > out/c.py"
-      - sh -c "echo 'pyjion.enable()' >> out/c.py"
+      - sh -c "cat pyjion.py > out/c.py"
     build: sh -c "cat c.py >> out/c.py"
     out_dir: out
     run_cmd: python3 c.py

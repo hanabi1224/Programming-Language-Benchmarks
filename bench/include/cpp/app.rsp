@@ -1,1 +1,1 @@
--pipe -Wall -O3 -fomit-frame-pointer -march=skylake -mno-avx512f -std=c++17 -fopenmp -pthread -o app app.cpp
+-pipe -Wall -O3 -fomit-frame-pointer -march=skylake -mno-avx512f -std=c++20 -static-libstdc++ -fopenmp -pthread -o app app.cpp

@@ -1,4 +1,4 @@
-use axum::handler::post;
+use axum::routing::post;
 use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, Sender};
