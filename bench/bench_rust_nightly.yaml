@@ -6,6 +6,10 @@ problems:
   - name: mandelbrot
     source:
       - 9.rs
+  - name: fasta
+    source:
+      - 1c.rs
+      - 5c.rs
   - name: nbody
     source:
       - 3.rs

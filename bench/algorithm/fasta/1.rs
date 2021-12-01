@@ -3,9 +3,10 @@
 //
 // contributed by the Rust Project Developers
 // contributed by TeXitoi
+// use BufWriter by hanabi1224
 
 use std::cmp::min;
-use std::io;
+use std::io::{self, BufWriter, Write};
 
 const LINE_LENGTH: usize = 60;
 const IM: u32 = 139968;
@@ -59,13 +60,9 @@ impl<'a> Iterator for AAGen<'a> {
     }
 }
 
-fn make_fasta<W: io::Write, I: Iterator<Item = u8>>(
-    wr: &mut W,
-    header: &str,
-    mut it: I,
-    mut n: usize,
-) -> io::Result<()> {
-    wr.write_all(header.as_bytes())?;
+fn make_fasta<I: Iterator<Item = u8>>(header: &str, mut it: I, mut n: usize) -> anyhow::Result<()> {
+    let mut stdout = BufWriter::new(io::stdout());
+    stdout.write_all(header.as_bytes())?;
     let mut line = [0u8; LINE_LENGTH + 1];
     while n > 0 {
         let nb = min(LINE_LENGTH, n);
@@ -74,12 +71,12 @@ fn make_fasta<W: io::Write, I: Iterator<Item = u8>>(
         }
         n -= nb;
         line[nb] = '\n' as u8;
-        wr.write_all(&line[..(nb + 1)])?;
+        stdout.write_all(&line[..(nb + 1)])?;
     }
     Ok(())
 }
 
-fn run<W: io::Write>(writer: &mut W) -> io::Result<()> {
+fn main() -> anyhow::Result<()> {
     let n = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
@@ -119,27 +116,16 @@ fn run<W: io::Write>(writer: &mut W) -> io::Result<()> {
     ];
 
     make_fasta(
-        writer,
         ">ONE Homo sapiens alu\n",
         alu.as_bytes().iter().cycle().map(|c| *c),
         n * 2,
     )?;
+    make_fasta(">TWO IUB ambiguity codes\n", AAGen::new(rng, iub), n * 3)?;
     make_fasta(
-        writer,
-        ">TWO IUB ambiguity codes\n",
-        AAGen::new(rng, iub),
-        n * 3,
-    )?;
-    make_fasta(
-        writer,
         ">THREE Homo sapiens frequency\n",
         AAGen::new(rng, homosapiens),
         n * 5,
     )?;
 
-    writer.flush()
-}
-
-fn main() {
-    run(&mut io::stdout()).unwrap()
+    Ok(())
 }

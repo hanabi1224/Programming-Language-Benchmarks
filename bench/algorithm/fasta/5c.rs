@@ -9,7 +9,9 @@
 //     * switched from AoS to SoA (idea borrowed from the C++ solution)
 //     * also preallocate the whole buffer for the data arrays
 //     * cleaned up code a bit (reordering, renaming, formatting, etc.)
-// small tweaks by hanabi1224
+// add compile-time calculation by hanabi1224
+
+#![feature(const_fn_floating_point_arithmetic)]
 
 use std::cmp::min;
 use std::io;
@@ -21,6 +23,58 @@ const LINE_LENGTH: usize = 60;
 const IM: u32 = 139968;
 const LINES: usize = 1024;
 const BLKLEN: usize = LINE_LENGTH * LINES;
+
+const ALU: &[u8] = b"GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGG\
+GAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGA\
+CCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAAT\
+ACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCA\
+GCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGG\
+AGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCC\
+AGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
+
+const fn normalize_rand(p: f32) -> u32 {
+    (p * IM as f32) as u32
+}
+
+const fn make_random<const N: usize>(data: [(u8, f32); N]) -> [(u32, u8); N] {
+    let mut acc = 0.;
+    let mut i = 0;
+    let mut buf = [(0, 0); N];
+    while i < N {
+        let (ch, p) = data[i];
+        acc += p;
+        buf[i].0 = normalize_rand(acc);
+        buf[i].1 = ch;
+        i += 1;
+    }
+    buf
+}
+
+const IUB: [(u8, f32); 15] = [
+    (b'a', 0.27),
+    (b'c', 0.12),
+    (b'g', 0.12),
+    (b't', 0.27),
+    (b'B', 0.02),
+    (b'D', 0.02),
+    (b'H', 0.02),
+    (b'K', 0.02),
+    (b'M', 0.02),
+    (b'N', 0.02),
+    (b'R', 0.02),
+    (b'S', 0.02),
+    (b'V', 0.02),
+    (b'W', 0.02),
+    (b'Y', 0.02),
+];
+const IUB_RAND: [(u32, u8); 15] = make_random(IUB);
+const HOMOSAPIENS: [(u8, f32); 4] = [
+    (b'a', 0.3029549426680),
+    (b'c', 0.1979883004921),
+    (b'g', 0.1975473066391),
+    (b't', 0.3015094502008),
+];
+const HOMOSAPIENS_RAND: [(u32, u8); 4] = make_random(HOMOSAPIENS);
 
 struct MyRandom {
     last: u32,
@@ -37,10 +91,6 @@ impl MyRandom {
             thread_count: thread_count,
             next_thread_num: 0,
         }
-    }
-
-    fn normalize(p: f32) -> u32 {
-        (p * IM as f32) as u32
     }
 
     fn reset(&mut self, count: usize) {
@@ -97,20 +147,6 @@ impl MyStdOut {
     }
 }
 
-fn make_random(data: &[(u8, f32)]) -> (Box<[u32]>, Box<[u8]>) {
-    let mut acc = 0.;
-    let mut buf_p = Vec::with_capacity(data.len());
-    let mut buf_ch = Vec::with_capacity(data.len());
-
-    for &(ch, p) in data {
-        acc += p;
-        buf_p.push(MyRandom::normalize(acc));
-        buf_ch.push(ch);
-    }
-
-    (buf_p.into(), buf_ch.into())
-}
-
 fn make_fasta_single<I: Iterator<Item = u8>>(
     header: impl AsRef<[u8]>,
     mut it: I,
@@ -131,11 +167,11 @@ fn make_fasta_single<I: Iterator<Item = u8>>(
     Ok(())
 }
 
-fn do_fasta(
+fn do_fasta<const N: usize>(
     thread_num: u16,
     rng: Arc<Mutex<MyRandom>>,
     wr: Arc<Mutex<MyStdOut>>,
-    data: (Box<[u32]>, Box<[u8]>),
+    data: &[(u32, u8); N],
 ) {
     let mut rng_buf = [0u32; BLKLEN];
     let mut out_buf = [0u8; BLKLEN + LINES];
@@ -158,9 +194,9 @@ fn do_fasta(
                 line_count += 1;
             }
             let rn = rng_buf[i];
-            for j in data.0.iter().zip(data.1.iter()) {
-                if *j.0 >= rn {
-                    out_buf[i + line_count] = *j.1;
+            for (p, ch) in data {
+                if p >= &rn {
+                    out_buf[i + line_count] = *ch;
                     break;
                 }
             }
@@ -175,17 +211,16 @@ fn do_fasta(
     }
 }
 
-fn make_fasta(
+fn make_fasta<const N: usize>(
     header: impl AsRef<[u8]>,
     rng: Arc<Mutex<MyRandom>>,
-    data: (Box<[u32]>, Box<[u8]>),
+    data: &'static [(u32, u8); N],
     num_threads: u16,
 ) -> io::Result<()> {
     let stdout = Arc::new(Mutex::new(MyStdOut::new(num_threads)));
     io::stdout().write_all(header.as_ref())?;
     let mut threads = Vec::with_capacity(num_threads as usize);
     for thread in 0..num_threads {
-        let data = data.clone();
         let rng = rng.clone();
         let stdout = stdout.clone();
         threads.push(thread::spawn(move || {
@@ -208,43 +243,10 @@ fn main() {
     let num_threads: u16 = num_cpus::get() as u16;
 
     let rng = Arc::new(Mutex::new(MyRandom::new(n * 3, num_threads)));
-    let alu: &[u8] = b"GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTT\
-                       GGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTC\
-                       GAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACT\
-                       AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTG\
-                       TAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCT\
-                       TGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCG\
-                       CCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCT\
-                       CAAAAA";
-
-    let iub = &[
-        (b'a', 0.27),
-        (b'c', 0.12),
-        (b'g', 0.12),
-        (b't', 0.27),
-        (b'B', 0.02),
-        (b'D', 0.02),
-        (b'H', 0.02),
-        (b'K', 0.02),
-        (b'M', 0.02),
-        (b'N', 0.02),
-        (b'R', 0.02),
-        (b'S', 0.02),
-        (b'V', 0.02),
-        (b'W', 0.02),
-        (b'Y', 0.02),
-    ];
-
-    let homosapiens = &[
-        (b'a', 0.3029549426680),
-        (b'c', 0.1979883004921),
-        (b'g', 0.1975473066391),
-        (b't', 0.3015094502008),
-    ];
 
     make_fasta_single(
         b">ONE Homo sapiens alu\n",
-        alu.iter().cycle().map(|c| *c),
+        ALU.iter().cycle().map(|c| *c),
         n * 2,
     )
     .unwrap();
@@ -252,7 +254,7 @@ fn main() {
     make_fasta(
         b">TWO IUB ambiguity codes\n",
         rng.clone(),
-        make_random(iub),
+        &IUB_RAND,
         num_threads,
     )
     .unwrap();
@@ -262,7 +264,7 @@ fn main() {
     make_fasta(
         b">THREE Homo sapiens frequency\n",
         rng,
-        make_random(homosapiens),
+        &HOMOSAPIENS_RAND,
         num_threads,
     )
     .unwrap();
