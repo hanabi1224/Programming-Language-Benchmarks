@@ -196,6 +196,7 @@ jobs:
       - run: ./.github/graalvm-node.sh
       - run: ./.github/truffleruby.sh
       - run: ./.github/wasm.sh
+      - run: ./.github/fortran.sh
       # - run: ./.github/loom.sh
       - run: ./.github/racket.sh
       # - run: sudo ./.github/dart.sh
@@ -215,6 +216,7 @@ jobs:
         run: |
           source $PROFILE
           pushd bench
+          dotnet run -c Release --project tool -- --task test --ignore-missing
           dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
       - uses: actions/upload-artifact@v2
