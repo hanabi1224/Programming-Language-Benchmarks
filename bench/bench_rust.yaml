@@ -70,7 +70,7 @@ environments:
     #   - /tmp/rs/target:/tmp/rs/target
     #   - /tmp/.cargo/registry:/usr/local/cargo/registry
     env:
-      RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
+      RUSTFLAGS: -Ctarget-cpu=skylake
     include: rust
     include_sub_dir: src
     build: cargo +stable build --release --target-dir /tmp/rs/target -v

@@ -22,7 +22,7 @@ environments:
     compiler: rustc
     version: nightly
     env:
-      RUSTFLAGS: -Ctarget-cpu=skylake -Ctarget-feature=+avx2,+fma,-avx512f
+      RUSTFLAGS: -Ctarget-cpu=skylake
     include: rust-nightly
     include_sub_dir: src
     build: cargo +nightly build --release --target-dir /tmp/rsn/target -v
