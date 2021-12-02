@@ -105,9 +105,12 @@ namespace BenchTool
             if (cpuInfo != null)
             {
                 Logger.Info(cpuInfo.ToString());
-                if (GithubActionUtils.IsGithubBuild && task == TaskBench && cpuInfo.Model < 80)
+                if (GithubActionUtils.IsGithubBuild && task == TaskBench && cpuInfo.Model < 79)
                 {
-                    throw new Exception("[github action] Fail intentionally on old cpu model prior to skylake, please retry.");
+                    // To print cpu features, use
+                    // either: 'rustc +nightly --print=cfg -C target-cpu=broadwell' (features like avx512 are missing from stable)
+                    // or 'zig build -Dcpu=broadwell --verbose-llvm-cpu-features'
+                    throw new Exception("[github action] Fail intentionally on old cpu model prior to broadwell, please retry.");
                 }
             }
 

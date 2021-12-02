@@ -26,7 +26,7 @@ environments:
     compiler: rustc
     version: nightly
     env:
-      RUSTFLAGS: -Ctarget-cpu=skylake
+      RUSTFLAGS: -Ctarget-cpu=broadwell
     include: rust-nightly
     include_sub_dir: src
     build: cargo +nightly build --release --target-dir /tmp/rsn/target -v
