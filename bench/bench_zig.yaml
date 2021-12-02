@@ -43,6 +43,6 @@ environments:
     version: latest
     docker:
     include: zig
-    build: zig build -Dcpu=skylake --verbose-llvm-cpu-features
+    build: zig build -Dcpu=broadwell --verbose-llvm-cpu-features
     out_dir: out
     run_cmd: app

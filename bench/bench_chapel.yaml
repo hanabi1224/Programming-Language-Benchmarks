@@ -37,7 +37,7 @@ environments:
     docker: chapel/chapel
     include: chapel
     include_sub_dir: src
-    build: mason build --release --show --static --ccflags -march=skylake
+    build: mason build --release --show --static --ccflags -march=broadwell
     after_build:
       - cp target/release/app out
     out_dir: out

@@ -1,1 +1,1 @@
--pipe -Wall -O3 -fomit-frame-pointer -march=skylake -fopenmp -pthread -lapr-1 -I/usr/include/apr-1.0 -o app app.c -lm
+-pipe -Wall -O3 -fomit-frame-pointer -march=broadwell -fopenmp -pthread -lapr-1 -I/usr/include/apr-1.0 -o app app.c -lm

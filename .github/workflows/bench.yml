@@ -233,6 +233,9 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - uses: actions/download-artifact@v2
         with:
           # Artifact name
