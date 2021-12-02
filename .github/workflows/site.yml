@@ -16,25 +16,9 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
-      - name: Install
-        run: |
-          npm install --global yarn
-          yarn --version
-          yarn global bin
-          docker info
       - name: Build
         run: |
           pushd website
           yarn
           yarn build
           popd
-          
-          
-          
-          
-        
-        
-        
-        
-        
-        
