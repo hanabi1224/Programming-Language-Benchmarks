@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "test": "spectral-norm",
+  "code": "2.rs",
+  "input": "4000",
+  "timeMS": 1458.6548,
+  "timeStdDevMS": 0.6645410371075546,
+  "memBytes": 712704,
+  "cpuTimeMS": 1450.0,
+  "cpuTimeUserMS": 1450.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "rustc 1.57.0 (f1edd0429 2021-11-29)",
+    "start": "2021-12-02T16:18:21.2439302+00:00",
+    "finished": "2021-12-02T16:18:26.9815792+00:00",
+    "durationMs": 5737
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:39:18.9883853+00:00",
+    "finished": "2021-12-02T16:39:18.9935734+00:00",
+    "durationMs": 5
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "racket",
+  "os": "linux",
+  "compiler": "racket",
+  "compilerVersion": "latest",
+  "test": "fasta",
+  "code": "3.rkt",
+  "input": "250000",
+  "timeMS": 236.1917,
+  "timeStdDevMS": 3.631504788651657,
+  "memBytes": 65912832,
+  "cpuTimeMS": 223.3333,
+  "cpuTimeUserMS": 183.3333,
+  "cpuTimeKernelMS": 40.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "Welcome to Racket v8.3 [cs].",
+    "start": "2021-12-02T16:09:50.2484878+00:00",
+    "finished": "2021-12-02T16:09:51.9429283+00:00",
+    "durationMs": 1694
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:38:52.211176+00:00",
+    "finished": "2021-12-02T16:38:52.3631785+00:00",
+    "durationMs": 152
+  }
+}

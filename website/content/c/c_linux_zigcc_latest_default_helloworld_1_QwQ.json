@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "c",
+  "os": "linux",
+  "compiler": "zigcc",
+  "compilerVersion": "latest",
+  "test": "helloworld",
+  "code": "1.c",
+  "input": "QwQ",
+  "timeMS": 1.8507,
+  "timeStdDevMS": 0.7174830611240939,
+  "memBytes": 229376,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "0.9.0-dev.1815+20e19e75f",
+    "start": "2021-12-02T16:10:08.2881886+00:00",
+    "finished": "2021-12-02T16:10:11.6571456+00:00",
+    "durationMs": 3368
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:36:40.1460778+00:00",
+    "finished": "2021-12-02T16:36:40.1539076+00:00",
+    "durationMs": 7
+  }
+}

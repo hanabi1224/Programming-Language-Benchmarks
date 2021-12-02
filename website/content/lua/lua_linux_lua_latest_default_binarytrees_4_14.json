@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "lua",
+  "os": "linux",
+  "compiler": "lua",
+  "compilerVersion": "latest",
+  "test": "binarytrees",
+  "code": "4.lua",
+  "input": "14",
+  "timeMS": 472.3018,
+  "timeStdDevMS": 26.61926412663082,
+  "memBytes": 9560064,
+  "cpuTimeMS": 440.0,
+  "cpuTimeUserMS": 430.0,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-02T16:08:00.4223024+00:00",
+    "finished": "2021-12-02T16:08:00.4520617+00:00",
+    "durationMs": 29
+  },
+  "testLog": {
+    "runtimeVersion": "Lua 5.4.3  Copyright (C) 1994-2021 Lua.org, PUC-Rio",
+    "start": "2021-12-02T16:38:03.2567251+00:00",
+    "finished": "2021-12-02T16:38:03.3018033+00:00",
+    "durationMs": 45
+  }
+}

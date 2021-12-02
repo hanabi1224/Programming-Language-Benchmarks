@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "python",
+  "os": "linux",
+  "compiler": "pyjion",
+  "compilerVersion": "3",
+  "test": "edigits",
+  "code": "1.py",
+  "input": "250001",
+  "timeMS": 2493.7651,
+  "timeStdDevMS": 2.125333496183501,
+  "memBytes": 22642688,
+  "cpuTimeMS": 2479.9999,
+  "cpuTimeUserMS": 2466.6666,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-02T16:09:06.9257337+00:00",
+    "finished": "2021-12-02T16:09:06.9322775+00:00",
+    "durationMs": 6
+  },
+  "testLog": {
+    "runtimeVersion": "Python 3.10.0",
+    "start": "2021-12-02T16:38:12.9474798+00:00",
+    "finished": "2021-12-02T16:38:13.1918484+00:00",
+    "durationMs": 244
+  }
+}
