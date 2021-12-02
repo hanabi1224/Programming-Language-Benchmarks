@@ -163,28 +163,28 @@ func main() {
 	}
 
 	iub := []AminoAcid{
-		AminoAcid{0.27, 'a'},
-		AminoAcid{0.12, 'c'},
-		AminoAcid{0.12, 'g'},
-		AminoAcid{0.27, 't'},
-		AminoAcid{0.02, 'B'},
-		AminoAcid{0.02, 'D'},
-		AminoAcid{0.02, 'H'},
-		AminoAcid{0.02, 'K'},
-		AminoAcid{0.02, 'M'},
-		AminoAcid{0.02, 'N'},
-		AminoAcid{0.02, 'R'},
-		AminoAcid{0.02, 'S'},
-		AminoAcid{0.02, 'V'},
-		AminoAcid{0.02, 'W'},
-		AminoAcid{0.02, 'Y'},
+		{0.27, 'a'},
+		{0.12, 'c'},
+		{0.12, 'g'},
+		{0.27, 't'},
+		{0.02, 'B'},
+		{0.02, 'D'},
+		{0.02, 'H'},
+		{0.02, 'K'},
+		{0.02, 'M'},
+		{0.02, 'N'},
+		{0.02, 'R'},
+		{0.02, 'S'},
+		{0.02, 'V'},
+		{0.02, 'W'},
+		{0.02, 'Y'},
 	}
 
 	homosapiens := []AminoAcid{
-		AminoAcid{0.3029549426680, 'a'},
-		AminoAcid{0.1979883004921, 'c'},
-		AminoAcid{0.1975473066391, 'g'},
-		AminoAcid{0.3015094502008, 't'},
+		{0.3029549426680, 'a'},
+		{0.1979883004921, 'c'},
+		{0.1975473066391, 'g'},
+		{0.3015094502008, 't'},
 	}
 
 	AccumulateProbabilities(iub)

@@ -3,6 +3,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -34,11 +35,13 @@ func main() {
 			n = _n
 		}
 	}
+	out := bufio.NewWriter(os.Stdout)
+	defer out.Flush()
 	ch := make(chan int, 1) // Create a new channel.
 	go Generate(ch)         // Launch Generate goroutine.
 	for i := 0; i < n; i++ {
 		prime := <-ch
-		fmt.Println(prime)
+		fmt.Fprintln(out, prime)
 		if i >= n-1 {
 			break
 		}

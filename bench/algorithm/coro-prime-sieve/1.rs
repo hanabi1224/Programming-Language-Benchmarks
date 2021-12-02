@@ -3,6 +3,7 @@ use async_std::{
     channel::{Receiver, Sender},
     task,
 };
+use std::io::{self, prelude::*, BufWriter};
 
 fn main() {
     let n = std::env::args_os()
@@ -14,12 +15,13 @@ fn main() {
     task::block_on(async_main(n)).unwrap();
 }
 
-async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn async_main(n: usize) -> anyhow::Result<()> {
+    let mut stdout = BufWriter::new(io::stdout());
     let (sender, mut receiver) = channel::bounded::<usize>(1);
     task::spawn(generate(sender));
     for _i in 0..n {
         let prime = receiver.recv().await?;
-        println!("{}", prime);
+        stdout.write_fmt(format_args!("{}\n", prime))?;
         let (sender_next, receiver_next) = channel::bounded::<usize>(1);
         task::spawn(filter(receiver, sender_next, prime));
         receiver = receiver_next;
@@ -27,7 +29,7 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
     Ok(())
 }
 
-async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
+async fn generate(sender: Sender<usize>) -> anyhow::Result<()> {
     let mut i = 2;
     loop {
         sender.send(i).await?;

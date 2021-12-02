@@ -161,7 +161,7 @@ fn make_fasta_single<I: Iterator<Item = u8>>(
             line[i] = it.next().unwrap();
         }
         n -= nb;
-        line[nb] = '\n' as u8;
+        line[nb] = b'\n';
         stdout.write_all(&line[..(nb + 1)])?;
     }
     Ok(())

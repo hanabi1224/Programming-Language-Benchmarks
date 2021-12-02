@@ -110,7 +110,7 @@ fn make_fasta<I: Iterator<Item = u8>>(header: &str, mut it: I, mut n: usize) -> 
             line[i] = it.next().unwrap();
         }
         n -= nb;
-        line[nb] = '\n' as u8;
+        line[nb] = b'\n';
         stdout.write_all(&line[..(nb + 1)])?;
     }
     Ok(())
