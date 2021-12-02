@@ -28,7 +28,8 @@ namespace BenchTool
         private const string TaskTest = "test";
         private const string TaskBench = "bench";
 
-        private static bool _verbose = false;
+        private static bool s_verbose = false;
+        private static CpuInfo s_cpuInfo;
 
         /// <summary>
         /// Main function
@@ -65,8 +66,10 @@ namespace BenchTool
             string[] problems = null,
             string[] environments = null)
         {
+            s_cpuInfo = await CpuInfo.LsCpuAsync().ConfigureAwait(false);
+
             Stopwatch timer = Stopwatch.StartNew();
-            _verbose = verbose;
+            s_verbose = verbose;
             config.EnsureFileExists();
             algorithm.EnsureDirectoryExists();
             include.EnsureDirectoryExists();
@@ -101,11 +104,10 @@ namespace BenchTool
             HashSet<string> includedOsEnvironments = new HashSet<string>(environments ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
             HashSet<string> includedProblems = new HashSet<string>(problems ?? new string[] { }, StringComparer.OrdinalIgnoreCase);
 
-            CpuInfo cpuInfo = await CpuInfo.LsCpuAsync().ConfigureAwait(false);
-            if (cpuInfo != null)
+            if (s_cpuInfo != null)
             {
-                Logger.Info(cpuInfo.ToString());
-                if (GithubActionUtils.IsGithubBuild && task == TaskBench && cpuInfo.Model < 79)
+                Logger.Info($"CPU: {s_cpuInfo}");
+                if (GithubActionUtils.IsGithubBuild && task == TaskBench && s_cpuInfo.Model < 79)
                 {
                     // To print cpu features, use
                     // either: 'rustc +nightly --print=cfg -C target-cpu=broadwell' (features like avx512 are missing from stable)
@@ -119,6 +121,10 @@ namespace BenchTool
             HashSet<string> SetupDockerProvidedRuntimeDedupContext = new HashSet<string>();
             foreach (YamlLangConfig c in langConfigs.OrderBy(i => i.Lang))
             {
+                if (!c.Enabled)
+                {
+                    continue;
+                }
                 if (includedLanguages.Count > 0
                     && !includedLanguages.Contains(c.Lang))
                 {
@@ -130,6 +136,10 @@ namespace BenchTool
 
                 foreach (YamlLangEnvironmentConfig env in c.Environments ?? Enumerable.Empty<YamlLangEnvironmentConfig>())
                 {
+                    if (!env.Enabled)
+                    {
+                        continue;
+                    }
                     if (includedOsEnvironments.Count > 0
                         && !includedOsEnvironments.Contains(env.Os))
                     {
@@ -294,7 +304,7 @@ namespace BenchTool
             Logger.Debug($"Copying {srcCodePath} to {srcCodeDestPath}");
             //File.Copy(srcCodePath, srcCodeDestPath, overwrite: true);
             await File.WriteAllTextAsync(path: srcCodeDestPath, await File.ReadAllTextAsync(srcCodePath).ConfigureAwait(false)).ConfigureAwait(false);
-            if (_verbose)
+            if (s_verbose)
             {
                 await ProcessUtils.RunCommandAsync($"ls -al \"{tmpDir.FullPath}\"", asyncRead: false).ConfigureAwait(false);
             }
@@ -445,7 +455,7 @@ namespace BenchTool
 
             await buildOutputJson.SaveAsync(buildOutput).ConfigureAwait(false);
 
-            if (_verbose)
+            if (s_verbose)
             {
                 await ProcessUtils.RunCommandAsync($"ls -al {buildOutput}", asyncRead: false).ConfigureAwait(false);
             }
@@ -521,7 +531,7 @@ namespace BenchTool
                         asyncRead: false,
                         out string stdOut,
                         out string stdErr,
-                        env: null,
+                        env: langEnvConfig.RunCmdEnv,
                         default);
                     if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                     {
@@ -631,7 +641,12 @@ namespace BenchTool
                     {
                         try
                         {
-                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(runPsi, forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses, timeoutSeconds: test.TimeoutSeconds).ConfigureAwait(false);
+                            ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(
+                                runPsi,
+                                forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses,
+                                timeoutSeconds: test.TimeoutSeconds,
+                                env: langEnvConfig.RunCmdEnv).ConfigureAwait(false);
+
                             if (measurement != null && measurement.Elapsed.TotalMilliseconds > 0)
                             {
                                 Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
@@ -679,6 +694,7 @@ namespace BenchTool
                     string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                     await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
                     {
+                        cpuInfo = s_cpuInfo?.ToString(),
                         lang = langConfig.Lang,
                         os = langEnvConfig.Os,
                         compiler = langEnvConfig.Compiler,

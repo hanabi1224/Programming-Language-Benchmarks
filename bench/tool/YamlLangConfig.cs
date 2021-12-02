@@ -53,6 +53,8 @@ namespace BenchTool
         public string RuntimeVersionRegex { get; set; }
 
         public string SourceRenameTo { get; set; }
+
+        public bool Enabled { get; set; } = true;
     }
 
     public class YamlLangConfig : LangConfigBase
@@ -108,6 +110,8 @@ namespace BenchTool
         public string[] BeforeRun { get; set; }
 
         public string RunCmd { get; set; }
+
+        public Dictionary<string, string> RunCmdEnv { get; set; }
 
         public bool RuntimeIncluded { get; set; } = true;
 
