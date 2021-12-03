@@ -1,19 +1,23 @@
-@import "node_modules/scss-google-fonts/src/GoogleFonts.scss";
+@import 'node_modules/scss-google-fonts/src/GoogleFonts.scss';
 
 @include google-font('Roboto Mono');
 
-html, body {
-    font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-display: swap;
+html,
+body {
+  font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-display: swap;
 }
 
 @media screen and (max-width: 768px) {
   .md-hide {
     display: none;
   }
+
   .half-width {
     width: 50%;
   }
+
   .full-width {
     width: 100%;
   }

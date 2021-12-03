@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "cpp",
+  "os": "linux",
+  "compiler": "clang++",
+  "compilerVersion": "13",
+  "test": "helloworld",
+  "code": "1.cpp",
+  "input": "QwQ",
+  "timeMS": 1.8074,
+  "timeStdDevMS": 0.23667028119305566,
+  "memBytes": 1204224,
+  "cpuTimeMS": 0.0,
+  "cpuTimeUserMS": 0.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "Ubuntu clang version 13.0.1-++20211124043118+19b8368225dc-1~exp1~20211124043708.23\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2021-12-02T16:08:38.61248+00:00",
+    "finished": "2021-12-02T16:08:38.8909812+00:00",
+    "durationMs": 278
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:36:40.752901+00:00",
+    "finished": "2021-12-02T16:36:40.7580801+00:00",
+    "durationMs": 5
+  }
+}

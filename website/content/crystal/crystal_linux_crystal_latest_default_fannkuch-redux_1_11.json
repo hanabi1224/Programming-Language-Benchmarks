@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "crystal",
+  "os": "linux",
+  "compiler": "crystal",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.cr",
+  "input": "11",
+  "timeMS": 4518.4684,
+  "timeStdDevMS": 0.17508855854485553,
+  "memBytes": 3186688,
+  "cpuTimeMS": 4510.0,
+  "cpuTimeUserMS": 4510.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "Crystal 1.2.2 [6529d725a] (2021-11-10)\n\nLLVM: 10.0.0\nDefault target: x86_64-unknown-linux-gnu",
+    "start": "2021-12-02T16:08:55.2893636+00:00",
+    "finished": "2021-12-02T16:09:08.6865664+00:00",
+    "durationMs": 13397
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:36:41.0036567+00:00",
+    "finished": "2021-12-02T16:36:41.369281+00:00",
+    "durationMs": 365
+  }
+}

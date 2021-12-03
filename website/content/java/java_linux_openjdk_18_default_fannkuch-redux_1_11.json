@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "java",
+  "os": "linux",
+  "compiler": "openjdk",
+  "compilerVersion": "18",
+  "test": "fannkuch-redux",
+  "code": "1.java",
+  "input": "11",
+  "timeMS": 1515.7761,
+  "timeStdDevMS": 11.066230971895294,
+  "memBytes": 39620608,
+  "cpuTimeMS": 2896.6666,
+  "cpuTimeUserMS": 2876.6666,
+  "cpuTimeKernelMS": 20.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "javac 18-ea",
+    "start": "2021-12-02T16:10:04.9918706+00:00",
+    "finished": "2021-12-02T16:10:07.0853554+00:00",
+    "durationMs": 2093
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"18-ea\" 2022-03-15\nOpenJDK Runtime Environment (build 18-ea+25-1670)\nOpenJDK 64-Bit Server VM (build 18-ea+25-1670, mixed mode, sharing)",
+    "start": "2021-12-02T16:37:19.3445132+00:00",
+    "finished": "2021-12-02T16:37:19.6949036+00:00",
+    "durationMs": 350
+  }
+}

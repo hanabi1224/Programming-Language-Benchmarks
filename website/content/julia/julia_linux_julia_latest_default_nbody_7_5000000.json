@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "julia",
+  "os": "linux",
+  "compiler": "julia",
+  "compilerVersion": "latest",
+  "test": "nbody",
+  "code": "7.jl",
+  "input": "5000000",
+  "timeMS": 925.0643,
+  "timeStdDevMS": 6.106075382218467,
+  "memBytes": 230129664,
+  "cpuTimeMS": 1010.0,
+  "cpuTimeUserMS": 860.0,
+  "cpuTimeKernelMS": 150.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-02T16:08:14.9366837+00:00",
+    "finished": "2021-12-02T16:08:15.3758476+00:00",
+    "durationMs": 439
+  },
+  "testLog": {
+    "runtimeVersion": "julia version 1.6.4",
+    "start": "2021-12-02T16:37:42.7240889+00:00",
+    "finished": "2021-12-02T16:37:43.9845068+00:00",
+    "durationMs": 1260
+  }
+}

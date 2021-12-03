@@ -6,6 +6,7 @@ declare module '*.vue' {
 type osType = 'linux' | 'osx' | 'windows'
 
 type BenchResult = {
+  cpuInfo: string
   lang: string
   os: osType
   compiler: string
