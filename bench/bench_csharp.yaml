@@ -25,6 +25,9 @@ problems:
   - name: fasta
     source:
       - 5.cs
+  - name: knucleotide
+    source:
+      - 6.cs
   - name: mandelbrot
     source:
       - 9.cs

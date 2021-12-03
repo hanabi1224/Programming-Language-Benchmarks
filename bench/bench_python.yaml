@@ -18,6 +18,9 @@ problems:
   - name: fasta
     source:
       - 5.py
+  - name: knucleotide
+    source:
+      - 3.py
   - name: nbody
     source:
       - 1.py
@@ -43,7 +46,7 @@ environments:
     include:
     build: cp c.py out
     out_dir: out
-    run_cmd: python3 c.py
+    run_cmd: python3 -OO c.py
     runtime_included: false
     force_check_child_processes: true
   - os: linux
@@ -55,7 +58,7 @@ environments:
       - sh -c "cat pyjion.py > out/c.py"
     build: sh -c "cat c.py >> out/c.py"
     out_dir: out
-    run_cmd: python3 c.py
+    run_cmd: python3 -OO c.py
     runtime_included: false
     force_check_child_processes: true
   - os: linux
@@ -67,5 +70,5 @@ environments:
     include:
     build: cp c.py out
     out_dir: out
-    run_cmd: pypy/bin/pypy3 c.py
+    run_cmd: pypy/bin/pypy3 -OO c.py
     force_check_child_processes: true

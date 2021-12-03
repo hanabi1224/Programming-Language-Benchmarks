@@ -26,6 +26,7 @@ anyhow = "1"
 bitvec = "0"
 generic-array = "0"
 glam = "0"
+hashbrown = "0.11"
 ibig = "0"
 lazy_static = "1"
 md5 = "0"
@@ -44,7 +45,7 @@ typed-arena = "2"
 async-channel = {version = "1", optional = true}
 async-executor = {version = "1", optional = true}
 async-std = {version = "1", optional = true}
-axum = {version = "0.3", optional = true}
+axum = {version = "0.4", optional = true}
 flume = {version = "0", optional = true}
 futures-lite = {version = "1", optional = true}
 reqwest = {version = "0", optional = true, default-features = false, features = ["json"]}

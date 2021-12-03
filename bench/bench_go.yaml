@@ -29,6 +29,9 @@ problems:
   - name: fasta
     source:
       - 3.go
+  - name: knucleotide
+    source:
+      - 7.go
   - name: json-serde
     source:
       - 1.go
