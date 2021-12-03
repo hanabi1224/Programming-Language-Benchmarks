@@ -17,6 +17,8 @@ namespace BenchTool
 
         public string[] Data { get; set; }
 
+        public string[] DataSetupCmd { get; set; }
+
         public YamlBenchmarkProblemUnittestConfig[] Unittests { get; set; }
 
         public YamlBenchmarkProblemTestConfig[] Tests { get; set; }

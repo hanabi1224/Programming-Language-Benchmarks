@@ -406,17 +406,10 @@ namespace BenchTool
                 langEnvConfig.AfterBuild,
                 workingDir: tmpDir.FullPath).ConfigureAwait(false);
 
-            YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
-            if (problemTestConfig.Data?.Length > 0)
-            {
-                foreach (string fileName in problemTestConfig.Data)
-                {
-                    string dataFileFromPath = Path.Combine(algorithmDir, problem.Name, fileName);
-                    string dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
-                    Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
-                    File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
-                }
-            }
+            await SetupTestData(
+                benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name),
+                algorithmDir: algorithmDir,
+                tmpBuildOutput: tmpBuildOutput).ConfigureAwait(false);
 
             if (Directory.Exists(buildOutput))
             {
@@ -717,6 +710,28 @@ namespace BenchTool
                 else
                 {
                     Logger.Error("No valid benchmark results is produced.");
+                }
+            }
+        }
+
+        private static async Task SetupTestData(
+            YamlBenchmarkProblemConfig problemConfig,
+            string algorithmDir,
+            string tmpBuildOutput)
+        {
+            //YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            if (problemConfig.Data?.Length > 0)
+            {
+                foreach (string fileName in problemConfig.Data)
+                {
+                    string dataFileFromPath = Path.Combine(algorithmDir, problemConfig.Name, fileName);
+                    string dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
+                    Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
+                    File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
+                }
+                if (problemConfig.DataSetupCmd?.Length > 0)
+                {
+                    await ProcessUtils.RunCommandsAsync(problemConfig.DataSetupCmd, workingDir: tmpBuildOutput).ConfigureAwait(false);
                 }
             }
         }

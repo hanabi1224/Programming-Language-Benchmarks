@@ -89,6 +89,20 @@ problems:
     tests:
       - input: 250000
       - input: 2500000
+  - name: knucleotide
+    data:
+      - in.zip
+    data_setup_cmd:
+      - unzip in.zip
+      - rm in.zip
+    unittests:
+      - input: 25000_in
+        output: 25000_out
+      - input: 250000_in
+        output: 250000_out
+    tests:
+      - input: 250000_in
+      - input: 2500000_in
   - name: json-serde
     data:
       - sample.json
