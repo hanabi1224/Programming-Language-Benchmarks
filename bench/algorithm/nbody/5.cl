@@ -108,19 +108,20 @@
 ;; travels in a timestep of 1.0d0 at it's updated velocity.
 ;; 3 simple arrays are used to stope position delta components for speed
 ;; Force magnitudes are stores in array magnitude
-(declaim (ftype (function (list) null) advance))
-(defun advance (system)
-  (loop for (bi . rest) on system do
-    (dolist (bj rest)
-      (let* ((pd  (f64.4- (get-pos bi) (get-pos bj)))
-             (dsq (f64.4 (dot pd pd)))
-             (dst (f64.4-sqrt dsq))
-             (mag (f64.4/ (f64.4* dsq dst))))
-        (declare (type f64.4 dsq dst mag))
-        (set-vel bi (f64.4- (get-vel bi) (f64.4* pd (f64.4* (get-mass bj) mag))))
-        (set-vel bj (f64.4+ (get-vel bj) (f64.4* pd (f64.4* (get-mass bi) mag)))))))
-  (loop for b in system do
-    (set-pos b (f64.4+ (get-pos b) (get-vel b)))))
+(declaim (ftype (function (list u32) null) advance))
+(defun advance (system n)
+  (loop repeat n do
+    (loop for (bi . rest) on system do
+      (dolist (bj rest)
+        (let* ((pd  (f64.4- (get-pos bi) (get-pos bj)))
+               (dsq (f64.4 (dot pd pd)))
+               (dst (f64.4-sqrt dsq))
+               (mag (f64.4/ (f64.4* dsq dst))))
+          (declare (type f64.4 dsq dst mag))
+          (set-vel bi (f64.4- (get-vel bi) (f64.4* pd (f64.4* (get-mass bj) mag))))
+          (set-vel bj (f64.4+ (get-vel bj) (f64.4* pd (f64.4* (get-mass bi) mag)))))))
+    (loop for b in system do
+      (set-pos b (f64.4+ (get-pos b) (get-vel b))))))
 
 ;; Output the total energy of the system.
 (declaim (ftype (function (list) null) energy))
@@ -153,7 +154,7 @@
     (offset-momentum system)         
     (energy system)                     ;; Output initial energy of the system
     (scale-bodies system +DT+)          ;; Scale bodies to use time step of 1.0d0
-    (dotimes (n n) (advance system))                  ;; Advance system n times
+    (advance system n)                  ;; Advance system n times
     (scale-bodies system +RECIP-DT+)    ;; Rescale bodies back to original
     (energy system)))                   ;; Output final energy of the system
 
