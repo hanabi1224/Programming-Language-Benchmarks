@@ -152,19 +152,20 @@ func startCount32(data []byte, size int) map[uint32]*int {
 	wg.Wait()
 
 	// Add counts from all goroutines to the first map
+	m0 := maps[0]
 	for i := 1; i < len(maps); i++ {
 		for i2, val := range maps[i] {
 			if val == nil {
 				continue
 			}
-			if maps[0][i2] == nil {
-				maps[0][i2] = new(int)
+			if m0[i2] == nil {
+				m0[i2] = new(int)
 			}
-			*maps[0][i2] += *val
+			*m0[i2] += *val
 		}
 	}
 
-	return maps[0]
+	return m0
 }
 
 func startCount64(data []byte, size int) map[uint64]*int {
@@ -182,19 +183,20 @@ func startCount64(data []byte, size int) map[uint64]*int {
 	wg.Wait()
 
 	// Add counts from all goroutines to the first map
+	m0 := maps[0]
 	for i := 1; i < len(maps); i++ {
 		for i2, val := range maps[i] {
 			if val == nil {
 				continue
 			}
-			if maps[0][i2] == nil {
-				maps[0][i2] = new(int)
+			if m0[i2] == nil {
+				m0[i2] = new(int)
 			}
-			*maps[0][i2] += *val
+			*m0[i2] += *val
 		}
 	}
 
-	return maps[0]
+	return m0
 }
 
 func calc32(data []byte, result map[uint32]*int, begin int, size int, wg *sync.WaitGroup) {

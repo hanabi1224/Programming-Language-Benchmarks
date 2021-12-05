@@ -49,13 +49,13 @@ jobs:
             zig,
           ]
     steps:
-      - uses: actions/checkout@v2
+      - run: lscpu      
       - name: Install
-        run: |
-          lscpu          
-          echo '# placeholder' >> $PROFILE
+        run: |   
+          echo '# placeholder' > $PROFILE
           sudo apt-get update -y
           sudo apt-get install -y dotnet-sdk-6.0
+      - uses: actions/checkout@v2
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -181,9 +181,9 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
     steps:
+      - run: lscpu
       - name: Install
         run: |
-          lscpu
           echo '# placeholder' > $PROFILE
           sudo apt-get update -y
           sudo apt-get install -y dotnet-sdk-6.0
