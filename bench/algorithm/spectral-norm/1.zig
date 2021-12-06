@@ -3,7 +3,7 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 fn eval_a(i: usize, j: usize) f64 {
     return 1.0 / @intToFloat(f64, (i + j) * (i + j + 1) / 2 + i + 1);

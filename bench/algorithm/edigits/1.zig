@@ -2,7 +2,7 @@ const std = @import("std");
 const bigint = std.math.big.int;
 const math = std.math;
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 const Pair = struct {
     p: bigint.Managed,

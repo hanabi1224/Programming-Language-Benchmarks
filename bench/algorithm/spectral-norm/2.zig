@@ -1,33 +1,35 @@
 const std = @import("std");
 
 const vec4 = std.meta.Vector(4, f64);
-fn vec1to4(f: f64) vec4 { return @splat(4, f); }
+fn vec1to4(f: f64) vec4 {
+    return @splat(4, f);
+}
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
     const len_per_task = @divTrunc(len, tasks.len + 1);
     for (tasks) |*task, i| {
-        const first = len_per_task*i;
+        const first = len_per_task * i;
         const last = first + len_per_task;
-        task.* = try std.Thread.spawn(.{}, f, .{first, last} ++ args);
+        task.* = try std.Thread.spawn(.{}, f, .{ first, last } ++ args);
     }
-    @call(.{}, f, .{tasks.len*len_per_task, len} ++ args);
+    @call(.{}, f, .{ tasks.len * len_per_task, len } ++ args);
     for (tasks) |*task| task.join();
 }
 
 fn baseIdx(i: vec4) vec4 {
     @setFloatMode(.Optimized);
-    return i*(i + vec1to4(1))*vec1to4(0.5) + vec1to4(1);
+    return i * (i + vec1to4(1)) * vec1to4(0.5) + vec1to4(1);
 }
 
 fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
     @setFloatMode(.Optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
-    var ti = vec1to4(@intToFloat(f64, first*4)) + if (transpose) vec4{1, 2, 3, 4} else vec4{0, 1, 2, 3};
+    var ti = vec1to4(@intToFloat(f64, first * 4)) + if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
     for (dst) |*res| {
         var idx = if (transpose) baseIdx(ti - vec1to4(1)) else baseIdx(ti) + ti;
         var sum = vec1to4(0);
         for (srcVals) |u, j| {
-            sum += vec1to4(u)/idx;
+            sum += vec1to4(u) / idx;
             idx += ti + vec1to4(@intToFloat(f64, j + 1));
         }
         res.* = sum;
@@ -58,8 +60,8 @@ fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4,
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
     for (v[first..last]) |f, i| {
-        vbv += u[first + i]*f;
-        vv += f*f;
+        vbv += u[first + i] * f;
+        vv += f * f;
     }
     _ = @atomicRmw(f64, total_vbv, .Add, @reduce(.Add, vbv), .SeqCst);
     _ = @atomicRmw(f64, total_vv, .Add, @reduce(.Add, vv), .SeqCst);
@@ -67,10 +69,10 @@ fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4,
 
 pub fn main() !void {
     const n = try get_n();
-    const len = n/@typeInfo(vec4).Vector.len;
+    const len = n / @typeInfo(vec4).Vector.len;
 
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = &gpa.allocator;
+    const allocator = gpa.allocator();
     var u = try allocator.alloc(vec4, len);
     defer allocator.free(u);
     var v = try allocator.alloc(vec4, len);
@@ -92,8 +94,8 @@ pub fn main() !void {
 
     var vbv: f64 = 0;
     var vv: f64 = 0;
-    try runInParallel(tasks, u.len, aggregateResults, .{u, v, &vbv, &vv});
-    const res = std.math.sqrt(vbv/vv);
+    try runInParallel(tasks, u.len, aggregateResults, .{ u, v, &vbv, &vv });
+    const res = std.math.sqrt(vbv / vv);
 
     const stdout = std.io.getStdOut().writer();
     try stdout.print("{d:.9}\n", .{res});

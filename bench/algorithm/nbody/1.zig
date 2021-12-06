@@ -5,7 +5,7 @@ const builtin = @import("builtin");
 const math = std.math;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 const solar_mass = 4.0 * math.pi * math.pi;
 const year = 365.24;
