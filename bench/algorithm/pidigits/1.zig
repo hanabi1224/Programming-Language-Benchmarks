@@ -1,7 +1,7 @@
 const std = @import("std");
 const bigint = std.math.big.int;
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
