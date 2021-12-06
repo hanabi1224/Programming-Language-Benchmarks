@@ -1,5 +1,6 @@
 ;;; Based on 2.zig
 ;;; Converted to Common Lisp by Bela Pecsek - 2021-12-04
+;;;   * Code cleanup and refactoring - 2021-12-06 
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -17,25 +18,26 @@
                    (:constructor make-body (x y z fill1 vx vy vz fill2 mass)))
     x y z fill1 vx vy vz fill2 mass)
 
-  (declaim (ftype (function (body) f64.4) get-pos get-vel)
-           (inline get-pos get-vel))
-  (defun get-pos (body)
+  (declaim (ftype (function (body) f64.4) pos vel)
+           (inline pos vel mass set-pos (setf pos) set-vel (setf vel) (setf mass)))
+  (defun pos (body)
     (f64.4-aref body 0))
-  (defun get-vel (body)
+  (defun vel (body)
     (f64.4-aref body 4))
-  (declaim (ftype (function (body f64.4) f64.4) set-pos set-vel)
-           (inline set-pos set-vel))
-  (defun set-pos (body a)
-    (setf (f64.4-aref body 0) a))
-  (defun set-vel (body a)
-    (setf (f64.4-aref body 4) a))
-  (declaim (ftype (function (body) f64) get-mass)
-           (inline get-mass set-mass))
-  (defun get-mass (body)
+  (declaim (ftype (function (body f64.4) f64.4) set-pos (setf pos) set-vel (setf vel)))
+  (defun set-pos (body new-value)
+    (setf (f64.4-aref body 0) new-value))
+  (defsetf pos set-pos)
+  (defun set-vel (body new-value)
+    (setf (f64.4-aref body 4) new-value))
+  (defsetf vel set-vel)
+  (declaim (ftype (function (body) f64) mass))
+  (defun mass (body)
     (f64-aref body 8))
-  (declaim (ftype (function (body f64) f64) set-mass))
-  (defun set-mass (body a)
-    (setf (f64-aref body 8) a))
+  (declaim (ftype (function (body f64) f64) set-mass (setf mass)))
+  (defun set-mass (body new-value)
+    (setf (f64-aref body 8) new-value))
+  (defsetf mass set-mass)
 
   (defparameter *jupiter*
     (make-body 4.84143144246472090d0
@@ -77,6 +79,7 @@
 			         +solar-mass+))
   (defparameter *system* (list *sun* *jupiter* *saturn* *uranus* *neptune*)))
 
+;; Helper functions
 (declaim (ftype (function (f64.4 f64.4) f64) dot)
          (inline dot scale length-sq length_))
 (defun dot (a b)
@@ -95,66 +98,65 @@
 ;; order to offset that body's momentum.
 (declaim (ftype (function (list) null) offset-momentum))
 (defun offset-momentum (system)
-  (loop for b in system
+  (loop for bi in system
         with pos = (f64.4 0)
         with sun = (car system)
-        do (f64.4-incf pos (f64.4* (get-vel b) (get-mass b)))
-           (set-vel sun (f64.4* pos (/ (- +SOLAR-MASS+))))))
+        do (f64.4-incf pos (f64.4* (vel bi) (mass bi)))
+           (setf (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
 
 ;; Advances with timestem dt = 1.0d0
 ;; Advance all the bodies in the system by one timestep. Calculate the
 ;; interactions between all the bodies, update each body's velocity based on
 ;; those interactions, and update each body's position by the distance it
 ;; travels in a timestep of 1.0d0 at it's updated velocity.
-;; 3 simple arrays are used to stope position delta components for speed
-;; Force magnitudes are stores in array magnitude
 (declaim (ftype (function (list u32) null) advance))
 (defun advance (system n)
   (loop repeat n do
     (loop for (bi . rest) on system do
       (dolist (bj rest)
-        (let* ((pd  (f64.4- (get-pos bi) (get-pos bj)))
+        (let* ((pd  (f64.4- (pos bi) (pos bj)))
                (dsq (f64.4 (dot pd pd)))
                (dst (f64.4-sqrt dsq))
                (mag (f64.4/ (f64.4* dsq dst))))
           (declare (type f64.4 dsq dst mag))
-          (set-vel bi (f64.4- (get-vel bi) (f64.4* pd (f64.4* (get-mass bj) mag))))
-          (set-vel bj (f64.4+ (get-vel bj) (f64.4* pd (f64.4* (get-mass bi) mag)))))))
+          (f64.4-decf (vel bi) (f64.4* pd (f64.4* (mass bj) mag)))
+          (f64.4-incf (vel bj) (f64.4* pd (f64.4* (mass bi) mag))))))
     (loop for b in system do
-      (set-pos b (f64.4+ (get-pos b) (get-vel b))))))
+      (f64.4-incf (pos b) (vel b)))))
 
 ;; Output the total energy of the system.
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
-    (let ((e 0d0))
-      (declare (type f64 e))
-      (loop for (bi . rest) on system do
-	;; Add the kinetic energy for each body.
-        (incf e (f64* 0.5d0 (get-mass bi) (length-sq (get-vel bi))))
-        (dolist (bj rest)
-	  ;; Add the potential energy between this body and every other bodies
-          (decf e (f64/ (f64* (get-mass bi) (get-mass bj))
-                        (length_ (f64.4- (get-pos bi) (get-pos bj)))))))
-      (format t "~,9f~%" e))) ;; Output the total energy of the system.
+  (loop with e of-type f64 = 0d00
+        for (bi . rest) on system do
+	  ;; Add the kinetic energy for each body.
+          (incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
+          (dolist (bj rest)
+            (declare (type body bj))
+	    ;; Add the potential energy between this body and every other bodies
+            (decf e (f64/ (f64* (mass bi) (mass bj))
+                          (length_ (f64.4- (pos bi) (pos bj))))))
+        finally (format t "~,9f~%" e))) ;; Output the total energy of the system.
 
-
-(defconstant +DT+ 0.01d0)
-(defconstant +RECIP-DT+ (/ +dt+))
 ;; Rescale certain properties of bodies. That allows doing
 ;; consequential advances as if dt were equal to 1.0d0.
 ;; When all advances done, rescale bodies back to obtain correct energy.
+(defconstant +DT+ 0.01d0)
+(defconstant +RECIP-DT+ #.(f64/ +dt+))
 (declaim (ftype (function (list f64) null) scale-bodies))
 (defun scale-bodies (system scale)
-  (dolist (b system)
-    (set-mass b (f64*   (get-mass b) (f64* scale scale)))
-    (set-vel  b (f64.4* (get-vel b) scale))))
+  (dolist (bi system)
+    (declare (type body bi))
+    (setf (mass bi) (f64*   (mass bi) (f64* scale scale)))
+    (setf (vel  bi) (f64.4* (vel bi) scale))))
 
-(defun nbody (n)
+(declaim (ftype (function (u32) null) nbody))
+(defun nbody (n-times)
   (let ((system *system*))
     (offset-momentum system)         
     (energy system)                     ;; Output initial energy of the system
     (scale-bodies system +DT+)          ;; Scale bodies to use time step of 1.0d0
-    (advance system n)                  ;; Advance system n times
+    (advance system n-times)            ;; Advance system n times
     (scale-bodies system +RECIP-DT+)    ;; Rescale bodies back to original
     (energy system)))                   ;; Output final energy of the system
 
