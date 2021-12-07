@@ -24,14 +24,14 @@ jobs:
             # dart,
             # elixir,
             # fortran,
-            # go,
+            go,
             # haskell,
             # haxe,
             # java,
             # javascript,
             # julia,
             # kotlin,
-            lisp,
+            # lisp,
             # lua,
             # nim,
             # ocaml,
@@ -49,11 +49,12 @@ jobs:
           ]
     steps:
       - uses: actions/checkout@v2
+      - run: lscpu
       - name: Install
-        run: |
-          lscpu          
-          echo '# placeholder' >> $PROFILE
+        run: |    
+          echo '# placeholder' > $PROFILE
           sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -143,4 +144,10 @@ jobs:
           source $PROFILE
           pushd bench
           dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
+          popd
+      - name: Bench
+        run: |
+          source $PROFILE
+          pushd bench
+          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
           popd
