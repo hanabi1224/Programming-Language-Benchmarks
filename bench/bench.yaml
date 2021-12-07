@@ -133,3 +133,13 @@ problems:
     tests:
       - input: 500
       - input: 3000
+  - name: lru
+    unittests:
+      - input: 1000
+        output: 1000_out
+      - input: 10000
+        output: 10000_out
+    tests:
+      - input: 100000
+      - input: 1000000
+      - input: 5000000

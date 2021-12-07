@@ -37,6 +37,9 @@ problems:
   - name: nsieve
     source:
       - 1.py
+  - name: lru
+    source:
+      - 1.py
 source_rename_to: c.py
 environments:
   - os: linux
