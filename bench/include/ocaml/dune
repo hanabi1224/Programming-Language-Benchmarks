@@ -1,5 +1,15 @@
 (executable
  (name app)
- (ocamlopt_flags -O3 -inline 100 -nodynlink -noassert -unsafe -fPIC)
- (modes byte exe)
-)
+ (libraries unix res yojson)
+ (ocamlopt_flags
+  -verbose
+  -inline
+  100
+  -O3
+  -cc
+  "gcc -pipe -Wall -O3 -fomit-frame-pointer -march=broadwell -fopenmp"
+  -nodynlink
+  -noassert
+  -unsafe
+  -fPIC)
+ (modes byte exe))

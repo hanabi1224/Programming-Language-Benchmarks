@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "fortran",
+  "os": "linux",
+  "compiler": "flang",
+  "compilerVersion": "7",
+  "test": "spectral-norm",
+  "code": "2.f90",
+  "input": "4000",
+  "timeMS": 475.3654,
+  "timeStdDevMS": 0.1409425887846186,
+  "memBytes": 5767168,
+  "cpuTimeMS": 463.3333,
+  "cpuTimeUserMS": 463.3333,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "clang version 7.0.1 \nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2021-12-02T16:08:09.8037235+00:00",
+    "finished": "2021-12-02T16:08:10.0863077+00:00",
+    "durationMs": 282
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:37:09.9768719+00:00",
+    "finished": "2021-12-02T16:37:09.9816701+00:00",
+    "durationMs": 4
+  }
+}

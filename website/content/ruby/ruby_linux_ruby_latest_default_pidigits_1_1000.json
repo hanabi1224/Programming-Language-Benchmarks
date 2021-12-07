@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "ruby",
+  "os": "linux",
+  "compiler": "ruby",
+  "compilerVersion": "latest",
+  "test": "pidigits",
+  "code": "1.rb",
+  "input": "1000",
+  "timeMS": 268.2343,
+  "timeStdDevMS": 1.5044525028505777,
+  "memBytes": 60747776,
+  "cpuTimeMS": 250.0,
+  "cpuTimeUserMS": 220.0,
+  "cpuTimeKernelMS": 30.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-02T16:10:17.1492857+00:00",
+    "finished": "2021-12-02T16:10:17.15186+00:00",
+    "durationMs": 2
+  },
+  "testLog": {
+    "runtimeVersion": "ruby 3.0.3p157 (2021-11-24 revision 3fb7d2cadc) [x86_64-linux]",
+    "start": "2021-12-02T16:38:55.9754704+00:00",
+    "finished": "2021-12-02T16:38:56.1529263+00:00",
+    "durationMs": 177
+  }
+}

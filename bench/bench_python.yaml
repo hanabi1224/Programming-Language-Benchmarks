@@ -18,9 +18,13 @@ problems:
   - name: fasta
     source:
       - 5.py
+  - name: knucleotide
+    source:
+      - 3.py
   - name: nbody
     source:
       - 1.py
+      - 2.py
   - name: json-serde
     source:
       - 1.py
@@ -33,22 +37,32 @@ problems:
   - name: nsieve
     source:
       - 1.py
+  - name: lru
+    source:
+      - 1.py
 source_rename_to: c.py
 environments:
   - os: linux
     compiler: cpython
     version: 3
-    compiler_version_command: python -V
-    docker: python:3
+    runtime_version_parameter: -V
     include:
-    include_sub_dir:
+    build: cp c.py out
+    out_dir: out
+    run_cmd: python3 -OO c.py
+    runtime_included: false
+    force_check_child_processes: true
+  - os: linux
+    compiler: pyjion
+    version: 3
+    runtime_version_parameter: -V
+    include: python
     before_build:
-      - rm -r dist
-    build: pip3 install pyinstaller && pyinstaller -y -n _app c.py
-    after_build:
-      - sh -c "sudo chown $USER -R dist && sudo chmod -R 755 dist"
-    out_dir: dist/_app
-    run_cmd: _app
+      - sh -c "cat pyjion.py > out/c.py"
+    build: sh -c "cat c.py >> out/c.py"
+    out_dir: out
+    run_cmd: python3 -OO c.py
+    runtime_included: false
     force_check_child_processes: true
   - os: linux
     compiler: pypy
@@ -59,16 +73,5 @@ environments:
     include:
     build: cp c.py out
     out_dir: out
-    run_cmd: pypy/bin/pypy3 c.py
+    run_cmd: pypy/bin/pypy3 -OO c.py
     force_check_child_processes: true
-  # - os: linux
-  #   compiler: pyston
-  #   version: latest
-  #   docker:
-  #   runtime_version_parameter: -V
-  #   include:
-  #   build: cp c.py out
-  #   out_dir: out
-  #   run_cmd: pyston c.py
-  #   runtime_included: false
-  #   force_check_child_processes: true

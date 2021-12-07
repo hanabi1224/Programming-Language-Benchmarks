@@ -2,7 +2,7 @@ const std = @import("std");
 const json = std.json;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 pub fn main() !void {
     const args = try std.process.argsAlloc(global_allocator);

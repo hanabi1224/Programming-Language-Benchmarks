@@ -15,6 +15,9 @@ problems:
   - name: fasta
     source:
       - 7.jl
+  - name: knucleotide
+    source:
+      - 8.jl
   - name: fannkuch-redux
     source:
       - 2.jl
@@ -40,4 +43,4 @@ environments:
     include: julia
     build: cp c.jl out
     out_dir: out
-    run_cmd: julia/bin/julia -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl
+    run_cmd: julia/bin/julia -t auto -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl

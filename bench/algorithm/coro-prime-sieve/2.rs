@@ -1,5 +1,6 @@
 // Tokio version from https://users.rust-lang.org/t/how-to-properly-use-channel-for-coroutine-communication/58761/2?u=hanabi1224
 
+use std::io::{self, prelude::*, BufWriter};
 use tokio::sync::mpsc::{self, Receiver, Sender};
 
 fn main() {
@@ -10,24 +11,26 @@ fn main() {
         .unwrap_or(100);
 
     async_main(n).unwrap();
+    std::process::exit(0)
 }
 
 #[tokio::main]
-async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn async_main(n: usize) -> anyhow::Result<()> {
+    let mut stdout = BufWriter::new(io::stdout());
     let (sender, mut receiver) = mpsc::channel::<usize>(1);
     let mut handles = Vec::with_capacity(n + 1);
     handles.push(tokio::spawn(generate(sender)));
     for _i in 0..n {
         let prime = receiver.recv().await.unwrap();
-        println!("{}", prime);
+        stdout.write_fmt(format_args!("{}\n", prime))?;
         let (sender_next, receiver_next) = mpsc::channel::<usize>(1);
         handles.push(tokio::spawn(filter(receiver, sender_next, prime)));
         receiver = receiver_next;
     }
-    std::process::exit(0)
+    Ok(())
 }
 
-async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
+async fn generate(sender: Sender<usize>) -> anyhow::Result<()> {
     let mut i = 2;
     while sender.send(i).await.is_ok() {
         i += 1;

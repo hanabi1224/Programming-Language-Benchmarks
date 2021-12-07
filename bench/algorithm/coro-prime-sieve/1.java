@@ -5,7 +5,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.SynchronousQueue;
 
 final class app {
-  private static Executor pool = new ForkJoinPool(1);
   public static void main(String[] args) {
     int n = 100;
     if (args.length > 0) {
@@ -15,14 +14,15 @@ final class app {
     var threads = new ArrayList<Thread>();
     var queue = new SynchronousQueue<Integer>();
     final var q1 = queue;
-    threads.add(Thread.ofVirtual().scheduler(pool).start(() -> generate(q1)));
+    threads.add(Thread.ofVirtual().start(() -> generate(q1)));
     try {
       for (var i = 0; i < n; i++) {
         var prime = queue.take();
         System.out.println(prime);
         final var inQueue = queue;
         final var outQueue = new SynchronousQueue<Integer>();
-        threads.add(Thread.ofVirtual().scheduler(pool).start(() -> filter(inQueue, outQueue, prime)));
+        threads.add(
+            Thread.ofVirtual().start(() -> filter(inQueue, outQueue, prime)));
         queue = outQueue;
       }
     } catch (InterruptedException e) {

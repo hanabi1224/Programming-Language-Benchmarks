@@ -21,11 +21,18 @@ problems:
   - name: fasta
     source:
       - 4.java
+  - name: knucleotide
+    source:
+      - 3.java
   - name: mandelbrot
     source:
       - 4.java
   - name: spectral-norm
     source:
+      - 2.java
+  - name: nsieve
+    source:
+      - 1.java
       - 2.java
 compiler_version_command:
 compiler_version_regex:

@@ -9,9 +9,11 @@ problems:
   - name: nbody
     source:
       - 1.zig
+      - 2.zig
   - name: spectral-norm
     source:
       - 1.zig
+      - 2.zig
   - name: pidigits
     source:
       - 1.zig
@@ -24,6 +26,8 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.zig
+      - 2.zig
+      - 3.zig
   - name: nsieve
     source:
       - 1.zig
@@ -39,7 +43,6 @@ environments:
     version: latest
     docker:
     include: zig
-    build: zig build
-    # after_build:
+    build: zig build -Dcpu=broadwell --verbose-llvm-cpu-features
     out_dir: out
     run_cmd: app

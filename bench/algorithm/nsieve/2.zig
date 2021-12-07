@@ -2,11 +2,11 @@ const std = @import("std");
 const DynamicBitSet = std.bit_set.DynamicBitSet;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 fn nsieve(n: usize) !void {
     var count: usize = 0;
-    var flags = try DynamicBitSet.initEmpty(n, global_allocator);
+    var flags = try DynamicBitSet.initEmpty(global_allocator, n);
     defer flags.deinit();
     var i: usize = 2;
     while (i < n) : (i += 1) {

@@ -151,6 +151,7 @@ namespace BenchTool
             int sampleIntervalMS = 3,
             bool forceCheckChildProcesses = false,
             double timeoutSeconds = 0.0,
+            IDictionary<string, string> env = null,
             CancellationToken token = default)
         {
             using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(token);
@@ -311,7 +312,7 @@ namespace BenchTool
                 asyncRead: true,
                 stdOutBuilder: null,
                 stdErrorBuilder: null,
-                env: null,
+                env: env,
                 cts.Token,
                 onStart: () => manualResetEvent.Set()).ConfigureAwait(false);
             sw.Stop();
@@ -469,6 +470,7 @@ namespace BenchTool
             using (p)
             {
                 bool useShellExecute = p.StartInfo.UseShellExecute;
+                p.StartInfo.RedirectStandardInput = !useShellExecute;
                 p.StartInfo.RedirectStandardOutput = !useShellExecute;
                 p.StartInfo.RedirectStandardError = !useShellExecute;
                 if (env?.Count > 0)

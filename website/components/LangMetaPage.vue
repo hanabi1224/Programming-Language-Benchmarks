@@ -61,6 +61,11 @@
         </select>
       </div> -->
 
+      <div v-if="cpuInfo" class="mt-5 text-xs">
+        <label class="font-bold">CPU INFO:</label
+        ><span class="italic">{{ cpuInfo }}</span>
+      </div>
+
       <div v-for="test in testOptions" :key="test">
         <h2 class="text-2xl my-5 mb-2 underline text-blue-500">
           <a :href="`/problem/${test}`"> {{ test }} </a>
@@ -241,6 +246,10 @@ export default class LangMetaPage extends Vue {
 
   msToFixed(ms: number): string {
     return ms < 10 ? ms.toFixed(1) : ms.toFixed(0)
+  }
+
+  get cpuInfo() {
+    return this.activeBenchmarks[0].cpuInfo
   }
 
   get sideBarClass() {

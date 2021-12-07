@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math"
 	"math/big"
@@ -28,15 +29,13 @@ func main() {
 	answer.Mul(answer, a)
 	answer.Div(answer, q)
 	s := answer.String()
+	out := bufio.NewWriter(os.Stdout)
+	defer out.Flush()
 	for i := int64(0); i < n; i += 10 {
 		if i+10 <= n {
-			fmt.Printf("%s\t:%d\n", s[i:i+10], i+10)
+			fmt.Fprintf(out, "%s\t:%d\n", s[i:i+10], i+10)
 		} else {
-			line := s[i:n]
-			for j := int64(0); j < 10-n%10; j++ {
-				line += " "
-			}
-			fmt.Printf("%s\t:%d\n", line, n)
+			fmt.Fprintf(out, "%-10s\t:%d\n", s[i:n], n)
 		}
 	}
 }

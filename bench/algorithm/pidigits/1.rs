@@ -1,6 +1,7 @@
 use num_bigint::BigInt;
+use std::io::{self, prelude::*, BufWriter};
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let digits_to_print = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
@@ -16,26 +17,26 @@ fn main() {
     let mut v: BigInt;
     let mut w: BigInt;
 
+    let mut stdout = BufWriter::new(io::stdout());
     loop {
         u = &n1 / &d;
         v = &n2 / &d;
         if u == v {
-            print!("{}", u);
+            stdout.write_fmt(format_args!("{}", u))?;
             digits_printed += 1;
             let digits_printed_mod_ten = &digits_printed % 10;
             if digits_printed_mod_ten == 0 {
-                println!("\t:{}", digits_printed);
+                stdout.write_fmt(format_args!("\t:{}\n", digits_printed))?;
             }
 
             if digits_printed >= digits_to_print {
                 if digits_printed_mod_ten > 0 {
                     for _ in 0..(10 - digits_printed_mod_ten) {
-                        print!(" ")
+                        stdout.write_all(b" ")?;
                     }
-                    println!("\t:{}", digits_printed);
+                    stdout.write_fmt(format_args!("\t:{}\n", digits_printed))?;
                 }
-
-                return;
+                return Ok(());
             }
 
             let to_minus = &u * 10 * &d; //u.mul(i10).mul(&d);

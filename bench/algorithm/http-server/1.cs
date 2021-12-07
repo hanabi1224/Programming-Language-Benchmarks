@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
@@ -14,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 static class Program
 {
@@ -62,7 +63,7 @@ static class Program
     private static async Task<int> SendAsync(string api, int value)
     {
         // await Task.Yield();
-        var payload = JsonConvert.SerializeObject(new Payload { Value = value });
+        var payload = JsonSerializer.Serialize(new Payload { Value = value });
         while (true)
         {
             try
@@ -88,7 +89,6 @@ static class Program
                 options.Limits.MaxRequestBodySize = null;
                 options.ListenLocalhost(port);
             })
-            //.UseUrls($"http://localhost:{port}/")
             .UseStartup<Startup>();
     }
 }
@@ -100,14 +100,14 @@ public sealed class MyController : Controller
     {
         using var sr = new StreamReader(Request.Body);
         var bodyText = await sr.ReadToEndAsync().ConfigureAwait(false);
-        var payload = JsonConvert.DeserializeObject<Payload>(bodyText);
+        var payload = JsonSerializer.Deserialize<Payload>(bodyText);
         return payload.Value;
     }
 }
 
-public class Payload
+public struct Payload
 {
-    [JsonProperty("value")]
+    [JsonPropertyName("value")]
     public int Value { get; set; }
 }
 

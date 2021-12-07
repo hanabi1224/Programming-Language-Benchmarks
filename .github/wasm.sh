@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 
 sudo gu install wasm
-sudo ln -sf $HOME/graalvm-ce-java11/bin/wasm /usr/bin/graalwasm
+sudo ln -sf $HOME/graalvm-ce-java17/bin/wasm /usr/bin/graalwasm
 graalwasm --version
 
 wget https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh

@@ -1,2 +1,2 @@
 #!/usr/bin/sh
-dotnet run -c Release -p tool -- $@
+dotnet run -c Release --project tool -- $@

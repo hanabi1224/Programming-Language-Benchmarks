@@ -17,14 +17,11 @@ final class app {
 
     while (n > 0) {
       if (n >= L) {
-        for (int i = 0; i < L; i++)
-          System.out.print(digits.next());
+        for (int i = 0; i < L; i++) System.out.print(digits.next());
         j += L;
       } else {
-        for (int i = 0; i < n; i++)
-          System.out.print(digits.next());
-        for (int i = n; i < L; i++)
-          System.out.print(" ");
+        for (int i = 0; i < n; i++) System.out.print(digits.next());
+        for (int i = n; i < L; i++) System.out.print(" ");
         j += n;
       }
       System.out.print("\t:");
@@ -54,15 +51,21 @@ class PiDigitSpigot {
     }
   }
 
-  public int digit() { return z.extract(3); }
+  public int digit() {
+    return z.extract(3);
+  }
 
-  public boolean isSafe(int digit) { return digit == z.extract(4); }
+  public boolean isSafe(int digit) {
+    return digit == z.extract(4);
+  }
 
   public Transformation produce(int i) {
     return (inverse.qrst(10, -10 * i, 0, 1)).compose(z);
   }
 
-  public Transformation consume(Transformation a) { return z.compose(a); }
+  public Transformation consume(Transformation a) {
+    return z.compose(a);
+  }
 }
 
 class Transformation {
@@ -77,8 +80,7 @@ class Transformation {
     k = 0;
   }
 
-  public Transformation(BigInteger q, BigInteger r, BigInteger s,
-                        BigInteger t) {
+  public Transformation(BigInteger q, BigInteger r, BigInteger s, BigInteger t) {
     this.q = q;
     this.r = r;
     this.s = s;
@@ -112,9 +114,10 @@ class Transformation {
   }
 
   public Transformation compose(Transformation a) {
-    return new Transformation(q.multiply(a.q),
-                              (q.multiply(a.r)).add((r.multiply(a.t))),
-                              (s.multiply(a.q)).add((t.multiply(a.s))),
-                              (s.multiply(a.r)).add((t.multiply(a.t))));
+    return new Transformation(
+        q.multiply(a.q),
+        (q.multiply(a.r)).add((r.multiply(a.t))),
+        (s.multiply(a.q)).add((t.multiply(a.s))),
+        (s.multiply(a.r)).add((t.multiply(a.t))));
   }
 }

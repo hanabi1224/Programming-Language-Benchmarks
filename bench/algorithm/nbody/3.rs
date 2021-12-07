@@ -3,12 +3,12 @@
 //
 // contributed by the Rust Project Developers
 // contributed by TeXitoi
-// modified by hanabi1224 to use core_simd, remove borrow checker hack, do not derive copy, more compile time calculation
+// modified by hanabi1224 to use portable_simd, remove borrow checker hack, do not derive copy, more compile time calculation
 
 #![feature(portable_simd)]
 
-use core_simd::f64x4;
 use std::f64::consts::PI;
+use std::simd::f64x4;
 
 const SOLAR_MASS: f64 = 4.0 * PI * PI;
 const YEAR: f64 = 365.24;

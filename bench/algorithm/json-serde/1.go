@@ -18,19 +18,22 @@ func main() {
 	if len(os.Args) > 2 {
 		n, _ = strconv.Atoi(os.Args[2])
 	}
+	var data GeoData
 	jsonStr, _ := ioutil.ReadFile(fileName + ".json")
-	indent := " "
+	json.Unmarshal([]byte(jsonStr), &data)
+	printHash(data.ToJsonString())
+	array := make([]GeoData, 0, n)
 	for i := 0; i < n; i++ {
-		var data GeoData
 		json.Unmarshal([]byte(jsonStr), &data)
-		prettified := data.Prettify(indent)
-		// fmt.Println(string(prettified))
-		// break
-		hasher := md5.New()
-		hasher.Write(prettified)
-		fmt.Printf("%x\n", hasher.Sum(nil))
-		indent += " "
+		array = append(array, data)
 	}
+	printHash(ToJsonString(array))
+}
+
+func printHash(json []byte) {
+	hasher := md5.New()
+	hasher.Write(json)
+	fmt.Printf("%x\n", hasher.Sum(nil))
 }
 
 type GeoData struct {
@@ -38,8 +41,15 @@ type GeoData struct {
 	Features []Feature `json:"features"`
 }
 
-func (data *GeoData) Prettify(indent string) []byte {
-	if bytes, err := json.MarshalIndent(data, "", indent); err == nil {
+func ToJsonString(array []GeoData) []byte {
+	if bytes, err := json.Marshal(array); err == nil {
+		return bytes
+	}
+	return []byte{}
+}
+
+func (data *GeoData) ToJsonString() []byte {
+	if bytes, err := json.Marshal(data); err == nil {
 		return bytes
 	}
 	return []byte{}

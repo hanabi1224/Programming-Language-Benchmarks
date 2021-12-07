@@ -2,14 +2,16 @@
 
 use ibig::IBig;
 use std::f64;
+use std::io::{self, prelude::*, BufWriter};
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let n = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
         .unwrap_or(27);
     let s = calculate(n);
+    let mut stdout = BufWriter::new(io::stdout());
     for i in (0..n).step_by(10) {
         let (line, count) = if i + 10 <= n {
             (s[i..i + 10].to_owned(), i + 10)
@@ -21,8 +23,9 @@ fn main() {
             }
             (l, n)
         };
-        println!("{}\t:{}", line, count)
+        stdout.write_fmt(format_args!("{}\t:{}\n", line, count))?;
     }
+    Ok(())
 }
 
 /// n digits of the number e.

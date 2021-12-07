@@ -31,27 +31,32 @@ problems:
   - name: json-serde
     source:
       - 1.cs
+      - 2.cs
   - name: coro-prime-sieve
     source:
       - 1.cs
   - name: http-server
     source:
       - 1.cs
+  - name: nsieve
+    source:
+      - 1.cs
+      - 2.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: app.cs
 environments:
-  - os: linux
-    compiler: dotnet
-    version: 6
-    compiler_version_command: dotnet --version
-    docker: mcr.microsoft.com/dotnet/sdk:6.0
-    docker_volumns:
-      - /tmp/.nuget/packages:/root/.nuget/packages/
-    include: dotnet6
-    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
-    out_dir: out
-    run_cmd: _app
-    allow_failure: true
+  # - os: linux
+  #   compiler: dotnet
+  #   version: 7
+  #   compiler_version_command: dotnet --version
+  #   docker: mcr.microsoft.com/dotnet/sdk:7.0
+  #   docker_volumns:
+  #     - /tmp/.nuget/packages:/root/.nuget/packages/
+  #   include: dotnet_preview
+  #   build: dotnet publish -c Release -r linux-x64 -f net7 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
+  #   out_dir: out
+  #   run_cmd: app
+  #   allow_failure: true

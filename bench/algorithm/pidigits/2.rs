@@ -1,15 +1,16 @@
-use ibig::{IBig, ibig};
+use ibig::{ibig, IBig};
+use std::io::{self, prelude::*, BufWriter};
 
-fn main() {
+fn main() -> anyhow::Result<()> {
     let digits_to_print = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
         .unwrap_or(27);
 
-    let one:IBig = ibig!(1);
-    let two:IBig = ibig!(2);
-    let ten:IBig = ibig!(10);
+    let one: IBig = ibig!(1);
+    let two: IBig = ibig!(2);
+    let ten: IBig = ibig!(10);
 
     let mut digits_printed = 0;
     let mut k = ibig!(1);
@@ -20,26 +21,27 @@ fn main() {
     let mut v: IBig;
     let mut w: IBig;
 
+    let mut stdout = BufWriter::new(io::stdout());
     loop {
         u = &n1 / &d;
         v = &n2 / &d;
         if u == v {
-            print!("{}", u);
+            stdout.write_fmt(format_args!("{}", u))?;
             digits_printed += 1;
             let digits_printed_mod_ten = &digits_printed % 10;
             if digits_printed_mod_ten == 0 {
-                println!("\t:{}", digits_printed);
+                stdout.write_fmt(format_args!("\t:{}\n", digits_printed))?;
             }
 
             if digits_printed >= digits_to_print {
                 if digits_printed_mod_ten > 0 {
                     for _ in 0..(10 - digits_printed_mod_ten) {
-                        print!(" ")
+                        stdout.write_all(b" ")?;
                     }
-                    println!("\t:{}", digits_printed);
+                    stdout.write_fmt(format_args!("\t:{}\n", digits_printed))?;
                 }
 
-                return;
+                return Ok(());
             }
 
             let to_minus = &u * &ten * &d;

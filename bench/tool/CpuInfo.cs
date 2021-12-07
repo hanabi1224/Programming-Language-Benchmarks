@@ -12,14 +12,18 @@ namespace BenchTool
 
         public string RawText { get; private set; }
 
+        public int NumOfCores { get; private set; }
+
+        public string Architecture { get; private set; }
+
         public override string ToString()
         {
-            return $"Cpu: {ModelName} (Model {Model})";
+            return $"[{Architecture}][{NumOfCores} cores] {ModelName}";
         }
 
         public static bool TryParse(string rawText, out CpuInfo cpuInfo)
         {
-            Match match = Regex.Match(rawText, @"^Model:\s*(?<model>\d+)\s*$\s*^Model name:\s*(?<name>.+?)$", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            Match match = Regex.Match(rawText, @"^Architecture:(?<arch>.+?)\s*$[^.$]*?^CPU\(s\):\s*(?<core>\d+)\s*$[^.$]*?^Model:\s*(?<model>\d+)\s*$\s*^Model name:\s*(?<name>.+?)$", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
             if (match.Success)
             {
                 cpuInfo = new CpuInfo
@@ -27,6 +31,8 @@ namespace BenchTool
                     ModelName = match.Groups["name"].Value.Trim(),
                     Model = int.Parse(match.Groups["model"].Value),
                     RawText = rawText,
+                    NumOfCores = int.Parse(match.Groups["core"].Value),
+                    Architecture = match.Groups["arch"].Value.Trim(),
                 };
                 return true;
             }

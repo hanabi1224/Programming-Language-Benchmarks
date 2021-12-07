@@ -30,6 +30,7 @@ problems:
       - input: 10000
         output: 10000_out
     tests:
+      - input: 100000
       - input: 500000
       - input: 5000000
   - name: spectral-norm
@@ -39,7 +40,7 @@ problems:
       # - input: 101
       #   output: 101_out
     tests:
-      - input: 2000
+      - input: 1000
       - input: 4000
       - input: 8000
   - name: pidigits
@@ -49,6 +50,7 @@ problems:
       - input: 30
         output: 30_out
     tests:
+      - input: 1000
       - input: 4000
       - input: 8000
   - name: edigits
@@ -87,6 +89,20 @@ problems:
     tests:
       - input: 250000
       - input: 2500000
+  - name: knucleotide
+    data:
+      - in.zip
+    data_setup_cmd:
+      - unzip in.zip
+      - rm in.zip
+    unittests:
+      - input: 25000_in
+        output: 25000_out
+      - input: 250000_in
+        output: 250000_out
+    tests:
+      - input: 250000_in
+      - input: 2500000_in
   - name: json-serde
     data:
       - sample.json
@@ -97,8 +113,8 @@ problems:
       - input: canada 3
         output: canada_3_out
     tests:
-      - input: sample 10
-      - input: canada 5
+      - input: sample 5000
+      - input: canada 15
   - name: coro-prime-sieve
     unittests:
       - input: 1000
@@ -107,7 +123,6 @@ problems:
       - input: 1000
       - input: 4000
         exclude_langs:
-          - d
           - javascript
   - name: http-server
     unittests:
@@ -118,3 +133,13 @@ problems:
     tests:
       - input: 500
       - input: 3000
+  - name: lru
+    unittests:
+      - input: 1000
+        output: 1000_out
+      - input: 10000
+        output: 10000_out
+    tests:
+      - input: 100000
+      - input: 1000000
+      - input: 5000000

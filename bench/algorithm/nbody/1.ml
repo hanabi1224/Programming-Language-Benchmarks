@@ -16,20 +16,21 @@ type planet = { mutable x : float;  mutable y : float;  mutable z : float;
 let advance bodies dt =
   let n = Array.length bodies - 1 in
   for i = 0 to Array.length bodies - 1 do
-    let b = bodies.(i) in
+    let b1 = bodies.(i) in
     for j = i+1 to Array.length bodies - 1 do
-      let b' = bodies.(j) in
-      let dx = b.x -. b'.x  and dy = b.y -. b'.y  and dz = b.z -. b'.z in
+      let b2 = bodies.(j) in
+      let dx = b1.x -. b2.x  and dy = b1.y -. b2.y  and dz = b1.z -. b2.z in
       let dist2 = dx *. dx +. dy *. dy +. dz *. dz in
       let mag = dt /. (dist2 *. sqrt(dist2)) in
+      let b2_m_mul_mag = b2.mass *. mag in 
+      b1.vx <- b1.vx -. dx *. b2_m_mul_mag;
+      b1.vy <- b1.vy -. dy *. b2_m_mul_mag;
+      b1.vz <- b1.vz -. dz *. b2_m_mul_mag;
 
-      b.vx <- b.vx -. dx *. b'.mass *. mag;
-      b.vy <- b.vy -. dy *. b'.mass *. mag;
-      b.vz <- b.vz -. dz *. b'.mass *. mag;
-
-      b'.vx <- b'.vx +. dx *. b.mass *. mag;
-      b'.vy <- b'.vy +. dy *. b.mass *. mag;
-      b'.vz <- b'.vz +. dz *. b.mass *. mag;
+      let b1_m_mul_mag = b1.mass *. mag in
+      b2.vx <- b2.vx +. dx *. b1_m_mul_mag;
+      b2.vy <- b2.vy +. dy *. b1_m_mul_mag;
+      b2.vz <- b2.vz +. dz *. b1_m_mul_mag;
     done
   done;
   for i = 0 to n do

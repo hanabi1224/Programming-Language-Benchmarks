@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "kotlin",
+  "os": "linux",
+  "compiler": "Kotlin/jvm",
+  "compilerVersion": "17",
+  "test": "nbody",
+  "code": "1.kt",
+  "input": "5000000",
+  "timeMS": 603.0398,
+  "timeStdDevMS": 1.1331473087526232,
+  "memBytes": 43675648,
+  "cpuTimeMS": 626.6666,
+  "cpuTimeUserMS": 613.3333,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-02T16:16:27.5199843+00:00",
+    "finished": "2021-12-02T16:16:36.1241086+00:00",
+    "durationMs": 8604
+  },
+  "testLog": {
+    "runtimeVersion": "openjdk version \"17.0.1\" 2021-10-19\nOpenJDK Runtime Environment (build 17.0.1+12-39)\nOpenJDK 64-Bit Server VM (build 17.0.1+12-39, mixed mode, sharing)",
+    "start": "2021-12-02T16:37:59.663537+00:00",
+    "finished": "2021-12-02T16:37:59.8601499+00:00",
+    "durationMs": 196
+  }
+}

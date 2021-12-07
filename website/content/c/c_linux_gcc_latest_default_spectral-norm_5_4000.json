@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "c",
+  "os": "linux",
+  "compiler": "gcc",
+  "compilerVersion": "latest",
+  "test": "spectral-norm",
+  "code": "5.c",
+  "input": "4000",
+  "timeMS": 398.1041,
+  "timeStdDevMS": 0.35929991650429355,
+  "memBytes": 1249280,
+  "cpuTimeMS": 770.0,
+  "cpuTimeUserMS": 770.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "gcc (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "start": "2021-12-02T16:09:58.3791888+00:00",
+    "finished": "2021-12-02T16:10:03.1819827+00:00",
+    "durationMs": 4802
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:36:40.1364741+00:00",
+    "finished": "2021-12-02T16:36:40.1411827+00:00",
+    "durationMs": 4
+  }
+}

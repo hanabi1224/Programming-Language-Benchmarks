@@ -9,8 +9,7 @@
 //     * switched from AoS to SoA (idea borrowed from the C++ solution)
 //     * also preallocate the whole buffer for the data arrays
 //     * cleaned up code a bit (reordering, renaming, formatting, etc.)
-
-extern crate num_cpus;
+// small tweaks by hanabi1224
 
 use std::cmp::min;
 use std::io;
@@ -98,7 +97,7 @@ impl MyStdOut {
     }
 }
 
-fn make_random(data: &[(char, f32)]) -> (Box<[u32]>, Box<[u8]>) {
+fn make_random(data: &[(u8, f32)]) -> (Box<[u32]>, Box<[u8]>) {
     let mut acc = 0.;
     let mut buf_p = Vec::with_capacity(data.len());
     let mut buf_ch = Vec::with_capacity(data.len());
@@ -106,19 +105,19 @@ fn make_random(data: &[(char, f32)]) -> (Box<[u32]>, Box<[u8]>) {
     for &(ch, p) in data {
         acc += p;
         buf_p.push(MyRandom::normalize(acc));
-        buf_ch.push(ch as u8);
+        buf_ch.push(ch);
     }
 
     (buf_p.into(), buf_ch.into())
 }
 
 fn make_fasta_single<I: Iterator<Item = u8>>(
-    header: &str,
+    header: impl AsRef<[u8]>,
     mut it: I,
     mut n: usize,
 ) -> io::Result<()> {
     let mut stdout = BufWriter::new(io::stdout());
-    stdout.write_all(header.as_bytes())?;
+    stdout.write_all(header.as_ref())?;
     let mut line = [0u8; LINE_LENGTH + 1];
     while n > 0 {
         let nb = min(LINE_LENGTH, n);
@@ -126,7 +125,7 @@ fn make_fasta_single<I: Iterator<Item = u8>>(
             line[i] = it.next().unwrap();
         }
         n -= nb;
-        line[nb] = '\n' as u8;
+        line[nb] = b'\n';
         stdout.write_all(&line[..(nb + 1)])?;
     }
     Ok(())
@@ -168,7 +167,8 @@ fn do_fasta(
         }
         out_buf[count + line_count] = b'\n';
 
-        while let Err(_) = wr.lock()
+        while let Err(_) = wr
+            .lock()
             .unwrap()
             .write(&out_buf[..(count + line_count + 1)], thread_num)
         {}
@@ -176,13 +176,13 @@ fn do_fasta(
 }
 
 fn make_fasta(
-    header: &str,
+    header: impl AsRef<[u8]>,
     rng: Arc<Mutex<MyRandom>>,
     data: (Box<[u32]>, Box<[u8]>),
     num_threads: u16,
 ) -> io::Result<()> {
     let stdout = Arc::new(Mutex::new(MyStdOut::new(num_threads)));
-    io::stdout().write_all(header.as_bytes())?;
+    io::stdout().write_all(header.as_ref())?;
     let mut threads = Vec::with_capacity(num_threads as usize);
     for thread in 0..num_threads {
         let data = data.clone();
@@ -218,51 +218,54 @@ fn main() {
                        CAAAAA";
 
     let iub = &[
-        ('a', 0.27),
-        ('c', 0.12),
-        ('g', 0.12),
-        ('t', 0.27),
-        ('B', 0.02),
-        ('D', 0.02),
-        ('H', 0.02),
-        ('K', 0.02),
-        ('M', 0.02),
-        ('N', 0.02),
-        ('R', 0.02),
-        ('S', 0.02),
-        ('V', 0.02),
-        ('W', 0.02),
-        ('Y', 0.02),
+        (b'a', 0.27),
+        (b'c', 0.12),
+        (b'g', 0.12),
+        (b't', 0.27),
+        (b'B', 0.02),
+        (b'D', 0.02),
+        (b'H', 0.02),
+        (b'K', 0.02),
+        (b'M', 0.02),
+        (b'N', 0.02),
+        (b'R', 0.02),
+        (b'S', 0.02),
+        (b'V', 0.02),
+        (b'W', 0.02),
+        (b'Y', 0.02),
     ];
 
     let homosapiens = &[
-        ('a', 0.3029549426680),
-        ('c', 0.1979883004921),
-        ('g', 0.1975473066391),
-        ('t', 0.3015094502008),
+        (b'a', 0.3029549426680),
+        (b'c', 0.1979883004921),
+        (b'g', 0.1975473066391),
+        (b't', 0.3015094502008),
     ];
 
     make_fasta_single(
-        ">ONE Homo sapiens alu\n",
+        b">ONE Homo sapiens alu\n",
         alu.iter().cycle().map(|c| *c),
         n * 2,
-    ).unwrap();
+    )
+    .unwrap();
 
     make_fasta(
-        ">TWO IUB ambiguity codes\n",
+        b">TWO IUB ambiguity codes\n",
         rng.clone(),
         make_random(iub),
         num_threads,
-    ).unwrap();
+    )
+    .unwrap();
 
     rng.lock().unwrap().reset(n * 5);
 
     make_fasta(
-        ">THREE Homo sapiens frequency\n",
+        b">THREE Homo sapiens frequency\n",
         rng,
         make_random(homosapiens),
         num_threads,
-    ).unwrap();
+    )
+    .unwrap();
 
     io::stdout().flush().unwrap();
 }

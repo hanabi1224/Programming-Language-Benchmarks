@@ -5,3 +5,6 @@
 build/
 out/
 *.kt
+.project
+.classpath
+.settings/

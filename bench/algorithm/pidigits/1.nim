@@ -1,59 +1,48 @@
-# https://github.com/def-/nim-benchmarksgame/blob/master/pidigits_bigints.nim
+import os, strutils, bigints, strformat
 
-import os, strutils, bigints
+const 
+    ONE = initBigInt(1)
+    TWO = initBigInt(2)
+    TEN = initBigInt(10)
 
-var
-  tmp1, tmp2, tmp3, acc, k = initBigInt(0)
-  den, num, k2 = initBigInt(1)
-
-proc extractDigit(): int32 =
-  if num > acc:
-    return -1
-
-  tmp3 = num shl 1
-  tmp3 += num
-  tmp3 += acc
-  tmp2 = tmp3 mod den
-  tmp1 = tmp3 div den
-  tmp2 += num
-
-  if tmp2 >= den:
-    return -1
-
-  result = int32(tmp1.limbs[0])
-
-proc eliminateDigit(d: int32) =
-  acc -= den * d
-  acc *= 10
-  num *= 10
-
-proc nextTerm() =
-  k += 1
-  k2 += 2
-  tmp1 = num shl 1
-  acc += tmp1
-  acc *= k2
-  den *= k2
-  num *= k
+var 
+    digits_printed = 0
+    k = initBigInt(1)
+    n1 = initBigInt(4)
+    n2 = initBigInt(3)
+    d = initBigInt(1)
+    u, v, w = initBigInt(0)
 
 let n = parseInt(paramStr(1))
-var i = 0
 
-while i < n:
-  var d: int32 = -1
-  while d < 0:
-    nextTerm()
-    d = extractDigit()
-
-  stdout.write(chr(ord('0') + d))
-  inc(i)
-  if i mod 10 == 0:
-    echo "\t:", i
-  if i >= n:
-    break
-  eliminateDigit(d)
-let r = n mod 10
-if r > 0:
-  for _ in 0 ..< 10-r: 
-    stdout.write(' ')
-  echo "\t:", n
+while true:
+    u = n1 div d
+    v = n2 div d
+    if u == v:
+        stdout.write(u)
+        digits_printed += 1
+        let digits_printed_mod_ten = digits_printed mod 10
+        if digits_printed_mod_ten == 0:
+            stdout.writeLine(&"\t:{digits_printed}")
+        if digits_printed >= n:
+            if digits_printed_mod_ten > 0:
+                var j = 0
+                while j < 10 - digits_printed_mod_ten:
+                    stdout.write(" ")
+                    j += 1
+                stdout.writeLine(&"\t:{digits_printed}")
+            break
+        
+        let to_minus = u * TEN * d
+        n1 = n1 * TEN - to_minus
+        n2 = n2 * TEN - to_minus
+    else:
+        let k2 = k * TWO
+        u = n1 * (k2 - ONE)
+        v = n2 * TWO
+        w = n1 * (k - ONE)
+        n1 = u + v
+        u = n2 * (k + TWO)
+        n2 = w + u
+        d = d * (k2 + ONE)
+        k = k + ONE

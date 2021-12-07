@@ -49,12 +49,13 @@ jobs:
             zig,
           ]
     steps:
-      - uses: actions/checkout@v2
+      - run: lscpu      
       - name: Install
-        run: |
-          lscpu          
-          echo '# placeholder' >> $PROFILE
+        run: |   
+          echo '# placeholder' > $PROFILE
           sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
+      - uses: actions/checkout@v2
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -72,12 +73,15 @@ jobs:
       - name: Install graal
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: ./.github/graalvm.sh
-      - name: Install c deps
-        if: matrix.lang == 'c'
-        run: ./.github/c.sh
-      - name: Install cpp deps
-        if: matrix.lang == 'cpp'
-        run: ./.github/cpp.sh
+      - name: Install clang
+        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
+        run: ./.github/clang.sh
+      # - name: Install c deps
+      #   if: matrix.lang == 'c'
+      #   run: ./.github/c.sh
+      # - name: Install cpp deps
+      #   if: matrix.lang == 'cpp'
+      #   run: ./.github/cpp.sh
       - name: Install lisp
         if: matrix.lang == 'lisp'
         env:
@@ -90,7 +94,7 @@ jobs:
         if: matrix.lang == 'fortran'
         run: ./.github/fortran.sh
       - name: Install loom
-        if: matrix.lang == 'java' || matrix.lang == 'kotlin'
+        if: matrix.lang == 'java'
         run: ./.github/loom.sh
       - name: Install graalvm native-image
         if: matrix.lang == 'java'
@@ -110,6 +114,11 @@ jobs:
           perl-version: "5"
           multi-thread: true
       - name: Install python
+        if: matrix.lang == 'python'
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install python ext
         if: matrix.lang == 'python'
         run: ./.github/python.sh
       - name: Install ruby
@@ -133,17 +142,18 @@ jobs:
       - name: Install wasm
         if: matrix.lang == 'wasm'
         run: ./.github/wasm.sh
+      - run: dotnet --info
       - name: Build
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
+          dotnet run -c Release --project tool -- --task build --langs ${{ matrix.lang }} 
           popd
       - name: Test
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
+          dotnet run -c Release --project tool -- --task test --langs ${{ matrix.lang }} 
           popd
       - uses: actions/upload-artifact@v2
         if: github.ref == 'refs/heads/main'
@@ -171,10 +181,12 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
     steps:
+      - run: lscpu
       - name: Install
         run: |
-          lscpu
           echo '# placeholder' > $PROFILE
+          sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
@@ -184,6 +196,7 @@ jobs:
       - run: ./.github/graalvm-node.sh
       - run: ./.github/truffleruby.sh
       - run: ./.github/wasm.sh
+      - run: ./.github/fortran.sh
       - run: ./.github/loom.sh
       - run: ./.github/racket.sh
       # - run: sudo ./.github/dart.sh
@@ -191,6 +204,10 @@ jobs:
         with:
           perl-version: "5"
           multi-thread: true
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - run: ./.github/python.sh
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
@@ -199,7 +216,8 @@ jobs:
         run: |
           source $PROFILE
           pushd bench
-          dotnet run -c Release -p tool -- --task bench --ignore-missing
+          dotnet run -c Release --project tool -- --task test --ignore-missing
+          dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
       - uses: actions/upload-artifact@v2
         with:
@@ -215,6 +233,9 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
       - uses: actions/download-artifact@v2
         with:
           # Artifact name

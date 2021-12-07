@@ -3,11 +3,11 @@
 const std = @import("std");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = &gpa.allocator;
+var global_allocator = gpa.allocator();
 
 var buffer: [1024]u8 = undefined;
 var fixed_allocator = std.heap.FixedBufferAllocator.init(buffer[0..]);
-var allocator = &fixed_allocator.allocator;
+var allocator = fixed_allocator.allocator();
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
