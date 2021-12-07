@@ -140,6 +140,6 @@ problems:
       - input: 10000
         output: 10000_out
     tests:
-      - input: 100000
+      - input: 500000
       - input: 1000000
       - input: 5000000

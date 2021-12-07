@@ -40,6 +40,9 @@ problems:
   - name: http-server
     source:
       - 1.dart
+  - name: lru
+    source:
+      - 1.dart
 compiler_version_command: dart --version
 compiler_version_regex:
 runtime_version_parameter:

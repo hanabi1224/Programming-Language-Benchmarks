@@ -27,6 +27,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.rb
+  - name: lru
+    source:
+      - 1.rb
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
