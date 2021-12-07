@@ -34,6 +34,9 @@ problems:
   # - name: json-serde
   #   source:
   #     - 1.cr
+  - name: lru
+    source:
+      - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:

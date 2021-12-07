@@ -20,6 +20,9 @@ problems:
   #   source:
   #     - 1.kt
   #     - 2.kt
+  - name: lru
+    source:
+      - 1.kt
 compiler_version_command: sh -c "./gradlew version"
 compiler_version_regex:
 runtime_version_parameter:
