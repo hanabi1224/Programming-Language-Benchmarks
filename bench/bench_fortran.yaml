@@ -28,7 +28,7 @@ environments:
     version: 10
     docker:
     include:
-    build: gfortran-10 -O3 -march=broadwell -fomit-frame-pointer -fopenmp -lpthread -lgmp -o out/app app.f90
+    build: gfortran-10 -O3 -march=broadwell -fopenmp -fopenmp-simd -lgmp -o out/app app.f90
     out_dir: out
     run_cmd: app
   - os: linux
