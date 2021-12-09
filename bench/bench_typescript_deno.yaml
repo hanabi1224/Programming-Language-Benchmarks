@@ -24,6 +24,9 @@ problems:
   - name: http-server
     source:
       - 1.ts
+  - name: lru
+    source:
+      - 1.ts
 compiler_version_command: deno --version
 compiler_version_regex:
 runtime_version_parameter:
