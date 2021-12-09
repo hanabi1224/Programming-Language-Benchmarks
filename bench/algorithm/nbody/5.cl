@@ -16,8 +16,8 @@
   (declaim (inline x y z vx vy vz mass make-body))
   (defstruct (body (:type (vector f64))
                    (:conc-name nil)
-                   (:constructor make-body (x y z fill1 vx vy vz fill2 mass)))
-    x y z fill1 vx vy vz fill2 mass)
+                   (:constructor make-body (x y z fill1 vx vy vz fill2 mas)))
+    x y z fill1 vx vy vz fill2 mas)
 
   (declaim (ftype (function (body) f64.4) pos vel)
            (inline pos vel mass set-pos (setf pos) set-vel (setf vel) set-mass (setf mass)))
