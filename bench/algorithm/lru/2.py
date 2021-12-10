@@ -38,7 +38,7 @@ class LRU:
         else:
             self._idx_offset = 0
             for i in range(0, len(self._entries)):
-                k, v = self._entries
+                k, v = self._entries[i]
                 self._key_lookup[k] = i
             
     def _move_to_end(self, idx, pair):
