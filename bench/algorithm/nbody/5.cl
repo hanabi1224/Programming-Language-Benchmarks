@@ -1,6 +1,7 @@
 ;;; Based on 2.zig
 ;;; Converted to Common Lisp by Bela Pecsek - 2021-12-04
-;;;   * Code cleanup and refactoring - 2021-12-06 
+;;;   * Code cleanup and refactoring - 2021-12-06
+;;;   * Slight optimization - 2021-12-07
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -15,11 +16,11 @@
   (declaim (inline x y z vx vy vz mass make-body))
   (defstruct (body (:type (vector f64))
                    (:conc-name nil)
-                   (:constructor make-body (x y z fill1 vx vy vz fill2 mass)))
-    x y z fill1 vx vy vz fill2 mass)
+                   (:constructor make-body (x y z fill1 vx vy vz fill2 mas)))
+    x y z fill1 vx vy vz fill2 mas)
 
   (declaim (ftype (function (body) f64.4) pos vel)
-           (inline pos vel mass set-pos (setf pos) set-vel (setf vel) (setf mass)))
+           (inline pos vel mass set-pos (setf pos) set-vel (setf vel) set-mass (setf mass)))
   (defun pos (body)
     (f64.4-aref body 0))
   (defun vel (body)
@@ -81,15 +82,14 @@
 
 ;; Helper functions
 (declaim (ftype (function (f64.4 f64.4) f64) dot)
-         (inline dot scale length-sq length_))
+         (inline dot length-sq length_))
 (defun dot (a b)
   (f64.4-hsum (f64.4* a b)))
 
-(declaim (ftype (function (f64.4) f64) length-sq))
+(declaim (ftype (function (f64.4) f64) length-sq  length_))
 (defun length-sq (a)
   (dot a a))
 
-(declaim (ftype (function (f64.4) f64) length_))
 (defun length_ (a)
   (sqrt (length-sq a)))
 
@@ -115,28 +115,28 @@
     (loop for (bi . rest) on system do
       (dolist (bj rest)
         (let* ((pd  (f64.4- (pos bi) (pos bj)))
-               (dsq (f64.4 (dot pd pd)))
+               (dsq (f64.4  (length-sq pd)))
                (dst (f64.4-sqrt dsq))
-               (mag (f64.4/ (f64.4* dsq dst))))
-          (declare (type f64.4 dsq dst mag))
-          (f64.4-decf (vel bi) (f64.4* pd (f64.4* (mass bj) mag)))
-          (f64.4-incf (vel bj) (f64.4* pd (f64.4* (mass bi) mag))))))
+               (mag (f64.4/ (f64.4* dsq dst)))
+               (pd-mag (f64.4* pd mag)))
+          (f64.4-decf (vel bi) (f64.4* pd-mag (mass bj)))
+          (f64.4-incf (vel bj) (f64.4* pd-mag (mass bi))))))
     (loop for b in system do
       (f64.4-incf (pos b) (vel b)))))
 
 ;; Output the total energy of the system.
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
-  (loop with e of-type f64 = 0d00
-        for (bi . rest) on system do
-	  ;; Add the kinetic energy for each body.
-          (incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
-          (dolist (bj rest)
-            (declare (type body bj))
-	    ;; Add the potential energy between this body and every other bodies
-            (decf e (f64/ (f64* (mass bi) (mass bj))
-                          (length_ (f64.4- (pos bi) (pos bj))))))
-        finally (format t "~,9f~%" e))) ;; Output the total energy of the system.
+  (loop for (bi . rest) on system
+	with e of-type f64 = 0d0
+          ;; Add the kinetic energy for each body.
+        do (incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
+           (dolist (bj rest)
+             (declare (type body bj))
+	     ;; Add the potential energy between this body and every other bodies
+             (decf e (f64/ (f64* (mass bi) (mass bj))
+                           (length_ (f64.4- (pos bi) (pos bj))))))
+        finally (format t "~,9f~%" e)))
 
 ;; Rescale certain properties of bodies. That allows doing
 ;; consequential advances as if dt were equal to 1.0d0.
@@ -155,7 +155,7 @@
   (let ((system *system*))
     (offset-momentum system)         
     (energy system)                     ;; Output initial energy of the system
-    (scale-bodies system +DT+)          ;; Scale bodies to use time step of 1.0d0
+    (scale-bodies system +DT+)          ;; Scale bodies to use unity time step
     (advance system n-times)            ;; Advance system n times
     (scale-bodies system +RECIP-DT+)    ;; Rescale bodies back to original
     (energy system)))                   ;; Output final energy of the system
