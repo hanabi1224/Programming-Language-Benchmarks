@@ -28,6 +28,12 @@ problems:
   # - name: fasta
   #   source:
   #     - 3.go
+  # - name: knucleotide
+  #   source:
+  #     - 7.go
+  - name: regex-redux
+    source:
+      - 3.go
   - name: coro-prime-sieve
     source:
       - 1.go

@@ -34,7 +34,7 @@ problems:
       - 7.go
   - name: regex-redux
     source:
-      - 5.go
+      - 3.go
   - name: json-serde
     source:
       - 1.go
