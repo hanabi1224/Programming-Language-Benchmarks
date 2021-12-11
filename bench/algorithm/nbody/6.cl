@@ -6,7 +6,7 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd :silent t)
-  (use-package :sb-simd-avx2))
+  (use-package :sb-simd-fma))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defconstant +DAYS-PER-YEAR+ 365.24d0)
@@ -100,9 +100,9 @@
 (defun offset-momentum (system)
   (loop for bi in system
         with pos = (f64.4 0)
-        with sun = (car system)
-        do (f64.4-incf pos (f64.4* (vel bi) (mass bi)))
-           (setf (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
+        with sun = (car system) do
+          (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos))
+          (setf (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
 
 ;; Advances with timestem dt = 1.0d0
 ;; Advance all the bodies in the system by one timestep. Calculate the
@@ -119,8 +119,8 @@
                (dst (f64.4-sqrt dsq))
                (mag (f64.4/ (f64.4* dsq dst)))
                (pd-mag (f64.4* pd mag)))
-          (f64.4-decf (vel bi) (f64.4* pd-mag (mass bj)))
-          (f64.4-incf (vel bj) (f64.4* pd-mag (mass bi))))))
+          (setf (vel bi) (f64.4-fnmadd213 pd-mag (mass bj) (vel bi)))
+          (setf (vel bj) (f64.4-fmadd213  pd-mag (mass bi) (vel bj))))))
     (loop for b in system do
       (f64.4-incf (pos b) (vel b)))))
 
@@ -128,14 +128,14 @@
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
   (loop for (bi . rest) on system
-	with e of-type f64 = 0d0
+	with e of-type f64 = 0d0 do
           ;; Add the kinetic energy for each body.
-        do (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
-           (dolist (bj rest)
-             (declare (type body bj))
-	     ;; Add the potential energy between this body and every other bodies
-             (f64-decf e (f64/ (f64* (mass bi) (mass bj))
-                               (length_ (f64.4- (pos bi) (pos bj))))))
+          (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
+          (dolist (bj rest)
+            (declare (type body bj))
+	    ;; Add the potential energy between this body and every other bodies
+            (f64-decf e (f64/ (f64* (mass bi) (mass bj))
+                          (length_ (f64.4- (pos bi) (pos bj))))))
         finally (format t "~,9f~%" e)))
 
 ;; Rescale certain properties of bodies. That allows doing
