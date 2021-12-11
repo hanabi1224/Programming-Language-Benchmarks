@@ -32,6 +32,9 @@ problems:
   - name: knucleotide
     source:
       - 7.go
+  - name: regex-redux
+    source:
+      - 5.go
   - name: json-serde
     source:
       - 1.go
