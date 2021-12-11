@@ -24,6 +24,9 @@ problems:
   - name: knucleotide
     source:
       - 3.java
+  - name: regex-redux
+    source:
+      - 3.java
   - name: mandelbrot
     source:
       - 4.java

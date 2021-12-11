@@ -725,7 +725,7 @@ namespace BenchTool
                 foreach (string fileName in problemConfig.Data)
                 {
                     string dataFileFromPath = Path.Combine(algorithmDir, problemConfig.Name, fileName);
-                    string dataFileToPath = Path.Combine(tmpBuildOutput, fileName);
+                    string dataFileToPath = Path.Combine(tmpBuildOutput, Path.GetFileName(fileName));
                     Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
                     File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
                 }

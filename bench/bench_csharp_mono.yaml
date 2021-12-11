@@ -23,6 +23,9 @@ problems:
   - name: knucleotide
     source:
       - 6.cs
+  - name: regex-redux
+    source:
+      - 5.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

@@ -21,6 +21,9 @@ problems:
   - name: knucleotide
     source:
       - 1.rb
+  - name: regex-redux
+    source:
+      - 3.rb
   - name: json-serde
     source:
       - 1.rb

@@ -1,6 +1,6 @@
 (executable
  (name app)
- (libraries unix res yojson)
+ (libraries unix re res yojson)
  (ocamlopt_flags
   -verbose
   -inline
