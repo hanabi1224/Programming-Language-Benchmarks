@@ -30,6 +30,9 @@ problems:
   - name: knucleotide
     source:
       - 8.rs
+  - name: regex-redux
+    source:
+      - 6.rs
   - name: fannkuch-redux
     source:
       - 2.rs

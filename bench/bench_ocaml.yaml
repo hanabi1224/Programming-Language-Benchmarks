@@ -18,6 +18,9 @@ problems:
   # - name: knucleotide
   #   source:
   #     - 3.ml
+  - name: regex-redux
+    source:
+      - 3.ml
   - name: spectral-norm
     source:
       - 2.ml
