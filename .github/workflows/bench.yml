@@ -50,11 +50,14 @@ jobs:
           ]
     steps:
       - run: lscpu      
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.x'
       - name: Install
         run: |   
           echo '# placeholder' > $PROFILE
+          dotnet --info
           sudo apt-get update -y
-          sudo apt-get install -y dotnet-sdk-6.0
       - uses: actions/checkout@v2
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
@@ -182,11 +185,14 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - run: lscpu
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.x'
       - name: Install
         run: |
+          dotnet --info
           echo '# placeholder' > $PROFILE
           sudo apt-get update -y
-          sudo apt-get install -y dotnet-sdk-6.0
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
