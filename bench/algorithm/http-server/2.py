@@ -20,7 +20,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 def run_server(port: int):
-    httpd = HTTPServer(('localhost', port), SimpleHTTPRequestHandler)
+    httpd = ThreadingHTTPServer(('localhost', port), SimpleHTTPRequestHandler)
     httpd.serve_forever()
 
 
