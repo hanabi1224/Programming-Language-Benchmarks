@@ -24,6 +24,9 @@ problems:
   - name: knucleotide
     source:
       - 3.chpl
+  - name: regex-redux
+    source:
+      - 3.chpl
   - name: coro-prime-sieve
     source:
       - 1.chpl

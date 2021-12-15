@@ -33,6 +33,7 @@ problems:
   - name: regex-redux
     source:
       - 6.rs
+      - 7.rs
   - name: fannkuch-redux
     source:
       - 2.rs
