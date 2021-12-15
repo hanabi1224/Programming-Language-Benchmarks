@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "4.jl",
   "input": "18",
-  "timeMS": 1649.4939,
-  "timeStdDevMS": 4.257720384196365,
-  "memBytes": 257798144,
-  "cpuTimeMS": 1736.6666,
-  "cpuTimeUserMS": 1546.6666,
-  "cpuTimeKernelMS": 190.0,
-  "githubRunId": "1531343699",
+  "timeMS": 1536.0046,
+  "timeStdDevMS": 84.98823374004975,
+  "memBytes": 267853824,
+  "cpuTimeMS": 1619.9999,
+  "cpuTimeUserMS": 1459.9999,
+  "cpuTimeKernelMS": 160.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:12.9315656+00:00",
-    "finished": "2021-12-02T16:08:13.4466465+00:00",
-    "durationMs": 515
+    "start": "2021-12-15T08:22:55.6243311+00:00",
+    "finished": "2021-12-15T08:22:56.0692899+00:00",
+    "durationMs": 444
   },
   "testLog": {
-    "runtimeVersion": "julia version 1.6.4",
-    "start": "2021-12-02T16:37:39.0657828+00:00",
-    "finished": "2021-12-02T16:37:40.3532495+00:00",
-    "durationMs": 1287
+    "runtimeVersion": "julia version 1.7.0",
+    "start": "2021-12-15T09:04:58.461548+00:00",
+    "finished": "2021-12-15T09:04:59.859201+00:00",
+    "durationMs": 1397
   }
 }

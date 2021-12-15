@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1n.kt",
   "input": "1000",
-  "timeMS": 3121.1272,
-  "timeStdDevMS": 7.717566340714452,
-  "memBytes": 7782400,
-  "cpuTimeMS": 3103.3333,
-  "cpuTimeUserMS": 3090.0,
+  "timeMS": 2974.3059,
+  "timeStdDevMS": 218.735243525257,
+  "memBytes": 7692288,
+  "cpuTimeMS": 2946.6666,
+  "cpuTimeUserMS": 2933.3333,
   "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 1s\n1 actionable task: 1 executed",
-    "start": "2021-12-02T16:12:41.8375964+00:00",
-    "finished": "2021-12-02T16:13:50.753334+00:00",
-    "durationMs": 68915
+    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 922ms\n1 actionable task: 1 executed",
+    "start": "2021-12-15T08:29:38.7073847+00:00",
+    "finished": "2021-12-15T08:30:37.954488+00:00",
+    "durationMs": 59247
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:46.4066798+00:00",
-    "finished": "2021-12-02T16:37:46.4227961+00:00",
-    "durationMs": 16
+    "start": "2021-12-15T09:05:19.8142755+00:00",
+    "finished": "2021-12-15T09:05:19.831418+00:00",
+    "durationMs": 17
   }
 }

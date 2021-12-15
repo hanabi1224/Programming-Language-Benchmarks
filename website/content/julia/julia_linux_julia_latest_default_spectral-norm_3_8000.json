@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "3.jl",
   "input": "8000",
-  "timeMS": 2033.4686,
-  "timeStdDevMS": 16.91207208189854,
-  "memBytes": 202063872,
-  "cpuTimeMS": 3693.3333,
-  "cpuTimeUserMS": 3570.0,
-  "cpuTimeKernelMS": 123.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 2002.6288,
+  "timeStdDevMS": 46.526481092097995,
+  "memBytes": 214384640,
+  "cpuTimeMS": 3573.3332,
+  "cpuTimeUserMS": 3456.6666,
+  "cpuTimeKernelMS": 116.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:16.8345657+00:00",
-    "finished": "2021-12-02T16:08:17.3511348+00:00",
-    "durationMs": 516
+    "start": "2021-12-15T08:23:03.4697795+00:00",
+    "finished": "2021-12-15T08:23:03.9034519+00:00",
+    "durationMs": 433
   },
   "testLog": {
-    "runtimeVersion": "julia version 1.6.4",
-    "start": "2021-12-02T16:37:45.8803189+00:00",
-    "finished": "2021-12-02T16:37:46.3618451+00:00",
-    "durationMs": 481
+    "runtimeVersion": "julia version 1.7.0",
+    "start": "2021-12-15T09:05:06.9769375+00:00",
+    "finished": "2021-12-15T09:05:07.4506193+00:00",
+    "durationMs": 473
   }
 }

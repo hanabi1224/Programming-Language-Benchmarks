@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "4.hs",
   "input": "4000",
-  "timeMS": 244.0953,
-  "timeStdDevMS": 0.5380956265695889,
-  "memBytes": 21913600,
-  "cpuTimeMS": 233.3333,
-  "cpuTimeUserMS": 220.0,
+  "timeMS": 220.5782,
+  "timeStdDevMS": 11.853034093007599,
+  "memBytes": 21786624,
+  "cpuTimeMS": 206.6666,
+  "cpuTimeUserMS": 193.3333,
   "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "The Glorious Glasgow Haskell Compilation System, version 9.2.1",
-    "start": "2021-12-02T16:08:49.2808004+00:00",
-    "finished": "2021-12-02T16:08:53.4339952+00:00",
-    "durationMs": 4153
+    "start": "2021-12-15T08:23:15.9790486+00:00",
+    "finished": "2021-12-15T08:23:19.9823956+00:00",
+    "durationMs": 4003
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:11.654369+00:00",
-    "finished": "2021-12-02T16:37:11.6832852+00:00",
+    "start": "2021-12-15T09:04:19.0540282+00:00",
+    "finished": "2021-12-15T09:04:19.0823938+00:00",
     "durationMs": 28
   }
 }

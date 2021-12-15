@@ -7,23 +7,23 @@
   "test": "nsieve",
   "code": "2.cs",
   "input": "12",
-  "timeMS": 4387.5748,
-  "timeStdDevMS": 40.88332869768997,
-  "memBytes": 40144896,
-  "cpuTimeMS": 4353.3332,
-  "cpuTimeUserMS": 4346.6666,
-  "cpuTimeKernelMS": 6.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 4408.1975,
+  "timeStdDevMS": 53.07113367267882,
+  "memBytes": 39792640,
+  "cpuTimeMS": 4379.9999,
+  "cpuTimeUserMS": 4376.6666,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:10:42.3255665+00:00",
-    "finished": "2021-12-02T16:10:50.5917506+00:00",
-    "durationMs": 8266
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:25:50.3460775+00:00",
+    "finished": "2021-12-15T08:26:00.5094463+00:00",
+    "durationMs": 10163
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:49.6368024+00:00",
-    "finished": "2021-12-02T16:36:49.7871866+00:00",
-    "durationMs": 150
+    "start": "2021-12-15T09:03:32.7609104+00:00",
+    "finished": "2021-12-15T09:03:32.8984482+00:00",
+    "durationMs": 137
   }
 }

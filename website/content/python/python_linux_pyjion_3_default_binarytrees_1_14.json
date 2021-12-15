@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.py",
   "input": "14",
-  "timeMS": 2582.8952,
-  "timeStdDevMS": 33.22145895506882,
-  "memBytes": 51408896,
-  "cpuTimeMS": 3313.3333,
-  "cpuTimeUserMS": 3080.0,
-  "cpuTimeKernelMS": 233.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 3914.3078,
+  "timeStdDevMS": 40.93315013934335,
+  "memBytes": 65318912,
+  "cpuTimeMS": 4776.6665,
+  "cpuTimeUserMS": 4363.3332,
+  "cpuTimeKernelMS": 413.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.9119471+00:00",
-    "finished": "2021-12-02T16:09:06.9177698+00:00",
-    "durationMs": 5
+    "start": "2021-12-15T08:24:07.8056376+00:00",
+    "finished": "2021-12-15T08:24:07.8160252+00:00",
+    "durationMs": 10
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:07.8991987+00:00",
-    "finished": "2021-12-02T16:38:09.8123302+00:00",
-    "durationMs": 1913
+    "start": "2021-12-15T09:05:31.8886988+00:00",
+    "finished": "2021-12-15T09:05:34.8172423+00:00",
+    "durationMs": 2928
   }
 }

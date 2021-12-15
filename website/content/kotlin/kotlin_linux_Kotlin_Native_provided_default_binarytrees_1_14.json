@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.kt",
   "input": "14",
-  "timeMS": 454.7454,
-  "timeStdDevMS": 6.498153534915406,
-  "memBytes": 75866112,
+  "timeMS": 455.1365,
+  "timeStdDevMS": 6.03460012925463,
+  "memBytes": 77074432,
   "cpuTimeMS": 439.9999,
-  "cpuTimeUserMS": 403.3333,
-  "cpuTimeKernelMS": 36.6666,
-  "githubRunId": "1531343699",
+  "cpuTimeUserMS": 409.9999,
+  "cpuTimeKernelMS": 30.0,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 1s\n1 actionable task: 1 executed",
-    "start": "2021-12-02T16:08:00.7384823+00:00",
-    "finished": "2021-12-02T16:10:35.4828464+00:00",
-    "durationMs": 154744
+    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 928ms\n1 actionable task: 1 executed",
+    "start": "2021-12-15T08:25:29.261583+00:00",
+    "finished": "2021-12-15T08:26:50.0234765+00:00",
+    "durationMs": 80761
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:46.3621698+00:00",
-    "finished": "2021-12-02T16:37:46.3848633+00:00",
-    "durationMs": 22
+    "start": "2021-12-15T09:05:19.7107051+00:00",
+    "finished": "2021-12-15T09:05:19.7384662+00:00",
+    "durationMs": 27
   }
 }

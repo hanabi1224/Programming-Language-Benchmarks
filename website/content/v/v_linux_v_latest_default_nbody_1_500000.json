@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "1.v",
   "input": "500000",
-  "timeMS": 149.6525,
-  "timeStdDevMS": 0.035420474305135494,
-  "memBytes": 2342912,
+  "timeMS": 150.4165,
+  "timeStdDevMS": 0.8905797044622035,
+  "memBytes": 2473984,
   "cpuTimeMS": 140.0,
   "cpuTimeUserMS": 140.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "V 0.2.4 c4363bc",
-    "start": "2021-12-02T16:12:06.2294137+00:00",
-    "finished": "2021-12-02T16:12:12.4182571+00:00",
-    "durationMs": 6188
+    "compilerVersion": "V 0.2.4 d13fe78",
+    "start": "2021-12-15T08:26:11.330022+00:00",
+    "finished": "2021-12-15T08:26:16.0096933+00:00",
+    "durationMs": 4679
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:39:23.7903584+00:00",
-    "finished": "2021-12-02T16:39:23.799281+00:00",
-    "durationMs": 8
+    "start": "2021-12-15T09:07:38.8814052+00:00",
+    "finished": "2021-12-15T09:07:38.8907723+00:00",
+    "durationMs": 9
   }
 }

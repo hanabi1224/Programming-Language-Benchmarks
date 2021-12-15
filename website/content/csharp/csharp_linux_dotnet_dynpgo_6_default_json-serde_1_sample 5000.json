@@ -7,23 +7,23 @@
   "test": "json-serde",
   "code": "1.cs",
   "input": "sample 5000",
-  "timeMS": 549.1962,
-  "timeStdDevMS": 2.220116141106045,
-  "memBytes": 152834048,
-  "cpuTimeMS": 576.6666,
-  "cpuTimeUserMS": 500.0,
-  "cpuTimeKernelMS": 76.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 536.3706,
+  "timeStdDevMS": 15.720952166244038,
+  "memBytes": 151162880,
+  "cpuTimeMS": 546.6666,
+  "cpuTimeUserMS": 490.0,
+  "cpuTimeKernelMS": 56.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:12:24.5014622+00:00",
-    "finished": "2021-12-02T16:12:32.8719062+00:00",
-    "durationMs": 8370
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:28:09.1014011+00:00",
+    "finished": "2021-12-15T08:28:19.4984776+00:00",
+    "durationMs": 10397
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:54.0117153+00:00",
-    "finished": "2021-12-02T16:36:55.2328989+00:00",
-    "durationMs": 1221
+    "start": "2021-12-15T09:03:38.0368965+00:00",
+    "finished": "2021-12-15T09:03:39.3951451+00:00",
+    "durationMs": 1358
   }
 }

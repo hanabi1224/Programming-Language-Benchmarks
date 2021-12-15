@@ -7,23 +7,23 @@
   "test": "fannkuch-redux",
   "code": "2.dart",
   "input": "11",
-  "timeMS": 4465.2041,
-  "timeStdDevMS": 2.9973638106399227,
-  "memBytes": 12726272,
-  "cpuTimeMS": 4450.0,
-  "cpuTimeUserMS": 4450.0,
+  "timeMS": 4267.432,
+  "timeStdDevMS": 317.14365627409836,
+  "memBytes": 14426112,
+  "cpuTimeMS": 4250.0,
+  "cpuTimeUserMS": 4250.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Dart SDK version: 2.14.4 (stable) (Wed Oct 13 11:11:32 2021 +0200) on \"linux_x64\"",
-    "start": "2021-12-02T16:08:32.1215004+00:00",
-    "finished": "2021-12-02T16:08:38.3299436+00:00",
-    "durationMs": 6208
+    "compilerVersion": "Dart SDK version: 2.15.1 (stable) (Tue Dec 14 13:32:21 2021 +0100) on \"linux_x64\"",
+    "start": "2021-12-15T08:23:17.4093973+00:00",
+    "finished": "2021-12-15T08:23:23.7018405+00:00",
+    "durationMs": 6292
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:02.260562+00:00",
-    "finished": "2021-12-02T16:37:02.6875761+00:00",
-    "durationMs": 427
+    "start": "2021-12-15T09:04:00.2742627+00:00",
+    "finished": "2021-12-15T09:04:01.6309878+00:00",
+    "durationMs": 1356
   }
 }

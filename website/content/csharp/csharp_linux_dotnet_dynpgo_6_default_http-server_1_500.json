@@ -7,23 +7,23 @@
   "test": "http-server",
   "code": "1.cs",
   "input": "500",
-  "timeMS": 593.7556,
-  "timeStdDevMS": 22.51176240153875,
-  "memBytes": 95109120,
-  "cpuTimeMS": 763.3332,
-  "cpuTimeUserMS": 636.6666,
-  "cpuTimeKernelMS": 126.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 571.7665,
+  "timeStdDevMS": 23.386378653395607,
+  "memBytes": 92876800,
+  "cpuTimeMS": 716.6666,
+  "cpuTimeUserMS": 586.6666,
+  "cpuTimeKernelMS": 130.0,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:12:07.4717528+00:00",
-    "finished": "2021-12-02T16:12:16.0749781+00:00",
-    "durationMs": 8603
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:27:47.8105417+00:00",
+    "finished": "2021-12-15T08:27:58.4639169+00:00",
+    "durationMs": 10653
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:51.6341624+00:00",
-    "finished": "2021-12-02T16:36:52.8162208+00:00",
-    "durationMs": 1182
+    "start": "2021-12-15T09:03:35.5188378+00:00",
+    "finished": "2021-12-15T09:03:36.8126454+00:00",
+    "durationMs": 1293
   }
 }

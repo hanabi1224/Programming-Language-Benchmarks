@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "6.js",
   "input": "4000",
-  "timeMS": 920.865,
-  "timeStdDevMS": 1.682087995121989,
-  "memBytes": 60542976,
-  "cpuTimeMS": 1653.3332,
-  "cpuTimeUserMS": 1619.9999,
-  "cpuTimeKernelMS": 33.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 889.2101,
+  "timeStdDevMS": 0.9866370018063224,
+  "memBytes": 59580416,
+  "cpuTimeMS": 1610.0,
+  "cpuTimeUserMS": 1590.0,
+  "cpuTimeKernelMS": 20.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:53.2808841+00:00",
-    "finished": "2021-12-02T16:08:53.8103688+00:00",
-    "durationMs": 529
+    "start": "2021-12-15T08:23:36.7346591+00:00",
+    "finished": "2021-12-15T08:23:37.2290912+00:00",
+    "durationMs": 494
   },
   "testLog": {
     "runtimeVersion": "v17.2.0",
-    "start": "2021-12-02T16:37:38.9058981+00:00",
-    "finished": "2021-12-02T16:37:39.0654593+00:00",
-    "durationMs": 159
+    "start": "2021-12-15T09:04:53.024959+00:00",
+    "finished": "2021-12-15T09:04:53.1650032+00:00",
+    "durationMs": 140
   }
 }

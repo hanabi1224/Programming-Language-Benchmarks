@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.jl",
   "input": "QwQ",
-  "timeMS": 195.838,
-  "timeStdDevMS": 3.222981280274531,
-  "memBytes": 153542656,
-  "cpuTimeMS": 184.0,
-  "cpuTimeUserMS": 108.0,
-  "cpuTimeKernelMS": 76.0,
-  "githubRunId": "1531343699",
+  "timeMS": 182.6848,
+  "timeStdDevMS": 2.883487440583021,
+  "memBytes": 164319232,
+  "cpuTimeMS": 170.0,
+  "cpuTimeUserMS": 100.0,
+  "cpuTimeKernelMS": 70.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:14.4593997+00:00",
-    "finished": "2021-12-02T16:08:14.9362045+00:00",
-    "durationMs": 476
+    "start": "2021-12-15T08:22:57.0555856+00:00",
+    "finished": "2021-12-15T08:22:57.4601463+00:00",
+    "durationMs": 404
   },
   "testLog": {
-    "runtimeVersion": "julia version 1.6.4",
-    "start": "2021-12-02T16:37:42.2993138+00:00",
-    "finished": "2021-12-02T16:37:42.7238369+00:00",
-    "durationMs": 424
+    "runtimeVersion": "julia version 1.7.0",
+    "start": "2021-12-15T09:05:01.82988+00:00",
+    "finished": "2021-12-15T09:05:02.2650303+00:00",
+    "durationMs": 435
   }
 }

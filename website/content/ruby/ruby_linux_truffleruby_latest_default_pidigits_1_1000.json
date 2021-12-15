@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1.rb",
   "input": "1000",
-  "timeMS": 670.8854,
-  "timeStdDevMS": 58.14405181159971,
-  "memBytes": 576942080,
-  "cpuTimeMS": 996.6665,
-  "cpuTimeUserMS": 749.9999,
-  "cpuTimeKernelMS": 246.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 621.8998,
+  "timeStdDevMS": 54.78124377762274,
+  "memBytes": 582619136,
+  "cpuTimeMS": 933.3332,
+  "cpuTimeUserMS": 716.6666,
+  "cpuTimeKernelMS": 216.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:17.2123525+00:00",
-    "finished": "2021-12-02T16:10:17.2155677+00:00",
-    "durationMs": 3
+    "start": "2021-12-15T08:24:49.9681055+00:00",
+    "finished": "2021-12-15T08:24:49.9705114+00:00",
+    "durationMs": 2
   },
   "testLog": {
     "runtimeVersion": "truffleruby 21.3.0, like ruby 2.7.4, GraalVM CE Native [x86_64-linux]",
-    "start": "2021-12-02T16:39:17.0415795+00:00",
-    "finished": "2021-12-02T16:39:17.1473975+00:00",
-    "durationMs": 105
+    "start": "2021-12-15T09:07:31.4031426+00:00",
+    "finished": "2021-12-15T09:07:31.5068923+00:00",
+    "durationMs": 103
   }
 }

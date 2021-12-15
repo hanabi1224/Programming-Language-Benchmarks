@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.cs",
   "input": "100000",
-  "timeMS": 1012.0243,
-  "timeStdDevMS": 17.87377055389637,
-  "memBytes": 48136192,
-  "cpuTimeMS": 949.9999,
-  "cpuTimeUserMS": 913.3333,
-  "cpuTimeKernelMS": 36.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 978.3419,
+  "timeStdDevMS": 19.694630947121986,
+  "memBytes": 50057216,
+  "cpuTimeMS": 939.9999,
+  "cpuTimeUserMS": 916.6666,
+  "cpuTimeKernelMS": 23.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:11:33.608428+00:00",
-    "finished": "2021-12-02T16:11:41.9728138+00:00",
-    "durationMs": 8364
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:27:06.4242657+00:00",
+    "finished": "2021-12-15T08:27:16.751613+00:00",
+    "durationMs": 10327
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:50.8989511+00:00",
-    "finished": "2021-12-02T16:36:51.0790266+00:00",
-    "durationMs": 180
+    "start": "2021-12-15T09:03:34.7165267+00:00",
+    "finished": "2021-12-15T09:03:34.9139171+00:00",
+    "durationMs": 197
   }
 }

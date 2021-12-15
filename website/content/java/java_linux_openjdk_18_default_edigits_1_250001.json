@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.java",
   "input": "250001",
-  "timeMS": 1083.3124,
-  "timeStdDevMS": 145.81368381919216,
-  "memBytes": 198545408,
-  "cpuTimeMS": 1716.6666,
-  "cpuTimeUserMS": 1576.6666,
-  "cpuTimeKernelMS": 140.0,
-  "githubRunId": "1531343699",
+  "timeMS": 904.0049,
+  "timeStdDevMS": 59.930838496804014,
+  "memBytes": 183537664,
+  "cpuTimeMS": 1403.3333,
+  "cpuTimeUserMS": 1290.0,
+  "cpuTimeKernelMS": 113.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "javac 18-ea",
-    "start": "2021-12-02T16:10:02.9683685+00:00",
-    "finished": "2021-12-02T16:10:04.9913871+00:00",
-    "durationMs": 2023
+    "start": "2021-12-15T08:39:47.6543098+00:00",
+    "finished": "2021-12-15T08:39:49.1656684+00:00",
+    "durationMs": 1511
   },
   "testLog": {
-    "runtimeVersion": "openjdk version \"18-ea\" 2022-03-15\nOpenJDK Runtime Environment (build 18-ea+25-1670)\nOpenJDK 64-Bit Server VM (build 18-ea+25-1670, mixed mode, sharing)",
-    "start": "2021-12-02T16:37:19.1609871+00:00",
-    "finished": "2021-12-02T16:37:19.3442928+00:00",
-    "durationMs": 183
+    "runtimeVersion": "openjdk version \"18-ea\" 2022-03-22\nOpenJDK Runtime Environment (build 18-ea+27-1924)\nOpenJDK 64-Bit Server VM (build 18-ea+27-1924, mixed mode, sharing)",
+    "start": "2021-12-15T09:04:44.7418971+00:00",
+    "finished": "2021-12-15T09:04:44.929534+00:00",
+    "durationMs": 187
   }
 }

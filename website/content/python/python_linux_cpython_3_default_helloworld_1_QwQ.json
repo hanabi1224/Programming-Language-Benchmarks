@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.py",
   "input": "QwQ",
-  "timeMS": 16.04,
-  "timeStdDevMS": 2.2935422937020364,
-  "memBytes": 8269824,
+  "timeMS": 14.4766,
+  "timeStdDevMS": 0.9254503379436416,
+  "memBytes": 7712768,
   "cpuTimeMS": 10.0,
   "cpuTimeUserMS": 10.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.8856443+00:00",
-    "finished": "2021-12-02T16:09:06.8888636+00:00",
-    "durationMs": 3
+    "start": "2021-12-15T08:24:02.1408683+00:00",
+    "finished": "2021-12-15T08:24:02.1459619+00:00",
+    "durationMs": 5
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:05.7802925+00:00",
-    "finished": "2021-12-02T16:38:05.8114791+00:00",
-    "durationMs": 31
+    "start": "2021-12-15T09:05:27.3522329+00:00",
+    "finished": "2021-12-15T09:05:27.3802187+00:00",
+    "durationMs": 27
   }
 }

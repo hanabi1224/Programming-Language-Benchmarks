@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.rs",
   "input": "14",
-  "timeMS": 61.7936,
-  "timeStdDevMS": 0.2593197704251147,
-  "memBytes": 13512704,
+  "timeMS": 62.6676,
+  "timeStdDevMS": 2.5662346586649734,
+  "memBytes": 13242368,
   "cpuTimeMS": 50.0,
   "cpuTimeUserMS": 50.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "rustc 1.57.0 (f1edd0429 2021-11-29)",
-    "start": "2021-12-02T16:12:48.4442071+00:00",
-    "finished": "2021-12-02T16:13:11.0988292+00:00",
-    "durationMs": 22654
+    "start": "2021-12-15T08:28:55.7085191+00:00",
+    "finished": "2021-12-15T08:28:58.8715161+00:00",
+    "durationMs": 3162
   },
   "testLog": {
-    "runtimeVersion": "wasmedge version 0.8.2",
-    "start": "2021-12-02T16:39:26.1099501+00:00",
-    "finished": "2021-12-02T16:39:26.1414934+00:00",
-    "durationMs": 31
+    "runtimeVersion": "wasmedge version 0.9.0",
+    "start": "2021-12-15T09:07:56.334216+00:00",
+    "finished": "2021-12-15T09:07:56.3620084+00:00",
+    "durationMs": 27
   }
 }

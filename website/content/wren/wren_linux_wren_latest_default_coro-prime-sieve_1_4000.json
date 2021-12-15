@@ -7,23 +7,23 @@
   "test": "coro-prime-sieve",
   "code": "1.wren",
   "input": "4000",
-  "timeMS": 654.762,
-  "timeStdDevMS": 9.964615537490603,
+  "timeMS": 596.6765,
+  "timeStdDevMS": 43.19039053412216,
   "memBytes": 2793472,
-  "cpuTimeMS": 646.6666,
-  "cpuTimeUserMS": 646.6666,
+  "cpuTimeMS": 583.3333,
+  "cpuTimeUserMS": 583.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:50.9159142+00:00",
-    "finished": "2021-12-02T16:10:50.9218963+00:00",
-    "durationMs": 5
+    "start": "2021-12-15T08:25:37.0466605+00:00",
+    "finished": "2021-12-15T08:25:37.0531698+00:00",
+    "durationMs": 6
   },
   "testLog": {
     "runtimeVersion": "wren 0.4.0",
-    "start": "2021-12-02T16:39:47.7178256+00:00",
-    "finished": "2021-12-02T16:39:47.7666886+00:00",
+    "start": "2021-12-15T09:08:02.386188+00:00",
+    "finished": "2021-12-15T09:08:02.4349857+00:00",
     "durationMs": 48
   }
 }

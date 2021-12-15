@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1.swift",
   "input": "1000",
-  "timeMS": 166.8261,
-  "timeStdDevMS": 0.7858771468874727,
-  "memBytes": 5984256,
-  "cpuTimeMS": 156.6666,
-  "cpuTimeUserMS": 156.6666,
+  "timeMS": 172.9618,
+  "timeStdDevMS": 10.351567569374842,
+  "memBytes": 6082560,
+  "cpuTimeMS": 163.3333,
+  "cpuTimeUserMS": 163.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Swift version 5.5.1 (swift-5.5.1-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
-    "start": "2021-12-02T16:11:08.4563844+00:00",
-    "finished": "2021-12-02T16:11:23.3088178+00:00",
-    "durationMs": 14852
+    "compilerVersion": "Swift version 5.5.2 (swift-5.5.2-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-12-15T08:26:20.3169862+00:00",
+    "finished": "2021-12-15T08:26:36.9591256+00:00",
+    "durationMs": 16642
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:39:19.3475951+00:00",
-    "finished": "2021-12-02T16:39:19.3723946+00:00",
-    "durationMs": 24
+    "start": "2021-12-15T09:07:34.3837773+00:00",
+    "finished": "2021-12-15T09:07:34.4301382+00:00",
+    "durationMs": 46
   }
 }

@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "crystal",
+  "os": "linux",
+  "compiler": "crystal",
+  "compilerVersion": "latest",
+  "test": "lru",
+  "code": "1.cr",
+  "input": "5000000",
+  "timeMS": 488.3615,
+  "timeStdDevMS": 40.273230440869014,
+  "memBytes": 5160960,
+  "cpuTimeMS": 480.0,
+  "cpuTimeUserMS": 480.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1579924640",
+  "buildLog": {
+    "compilerVersion": "Crystal 1.2.2 [6529d725a] (2021-11-10)\n\nLLVM: 10.0.0\nDefault target: x86_64-unknown-linux-gnu",
+    "start": "2021-12-15T08:25:54.1099272+00:00",
+    "finished": "2021-12-15T08:26:07.6580506+00:00",
+    "durationMs": 13548
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-15T09:03:25.4032051+00:00",
+    "finished": "2021-12-15T09:03:25.4156127+00:00",
+    "durationMs": 12
+  }
+}

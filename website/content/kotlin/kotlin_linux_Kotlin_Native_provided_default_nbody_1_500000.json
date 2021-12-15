@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "1.kt",
   "input": "500000",
-  "timeMS": 86.8872,
-  "timeStdDevMS": 0.34444108833490206,
-  "memBytes": 2441216,
-  "cpuTimeMS": 80.0,
-  "cpuTimeUserMS": 80.0,
+  "timeMS": 83.5641,
+  "timeStdDevMS": 4.4339092762482,
+  "memBytes": 2428928,
+  "cpuTimeMS": 76.6666,
+  "cpuTimeUserMS": 76.6666,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 1s\n1 actionable task: 1 executed",
-    "start": "2021-12-02T16:11:36.4956175+00:00",
-    "finished": "2021-12-02T16:12:41.8324772+00:00",
-    "durationMs": 65336
+    "compilerVersion": "Type-safe dependency accessors is an incubating feature.\n\n> Task :version\nkotlinc-native 1.6.0 (JRE 11.0.11+9)\n\nDeprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.\n\nYou can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.\n\nSee https://docs.gradle.org/7.3.1/userguide/command_line_interface.html#sec:command_line_warnings\n\nBUILD SUCCESSFUL in 847ms\n1 actionable task: 1 executed",
+    "start": "2021-12-15T08:28:43.1599086+00:00",
+    "finished": "2021-12-15T08:29:38.7042193+00:00",
+    "durationMs": 55544
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:46.396168+00:00",
-    "finished": "2021-12-02T16:37:46.4064931+00:00",
-    "durationMs": 10
+    "start": "2021-12-15T09:05:19.7996174+00:00",
+    "finished": "2021-12-15T09:05:19.814079+00:00",
+    "durationMs": 14
   }
 }

@@ -7,23 +7,23 @@
   "test": "fasta",
   "code": "5.py",
   "input": "250000",
-  "timeMS": 2526.4717,
-  "timeStdDevMS": 16.715135320720734,
-  "memBytes": 46964736,
-  "cpuTimeMS": 3383.3333,
-  "cpuTimeUserMS": 2850.0,
-  "cpuTimeKernelMS": 533.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 3617.5531,
+  "timeStdDevMS": 39.81366839721412,
+  "memBytes": 49512448,
+  "cpuTimeMS": 4729.9999,
+  "cpuTimeUserMS": 4063.3333,
+  "cpuTimeKernelMS": 666.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.9325431+00:00",
-    "finished": "2021-12-02T16:09:06.9419665+00:00",
-    "durationMs": 9
+    "start": "2021-12-15T08:24:08.028854+00:00",
+    "finished": "2021-12-15T08:24:08.0351482+00:00",
+    "durationMs": 6
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:13.1921091+00:00",
-    "finished": "2021-12-02T16:38:15.1962169+00:00",
-    "durationMs": 2004
+    "start": "2021-12-15T09:05:39.9894889+00:00",
+    "finished": "2021-12-15T09:05:43.4038994+00:00",
+    "durationMs": 3414
   }
 }

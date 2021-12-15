@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "1.lua",
   "input": "1000",
-  "timeMS": 90.9724,
-  "timeStdDevMS": 1.120925752819215,
-  "memBytes": 1130496,
-  "cpuTimeMS": 80.0,
-  "cpuTimeUserMS": 80.0,
+  "timeMS": 87.8322,
+  "timeStdDevMS": 6.802787578877732,
+  "memBytes": 1142784,
+  "cpuTimeMS": 76.6666,
+  "cpuTimeUserMS": 76.6666,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:00.6207914+00:00",
-    "finished": "2021-12-02T16:08:00.6278294+00:00",
-    "durationMs": 7
+    "start": "2021-12-15T08:22:36.1367731+00:00",
+    "finished": "2021-12-15T08:22:36.1414931+00:00",
+    "durationMs": 4
   },
   "testLog": {
     "runtimeVersion": "LuaJIT 2.1.0-beta3 -- Copyright (C) 2005-2021 Mike Pall. https://luajit.org/",
-    "start": "2021-12-02T16:38:03.4370395+00:00",
-    "finished": "2021-12-02T16:38:03.4439587+00:00",
+    "start": "2021-12-15T09:05:23.572768+00:00",
+    "finished": "2021-12-15T09:05:23.5797017+00:00",
     "durationMs": 6
   }
 }

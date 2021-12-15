@@ -7,23 +7,23 @@
   "test": "fasta",
   "code": "1.rs",
   "input": "250000",
-  "timeMS": 57.61,
-  "timeStdDevMS": 1.8740503043764154,
-  "memBytes": 44011520,
-  "cpuTimeMS": 43.3333,
-  "cpuTimeUserMS": 40.0,
+  "timeMS": 57.9108,
+  "timeStdDevMS": 1.245104659590247,
+  "memBytes": 43413504,
+  "cpuTimeMS": 39.9999,
+  "cpuTimeUserMS": 36.6666,
   "cpuTimeKernelMS": 3.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "rustc 1.57.0 (f1edd0429 2021-11-29)",
-    "start": "2021-12-02T16:15:51.1669998+00:00",
-    "finished": "2021-12-02T16:15:52.9330439+00:00",
-    "durationMs": 1766
+    "start": "2021-12-15T08:27:57.7957864+00:00",
+    "finished": "2021-12-15T08:27:59.5939225+00:00",
+    "durationMs": 1798
   },
   "testLog": {
     "runtimeVersion": "wasmer 2.1.0",
-    "start": "2021-12-02T16:39:44.8863439+00:00",
-    "finished": "2021-12-02T16:39:45.0016178+00:00",
-    "durationMs": 115
+    "start": "2021-12-15T09:07:52.4920679+00:00",
+    "finished": "2021-12-15T09:07:52.5794146+00:00",
+    "durationMs": 87
   }
 }

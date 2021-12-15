@@ -7,23 +7,23 @@
   "test": "nsieve",
   "code": "1.py",
   "input": "10",
-  "timeMS": 1437.9171,
-  "timeStdDevMS": 13.3461212718654,
-  "memBytes": 220475392,
-  "cpuTimeMS": 1419.9999,
-  "cpuTimeUserMS": 1369.9999,
+  "timeMS": 1331.4105,
+  "timeStdDevMS": 55.49444784519733,
+  "memBytes": 220418048,
+  "cpuTimeMS": 1313.3333,
+  "cpuTimeUserMS": 1263.3333,
   "cpuTimeKernelMS": 50.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:19.2172945+00:00",
-    "finished": "2021-12-02T16:09:19.582784+00:00",
-    "durationMs": 365
+    "start": "2021-12-15T08:24:32.0617646+00:00",
+    "finished": "2021-12-15T08:24:32.4647452+00:00",
+    "durationMs": 402
   },
   "testLog": {
     "runtimeVersion": "Python 3.7.12 (44db26267d0a, Oct 24 2021, 14:21:50)\n[PyPy 7.3.7 with GCC 7.3.1 20180303 (Red Hat 7.3.1-5)]",
-    "start": "2021-12-02T16:38:50.034655+00:00",
-    "finished": "2021-12-02T16:38:50.125127+00:00",
-    "durationMs": 90
+    "start": "2021-12-15T09:06:51.8295752+00:00",
+    "finished": "2021-12-15T09:06:51.922164+00:00",
+    "durationMs": 92
   }
 }

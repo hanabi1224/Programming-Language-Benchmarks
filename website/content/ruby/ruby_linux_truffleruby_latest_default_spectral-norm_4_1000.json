@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "4.rb",
   "input": "1000",
-  "timeMS": 1434.7625,
-  "timeStdDevMS": 8.77272518681244,
-  "memBytes": 674369536,
-  "cpuTimeMS": 2333.3333,
-  "cpuTimeUserMS": 2023.3333,
-  "cpuTimeKernelMS": 310.0,
-  "githubRunId": "1531343699",
+  "timeMS": 1365.753,
+  "timeStdDevMS": 33.4912616314067,
+  "memBytes": 671256576,
+  "cpuTimeMS": 2176.6666,
+  "cpuTimeUserMS": 1900.0,
+  "cpuTimeKernelMS": 276.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:17.2158328+00:00",
-    "finished": "2021-12-02T16:10:17.2185891+00:00",
+    "start": "2021-12-15T08:24:49.9707391+00:00",
+    "finished": "2021-12-15T08:24:49.9728919+00:00",
     "durationMs": 2
   },
   "testLog": {
     "runtimeVersion": "truffleruby 21.3.0, like ruby 2.7.4, GraalVM CE Native [x86_64-linux]",
-    "start": "2021-12-02T16:39:17.1476572+00:00",
-    "finished": "2021-12-02T16:39:17.387946+00:00",
-    "durationMs": 240
+    "start": "2021-12-15T09:07:31.5071388+00:00",
+    "finished": "2021-12-15T09:07:31.7652528+00:00",
+    "durationMs": 258
   }
 }

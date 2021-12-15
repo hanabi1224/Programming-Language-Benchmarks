@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.zig",
   "input": "QwQ",
-  "timeMS": 1.7621,
-  "timeStdDevMS": 0.8614300627445038,
-  "memBytes": 8192,
+  "timeMS": 1.8523,
+  "timeStdDevMS": 0.6680806927310502,
+  "memBytes": 118784,
   "cpuTimeMS": 0.0,
   "cpuTimeUserMS": 0.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "0.9.0-dev.1815+20e19e75f",
-    "start": "2021-12-02T16:11:17.2560013+00:00",
-    "finished": "2021-12-02T16:11:26.7269068+00:00",
-    "durationMs": 9470
+    "compilerVersion": "0.9.0-dev.1966+20328e976",
+    "start": "2021-12-15T08:26:51.1744942+00:00",
+    "finished": "2021-12-15T08:27:03.9889484+00:00",
+    "durationMs": 12814
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:39:48.5391825+00:00",
-    "finished": "2021-12-02T16:39:48.5440098+00:00",
+    "start": "2021-12-15T09:08:03.1823627+00:00",
+    "finished": "2021-12-15T09:08:03.1873037+00:00",
     "durationMs": 4
   }
 }

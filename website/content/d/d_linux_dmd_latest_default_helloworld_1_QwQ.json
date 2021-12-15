@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.d",
   "input": "QwQ",
-  "timeMS": 2.3601,
-  "timeStdDevMS": 0.25622034072258976,
-  "memBytes": 4046848,
+  "timeMS": 2.6404,
+  "timeStdDevMS": 0.5715695775668961,
+  "memBytes": 3727360,
   "cpuTimeMS": 0.0,
   "cpuTimeUserMS": 0.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
-    "start": "2021-12-02T16:08:22.7520382+00:00",
-    "finished": "2021-12-02T16:08:24.8415538+00:00",
-    "durationMs": 2089
+    "start": "2021-12-15T08:23:00.4982303+00:00",
+    "finished": "2021-12-15T08:23:02.4753787+00:00",
+    "durationMs": 1977
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:59.132649+00:00",
-    "finished": "2021-12-02T16:36:59.1429676+00:00",
-    "durationMs": 10
+    "start": "2021-12-15T09:03:57.3949153+00:00",
+    "finished": "2021-12-15T09:03:57.4078133+00:00",
+    "durationMs": 12
   }
 }

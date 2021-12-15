@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "2.rkt",
   "input": "500000",
-  "timeMS": 289.8997,
-  "timeStdDevMS": 2.4072691436563574,
-  "memBytes": 73424896,
-  "cpuTimeMS": 279.9999,
-  "cpuTimeUserMS": 233.3333,
-  "cpuTimeKernelMS": 46.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 254.4745,
+  "timeStdDevMS": 1.514880630060757,
+  "memBytes": 73261056,
+  "cpuTimeMS": 236.6666,
+  "cpuTimeUserMS": 203.3333,
+  "cpuTimeKernelMS": 33.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "Welcome to Racket v8.3 [cs].",
-    "start": "2021-12-02T16:09:55.2722013+00:00",
-    "finished": "2021-12-02T16:09:56.9881087+00:00",
-    "durationMs": 1715
+    "start": "2021-12-15T08:24:40.9269013+00:00",
+    "finished": "2021-12-15T08:24:42.5280231+00:00",
+    "durationMs": 1601
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:38:53.1438337+00:00",
-    "finished": "2021-12-02T16:38:53.4451647+00:00",
-    "durationMs": 301
+    "start": "2021-12-15T09:06:55.5187383+00:00",
+    "finished": "2021-12-15T09:06:55.8249319+00:00",
+    "durationMs": 306
   }
 }

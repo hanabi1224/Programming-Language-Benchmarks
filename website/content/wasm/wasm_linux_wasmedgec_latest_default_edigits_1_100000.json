@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.rs",
   "input": "100000",
-  "timeMS": 565.2082,
-  "timeStdDevMS": 4.7097100834338566,
-  "memBytes": 17629184,
-  "cpuTimeMS": 546.6666,
-  "cpuTimeUserMS": 416.6666,
-  "cpuTimeKernelMS": 130.0,
-  "githubRunId": "1531343699",
+  "timeMS": 132.2046,
+  "timeStdDevMS": 0.0918921650631698,
+  "memBytes": 17231872,
+  "cpuTimeMS": 116.6666,
+  "cpuTimeUserMS": 116.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "rustc 1.57.0 (f1edd0429 2021-11-29)",
-    "start": "2021-12-02T16:13:11.0993995+00:00",
-    "finished": "2021-12-02T16:13:17.5119725+00:00",
-    "durationMs": 6412
+    "start": "2021-12-15T08:28:58.8718709+00:00",
+    "finished": "2021-12-15T08:29:05.3046787+00:00",
+    "durationMs": 6432
   },
   "testLog": {
-    "runtimeVersion": "wasmedge version 0.8.2",
-    "start": "2021-12-02T16:39:26.1417292+00:00",
-    "finished": "2021-12-02T16:39:26.1960649+00:00",
-    "durationMs": 54
+    "runtimeVersion": "wasmedge version 0.9.0",
+    "start": "2021-12-15T09:07:56.3622347+00:00",
+    "finished": "2021-12-15T09:07:56.4058103+00:00",
+    "durationMs": 43
   }
 }

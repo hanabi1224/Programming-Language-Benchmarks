@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.cs",
   "input": "QwQ",
-  "timeMS": 53.0508,
-  "timeStdDevMS": 5.6167806279932275,
-  "memBytes": 28622848,
-  "cpuTimeMS": 28.0,
-  "cpuTimeUserMS": 26.0,
+  "timeMS": 48.0794,
+  "timeStdDevMS": 3.2362845128325786,
+  "memBytes": 28106752,
+  "cpuTimeMS": 22.0,
+  "cpuTimeUserMS": 20.0,
   "cpuTimeKernelMS": 2.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:09:34.7734894+00:00",
-    "finished": "2021-12-02T16:09:43.056355+00:00",
-    "durationMs": 8282
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:24:04.2521862+00:00",
+    "finished": "2021-12-15T08:24:14.3435577+00:00",
+    "durationMs": 10091
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:44.4715218+00:00",
-    "finished": "2021-12-02T16:36:44.6214573+00:00",
-    "durationMs": 149
+    "start": "2021-12-15T09:03:26.866595+00:00",
+    "finished": "2021-12-15T09:03:27.0396331+00:00",
+    "durationMs": 173
   }
 }

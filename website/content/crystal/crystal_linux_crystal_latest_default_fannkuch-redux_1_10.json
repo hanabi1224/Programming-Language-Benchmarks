@@ -7,23 +7,23 @@
   "test": "fannkuch-redux",
   "code": "1.cr",
   "input": "10",
-  "timeMS": 360.2029,
-  "timeStdDevMS": 0.5127184119963107,
-  "memBytes": 5365760,
+  "timeMS": 359.9514,
+  "timeStdDevMS": 0.8019508484522947,
+  "memBytes": 3227648,
   "cpuTimeMS": 350.0,
   "cpuTimeUserMS": 350.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "Crystal 1.2.2 [6529d725a] (2021-11-10)\n\nLLVM: 10.0.0\nDefault target: x86_64-unknown-linux-gnu",
-    "start": "2021-12-02T16:08:55.2893636+00:00",
-    "finished": "2021-12-02T16:09:08.6865664+00:00",
-    "durationMs": 13397
+    "start": "2021-12-15T08:23:55.035652+00:00",
+    "finished": "2021-12-15T08:24:08.2271568+00:00",
+    "durationMs": 13191
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:41.0036567+00:00",
-    "finished": "2021-12-02T16:36:41.369281+00:00",
-    "durationMs": 365
+    "start": "2021-12-15T09:03:23.7253776+00:00",
+    "finished": "2021-12-15T09:03:24.0500616+00:00",
+    "durationMs": 324
   }
 }

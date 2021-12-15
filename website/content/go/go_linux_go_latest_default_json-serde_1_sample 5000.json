@@ -7,23 +7,23 @@
   "test": "json-serde",
   "code": "1.go",
   "input": "sample 5000",
-  "timeMS": 178.8967,
-  "timeStdDevMS": 1.5576770728663218,
-  "memBytes": 21381120,
-  "cpuTimeMS": 173.3333,
-  "cpuTimeUserMS": 170.0,
-  "cpuTimeKernelMS": 3.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 179.0718,
+  "timeStdDevMS": 5.458138614033174,
+  "memBytes": 21069824,
+  "cpuTimeMS": 166.6666,
+  "cpuTimeUserMS": 166.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "go version go1.17.3 linux/amd64",
-    "start": "2021-12-02T16:10:34.0649081+00:00",
-    "finished": "2021-12-02T16:10:35.0460697+00:00",
-    "durationMs": 981
+    "compilerVersion": "go version go1.17.5 linux/amd64",
+    "start": "2021-12-15T08:23:01.7788678+00:00",
+    "finished": "2021-12-15T08:23:02.8352403+00:00",
+    "durationMs": 1056
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:11.2442809+00:00",
-    "finished": "2021-12-02T16:37:11.5278413+00:00",
-    "durationMs": 283
+    "start": "2021-12-15T09:04:09.402147+00:00",
+    "finished": "2021-12-15T09:04:09.688298+00:00",
+    "durationMs": 286
   }
 }

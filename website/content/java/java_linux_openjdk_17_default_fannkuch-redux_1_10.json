@@ -7,23 +7,23 @@
   "test": "fannkuch-redux",
   "code": "1.java",
   "input": "10",
-  "timeMS": 208.7475,
-  "timeStdDevMS": 9.490316235510788,
-  "memBytes": 39993344,
-  "cpuTimeMS": 333.3332,
-  "cpuTimeUserMS": 316.6666,
-  "cpuTimeKernelMS": 16.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 201.9026,
+  "timeStdDevMS": 2.5063875086134204,
+  "memBytes": 39948288,
+  "cpuTimeMS": 313.3333,
+  "cpuTimeUserMS": 303.3333,
+  "cpuTimeKernelMS": 10.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "javac 17.0.1",
-    "start": "2021-12-02T16:08:46.4859028+00:00",
-    "finished": "2021-12-02T16:08:48.6813392+00:00",
-    "durationMs": 2195
+    "start": "2021-12-15T08:38:16.7086283+00:00",
+    "finished": "2021-12-15T08:38:18.3288734+00:00",
+    "durationMs": 1620
   },
   "testLog": {
     "runtimeVersion": "openjdk version \"17.0.1\" 2021-10-19\nOpenJDK Runtime Environment (build 17.0.1+12-39)\nOpenJDK 64-Bit Server VM (build 17.0.1+12-39, mixed mode, sharing)",
-    "start": "2021-12-02T16:37:12.1416551+00:00",
-    "finished": "2021-12-02T16:37:12.4637271+00:00",
-    "durationMs": 322
+    "start": "2021-12-15T09:04:32.8309874+00:00",
+    "finished": "2021-12-15T09:04:33.1368113+00:00",
+    "durationMs": 305
   }
 }

@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.rs",
   "input": "18",
-  "timeMS": 1325.7434,
-  "timeStdDevMS": 3.2438589534688687,
-  "memBytes": 48500736,
-  "cpuTimeMS": 1386.6665,
-  "cpuTimeUserMS": 1379.9999,
-  "cpuTimeKernelMS": 6.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 1122.3386,
+  "timeStdDevMS": 3.932832716164707,
+  "memBytes": 48627712,
+  "cpuTimeMS": 1183.3333,
+  "cpuTimeUserMS": 1170.0,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "deno 1.16.3 (release, x86_64-unknown-linux-gnu)\nv8 9.7.106.5\ntypescript 4.4.2",
-    "start": "2021-12-02T16:13:50.919654+00:00",
-    "finished": "2021-12-02T16:13:54.422305+00:00",
-    "durationMs": 3502
+    "compilerVersion": "deno 1.16.4 (release, x86_64-unknown-linux-gnu)\nv8 9.7.106.15\ntypescript 4.4.2",
+    "start": "2021-12-15T08:28:14.6676954+00:00",
+    "finished": "2021-12-15T08:28:18.3771029+00:00",
+    "durationMs": 3709
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:39:26.7394608+00:00",
-    "finished": "2021-12-02T16:39:26.8847442+00:00",
-    "durationMs": 145
+    "start": "2021-12-15T09:07:53.4472479+00:00",
+    "finished": "2021-12-15T09:07:53.5978435+00:00",
+    "durationMs": 150
   }
 }

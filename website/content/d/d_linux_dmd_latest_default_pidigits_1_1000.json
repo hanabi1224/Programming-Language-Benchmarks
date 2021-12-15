@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1.d",
   "input": "1000",
-  "timeMS": 105.0792,
-  "timeStdDevMS": 1.226537594205743,
-  "memBytes": 9306112,
-  "cpuTimeMS": 93.3333,
-  "cpuTimeUserMS": 93.3333,
+  "timeMS": 95.6721,
+  "timeStdDevMS": 7.0412452665230445,
+  "memBytes": 9068544,
+  "cpuTimeMS": 90.0,
+  "cpuTimeUserMS": 90.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
-    "start": "2021-12-02T16:08:29.0390974+00:00",
-    "finished": "2021-12-02T16:08:31.2696405+00:00",
-    "durationMs": 2230
+    "start": "2021-12-15T08:23:06.5683781+00:00",
+    "finished": "2021-12-15T08:23:08.8028241+00:00",
+    "durationMs": 2234
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:59.1663907+00:00",
-    "finished": "2021-12-02T16:36:59.1781761+00:00",
-    "durationMs": 11
+    "start": "2021-12-15T09:03:57.4363807+00:00",
+    "finished": "2021-12-15T09:03:57.4491844+00:00",
+    "durationMs": 12
   }
 }

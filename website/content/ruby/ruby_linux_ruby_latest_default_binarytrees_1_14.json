@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.rb",
   "input": "14",
-  "timeMS": 582.5913,
-  "timeStdDevMS": 44.701805657639035,
-  "memBytes": 41992192,
-  "cpuTimeMS": 543.3332,
-  "cpuTimeUserMS": 526.6666,
-  "cpuTimeKernelMS": 16.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 537.0232,
+  "timeStdDevMS": 38.85081402549152,
+  "memBytes": 42188800,
+  "cpuTimeMS": 499.9999,
+  "cpuTimeUserMS": 486.6666,
+  "cpuTimeKernelMS": 13.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:16.9887969+00:00",
-    "finished": "2021-12-02T16:10:17.0146441+00:00",
-    "durationMs": 25
+    "start": "2021-12-15T08:24:38.0383766+00:00",
+    "finished": "2021-12-15T08:24:38.0600369+00:00",
+    "durationMs": 21
   },
   "testLog": {
     "runtimeVersion": "ruby 3.0.3p157 (2021-11-24 revision 3fb7d2cadc) [x86_64-linux]",
-    "start": "2021-12-02T16:38:53.8860784+00:00",
-    "finished": "2021-12-02T16:38:54.0059439+00:00",
-    "durationMs": 119
+    "start": "2021-12-15T09:06:56.2774883+00:00",
+    "finished": "2021-12-15T09:06:56.3842731+00:00",
+    "durationMs": 106
   }
 }

@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.js",
   "input": "QwQ",
-  "timeMS": 52.1987,
-  "timeStdDevMS": 1.29872090612263,
-  "memBytes": 37683200,
-  "cpuTimeMS": 40.0,
-  "cpuTimeUserMS": 36.0,
+  "timeMS": 48.8633,
+  "timeStdDevMS": 2.8673355989489626,
+  "memBytes": 37662720,
+  "cpuTimeMS": 36.0,
+  "cpuTimeUserMS": 32.0,
   "cpuTimeKernelMS": 4.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:50.7054415+00:00",
-    "finished": "2021-12-02T16:08:51.2274135+00:00",
-    "durationMs": 521
+    "start": "2021-12-15T08:23:33.5966864+00:00",
+    "finished": "2021-12-15T08:23:34.0932423+00:00",
+    "durationMs": 496
   },
   "testLog": {
     "runtimeVersion": "v17.2.0",
-    "start": "2021-12-02T16:37:37.5874402+00:00",
-    "finished": "2021-12-02T16:37:37.6968138+00:00",
-    "durationMs": 109
+    "start": "2021-12-15T09:04:51.6796872+00:00",
+    "finished": "2021-12-15T09:04:51.7781038+00:00",
+    "durationMs": 98
   }
 }

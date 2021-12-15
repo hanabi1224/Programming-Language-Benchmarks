@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1.rb",
   "input": "1000",
-  "timeMS": 268.2343,
-  "timeStdDevMS": 1.5044525028505777,
-  "memBytes": 60747776,
-  "cpuTimeMS": 250.0,
-  "cpuTimeUserMS": 220.0,
-  "cpuTimeKernelMS": 30.0,
-  "githubRunId": "1531343699",
+  "timeMS": 268.383,
+  "timeStdDevMS": 2.0880530029990685,
+  "memBytes": 60784640,
+  "cpuTimeMS": 253.3332,
+  "cpuTimeUserMS": 226.6666,
+  "cpuTimeKernelMS": 26.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:17.1492857+00:00",
-    "finished": "2021-12-02T16:10:17.15186+00:00",
+    "start": "2021-12-15T08:24:40.7193412+00:00",
+    "finished": "2021-12-15T08:24:40.7222294+00:00",
     "durationMs": 2
   },
   "testLog": {
     "runtimeVersion": "ruby 3.0.3p157 (2021-11-24 revision 3fb7d2cadc) [x86_64-linux]",
-    "start": "2021-12-02T16:38:55.9754704+00:00",
-    "finished": "2021-12-02T16:38:56.1529263+00:00",
-    "durationMs": 177
+    "start": "2021-12-15T09:07:00.5176604+00:00",
+    "finished": "2021-12-15T09:07:00.6929909+00:00",
+    "durationMs": 175
   }
 }

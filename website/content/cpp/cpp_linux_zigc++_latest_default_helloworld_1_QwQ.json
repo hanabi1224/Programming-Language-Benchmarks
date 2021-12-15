@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.cpp",
   "input": "QwQ",
-  "timeMS": 1.5715,
-  "timeStdDevMS": 0.5855377724792824,
-  "memBytes": 720896,
+  "timeMS": 1.4532,
+  "timeStdDevMS": 0.25587665387838726,
+  "memBytes": 724992,
   "cpuTimeMS": 0.0,
   "cpuTimeUserMS": 0.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "0.9.0-dev.1815+20e19e75f",
-    "start": "2021-12-02T16:09:02.7435257+00:00",
-    "finished": "2021-12-02T16:09:29.7090853+00:00",
-    "durationMs": 26965
+    "compilerVersion": "0.9.0-dev.1966+20328e976",
+    "start": "2021-12-15T08:23:56.1999289+00:00",
+    "finished": "2021-12-15T08:24:18.9189265+00:00",
+    "durationMs": 22718
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:40.8243888+00:00",
-    "finished": "2021-12-02T16:36:40.8293316+00:00",
+    "start": "2021-12-15T09:03:23.5613974+00:00",
+    "finished": "2021-12-15T09:03:23.5662417+00:00",
     "durationMs": 4
   }
 }

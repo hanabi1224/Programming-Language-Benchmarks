@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "1.cpp",
   "input": "5000000",
-  "timeMS": 334.142,
-  "timeStdDevMS": 5.714136519486824,
+  "timeMS": 325.918,
+  "timeStdDevMS": 29.79902799292849,
   "memBytes": 1003520,
-  "cpuTimeMS": 323.3333,
-  "cpuTimeUserMS": 323.3333,
+  "cpuTimeMS": 313.3333,
+  "cpuTimeUserMS": 313.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "g++ (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
-    "start": "2021-12-02T16:08:55.6191846+00:00",
-    "finished": "2021-12-02T16:08:56.7704238+00:00",
-    "durationMs": 1151
+    "start": "2021-12-15T08:23:49.2646161+00:00",
+    "finished": "2021-12-15T08:23:50.3788884+00:00",
+    "durationMs": 1114
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:40.8009368+00:00",
-    "finished": "2021-12-02T16:36:40.8063219+00:00",
-    "durationMs": 5
+    "start": "2021-12-15T09:03:23.5358848+00:00",
+    "finished": "2021-12-15T09:03:23.5420032+00:00",
+    "durationMs": 6
   }
 }

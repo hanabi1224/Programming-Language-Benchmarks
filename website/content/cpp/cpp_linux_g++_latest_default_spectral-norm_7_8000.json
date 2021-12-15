@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "7.cpp",
   "input": "8000",
-  "timeMS": 893.0587,
-  "timeStdDevMS": 1.255332228270034,
-  "memBytes": 1069056,
-  "cpuTimeMS": 1746.6666,
-  "cpuTimeUserMS": 1746.6666,
+  "timeMS": 865.9509,
+  "timeStdDevMS": 0.849223541438504,
+  "memBytes": 1003520,
+  "cpuTimeMS": 1663.3333,
+  "cpuTimeUserMS": 1663.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "g++ (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
-    "start": "2021-12-02T16:08:59.4693115+00:00",
-    "finished": "2021-12-02T16:09:01.1795285+00:00",
-    "durationMs": 1710
+    "start": "2021-12-15T08:23:52.9993868+00:00",
+    "finished": "2021-12-15T08:23:54.5560463+00:00",
+    "durationMs": 1556
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:40.816958+00:00",
-    "finished": "2021-12-02T16:36:40.820772+00:00",
+    "start": "2021-12-15T09:03:23.5535707+00:00",
+    "finished": "2021-12-15T09:03:23.5573418+00:00",
     "durationMs": 3
   }
 }

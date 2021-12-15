@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.hs",
   "input": "QwQ",
-  "timeMS": 12.9649,
-  "timeStdDevMS": 0.2570471007422567,
-  "memBytes": 6197248,
+  "timeMS": 13.2966,
+  "timeStdDevMS": 0.9674722698868409,
+  "memBytes": 6025216,
   "cpuTimeMS": 0.0,
   "cpuTimeUserMS": 0.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "The Glorious Glasgow Haskell Compilation System, version 9.2.1",
-    "start": "2021-12-02T16:08:45.0882432+00:00",
-    "finished": "2021-12-02T16:08:49.2797014+00:00",
-    "durationMs": 4191
+    "start": "2021-12-15T08:23:12.0356609+00:00",
+    "finished": "2021-12-15T08:23:15.9780242+00:00",
+    "durationMs": 3942
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:11.625894+00:00",
-    "finished": "2021-12-02T16:37:11.654161+00:00",
-    "durationMs": 28
+    "start": "2021-12-15T09:04:19.0241595+00:00",
+    "finished": "2021-12-15T09:04:19.0538636+00:00",
+    "durationMs": 29
   }
 }

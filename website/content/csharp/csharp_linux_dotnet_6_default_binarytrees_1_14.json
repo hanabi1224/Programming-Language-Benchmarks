@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.cs",
   "input": "14",
-  "timeMS": 142.0355,
-  "timeStdDevMS": 8.758541907380101,
-  "memBytes": 78643200,
-  "cpuTimeMS": 110.0,
-  "cpuTimeUserMS": 90.0,
+  "timeMS": 137.6914,
+  "timeStdDevMS": 6.2393325532463875,
+  "memBytes": 80732160,
+  "cpuTimeMS": 106.6666,
+  "cpuTimeUserMS": 86.6666,
   "cpuTimeKernelMS": 20.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "6.0.100",
-    "start": "2021-12-02T16:08:26.3932894+00:00",
-    "finished": "2021-12-02T16:08:52.6382694+00:00",
-    "durationMs": 26244
+    "compilerVersion": "6.0.101",
+    "start": "2021-12-15T08:22:40.5551717+00:00",
+    "finished": "2021-12-15T08:23:12.7381596+00:00",
+    "durationMs": 32182
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:43.2195184+00:00",
-    "finished": "2021-12-02T16:36:43.3205658+00:00",
-    "durationMs": 101
+    "start": "2021-12-15T09:03:25.4493406+00:00",
+    "finished": "2021-12-15T09:03:25.5897892+00:00",
+    "durationMs": 140
   }
 }

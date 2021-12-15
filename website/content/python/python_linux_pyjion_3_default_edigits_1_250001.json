@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.py",
   "input": "250001",
-  "timeMS": 2493.7651,
-  "timeStdDevMS": 2.125333496183501,
-  "memBytes": 22642688,
-  "cpuTimeMS": 2479.9999,
-  "cpuTimeUserMS": 2466.6666,
-  "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 2252.5415,
+  "timeStdDevMS": 0.8821819370172868,
+  "memBytes": 22355968,
+  "cpuTimeMS": 2240.0,
+  "cpuTimeUserMS": 2220.0,
+  "cpuTimeKernelMS": 20.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.9257337+00:00",
-    "finished": "2021-12-02T16:09:06.9322775+00:00",
-    "durationMs": 6
+    "start": "2021-12-15T08:24:08.0204227+00:00",
+    "finished": "2021-12-15T08:24:08.0284548+00:00",
+    "durationMs": 8
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:12.9474798+00:00",
-    "finished": "2021-12-02T16:38:13.1918484+00:00",
-    "durationMs": 244
+    "start": "2021-12-15T09:05:39.6786358+00:00",
+    "finished": "2021-12-15T09:05:39.989238+00:00",
+    "durationMs": 310
   }
 }

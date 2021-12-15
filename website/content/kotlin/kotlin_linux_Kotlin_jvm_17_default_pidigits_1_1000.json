@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "1.kt",
   "input": "1000",
-  "timeMS": 435.557,
-  "timeStdDevMS": 3.3074269913836543,
-  "memBytes": 116858880,
-  "cpuTimeMS": 513.3332,
-  "cpuTimeUserMS": 476.6666,
-  "cpuTimeKernelMS": 36.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 410.6975,
+  "timeStdDevMS": 10.679229370293221,
+  "memBytes": 116813824,
+  "cpuTimeMS": 489.9999,
+  "cpuTimeUserMS": 446.6666,
+  "cpuTimeKernelMS": 43.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:16:36.1396785+00:00",
-    "finished": "2021-12-02T16:16:43.4736076+00:00",
-    "durationMs": 7333
+    "start": "2021-12-15T08:25:22.6749679+00:00",
+    "finished": "2021-12-15T08:25:29.2451541+00:00",
+    "durationMs": 6570
   },
   "testLog": {
     "runtimeVersion": "openjdk version \"17.0.1\" 2021-10-19\nOpenJDK Runtime Environment (build 17.0.1+12-39)\nOpenJDK 64-Bit Server VM (build 17.0.1+12-39, mixed mode, sharing)",
-    "start": "2021-12-02T16:37:59.8604472+00:00",
-    "finished": "2021-12-02T16:38:00.0549208+00:00",
-    "durationMs": 194
+    "start": "2021-12-15T09:05:19.5264614+00:00",
+    "finished": "2021-12-15T09:05:19.7097075+00:00",
+    "durationMs": 183
   }
 }

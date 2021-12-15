@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "2.java",
   "input": "1000",
-  "timeMS": 202.7523,
-  "timeStdDevMS": 24.161931491570236,
-  "memBytes": 10153984,
-  "cpuTimeMS": 340.0,
-  "cpuTimeUserMS": 340.0,
+  "timeMS": 182.2282,
+  "timeStdDevMS": 3.2116516161211184,
+  "memBytes": 10215424,
+  "cpuTimeMS": 320.0,
+  "cpuTimeUserMS": 320.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "GraalVM 21.3.0 Java 17 CE (Java Version 17.0.1+12-jvmci-21.3-b05)",
-    "start": "2021-12-02T16:26:33.0072314+00:00",
-    "finished": "2021-12-02T16:28:27.4381238+00:00",
-    "durationMs": 114430
+    "start": "2021-12-15T08:36:57.0559692+00:00",
+    "finished": "2021-12-15T08:38:02.1402178+00:00",
+    "durationMs": 65084
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:29.1700361+00:00",
-    "finished": "2021-12-02T16:37:29.2097613+00:00",
-    "durationMs": 39
+    "start": "2021-12-15T09:04:32.3482147+00:00",
+    "finished": "2021-12-15T09:04:32.3996962+00:00",
+    "durationMs": 51
   }
 }

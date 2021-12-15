@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "1.java",
   "input": "5000000",
-  "timeMS": 579.89,
-  "timeStdDevMS": 5.460449850515918,
-  "memBytes": 9801728,
-  "cpuTimeMS": 573.3332,
-  "cpuTimeUserMS": 573.3332,
+  "timeMS": 536.4797,
+  "timeStdDevMS": 37.71558254554745,
+  "memBytes": 9805824,
+  "cpuTimeMS": 526.6666,
+  "cpuTimeUserMS": 526.6666,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "GraalVM 21.3.0 Java 17 CE (Java Version 17.0.1+12-jvmci-21.3-b05)",
-    "start": "2021-12-02T16:20:13.9122202+00:00",
-    "finished": "2021-12-02T16:21:47.9057069+00:00",
-    "durationMs": 93993
+    "start": "2021-12-15T08:31:25.7714825+00:00",
+    "finished": "2021-12-15T08:32:32.3111882+00:00",
+    "durationMs": 66539
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:29.0074565+00:00",
-    "finished": "2021-12-02T16:37:29.0588982+00:00",
-    "durationMs": 51
+    "start": "2021-12-15T09:04:31.3018655+00:00",
+    "finished": "2021-12-15T09:04:31.3624695+00:00",
+    "durationMs": 60
   }
 }

@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "4.py",
   "input": "8000",
-  "timeMS": 2643.3558,
-  "timeStdDevMS": 2.6606481397081785,
-  "memBytes": 21311488,
-  "cpuTimeMS": 2629.9999,
-  "cpuTimeUserMS": 2616.6666,
-  "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 2453.2916,
+  "timeStdDevMS": 182.52169722438458,
+  "memBytes": 21131264,
+  "cpuTimeMS": 2436.6666,
+  "cpuTimeUserMS": 2430.0,
+  "cpuTimeKernelMS": 6.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.9872564+00:00",
-    "finished": "2021-12-02T16:09:06.994406+00:00",
+    "start": "2021-12-15T08:24:10.2760537+00:00",
+    "finished": "2021-12-15T08:24:10.2838963+00:00",
     "durationMs": 7
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:41.511921+00:00",
-    "finished": "2021-12-02T16:38:41.6704775+00:00",
-    "durationMs": 158
+    "start": "2021-12-15T09:06:34.5357356+00:00",
+    "finished": "2021-12-15T09:06:34.7316864+00:00",
+    "durationMs": 195
   }
 }

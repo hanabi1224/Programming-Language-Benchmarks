@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.rs",
   "input": "250001",
-  "timeMS": 680.2354,
-  "timeStdDevMS": 4.146452367988813,
-  "memBytes": 51593216,
-  "cpuTimeMS": 729.9999,
-  "cpuTimeUserMS": 716.6666,
-  "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 658.3788,
+  "timeStdDevMS": 35.41073788560947,
+  "memBytes": 52293632,
+  "cpuTimeMS": 703.3333,
+  "cpuTimeUserMS": 680.0,
+  "cpuTimeKernelMS": 23.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "rustc 1.57.0 (f1edd0429 2021-11-29)",
-    "start": "2021-12-02T16:12:29.6268322+00:00",
-    "finished": "2021-12-02T16:12:32.1804121+00:00",
-    "durationMs": 2553
+    "start": "2021-12-15T08:30:50.2841647+00:00",
+    "finished": "2021-12-15T08:30:52.886439+00:00",
+    "durationMs": 2602
   },
   "testLog": {
-    "runtimeVersion": "v16.13.0",
-    "start": "2021-12-02T16:39:24.2262571+00:00",
-    "finished": "2021-12-02T16:39:24.4879483+00:00",
-    "durationMs": 261
+    "runtimeVersion": "v16.13.1",
+    "start": "2021-12-15T09:08:00.4580583+00:00",
+    "finished": "2021-12-15T09:08:00.6939552+00:00",
+    "durationMs": 235
   }
 }

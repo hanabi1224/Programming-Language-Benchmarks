@@ -7,23 +7,23 @@
   "test": "coro-prime-sieve",
   "code": "1.d",
   "input": "1000",
-  "timeMS": 1661.6854,
-  "timeStdDevMS": 2.463207675640305,
-  "memBytes": 9347072,
-  "cpuTimeMS": 1646.6665,
-  "cpuTimeUserMS": 1643.3332,
-  "cpuTimeKernelMS": 3.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 1592.0932,
+  "timeStdDevMS": 95.53476255192828,
+  "memBytes": 11259904,
+  "cpuTimeMS": 1583.3332,
+  "cpuTimeUserMS": 1576.6666,
+  "cpuTimeKernelMS": 6.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
-    "start": "2021-12-02T16:08:00.9107724+00:00",
-    "finished": "2021-12-02T16:08:20.4689265+00:00",
-    "durationMs": 19558
+    "start": "2021-12-15T08:22:38.9569513+00:00",
+    "finished": "2021-12-15T08:22:58.0893515+00:00",
+    "durationMs": 19132
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:57.4017245+00:00",
-    "finished": "2021-12-02T16:36:59.1077535+00:00",
-    "durationMs": 1706
+    "start": "2021-12-15T09:03:55.8404143+00:00",
+    "finished": "2021-12-15T09:03:57.3749138+00:00",
+    "durationMs": 1534
   }
 }

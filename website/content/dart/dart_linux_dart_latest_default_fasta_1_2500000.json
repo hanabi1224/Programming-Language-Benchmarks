@@ -7,23 +7,23 @@
   "test": "fasta",
   "code": "1.dart",
   "input": "2500000",
-  "timeMS": 508.4236,
-  "timeStdDevMS": 19.24141987042535,
-  "memBytes": 22814720,
-  "cpuTimeMS": 469.9999,
-  "cpuTimeUserMS": 456.6666,
+  "timeMS": 507.7651,
+  "timeStdDevMS": 6.681654483983224,
+  "memBytes": 20701184,
+  "cpuTimeMS": 486.6666,
+  "cpuTimeUserMS": 473.3333,
   "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Dart SDK version: 2.14.4 (stable) (Wed Oct 13 11:11:32 2021 +0200) on \"linux_x64\"",
-    "start": "2021-12-02T16:08:38.3315673+00:00",
-    "finished": "2021-12-02T16:08:45.4773933+00:00",
-    "durationMs": 7145
+    "compilerVersion": "Dart SDK version: 2.15.1 (stable) (Tue Dec 14 13:32:21 2021 +0100) on \"linux_x64\"",
+    "start": "2021-12-15T08:23:23.7029137+00:00",
+    "finished": "2021-12-15T08:23:29.9595825+00:00",
+    "durationMs": 6256
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:02.6878388+00:00",
-    "finished": "2021-12-02T16:37:02.7076409+00:00",
-    "durationMs": 19
+    "start": "2021-12-15T09:04:01.6312334+00:00",
+    "finished": "2021-12-15T09:04:01.6553911+00:00",
+    "durationMs": 24
   }
 }

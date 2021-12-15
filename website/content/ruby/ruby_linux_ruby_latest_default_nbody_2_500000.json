@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "2.rb",
   "input": "500000",
-  "timeMS": 3331.7069,
-  "timeStdDevMS": 20.462254890733146,
-  "memBytes": 31191040,
-  "cpuTimeMS": 3316.6666,
-  "cpuTimeUserMS": 3303.3333,
-  "cpuTimeKernelMS": 13.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 3168.7222,
+  "timeStdDevMS": 245.89931312716848,
+  "memBytes": 31178752,
+  "cpuTimeMS": 3153.3333,
+  "cpuTimeUserMS": 3133.3333,
+  "cpuTimeKernelMS": 20.0,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:10:17.1451753+00:00",
-    "finished": "2021-12-02T16:10:17.1490214+00:00",
+    "start": "2021-12-15T08:24:40.7153976+00:00",
+    "finished": "2021-12-15T08:24:40.7190786+00:00",
     "durationMs": 3
   },
   "testLog": {
     "runtimeVersion": "ruby 3.0.3p157 (2021-11-24 revision 3fb7d2cadc) [x86_64-linux]",
-    "start": "2021-12-02T16:38:55.7317581+00:00",
-    "finished": "2021-12-02T16:38:55.9752031+00:00",
-    "durationMs": 243
+    "start": "2021-12-15T09:07:00.2695144+00:00",
+    "finished": "2021-12-15T09:07:00.5174016+00:00",
+    "durationMs": 247
   }
 }

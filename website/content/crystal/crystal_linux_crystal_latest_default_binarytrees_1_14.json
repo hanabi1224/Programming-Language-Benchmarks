@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.cr",
   "input": "14",
-  "timeMS": 75.9223,
-  "timeStdDevMS": 0.31107638933226484,
-  "memBytes": 8359936,
-  "cpuTimeMS": 73.3333,
-  "cpuTimeUserMS": 70.0,
+  "timeMS": 71.1583,
+  "timeStdDevMS": 6.66970882148039,
+  "memBytes": 6684672,
+  "cpuTimeMS": 69.9999,
+  "cpuTimeUserMS": 66.6666,
   "cpuTimeKernelMS": 3.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "Crystal 1.2.2 [6529d725a] (2021-11-10)\n\nLLVM: 10.0.0\nDefault target: x86_64-unknown-linux-gnu",
-    "start": "2021-12-02T16:08:13.5066965+00:00",
-    "finished": "2021-12-02T16:08:27.5076843+00:00",
-    "durationMs": 14000
+    "start": "2021-12-15T08:23:13.709711+00:00",
+    "finished": "2021-12-15T08:23:27.6393458+00:00",
+    "durationMs": 13929
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:40.8476382+00:00",
-    "finished": "2021-12-02T16:36:40.8625619+00:00",
-    "durationMs": 14
+    "start": "2021-12-15T09:03:23.5840796+00:00",
+    "finished": "2021-12-15T09:03:23.5947074+00:00",
+    "durationMs": 10
   }
 }

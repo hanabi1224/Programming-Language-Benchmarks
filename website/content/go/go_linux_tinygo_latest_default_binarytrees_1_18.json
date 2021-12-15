@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.go",
   "input": "18",
-  "timeMS": 4804.8547,
-  "timeStdDevMS": 18.61733146407801,
-  "memBytes": 39567360,
-  "cpuTimeMS": 4789.9999,
-  "cpuTimeUserMS": 4789.9999,
+  "timeMS": 4614.8001,
+  "timeStdDevMS": 19.159602768411183,
+  "memBytes": 41525248,
+  "cpuTimeMS": 4600.0,
+  "cpuTimeUserMS": 4600.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "tinygo version 0.21.0 linux/amd64 (using go version go1.17.3 and LLVM version 11.0.0)",
-    "start": "2021-12-02T16:07:53.0838846+00:00",
-    "finished": "2021-12-02T16:08:26.2582417+00:00",
-    "durationMs": 33174
+    "start": "2021-12-15T08:23:24.1911648+00:00",
+    "finished": "2021-12-15T08:23:57.1900926+00:00",
+    "durationMs": 32998
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:09.9871385+00:00",
-    "finished": "2021-12-02T16:37:10.002946+00:00",
-    "durationMs": 15
+    "start": "2021-12-15T09:04:11.8903449+00:00",
+    "finished": "2021-12-15T09:04:11.8999276+00:00",
+    "durationMs": 9
   }
 }

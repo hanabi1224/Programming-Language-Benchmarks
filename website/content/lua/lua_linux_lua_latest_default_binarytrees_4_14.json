@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "4.lua",
   "input": "14",
-  "timeMS": 472.3018,
-  "timeStdDevMS": 26.61926412663082,
-  "memBytes": 9560064,
-  "cpuTimeMS": 440.0,
-  "cpuTimeUserMS": 430.0,
-  "cpuTimeKernelMS": 10.0,
-  "githubRunId": "1531343699",
+  "timeMS": 357.0879,
+  "timeStdDevMS": 6.508685546508881,
+  "memBytes": 9453568,
+  "cpuTimeMS": 423.3332,
+  "cpuTimeUserMS": 406.6666,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:00.4223024+00:00",
-    "finished": "2021-12-02T16:08:00.4520617+00:00",
-    "durationMs": 29
+    "start": "2021-12-15T08:22:35.9861167+00:00",
+    "finished": "2021-12-15T08:22:36.0103742+00:00",
+    "durationMs": 24
   },
   "testLog": {
     "runtimeVersion": "Lua 5.4.3  Copyright (C) 1994-2021 Lua.org, PUC-Rio",
-    "start": "2021-12-02T16:38:03.2567251+00:00",
-    "finished": "2021-12-02T16:38:03.3018033+00:00",
-    "durationMs": 45
+    "start": "2021-12-15T09:05:23.4008137+00:00",
+    "finished": "2021-12-15T09:05:23.4441181+00:00",
+    "durationMs": 43
   }
 }

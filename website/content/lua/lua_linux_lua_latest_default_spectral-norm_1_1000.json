@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "1.lua",
   "input": "1000",
-  "timeMS": 2241.0788,
-  "timeStdDevMS": 2.8985941511934867,
+  "timeMS": 2061.547,
+  "timeStdDevMS": 152.4366391398403,
   "memBytes": 1363968,
-  "cpuTimeMS": 2230.0,
-  "cpuTimeUserMS": 2230.0,
+  "cpuTimeMS": 2050.0,
+  "cpuTimeUserMS": 2050.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:00.5925096+00:00",
-    "finished": "2021-12-02T16:08:00.5994987+00:00",
-    "durationMs": 6
+    "start": "2021-12-15T08:22:36.1157381+00:00",
+    "finished": "2021-12-15T08:22:36.1203591+00:00",
+    "durationMs": 4
   },
   "testLog": {
     "runtimeVersion": "Lua 5.4.3  Copyright (C) 1994-2021 Lua.org, PUC-Rio",
-    "start": "2021-12-02T16:38:03.3455224+00:00",
-    "finished": "2021-12-02T16:38:03.374566+00:00",
-    "durationMs": 29
+    "start": "2021-12-15T09:05:23.4888455+00:00",
+    "finished": "2021-12-15T09:05:23.5149575+00:00",
+    "durationMs": 26
   }
 }

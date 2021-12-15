@@ -7,23 +7,23 @@
   "test": "pidigits",
   "code": "3.jl",
   "input": "4000",
-  "timeMS": 439.6977,
-  "timeStdDevMS": 35.3842527560402,
-  "memBytes": 180932608,
-  "cpuTimeMS": 473.3332,
-  "cpuTimeUserMS": 326.6666,
-  "cpuTimeKernelMS": 146.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 459.4267,
+  "timeStdDevMS": 35.609784465696116,
+  "memBytes": 188882944,
+  "cpuTimeMS": 466.6666,
+  "cpuTimeUserMS": 333.3333,
+  "cpuTimeKernelMS": 133.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:15.843944+00:00",
-    "finished": "2021-12-02T16:08:16.3157202+00:00",
-    "durationMs": 471
+    "start": "2021-12-15T08:23:02.5996779+00:00",
+    "finished": "2021-12-15T08:23:03.0312705+00:00",
+    "durationMs": 431
   },
   "testLog": {
-    "runtimeVersion": "julia version 1.6.4",
-    "start": "2021-12-02T16:37:44.8828049+00:00",
-    "finished": "2021-12-02T16:37:45.4469789+00:00",
-    "durationMs": 564
+    "runtimeVersion": "julia version 1.7.0",
+    "start": "2021-12-15T09:05:06.0521166+00:00",
+    "finished": "2021-12-15T09:05:06.5742724+00:00",
+    "durationMs": 522
   }
 }

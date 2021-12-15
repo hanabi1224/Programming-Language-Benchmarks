@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "2.pl",
   "input": "100000",
-  "timeMS": 636.5694,
-  "timeStdDevMS": 4.799526905852286,
-  "memBytes": 6443008,
-  "cpuTimeMS": 626.6666,
-  "cpuTimeUserMS": 626.6666,
+  "timeMS": 562.9843,
+  "timeStdDevMS": 2.580682797891461,
+  "memBytes": 6496256,
+  "cpuTimeMS": 553.3333,
+  "cpuTimeUserMS": 553.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:27.5047633+00:00",
-    "finished": "2021-12-02T16:09:27.5087877+00:00",
-    "durationMs": 4
+    "start": "2021-12-15T08:23:23.7393983+00:00",
+    "finished": "2021-12-15T08:23:23.7447595+00:00",
+    "durationMs": 5
   },
   "testLog": {
     "runtimeVersion": "This is perl 5, version 34, subversion 0 (v5.34.0) built for x86_64-linux-thread-multi\n\nCopyright 1987-2021, Larry Wall\n\nPerl may be copied only under the terms of either the Artistic License or the\nGNU General Public License, which may be found in the Perl 5 source kit.\n\nComplete documentation for Perl, including FAQ lists, should be found on\nthis system using \"man perl\" or \"perldoc perl\".  If you have access to the\nInternet, point your browser at http://www.perl.org/, the Perl Home Page.",
-    "start": "2021-12-02T16:38:04.2462444+00:00",
-    "finished": "2021-12-02T16:38:04.333833+00:00",
+    "start": "2021-12-15T09:05:24.5465767+00:00",
+    "finished": "2021-12-15T09:05:24.6340031+00:00",
     "durationMs": 87
   }
 }

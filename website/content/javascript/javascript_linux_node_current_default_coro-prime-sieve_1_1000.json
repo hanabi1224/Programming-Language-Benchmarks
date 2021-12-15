@@ -7,23 +7,23 @@
   "test": "coro-prime-sieve",
   "code": "1.js",
   "input": "1000",
-  "timeMS": 249.8928,
-  "timeStdDevMS": 4.043071259987059,
-  "memBytes": 58331136,
-  "cpuTimeMS": 240.0,
-  "cpuTimeUserMS": 220.0,
-  "cpuTimeKernelMS": 20.0,
-  "githubRunId": "1531343699",
+  "timeMS": 256.7171,
+  "timeStdDevMS": 13.753448522219188,
+  "memBytes": 58540032,
+  "cpuTimeMS": 236.6666,
+  "cpuTimeUserMS": 203.3333,
+  "cpuTimeKernelMS": 33.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:50.1586933+00:00",
-    "finished": "2021-12-02T16:08:50.7050368+00:00",
-    "durationMs": 546
+    "start": "2021-12-15T08:23:33.1032054+00:00",
+    "finished": "2021-12-15T08:23:33.5962988+00:00",
+    "durationMs": 493
   },
   "testLog": {
     "runtimeVersion": "v17.2.0",
-    "start": "2021-12-02T16:37:37.3462413+00:00",
-    "finished": "2021-12-02T16:37:37.5871768+00:00",
-    "durationMs": 240
+    "start": "2021-12-15T09:04:51.4730502+00:00",
+    "finished": "2021-12-15T09:04:51.679384+00:00",
+    "durationMs": 206
   }
 }

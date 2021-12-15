@@ -7,23 +7,23 @@
   "test": "helloworld",
   "code": "1.lua",
   "input": "QwQ",
-  "timeMS": 2.1541,
-  "timeStdDevMS": 0.6186571449518706,
+  "timeMS": 2.5266,
+  "timeStdDevMS": 0.8624639395360246,
   "memBytes": 1359872,
   "cpuTimeMS": 0.0,
   "cpuTimeUserMS": 0.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:00.567711+00:00",
-    "finished": "2021-12-02T16:08:00.5826964+00:00",
-    "durationMs": 14
+    "start": "2021-12-15T08:22:36.1034599+00:00",
+    "finished": "2021-12-15T08:22:36.1099046+00:00",
+    "durationMs": 6
   },
   "testLog": {
     "runtimeVersion": "Lua 5.4.3  Copyright (C) 1994-2021 Lua.org, PUC-Rio",
-    "start": "2021-12-02T16:38:03.3020637+00:00",
-    "finished": "2021-12-02T16:38:03.3096579+00:00",
+    "start": "2021-12-15T09:05:23.4443463+00:00",
+    "finished": "2021-12-15T09:05:23.451932+00:00",
     "durationMs": 7
   }
 }

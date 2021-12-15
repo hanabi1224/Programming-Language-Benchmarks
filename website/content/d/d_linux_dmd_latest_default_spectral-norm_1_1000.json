@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "1.d",
   "input": "1000",
-  "timeMS": 76.6512,
-  "timeStdDevMS": 0.9575533109615022,
-  "memBytes": 3772416,
+  "timeMS": 77.6715,
+  "timeStdDevMS": 2.4416387591124162,
+  "memBytes": 3821568,
   "cpuTimeMS": 70.0,
   "cpuTimeUserMS": 70.0,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
-    "start": "2021-12-02T16:08:31.2710687+00:00",
-    "finished": "2021-12-02T16:08:33.7588085+00:00",
-    "durationMs": 2487
+    "start": "2021-12-15T08:23:08.8039315+00:00",
+    "finished": "2021-12-15T08:23:11.2552468+00:00",
+    "durationMs": 2451
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:59.1783758+00:00",
-    "finished": "2021-12-02T16:36:59.1868055+00:00",
-    "durationMs": 8
+    "start": "2021-12-15T09:03:57.4493475+00:00",
+    "finished": "2021-12-15T09:03:57.4610015+00:00",
+    "durationMs": 11
   }
 }

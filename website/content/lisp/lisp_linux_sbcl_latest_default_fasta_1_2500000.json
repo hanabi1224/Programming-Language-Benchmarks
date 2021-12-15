@@ -7,23 +7,23 @@
   "test": "fasta",
   "code": "1.cl",
   "input": "2500000",
-  "timeMS": 800.0652,
-  "timeStdDevMS": 64.80584479638647,
-  "memBytes": 29605888,
-  "cpuTimeMS": 529.9999,
-  "cpuTimeUserMS": 496.6666,
-  "cpuTimeKernelMS": 33.3333,
-  "githubRunId": "1531343699",
+  "timeMS": 814.8842,
+  "timeStdDevMS": 67.43199083790527,
+  "memBytes": 27238400,
+  "cpuTimeMS": 473.3333,
+  "cpuTimeUserMS": 430.0,
+  "cpuTimeKernelMS": 43.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "SBCL 2.1.11",
-    "start": "2021-12-02T16:13:46.3925728+00:00",
-    "finished": "2021-12-02T16:13:48.79305+00:00",
-    "durationMs": 2400
+    "start": "2021-12-15T08:26:41.7141037+00:00",
+    "finished": "2021-12-15T08:26:43.9032481+00:00",
+    "durationMs": 2189
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:38:00.5632295+00:00",
-    "finished": "2021-12-02T16:38:00.646162+00:00",
-    "durationMs": 82
+    "start": "2021-12-15T09:05:20.3768703+00:00",
+    "finished": "2021-12-15T09:05:20.4962305+00:00",
+    "durationMs": 119
   }
 }

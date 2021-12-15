@@ -7,23 +7,23 @@
   "test": "binarytrees",
   "code": "1.hs",
   "input": "14",
-  "timeMS": 53.3654,
-  "timeStdDevMS": 0.43518941852944365,
-  "memBytes": 13008896,
-  "cpuTimeMS": 40.0,
-  "cpuTimeUserMS": 40.0,
+  "timeMS": 46.6729,
+  "timeStdDevMS": 5.596538165985592,
+  "memBytes": 13037568,
+  "cpuTimeMS": 33.3333,
+  "cpuTimeUserMS": 33.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "The Glorious Glasgow Haskell Compilation System, version 9.2.1",
-    "start": "2021-12-02T16:08:18.6713946+00:00",
-    "finished": "2021-12-02T16:08:44.9924309+00:00",
-    "durationMs": 26321
+    "start": "2021-12-15T08:22:42.2198716+00:00",
+    "finished": "2021-12-15T08:23:11.941301+00:00",
+    "durationMs": 29721
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:11.6045228+00:00",
-    "finished": "2021-12-02T16:37:11.6256789+00:00",
-    "durationMs": 21
+    "start": "2021-12-15T09:04:19.0060995+00:00",
+    "finished": "2021-12-15T09:04:19.0239705+00:00",
+    "durationMs": 17
   }
 }

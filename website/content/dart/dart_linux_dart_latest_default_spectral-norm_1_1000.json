@@ -7,23 +7,23 @@
   "test": "spectral-norm",
   "code": "1.dart",
   "input": "1000",
-  "timeMS": 89.9296,
-  "timeStdDevMS": 0.5641077763453913,
-  "memBytes": 12369920,
-  "cpuTimeMS": 80.0,
-  "cpuTimeUserMS": 80.0,
+  "timeMS": 88.374,
+  "timeStdDevMS": 5.64535124357496,
+  "memBytes": 14188544,
+  "cpuTimeMS": 73.3333,
+  "cpuTimeUserMS": 73.3333,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
-    "compilerVersion": "Dart SDK version: 2.14.4 (stable) (Wed Oct 13 11:11:32 2021 +0200) on \"linux_x64\"",
-    "start": "2021-12-02T16:09:29.0223129+00:00",
-    "finished": "2021-12-02T16:09:36.2848889+00:00",
-    "durationMs": 7262
+    "compilerVersion": "Dart SDK version: 2.15.1 (stable) (Tue Dec 14 13:32:21 2021 +0100) on \"linux_x64\"",
+    "start": "2021-12-15T08:24:37.5559967+00:00",
+    "finished": "2021-12-15T08:24:43.8944663+00:00",
+    "durationMs": 6338
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:37:05.9345683+00:00",
-    "finished": "2021-12-02T16:37:05.9538166+00:00",
-    "durationMs": 19
+    "start": "2021-12-15T09:04:05.6622182+00:00",
+    "finished": "2021-12-15T09:04:05.6864124+00:00",
+    "durationMs": 24
   }
 }

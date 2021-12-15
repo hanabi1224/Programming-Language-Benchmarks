@@ -7,23 +7,23 @@
   "test": "nbody",
   "code": "6.js",
   "input": "500000",
-  "timeMS": 126.5223,
-  "timeStdDevMS": 0.7776022526544918,
-  "memBytes": 40837120,
-  "cpuTimeMS": 119.9999,
-  "cpuTimeUserMS": 113.3333,
-  "cpuTimeKernelMS": 6.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 110.8724,
+  "timeStdDevMS": 0.34111773627297154,
+  "memBytes": 40169472,
+  "cpuTimeMS": 99.9999,
+  "cpuTimeUserMS": 96.6666,
+  "cpuTimeKernelMS": 3.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:08:40.1637+00:00",
-    "finished": "2021-12-02T16:08:40.7017683+00:00",
-    "durationMs": 538
+    "start": "2021-12-15T08:23:23.0142903+00:00",
+    "finished": "2021-12-15T08:23:23.5666903+00:00",
+    "durationMs": 552
   },
   "testLog": {
     "runtimeVersion": "v16.13.1",
-    "start": "2021-12-02T16:37:36.639107+00:00",
-    "finished": "2021-12-02T16:37:36.761066+00:00",
-    "durationMs": 121
+    "start": "2021-12-15T09:04:50.7997768+00:00",
+    "finished": "2021-12-15T09:04:50.8965004+00:00",
+    "durationMs": 96
   }
 }

@@ -7,23 +7,23 @@
   "test": "nsieve",
   "code": "1.d",
   "input": "10",
-  "timeMS": 136.7708,
-  "timeStdDevMS": 5.799814761697145,
-  "memBytes": 24113152,
+  "timeMS": 139.7862,
+  "timeStdDevMS": 3.7708650789087326,
+  "memBytes": 24272896,
   "cpuTimeMS": 126.6666,
   "cpuTimeUserMS": 123.3333,
   "cpuTimeKernelMS": 3.3333,
-  "githubRunId": "1531343699",
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "DMD64 D Compiler v2.096.1\nCopyright (C) 1999-2021 by The D Language Foundation, All Rights Reserved written by Walter Bright",
-    "start": "2021-12-02T16:08:24.8428032+00:00",
-    "finished": "2021-12-02T16:08:26.9633192+00:00",
-    "durationMs": 2120
+    "start": "2021-12-15T08:23:02.4764011+00:00",
+    "finished": "2021-12-15T08:23:04.4949529+00:00",
+    "durationMs": 2018
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2021-12-02T16:36:59.1431493+00:00",
-    "finished": "2021-12-02T16:36:59.1523212+00:00",
-    "durationMs": 9
+    "start": "2021-12-15T09:03:57.4079811+00:00",
+    "finished": "2021-12-15T09:03:57.4192022+00:00",
+    "durationMs": 11
   }
 }

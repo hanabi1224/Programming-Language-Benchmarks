@@ -7,23 +7,23 @@
   "test": "edigits",
   "code": "1.java",
   "input": "100000",
-  "timeMS": 689.8044,
-  "timeStdDevMS": 12.061237081245059,
-  "memBytes": 236191744,
-  "cpuTimeMS": 1069.9999,
-  "cpuTimeUserMS": 863.3333,
-  "cpuTimeKernelMS": 206.6666,
-  "githubRunId": "1531343699",
+  "timeMS": 621.5418,
+  "timeStdDevMS": 33.64166516791348,
+  "memBytes": 241823744,
+  "cpuTimeMS": 969.9999,
+  "cpuTimeUserMS": 793.3333,
+  "cpuTimeKernelMS": 176.6666,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": "javac 17.0.1",
-    "start": "2021-12-02T16:09:07.4324686+00:00",
-    "finished": "2021-12-02T16:09:09.4813934+00:00",
-    "durationMs": 2048
+    "start": "2021-12-15T08:38:43.2089901+00:00",
+    "finished": "2021-12-15T08:38:44.8027204+00:00",
+    "durationMs": 1593
   },
   "testLog": {
     "runtimeVersion": "openjdk version \"17.0.1\" 2021-10-19\nOpenJDK Runtime Environment (build 17.0.1+12-39)\nOpenJDK 64-Bit Server VM (build 17.0.1+12-39, mixed mode, sharing)",
-    "start": "2021-12-02T16:37:14.0675774+00:00",
-    "finished": "2021-12-02T16:37:14.3528103+00:00",
-    "durationMs": 285
+    "start": "2021-12-15T09:04:36.3635583+00:00",
+    "finished": "2021-12-15T09:04:36.6362374+00:00",
+    "durationMs": 272
   }
 }

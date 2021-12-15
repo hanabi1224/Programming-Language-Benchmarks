@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "python",
+  "os": "linux",
+  "compiler": "pyjion",
+  "compilerVersion": "3",
+  "test": "knucleotide",
+  "code": "3.py",
+  "input": "250000_in",
+  "timeMS": 4085.3952,
+  "timeStdDevMS": 164.056110647821,
+  "memBytes": 60649472,
+  "cpuTimeMS": 5399.9999,
+  "cpuTimeUserMS": 4983.3333,
+  "cpuTimeKernelMS": 416.6666,
+  "githubRunId": "1579924640",
+  "buildLog": {
+    "compilerVersion": null,
+    "start": "2021-12-15T08:24:08.0582604+00:00",
+    "finished": "2021-12-15T08:24:10.2292576+00:00",
+    "durationMs": 2170
+  },
+  "testLog": {
+    "runtimeVersion": "Python 3.10.0",
+    "start": "2021-12-15T09:06:25.8482383+00:00",
+    "finished": "2021-12-15T09:06:32.8178246+00:00",
+    "durationMs": 6969
+  }
+}

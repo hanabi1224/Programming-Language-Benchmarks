@@ -7,23 +7,23 @@
   "test": "json-serde",
   "code": "1.py",
   "input": "canada 15",
-  "timeMS": 2542.6468,
-  "timeStdDevMS": 11.439630653128663,
-  "memBytes": 231628800,
-  "cpuTimeMS": 2526.6666,
-  "cpuTimeUserMS": 2406.6666,
-  "cpuTimeKernelMS": 120.0,
-  "githubRunId": "1531343699",
+  "timeMS": 2474.5487,
+  "timeStdDevMS": 128.01284969107581,
+  "memBytes": 231460864,
+  "cpuTimeMS": 2459.9999,
+  "cpuTimeUserMS": 2336.6666,
+  "cpuTimeKernelMS": 123.3333,
+  "githubRunId": "1579924640",
   "buildLog": {
     "compilerVersion": null,
-    "start": "2021-12-02T16:09:06.893294+00:00",
-    "finished": "2021-12-02T16:09:06.8980473+00:00",
+    "start": "2021-12-15T08:24:02.1497941+00:00",
+    "finished": "2021-12-15T08:24:02.1544393+00:00",
     "durationMs": 4
   },
   "testLog": {
     "runtimeVersion": "Python 3.10.0",
-    "start": "2021-12-02T16:38:06.5476987+00:00",
-    "finished": "2021-12-02T16:38:07.2126118+00:00",
-    "durationMs": 664
+    "start": "2021-12-15T09:05:28.627077+00:00",
+    "finished": "2021-12-15T09:05:29.2723786+00:00",
+    "durationMs": 645
   }
 }
