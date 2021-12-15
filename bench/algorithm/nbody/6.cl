@@ -135,7 +135,7 @@
             (declare (type body bj))
 	    ;; Add the potential energy between this body and every other bodies
             (f64-decf e (f64/ (f64* (mass bi) (mass bj))
-                          (length_ (f64.4- (pos bi) (pos bj))))))
+                              (length_ (f64.4- (pos bi) (pos bj))))))
         finally (format t "~,9f~%" e)))
 
 ;; Rescale certain properties of bodies. That allows doing

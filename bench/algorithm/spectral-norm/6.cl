@@ -20,50 +20,44 @@
 ;;      * Improvement in type declarations
 ;;      * Redefine eval-A as inlined function using sse simd
 ;;      * Changed code to be compatible with sb-simd
+;;      * Simplified eval-A-times-u code using serapeum with-boolean macro
+;;        and using the -> macro for function type declarations 
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx2))
+  (ql:quickload :sb-simd :silent t)
+  (ql:quickload :serapeum :silent t)
+  (use-package  :sb-simd-avx2)
+  (use-package  :serapeum))
 
-(declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
-         (inline eval-A))
-(defun eval-A (i j)
+(-> eval-A (f64.2 f64.2) f64.2)
+(define-inline eval-A (i j)
   (let* ((i+1   (f64.2+ i 1))
          (i+j   (f64.2+ i j))
          (i+j+1 (f64.2+ i+1 j)))
     (f64.2+ (f64.2* i+j i+j+1 0.5) i+1)))
 
-(declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
-                eval-A-times-u eval-At-times-u))
-(defun eval-A-times-u (src dst begin end length)
-  (loop for i from begin below end by 2
-	do (let* ((ti   (f64.2+ i (make-f64.2 0 1)))
-		  (eA   (eval-A ti (f64.2 0)))
-		  (sum  (f64.2/ (aref src 0) eA)))
-	     (loop for j from 1 below length
-		   do (let* ((idx (f64.2+ eA ti j)))
-			(setf eA idx)
-			(f64.2-incf sum (f64.2/ (aref src j) idx))))
-             (setf (f64.2-aref dst i) sum))))
-
-(defun eval-At-times-u (src dst begin end length)
-  (loop for i from begin below end by 2
-	do (let* ((ti   (f64.2+ i (make-f64.2 1 2)))
-                  (eAt  (eval-A (f64.2 0) (f64.2- ti 1)))
-                  (sum  (f64.2/ (aref src 0) eAt)))
-	     (loop for j from 1 below length
-                   do (let* ((idx  (f64.2+ eAt ti j)))
-			(setf eAt idx)
-			(f64.2-incf sum (f64.2/ (aref src j) idx))))
-	     (setf (f64.2-aref dst i) sum))))
+(-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
+(defun eval-A-times-u (transpose src dst begin end length)
+  (with-boolean (transpose)
+    (loop for i from begin below end by 2
+	  do (let* ((ti   (if transpose (f64.2+ i (make-f64.2 1 2))
+                                        (f64.2+ i (make-f64.2 0 1))))
+		    (eA   (if transpose (eval-A (f64.2 0) (f64.2- ti 1))
+                                        (eval-A ti (f64.2 0))))
+		    (sum  (f64.2/ (f64-aref src 0) eA)))
+	       (loop for j from 1 below length
+		     do (let* ((idx (f64.2+ eA ti j)))
+			  (setf eA idx)
+			  (f64.2-incf sum (f64.2/ (f64-aref src j) idx))))
+               (setf (f64.2-aref dst i) sum)))))
 
 #+sb-thread
 (defun get-thread-count ()
   (progn (define-alien-routine sysconf long (name int))
          (sysconf 84)))
 
-(declaim (ftype (function (u32 u32 function) null) execute-parallel))
+(-> execute-parallel (u32 u32 function) null)
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
@@ -81,16 +75,15 @@
 (defun execute-parallel (start end function)
   (funcall function start end))
 
-(declaim (ftype (function (f64vec f64vec f64vec u32 u32 u32) null)
-                eval-AtA-times-u))
+(-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
 (defun eval-AtA-times-u (src dst tmp start end N)
       (progn
 	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u src tmp start end N)))
+				      (eval-A-times-u t src tmp start end N)))
 	(execute-parallel start end (lambda (start end)
-				      (eval-At-times-u tmp dst start end N)))))
+				      (eval-A-times-u nil tmp dst start end N)))))
 
-(declaim (ftype (function (u32) f64) spectralnorm))
+(-> spectralnorm (u32) f64)
 (defun spectralnorm (n)
   (let ((u   (make-array (+ n 1) :element-type 'f64 :initial-element 1d0))
         (v   (make-array (+ n 1) :element-type 'f64))
@@ -99,13 +92,7 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (let ((vBv 0d0)
-          (vv  0d0))
-      (loop for i below n do
-        (let ((aref-vi (aref v i)))
-          (incf vBv (* (aref u i) aref-vi))
-          (incf vv  (* aref-vi aref-vi))))
-      (sqrt (/ vBv vv)))))
+     (sqrt (f64/ (f64.4-vdot u v) (f64.4-vdot v v)))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
