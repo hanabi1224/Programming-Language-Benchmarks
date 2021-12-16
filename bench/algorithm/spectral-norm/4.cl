@@ -21,59 +21,47 @@
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
 ;;        in the hot loops
+;;      * Simplified eval-A-times-u code using serapeum with-boolean macro
+;;        and using the -> macro for function type declarations
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (ql:quickload :sb-simd)
-  (use-package :sb-simd-avx2))
+  (ql:quickload :sb-simd :silent t)
+  (ql:quickload :serapeum :silent t)
+  (use-package  :sb-simd-avx2)
+  (use-package  :serapeum))
 
-(declaim (ftype (function (f64.2 f64.2) f64.2) eval-A)
-         (inline eval-A))
-(defun eval-A (i j)
+(-> eval-A (f64.2 f64.2) f64.2)
+(define-inline eval-A (i j)
   (let* ((i+1   (f64.2+ i 1))
          (i+j   (f64.2+ i j))
          (i+j+1 (f64.2+ i+1 j)))
     (f64.2+ (f64.2* i+j i+j+1 0.5) i+1)))
 
-(declaim (ftype (function (f64vec f64vec u32 u32 u32) null)
-                eval-A-times-u eval-At-times-u))
-(defun eval-A-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 4
-        with src-0 of-type f64 = (aref src 0)
-	do (let* ((ti0   (f64.2+ i (make-f64.2 0 1)))
-		  (ti1   (f64.2+ i (make-f64.2 2 3)))
-		  (eA0   (eval-A ti0 (f64.2 0)))
-		  (eA1   (eval-A ti1 (f64.2 0)))
-		  (sum0  (f64.2/ src-0 eA0))
-		  (sum1  (f64.2/ src-0 eA1)))
-	     (loop for j of-type u32 from 1 below length
-                   for src-j of-type f64 = (aref src j)
-		   do (let ((idx0 (f64.2+ eA0 ti0 j))
-			    (idx1 (f64.2+ eA1 ti1 j)))
-			(setf eA0 idx0 eA1 idx1)
-			(f64.2-incf sum0 (f64.2/ src-j idx0))
-			(f64.2-incf sum1 (f64.2/ src-j idx1))))
-             (setf (f64.2-aref dst i) sum0)
-             (setf (f64.2-aref dst (+ i 2)) sum1))))
-
-(defun eval-At-times-u (src dst begin end length)
-  (loop for i of-type u32 from begin below end by 4
-        with src-0 of-type f64 = (aref src 0)
-	do (let* ((ti0   (f64.2+ i (make-f64.2 1 2)))
-		  (ti1   (f64.2+ i (make-f64.2 3 4)))
-                  (eAt0  (eval-A (f64.2 0) (f64.2- ti0 1)))
-		  (eAt1  (eval-A (f64.2 0) (f64.2- ti1 1)))
-                  (sum0  (f64.2/ src-0 eAt0))
-		  (sum1  (f64.2/ src-0 eAt1)))
-	     (loop for j of-type u32 from 1 below length
-                   for src-j of-type f64 = (aref src j)
-                   do (let ((idx0  (f64.2+ eAt0 ti0 j))
-			    (idx1  (f64.2+ eAt1 ti1 j)))
-			(setf eAt0 idx0 eAt1 idx1)
-			(f64.2-incf sum0 (f64.2/ src-j idx0))
-			(f64.2-incf sum1 (f64.2/ src-j idx1))))
-	     (setf (f64.2-aref dst i) sum0)
-             (setf (f64.2-aref dst (+ i 2)) sum1))))
+(-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
+(defun eval-A-times-u (transpose src dst begin end length)
+  (with-boolean (transpose)
+    (loop for i of-type u32 from begin below end by 4
+         with src-0 of-type f64 = (f64-aref src 0)
+	  do (let* ((ti0   (if transpose (f64.2+ i (make-f64.2 1 2))
+                                         (f64.2+ i (make-f64.2 0 1))))
+		    (ti1   (if transpose (f64.2+ i (make-f64.2 3 4))
+                                         (f64.2+ i (make-f64.2 2 3))))
+		    (eA0   (if transpose (eval-A (f64.2 0) (f64.2- ti0 1))
+                                         (eval-A ti0 (f64.2 0))))
+		    (eA1   (if transpose (eval-A (f64.2 0) (f64.2- ti1 1))
+                                         (eval-A ti1 (f64.2 0))))
+		    (sum0  (f64.2/ src-0 eA0))
+		    (sum1  (f64.2/ src-0 eA1)))
+	       (loop for j of-type u32 from 1 below length
+                     for src-j of-type f64 = (f64-aref src j)
+		     do (let ((idx0 (f64.2+ eA0 ti0 j))
+			      (idx1 (f64.2+ eA1 ti1 j)))
+			  (setf eA0 idx0 eA1 idx1)
+			  (f64.2-incf sum0 (f64.2/ src-j idx0))
+			  (f64.2-incf sum1 (f64.2/ src-j idx1))))
+               (setf (f64.2-aref dst i) sum0)
+               (setf (f64.2-aref dst (+ i 2)) sum1)))))
 
 (declaim (ftype (function () (integer 1 256)) get-thread-count))
 #+sb-thread
@@ -81,7 +69,7 @@
   (progn (define-alien-routine sysconf long (name int))
          (sysconf 84)))
 
-(declaim (ftype (function (u32 u32 function) null) execute-parallel))
+(-> execute-parallel (u32 u32 function) null)
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
@@ -98,16 +86,15 @@
 (defun execute-parallel (start end function)
   (funcall function start end))
 
-(declaim (ftype (function (f64vec f64vec f64vec u32 u32 u32) null)
-                eval-AtA-times-u))
+(-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
 (defun eval-AtA-times-u (src dst tmp start end N)
       (progn
 	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u src tmp start end N)))
+				      (eval-A-times-u t src tmp start end N)))
 	(execute-parallel start end (lambda (start end)
-				      (eval-At-times-u tmp dst start end N)))))
+				      (eval-A-times-u nil tmp dst start end N)))))
 
-(declaim (ftype (function (u32) f64) spectralnorm))
+(-> spectralnorm (u32) f64)
 (defun spectralnorm (n)
   (let ((u   (make-array (+ n 3) :element-type 'f64 :initial-element 1d0))
         (v   (make-array (+ n 3) :element-type 'f64))
