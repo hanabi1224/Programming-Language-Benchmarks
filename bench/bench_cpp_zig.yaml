@@ -1,4 +1,5 @@
 lang: cpp
+enabled: false
 problems:
   - name: helloworld
     source:
