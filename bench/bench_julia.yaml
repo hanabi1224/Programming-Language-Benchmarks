@@ -29,6 +29,9 @@ problems:
     source:
       - 1.jl
       - 3.jl
+  - name: nsieve
+    source:
+      - 1.jl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -v
