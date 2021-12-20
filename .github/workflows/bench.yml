@@ -45,7 +45,7 @@ jobs:
             typescript,
             v,
             wasm,
-            wren,
+            # wren,
             zig,
           ]
     steps:
