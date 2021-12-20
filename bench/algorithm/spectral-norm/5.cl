@@ -24,6 +24,7 @@
 ;;      * Using s32.8 in eval-A and returning 2 f64.4
 ;;      * Simplified eval-A-times-u code using serapeum with-boolean macro
 ;;        and using the -> macro for function type declarations
+;;      * execute-parallel function refactorred - 2021-12-20
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)  
@@ -74,14 +75,13 @@
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
-  (let* ((n    (truncate (- end start) (get-thread-count)))
-         (step (- n (mod n 2))))
-    (mapc #'sb-thread:join-thread
-          (loop for i from start below end by step
-                collecting (let ((start i)
-                                 (end (min end (+ i step))))
+  (mapc #'sb-thread:join-thread
+          (loop with step = (truncate (- end start) (get-thread-count))
+                for index from start below end by step
+                collecting (let ((start index)
+                                 (end (min end (+ index step))))
                              (sb-thread:make-thread
-			      (lambda () (funcall function start end))))))))
+                              (lambda () (funcall function start end)))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
