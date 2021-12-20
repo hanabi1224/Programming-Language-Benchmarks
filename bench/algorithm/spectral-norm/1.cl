@@ -57,13 +57,13 @@
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
   (let* ((num-threads (get-thread-count)))
-    (mapcar #'sb-thread:join-thread
-            (loop with step = (truncate (- end start) num-threads)
-                  for index from start below end by step
-                  collecting (let ((start index)
-                                   (end (min end (+ index step))))
-                               (sb-thread:make-thread
-                                (lambda () (funcall function start end))))))))
+    (mapc #'sb-thread:join-thread
+          (loop with step = (truncate (- end start) num-threads)
+                for index from start below end by step
+                collecting (let ((start index)
+                                 (end (min end (+ index step))))
+                             (sb-thread:make-thread
+                              (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function )

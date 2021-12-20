@@ -76,12 +76,12 @@
   (declare (optimize (speed 0)))
   (let* ((n    (truncate (- end start) (get-thread-count)))
          (step (- n (mod n 2))))
-    (mapcar #'sb-thread:join-thread
-            (loop for i from start below end by step
-                  collecting (let ((start i)
-                                   (end (min end (+ i step))))
-                               (sb-thread:make-thread
-			        (lambda () (funcall function start end))))))))
+    (mapc #'sb-thread:join-thread
+          (loop for i from start below end by step
+                collecting (let ((start i)
+                                 (end (min end (+ i step))))
+                             (sb-thread:make-thread
+			      (lambda () (funcall function start end))))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)
