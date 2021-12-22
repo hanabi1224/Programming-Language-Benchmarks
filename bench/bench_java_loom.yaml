@@ -17,7 +17,7 @@ environments:
     version: latest
     docker:
     include:
-    build: loomjavac app.java --enable-preview --release 18 -d out
+    build: loomjavac app.java --enable-preview --release 19 -d out
     out_dir: out
     run_cmd: loomjava --enable-preview app
     runtime_included: false
