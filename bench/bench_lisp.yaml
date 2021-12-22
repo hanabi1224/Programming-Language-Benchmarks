@@ -22,6 +22,7 @@ problems:
       - 4.cl
       - 5.cl
       - 6.cl
+      - 7.cl
   - name: spectral-norm
     source:
       - 1.cl
@@ -37,6 +38,7 @@ problems:
       - 2.cl
       - 3.cl
       - 4.cl
+      - 5.cl
   - name: mandelbrot
     source:
       - 1.cl

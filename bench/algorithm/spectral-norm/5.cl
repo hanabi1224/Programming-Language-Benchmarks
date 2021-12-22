@@ -36,17 +36,15 @@
 (-> eval-A (s32.8 s32.8) (values f64.4 f64.4))
 (define-inline eval-A (i j)
   (let* ((i+1   (s32.8+ i 1))
-         (i+j   (s32.8+ i j))
-         (i+j+1 (s32.8+ i+1 j))
-         (evala (s32.8+ (s32.8-shiftr (s32.8-mullo i+j i+j+1) 1) i+1)))
+         (evala (s32.8+ (s32.8-shiftr (s32.8-mullo (s32.8+ i j) (s32.8+ i+1 j)) 1) i+1)))
     (values (f64.4-from-s32.4 (s32.8-extract128 evala 0))
             (f64.4-from-s32.4 (s32.8-extract128 evala 1)))))
 
 (-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
 (defun eval-A-times-u (transpose src dst begin end length)
   (with-boolean (transpose)
-    (loop for i of-type u32 from begin below end by 8
-          with src-0 of-type f64 = (f64-aref src 0)
+    (loop with src-0 of-type f64 = (f64-aref src 0)
+          for i of-type index from begin below end by 8
           do (multiple-value-bind (eA0 eA1)
                  (if transpose (eval-A (s32.8 0) (s32.8+ i (make-s32.8 0 1 2 3 4 5 6 7)))
                                (eval-A (s32.8+ i (make-s32.8 0 1 2 3 4 5 6 7)) (s32.8 0)))
@@ -56,7 +54,7 @@
                                                     (make-f64.4 4 5 6 7))))
                       (sum0 (f64.4/ src-0 eA0))
 		      (sum1 (f64.4/ src-0 eA1)))
-	         (loop for j from 1 below length
+	         (loop for j of-type index from 1 below length
 		       do (let ((src-j (f64-aref src j))
                                 (idx0  (f64.4+ eA0 ti0 j))
 			        (idx1  (f64.4+ eA1 ti1 j)))

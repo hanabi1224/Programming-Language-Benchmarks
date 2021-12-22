@@ -13,7 +13,7 @@
   (defconstant +SOLAR-MASS+ (* 4d0 pi pi))
 
   (deftype body () '(simple-array f64 (9)))
-  (declaim (inline x y z vx vy vz mass make-body))
+  (declaim (inline x y z vx vy vz mas make-body))
   (defstruct (body (:type (vector f64))
                    (:conc-name nil)
                    (:constructor make-body (x y z fill1 vx vy vz fill2 mas)))
