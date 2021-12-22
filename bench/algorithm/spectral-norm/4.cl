@@ -34,29 +34,27 @@
 
 (-> eval-A (f64.2 f64.2) f64.2)
 (define-inline eval-A (i j)
-  (let* ((i+1   (f64.2+ i 1))
-         (i+j   (f64.2+ i j))
-         (i+j+1 (f64.2+ i+1 j)))
-    (f64.2+ (f64.2* i+j i+j+1 0.5) i+1)))
+  (let ((i+1   (f64.2+ i 1)))
+    (f64.2+ (f64.2* (f64.2+ i j) (f64.2+ i+1 j) 0.5) i+1)))
 
 (-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
 (defun eval-A-times-u (transpose src dst begin end length)
   (with-boolean (transpose)
-    (loop for i of-type u32 from begin below end by 4
-         with src-0 of-type f64 = (f64-aref src 0)
-	  do (let* ((ti0   (if transpose (f64.2+ i (make-f64.2 1 2))
-                                         (f64.2+ i (make-f64.2 0 1))))
-		    (ti1   (if transpose (f64.2+ i (make-f64.2 3 4))
-                                         (f64.2+ i (make-f64.2 2 3))))
+    (loop with src-0 of-type f64 = (f64-aref src 0)
+	  for i of-type index from begin below end by 4
+          do (let* ((ti0   (if transpose (make-f64.2 (+ i 1) (+ i 2))
+                                         (make-f64.2 (+ i 0) (+ i 1))))
+		    (ti1   (if transpose (make-f64.2 (+ i 3) (+ i 4))
+                                         (make-f64.2 (+ i 2) (+ i 3))))
 		    (eA0   (if transpose (eval-A (f64.2 0) (f64.2- ti0 1))
                                          (eval-A ti0 (f64.2 0))))
 		    (eA1   (if transpose (eval-A (f64.2 0) (f64.2- ti1 1))
                                          (eval-A ti1 (f64.2 0))))
 		    (sum0  (f64.2/ src-0 eA0))
 		    (sum1  (f64.2/ src-0 eA1)))
-	       (loop for j of-type u32 from 1 below length
-                     for src-j of-type f64 = (f64-aref src j)
-		     do (let ((idx0 (f64.2+ eA0 ti0 j))
+	       (loop for j of-type index from 1 below length
+		     do (let ((src-j (f64-aref src j))
+                              (idx0 (f64.2+ eA0 ti0 j))
 			      (idx1 (f64.2+ eA1 ti1 j)))
 			  (setf eA0 idx0 eA1 idx1)
 			  (f64.2-incf sum0 (f64.2/ src-j idx0))
@@ -75,12 +73,12 @@
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
   (mapc #'sb-thread:join-thread
-          (loop with step = (truncate (- end start) (get-thread-count))
-                for index from start below end by step
-                collecting (let ((start index)
-                                 (end (min end (+ index step))))
-                             (sb-thread:make-thread
-                              (lambda () (funcall function start end)))))))
+        (loop with step = (truncate (- end start) (get-thread-count))
+              for index from start below end by step
+              collecting (let ((start index)
+                               (end (min end (+ index step))))
+                           (sb-thread:make-thread
+                            (lambda () (funcall function start end)))))))
 
 #-sb-thread
 (defun execute-parallel (start end function)

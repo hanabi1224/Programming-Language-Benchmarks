@@ -40,16 +40,18 @@
 (-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
 (defun eval-A-times-u (transpose src dst begin end length)
   (with-boolean (transpose)
-    (loop for i from begin below end by 4
+    (loop with src-0 of-type f64 = (f64-aref src 0)
+          for i of-type index from begin below end by 4
           do (let* ((ti  (if transpose (f64.4+ i (make-f64.4 1 2 3 4))
                                        (f64.4+ i (make-f64.4 0 1 2 3))))
                     (eA  (if transpose (eval-A (f64.4- ti 1))
                                        (f64.4+ (eval-A ti) ti)))
-		    (sum (f64.4/ (f64-aref src 0) eA)))
-	       (loop for j from 1 below length
-		     do (let ((idx (f64.4+ eA ti j)))
+		    (sum (f64.4/ src-0 eA)))
+	       (loop for j of-type index from 1 below length
+		     do (let ((src-j (f64-aref src j))
+                              (idx (f64.4+ eA ti j)))
 			  (setf eA idx)
-			  (f64.4-incf sum (f64.4/ (f64-aref src j) idx))))
+			  (f64.4-incf sum (f64.4/ src-j idx))))
 	       (setf (f64.4-aref dst i) sum)))))
 
 #+sb-thread

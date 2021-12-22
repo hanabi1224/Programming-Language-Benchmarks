@@ -29,23 +29,20 @@
 (declaim (ftype (function (uint31 uint31) d+) eval-A)
          (inline eval-A))
 (defun eval-A (i j)
-  (let* ((i+1   (1+ i))
-         (i+j   (+ i j))
-         (i+j+1 (+ i+1 j)))
-    (declare (type uint31 i+1 i+j i+j+1))
-    (/ (float (+ (ash (* i+j i+j+1) -1) i+1) 0d0))))
+  (let* ((i+1   (1+ i)))
+    (/ (float (+ (ash (* (+ i j) (+ i+1 j)) -1) i+1) 0d0))))
 
 (declaim (ftype (function (array-d+ uint31 array-d+ uint31 uint31) null)
-                eval-At-times-u eval-A-times-u))
-(defun eval-At-times-u (u n Au start end)
-  (loop for i from start below end do
-    (setf (aref Au i) (loop for j below n
-                            summing (* (aref u j) (eval-A j i)) of-type d+))))
-
+                eval-A-times-u eval-At-times-u))
 (defun eval-A-times-u (u n Au start end)
-  (loop for i from start below end do
-    (setf (aref Au i) (loop for j below n
+  (loop for i of-type uint31 from start below end do
+    (setf (aref Au i) (loop for j of-type uint31 below n
                             summing (* (aref u j) (eval-A i j)) of-type d+))))
+
+(defun eval-At-times-u (u n Au start end)
+  (loop for i of-type uint31 from start below end do
+    (setf (aref Au i) (loop for j of-type uint31 below n
+                            summing (* (aref u j) (eval-A j i)) of-type d+))))
 
 #+sb-thread
 (defun get-thread-count ()
@@ -70,11 +67,9 @@
 
 (defun eval-AtA-times-u (u AtAu v n start end)
   (execute-parallel start end
-                    (lambda (start end)
-                      (eval-A-times-u u n v start end)))
+                    (lambda (start end) (eval-A-times-u u n v start end)))
   (execute-parallel start end
-                    (lambda (start end)
-                      (eval-At-times-u v n AtAu start end))))
+                    (lambda (start end) (eval-At-times-u v n AtAu start end))))
 
 (declaim (ftype (function (&optional uint31) null) main))
 (defun main (&optional n-supplied)
@@ -91,8 +86,8 @@
         (eval-AtA-times-u v u tmp n 0 n))
       (let ((vBv 0d0)
             (vv  0d0))
-        (loop for i below n do
-          (let ((aref-vi (aref v i)))
-            (incf vBv (* (aref u i) aref-vi))
-            (incf vv  (* aref-vi aref-vi))))
+        (loop for i of-type uint31 below n do
+          (let ((vi (aref v i)))
+            (incf vBv (* (aref u i) vi))
+            (incf vv  (* vi vi))))
         (format t "~11,9F~%" (sqrt (the d+ (/ vBv vv))))))))
