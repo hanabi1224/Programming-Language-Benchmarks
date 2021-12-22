@@ -1,4 +1,4 @@
-;; Common Lisp port of PrimeC/solution_2/sieve_5760of30030_only_write_read_bits.c by Daniel Spangberg
+;; Ported to Common Lisp by Daniel Spangberg
 ;; Converted to be used in Programming Language and compiler Benchmarks by Bela Pecsek
 ;;   Changed CLOS sieve-state class to struct
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
