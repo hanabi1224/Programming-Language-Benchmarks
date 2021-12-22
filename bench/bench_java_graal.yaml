@@ -57,6 +57,7 @@ environments:
   - os: linux
     compiler: graal/native
     version: latest
+    enabled: false # Build is super slow, disable for now
     docker:
     include:
     compiler_version_command: native-image --version
