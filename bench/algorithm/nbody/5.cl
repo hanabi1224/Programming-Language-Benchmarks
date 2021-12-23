@@ -147,8 +147,8 @@
 (defun scale-bodies (system scale)
   (dolist (bi system)
     (declare (type body bi))
-    (setf (mass bi) (f64*   (mass bi) (f64* scale scale)))
-    (setf (vel  bi) (f64.4* (vel bi) scale))))
+    (setf (mass bi) (f64*   (mass bi) (f64* scale scale))
+          (vel  bi) (f64.4* (vel bi) scale))))
 
 (declaim (ftype (function (u32) null) nbody))
 (defun nbody (n-times)

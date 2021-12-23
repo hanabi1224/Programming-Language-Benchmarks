@@ -3,7 +3,17 @@
 ;;   Changed CLOS sieve-state class to struct
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
-(deftype nonneg-fixnum () `(integer 0 ,most-positive-fixnum))
+(defun binarize (expr)
+  (if (and (nthcdr 3 expr) (member (car expr) '(+ - * /)))
+      (destructuring-bind (op a1 a2 . rest) expr
+        (binarize `(,op (,op ,a1 ,a2) ,@rest))) expr))
+
+(defun expand-call (type expr)
+  `(,(car expr) ,@(mapcar #'(lambda (a) `(with-type ,type ,a)) (cdr expr))))
+
+(defmacro with-type (type expr)
+  `(#+sbcl sb-ext:truly-the #-sbcl the ,type
+           ,(if (atom expr) expr (expand-call type (binarize expr)))))
 
 (defconstant +steps+ (coerce
 #(8 1 2 3 1 3 2 1 2 3 3 1 3 2 1 3 2 3 4 2 1 2 1 2 7 
@@ -242,10 +252,10 @@
                  sieve-state-a (setf sieve-state-a)))
 (defstruct (sieve-state (:conc-name sieve-state-)
                         (:constructor make-sieve-state (maxints a)))
-  (maxints nil :type nonneg-fixnum)
+  (maxints nil :type fixnum)
   (a       nil :type simple-bit-vector))
 
-(declaim (ftype (function (nonneg-fixnum) sieve-state) create-sieve))
+(declaim (ftype (function (fixnum) sieve-state) create-sieve))
 (defun create-sieve (maxints)
   (make-sieve-state maxints (make-array (ash maxints -1) :element-type 'bit
                                                          :initial-element 0)))
@@ -256,32 +266,32 @@
         (qh (ash (ceiling (isqrt maxints)) -1))
         (maxintsh (ash maxints -1))
         (a (sieve-state-a sieve-state))
-        (step 1  (if (>= step 5759) 0 (1+ step)))
-        (factorh (ash 17 -1)))
+        (step 1  (if (>= step 5759) 0 (with-type fixnum (1+ step))))
+        (factorh 8))
        ((> factorh qh) sieve-state)
-    (declare (nonneg-fixnum maxints maxintsh qh step factorh)
+    (declare (fixnum maxints maxintsh qh step factorh)
              (type simple-bit-vector a))
     (when (zerop (sbit a factorh))
-      (do* ((istep step (if (>= istep 5759) 0 (1+ istep)))
-            (ninc (aref steps istep) (aref steps istep))
-            (factor (1+ (the nonneg-fixnum (* factorh 2))))
-            (i (ash (the nonneg-fixnum (* factor factor)) -1)))
+      (do* ((istep step (if (>= istep 5759) 0 (with-type fixnum (1+ istep))))
+            (ninc   (aref steps istep) (aref steps istep))
+            (factor (with-type fixnum (1+ (* factorh 2))))
+            (i      (with-type fixnum (ash (* factor factor) -1))))
            ((>= i maxintsh))
-        (declare (nonneg-fixnum istep ninc factor i))
+        (declare (fixnum istep ninc factor i))
         (setf (sbit a i) 1)
-        (incf i (the nonneg-fixnum (* factor ninc)))))
-    (setq factorh (+ factorh (aref steps step)))))
+        (incf i (with-type fixnum (* factor ninc)))))
+    (setq factorh (logand most-positive-fixnum (+ factorh (aref steps step))))))
 
-(declaim (ftype (function (sieve-state) nonneg-fixnum) count-primes))
+(declaim (ftype (function (sieve-state) fixnum) count-primes))
 (defun count-primes (sieve-state)
   (let ((maxints (sieve-state-maxints sieve-state)))
     (do* ((a (sieve-state-a sieve-state))
           (ncount (if (<= maxints 10) 4 6))
           (factor 17)
-          (step 1  (if (>= step 5759) 0 (1+ step)))
-          (inc (* (aref +steps+ step) 2) (* (the nonneg-fixnum (aref +steps+ step)) 2)))
+          (step 1  (if (>= step 5759) 0 (with-type fixnum (1+ step))))
+          (inc (* (aref +steps+ step) 2) (* (aref +steps+ step) 2)))
          ((> factor maxints) ncount)
-      (declare (nonneg-fixnum maxints ncount factor inc)
+      (declare (fixnum maxints ncount factor inc)
                (type simple-bit-vector a))
       (when (zerop (sbit a (ash factor -1)))
         (incf ncount))
@@ -293,6 +303,6 @@
     (declare ((integer 0 16) n))
     (loop for k of-type (integer 0 16) from n downto (- n 2) 
           for m = (* 10000 (expt 2 k))
-          for sieve of-type sieve-state = (create-sieve m)
+          for sieve-state of-type sieve-state = (create-sieve m)
           do (format t "Primes up to~T~8<~d~>~T~8<~d~>~%"
-                     m (count-primes (run-sieve sieve +steps+))))))
+                     m (count-primes (run-sieve sieve-state +steps+))))))
