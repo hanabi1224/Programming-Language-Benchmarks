@@ -21,11 +21,8 @@
 ;;; modified by Béla Pecsek - 2021-09-11
 ;;;   * converted to use sb-simd
 ;;;   * further optimization using sb-simd f64 scalar operations
-
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
-(setf *block-compile-default* t)
 
-(in-package #:cl-user)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :sb-simd :silent t)
   (use-package :sb-simd-avx2)
@@ -235,8 +232,7 @@
     (scale_bodies system +RECIP_DT+) ;; Rescale bodies
     (output_Energy system)))         ;; Output final energy of the system
 
-(defun main ()
-  (let ((n (parse-integer (or (car (last #+sbcl sb-ext:*posix-argv*
-                                         #+cmu  extensions:*command-line-strings*
-					 #+gcl  si::*command-args*)) "1"))))
+(defun main (&optional n-supplied)
+  (let ((n (or n-supplied (parse-integer (or (car (last #+sbcl sb-ext:*posix-argv*))
+                                             "10000")))))
     (nbody n)))

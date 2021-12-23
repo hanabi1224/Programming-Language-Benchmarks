@@ -101,8 +101,8 @@
   (loop for bi in system
         with pos = (f64.4 0)
         with sun = (car system) do
-          (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos))
-          (setf (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
+          (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos)
+                (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
 
 ;; Advances with timestem dt = 1.0d0
 ;; Advance all the bodies in the system by one timestep. Calculate the
@@ -119,8 +119,8 @@
                (dst (f64.4-sqrt dsq))
                (mag (f64.4/ (f64.4* dsq dst)))
                (pd-mag (f64.4* pd mag)))
-          (setf (vel bi) (f64.4-fnmadd213 pd-mag (mass bj) (vel bi)))
-          (setf (vel bj) (f64.4-fmadd213  pd-mag (mass bi) (vel bj))))))
+          (setf (vel bi) (f64.4-fnmadd213 pd-mag (mass bj) (vel bi))
+                (vel bj) (f64.4-fmadd213  pd-mag (mass bi) (vel bj))))))
     (loop for b in system do
       (f64.4-incf (pos b) (vel b)))))
 
@@ -147,8 +147,8 @@
 (defun scale-bodies (system scale)
   (dolist (bi system)
     (declare (type body bi))
-    (setf (mass bi) (f64*   (mass bi) (f64* scale scale)))
-    (setf (vel  bi) (f64.4* (vel bi) scale))))
+    (setf (mass bi) (f64*   (mass bi) (f64* scale scale))
+          (vel  bi) (f64.4* (vel bi) scale))))
 
 (declaim (ftype (function (u32) null) nbody))
 (defun nbody (n-times)
