@@ -16,10 +16,10 @@ problems:
     source:
       - 1n.kt
       - 2n.kt
-  # - name: coro-prime-sieve
-  #   source:
-  #     - 1.kt
-  #     - 2.kt
+  - name: coro-prime-sieve
+    source:
+      - 1.kt
+      - 2.kt
   - name: lru
     source:
       - 1.kt
