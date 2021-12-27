@@ -19,6 +19,7 @@ problems:
     source:
       - 1.kt
       - 2.kt
+      - 3.kt
   - name: http-server
     source:
       - 1.kt
