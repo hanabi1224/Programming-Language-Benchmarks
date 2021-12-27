@@ -52,6 +52,9 @@ problems:
     source:
       - 1.go
       - 2.go
+  - name: secp256k1
+    source:
+      - 0.go
 compiler_version_command: go version
 compiler_version_regex:
 runtime_version_parameter:
