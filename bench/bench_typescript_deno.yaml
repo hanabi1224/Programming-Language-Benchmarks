@@ -27,6 +27,9 @@ problems:
   - name: lru
     source:
       - 1.ts
+  - name: secp256k1
+    source:
+      - 1.ts
 compiler_version_command: deno --version
 compiler_version_regex:
 runtime_version_parameter:

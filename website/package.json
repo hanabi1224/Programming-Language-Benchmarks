@@ -32,7 +32,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.4.0",
-    "core-js": "^3.20.0",
+    "core-js": "^3.20.1",
     "find-versions": "^5.0.0",
     "lodash": "^4.17.21",
     "nuxt": "^2.15.8",

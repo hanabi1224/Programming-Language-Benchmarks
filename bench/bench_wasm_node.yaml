@@ -5,7 +5,8 @@ problems:
       - 1.rs
   - name: binarytrees
     source:
-      - 1.rs
+      - 3.rs
+      - 4.rs
   - name: nbody
     source:
       - 1.rs
@@ -38,6 +39,10 @@ problems:
       - 2.rs
   - name: lru
     source:
+      - 1.rs
+  - name: secp256k1
+    source:
+      - 0.rs
       - 1.rs
 source_rename_to: main.rs
 compiler_version_command: rustc -V
