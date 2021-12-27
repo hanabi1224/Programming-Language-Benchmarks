@@ -64,6 +64,10 @@ problems:
   - name: lru
     source:
       - 1.rs
+  - name: secp256k1
+    source:
+      - 0.rs
+      - 1.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +stable -V
 compiler_version_regex:

@@ -157,3 +157,13 @@ problems:
       - input: 500000
       - input: 1000000
       - input: 5000000
+  - name: secp256k1
+    unittests:
+      - input: 1
+        output: 1_out
+      - input: 10
+        output: 10_out
+    tests:
+      - input: 50
+      - input: 500
+      - input: 5000
