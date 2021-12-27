@@ -15,18 +15,17 @@
   (let ((sieve (make-array m :element-type 'bit :initial-element 0)))
     (declare (type simple-bit-vector sieve))
     ;; 0 and 1 aren't prime
-    (setf (sbit sieve 0) 1)
-    (setf (sbit sieve 1) 1)
+    (setf (aref sieve 0) 1)
+    (setf (aref sieve 1) 1)
     ;; eliminate even numbers that never prime
     (loop for i of-type uint31 from 4 below m by 2
-          do (setf (sbit sieve i) 1))
+          do (setf (aref sieve i) 1))
     (loop for i of-type uint31 from 3 to (isqrt m) by 2
-          when (zerop (sbit sieve i))
-            do (loop for j of-type uint31 from (* i i) below m by (* i 2)
-                     do (setf (sbit sieve j) 1)))
+          when (zerop (aref sieve i))
+            do (loop for j of-type uint31 from (* i 3) below m by (* i 2)
+                     do (setf (aref sieve j) 1)))
   (loop for i of-type uint31 from 2 below m
-        when (zerop (sbit sieve i))
-          count t)))
+        count (zerop (aref sieve i)))))
 
 (declaim (ftype (function (&optional (integer 0 16)) null) main))
 (defun main (&optional n-supplied)
