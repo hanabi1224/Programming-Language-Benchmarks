@@ -4,7 +4,8 @@
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (defun binarize (expr)
-  (if (and (nthcdr 3 expr) (member (car expr) '(+ - * /)))
+  (if (and (nthcdr 3 expr) (member (car expr) '(+ - * / ash abs sin cos tan cot
+                                                ceiling isqrt signum log exp expt)))
       (destructuring-bind (op a1 a2 . rest) expr
         (binarize `(,op (,op ,a1 ,a2) ,@rest))) expr))
 
@@ -13,8 +14,12 @@
 
 (defmacro with-type (type expr)
   `(#+sbcl sb-ext:truly-the #-sbcl the ,type
-           ,(if (atom expr) expr (expand-call type (binarize expr)))))
+           ,(if (and (consp expr) (member (car expr) '(1+ 1- + - * / ash abs sin cos
+                                           tan cot ceiling isqrt signum log exp expt)
+                     :test #'eq)) (expand-call type (binarize expr)) expr)))
 
+
+(declaim (type '(simple-array fixnum 1) +steps+))
 (defconstant +steps+ (coerce
 #(8 1 2 3 1 3 2 1 2 3 3 1 3 2 1 3 2 3 4 2 1 2 1 2 7 
   2 3 1 5 1 3 3 2 3 3 1 5 1 2 1 6 6 2 1 2 3 1 5 3 3 
@@ -248,52 +253,51 @@
   3 2 3 3 1 5 1 3 2 7 2 1 2 1 2 4 3 2 3 1 2 3 1 3 3 
   2 1 2 3 1 3 2 1 8 1) '(simple-array fixnum 1)))
 
-(declaim (inline make-sieve-state sieve-state-maxints (setf sieve-state-maxints)
-                 sieve-state-a (setf sieve-state-a)))
-(defstruct (sieve-state (:conc-name sieve-state-)
-                        (:constructor make-sieve-state (maxints a)))
+(declaim (inline make-sieve-state maxints (setf maxints) sieve (setf sieve)))
+(defstruct (sieve-state (:conc-name nil)
+                        (:constructor make-sieve-state (maxints sieve)))
   (maxints nil :type fixnum)
-  (a       nil :type simple-bit-vector))
+  (sieve   nil :type simple-bit-vector))
 
-(declaim (ftype (function (fixnum) sieve-state) create-sieve))
+(declaim (ftype (function (fixnum) (values sieve-state &optional)) create-sieve))
 (defun create-sieve (maxints)
-  (make-sieve-state maxints (make-array (ash maxints -1) :element-type 'bit
-                                                         :initial-element 0)))
+  (make-sieve-state maxints (make-array (/ maxints 2) :element-type 'bit :initial-element 0)))
 
-(declaim (ftype (function (sieve-state (simple-array fixnum (*))) sieve-state) run-sieve))
+(declaim (ftype (function (sieve-state (simple-array fixnum (*)))
+                          (values sieve-state &optional)) run-sieve))
 (defun run-sieve (sieve-state steps)
-  (do* ((maxints (sieve-state-maxints sieve-state))
-        (qh (ash (ceiling (isqrt maxints)) -1))
+  (do* ((maxints  (maxints sieve-state))
+        (qh       (with-type fixnum (ash (ceiling (isqrt maxints)) -1)))
         (maxintsh (ash maxints -1))
-        (a (sieve-state-a sieve-state))
-        (step 1  (if (>= step 5759) 0 (with-type fixnum (1+ step))))
-        (factorh 8))
+        (sieve    (sieve sieve-state))
+        (step 1   (if (>= step 5759) 0 (with-type fixnum (1+ step))))
+        (factorh  (with-type fixnum (ash 17 -1))))
        ((> factorh qh) sieve-state)
-    (declare (fixnum maxints maxintsh qh step factorh)
-             (type simple-bit-vector a))
-    (when (zerop (sbit a factorh))
-      (do* ((istep step (if (>= istep 5759) 0 (with-type fixnum (1+ istep))))
+    (declare (type fixnum maxints maxintsh qh step factorh)
+             (type simple-bit-vector sieve))
+    (when (zerop (sbit sieve factorh))
+      (do* ((istep  step (if (>= istep 5759) 0 (with-type fixnum (1+ istep))))
             (ninc   (aref steps istep) (aref steps istep))
             (factor (with-type fixnum (1+ (* factorh 2))))
             (i      (with-type fixnum (ash (* factor factor) -1))))
-           ((>= i maxintsh))
+           ((>= i   maxintsh))
         (declare (fixnum istep ninc factor i))
-        (setf (sbit a i) 1)
+        (setf (sbit sieve i) 1)
         (incf i (with-type fixnum (* factor ninc)))))
-    (setq factorh (logand most-positive-fixnum (+ factorh (aref steps step))))))
+    (setq factorh (+ factorh (aref steps step)))))
 
-(declaim (ftype (function (sieve-state) fixnum) count-primes))
+(declaim (ftype (function (sieve-state) (values fixnum &optional)) count-primes))
 (defun count-primes (sieve-state)
-  (let ((maxints (sieve-state-maxints sieve-state)))
-    (do* ((a (sieve-state-a sieve-state))
+  (let ((maxints (maxints sieve-state)))
+    (do* ((sieve  (sieve sieve-state))
           (ncount (if (<= maxints 10) 4 6))
           (factor 17)
-          (step 1  (if (>= step 5759) 0 (with-type fixnum (1+ step))))
-          (inc (* (aref +steps+ step) 2) (* (aref +steps+ step) 2)))
+          (step 1 (if (>= step 5759) 0 (with-type fixnum (1+ step))))
+          (inc    (* (aref +steps+ step) 2) (* (aref +steps+ step) 2)))
          ((> factor maxints) ncount)
-      (declare (fixnum maxints ncount factor inc)
-               (type simple-bit-vector a))
-      (when (zerop (sbit a (ash factor -1)))
+      (declare (type fixnum maxints ncount factor inc)
+               (type simple-bit-vector sieve))
+      (when (zerop (sbit sieve (ash factor -1)))
         (incf ncount))
       (incf factor inc))))
 
@@ -301,8 +305,8 @@
 (defun main (&optional n-supplied)
   (let* ((n (or n-supplied (parse-integer (car (last sb-ext:*posix-argv*))))))
     (declare ((integer 0 16) n))
-    (loop for k of-type (integer 0 16) from n downto (- n 2) 
-          for m = (* 10000 (expt 2 k))
+    (loop for k below 3 
+          for m = (ash 10000 (- n k))
           for sieve-state of-type sieve-state = (create-sieve m)
           do (format t "Primes up to~T~8<~d~>~T~8<~d~>~%"
                      m (count-primes (run-sieve sieve-state +steps+))))))
