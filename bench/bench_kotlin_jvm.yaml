@@ -27,6 +27,9 @@ problems:
   - name: lru
     source:
       - 1.kt
+  - name: secp256k1
+    source:
+      - 1.kt
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -version

@@ -61,6 +61,7 @@ environments:
     runtime_included: false
     force_check_child_processes: true
   - os: linux
+    enabled: false
     compiler: pyjion
     version: 3
     runtime_version_parameter: -V
