@@ -28,10 +28,8 @@
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (ql:quickload :sb-simd :silent t)
-  (ql:quickload :serapeum :silent t)
-  (use-package  :serapeum)
-  (use-package  :sb-simd-fma))
+  (ql:quickload '(:sb-simd :serapeum) :silent t)
+  (use-package  '(:sb-simd-fma :serapeum)))
 
 (-> eval-A (f64.4) f64.4)
 (define-inline eval-A (i)

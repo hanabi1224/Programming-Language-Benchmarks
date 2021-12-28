@@ -91,6 +91,6 @@
             (vv  0d0))
         (loop for i of-type uint31 below n do
           (let ((vi (aref v i)))
-            (incf vBv (* (aref u i) vi))
-            (incf vv  (* vi vi))))
-        (format t "~11,9F~%" (sqrt (the d+ (/ vBv vv))))))))
+            (incf vBv (* (the d+ (aref u i)) (the d+ vi)))
+            (incf vv  (* (the d+ vi) (the d+ vi)))))
+        (format t "~11,9F~%" (sqrt (the d+ (/ (the d+ vBv) (the d+ vv)))))))))
