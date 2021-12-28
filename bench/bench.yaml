@@ -140,10 +140,10 @@ problems:
           - javascript
   - name: http-server
     unittests:
-      - input: 100
-        output: 100_out
-      - input: 500
-        output: 500_out
+      - input: 10
+        output: 10_out
+      - input: 50
+        output: 50_out
     tests:
       - input: 500
       - input: 3000
