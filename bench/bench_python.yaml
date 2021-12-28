@@ -45,6 +45,9 @@ problems:
     source:
       - 1.py
       - 2.py
+  - name: secp256k1
+    source:
+      - 1.py
 source_rename_to: c.py
 environments:
   - os: linux

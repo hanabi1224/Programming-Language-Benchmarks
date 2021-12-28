@@ -30,6 +30,9 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.chpl
+  - name: secp256k1
+    source:
+      - 1.chpl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

@@ -139,7 +139,6 @@ class JacobianPoint {
 class Point {
     static ZERO = new Point(0n, 0n); // Point at infinity aka identity point aka zero
     static BASE: Point = new Point(CURVE.Gx, CURVE.Gy);
-    private precomputes: Point[] = [];
     constructor(public x: bigint, public y: bigint) { }
     multiply(scalar: bigint) {
         return JacobianPoint.fromAffine(this).multiplyUnsafe(scalar).toAffine();
