@@ -1,7 +1,9 @@
 ;;; modified by Bela Pecsek 2021-12-28
 ;;;   * CLOSS class changed to struct
 ;;;   * optional n-supplied added to main
-;;;   * defmethod changed to defun for check-node 
+;;;   * defmethod changed to defun for check-node
+;;;   * Local functions for more speed
+;;;   * Code cleanup
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -9,7 +11,7 @@
   (defun get-thread-count ()
     (progn (define-alien-routine sysconf long (name int))
            (sysconf 84)))
-  (defconstant min-depth 4 "Minimal depth of the binary tree.")
+  (defconstant min-depth   4 "Minimal depth of the binary tree.")
   (defconstant num-workers (get-thread-count) "Number of concurrent workers.")
   (deftype uint () '(unsigned-byte 31))
   (deftype index () 'sb-int:index))
@@ -27,7 +29,8 @@
         (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
 
 (defun check-node (node)
-  (declare (type node node))
+  (declare (type node node)
+           (dynamic-extent node))
   (cond ((left node) (+ 1 (check-node (left node)) (check-node (right node))))
         (t 1)))
 
@@ -40,7 +43,8 @@
                    (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
            (check-node (node)
              (declare (type node node))
-             (cond ((left node) (+ 1 (check-node (left node)) (check-node (right node))))
+             (cond ((left node) (truly-the uint (+ 1 (check-node (left node))
+                                                     (check-node (right node)))))
                    (t 1))))
     (declare (inline build-tree check-node))
     (loop for depth of-type index from min-depth by 2 upto max-depth

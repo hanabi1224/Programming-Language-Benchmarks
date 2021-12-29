@@ -1,7 +1,9 @@
 ;;; modified by Bela Pecsek 2021-12-28
 ;;;   * CLOSS class changed to struct
 ;;;   * optional n-supplied added to main
-;;;   * defmethod changed to defun for check-node 
+;;;   * defmethod changed to defun for check-node
+;;;   * Local functions for more speed
+;;;   * Code cleanup
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -10,12 +12,12 @@
   (defun get-thread-count ()
     (progn (define-alien-routine sysconf long (name int))
            (sysconf 84)))
-  (defconstant min-depth 4 "Minimal depth of the binary tree.")
+  (defconstant min-depth   4 "Minimal depth of the binary tree.")
   (defconstant num-workers (get-thread-count) "Number of concurrent workers.")
-  (deftype uint () '(unsigned-byte 31))
+  (deftype uint  () '(unsigned-byte 31))
   (deftype index () 'sb-int:index))
 
-(declaim (inline make-node left (setf left) right (setf right)))
+;(declaim (inline make-node left (setf left) right (setf right)))
 (defstruct (node (:conc-name nil)
                  (:constructor make-node (left right)))
   (left  nil :type (or node null))
