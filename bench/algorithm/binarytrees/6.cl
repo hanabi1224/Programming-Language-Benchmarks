@@ -17,7 +17,7 @@
   (deftype uint  () '(unsigned-byte 31))
   (deftype index () 'sb-int:index))
 
-;(declaim (inline make-node left (setf left) right (setf right)))
+(declaim (inline make-node left (setf left) right (setf right)))
 (defstruct (node (:conc-name nil)
                  (:constructor make-node (left right)))
   (left  nil :type (or node null))
