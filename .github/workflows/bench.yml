@@ -106,7 +106,7 @@ jobs:
         if: matrix.lang == 'javascript'
         run: ./.github/graalvm-node.sh
       - name: Install zig
-        if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
+        if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
         run: ./.github/zig.sh
       - name: Install crystal
         if: matrix.lang == 'crystal'
