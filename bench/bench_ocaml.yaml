@@ -5,7 +5,7 @@ problems:
       - 1.ml
   - name: binarytrees
     source:
-      - 5.ml
+      - 1.ml
   - name: fannkuch-redux
     source:
       - 2.ml

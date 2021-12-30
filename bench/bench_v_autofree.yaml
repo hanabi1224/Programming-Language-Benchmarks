@@ -28,13 +28,13 @@ problems:
   # - name: json-serde
   #   source:
   #     - 1.v
-  - name: mandelbrot
-    source:
-      - 1.v
+  # - name: mandelbrot
+  #   source:
+  #     - 1.v
   - name: nsieve
     source:
       - 1.v
-      - 2.v
+      # - 2.v
 compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -42,20 +42,20 @@ runtime_version_regex:
 source_rename_to: app.v
 environments:
   - os: linux
-    compiler: v+gc+clang
+    compiler: v+clang
     version: latest
     include:
-    build: v -prod -gc boehm_full -cc "clang-13 -march=broadwell" -stats -showcc -no-rsp app.v
+    build: v -prod -autofree -cc "clang-13 -march=broadwell" -stats -showcc -no-rsp app.v
     after_build:
       - mv app out
     out_dir: out
     run_cmd: app
     allow_failure: true
   - os: linux
-    compiler: v+gc+zig
+    compiler: v+zig
     version: latest
     include:
-    build: v -prod -gc boehm_full -cc "zig cc -march=broadwell" -stats -showcc -no-rsp app.v
+    build: v -prod -autofree -cc "zig cc -march=broadwell" -stats -showcc -no-rsp app.v
     after_build:
       - mv app out
     out_dir: out

@@ -18,6 +18,8 @@ problems:
         repeat: 5
   - name: binarytrees
     unittests:
+      - input: 6
+        output: 6_out
       - input: 10
         output: 10_out
     tests:
