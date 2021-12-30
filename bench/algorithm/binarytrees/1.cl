@@ -29,43 +29,6 @@
   (cond ((car node) (the uint (+ 1 (check-node (car node)) (check-node (cdr node)))))
         (t 1)))
 
-(defun loop-depths-async (max-depth)
-  (declare (fixnum max-depth))
-  (labels ((check-node (node)
-             (declare (type list node))
-             (cond ((car node) (the uint (+ 1 (check-node (car node))
-                                              (check-node (cdr node)))))
-                   (t 1)))
-           (check-trees-of-depth (depth max-depth)
-             (declare (uint depth max-depth))
-             (loop with iterations of-type uint = (ash 1 (+ max-depth min-depth (- depth)))
-                   for i of-type uint from 1 upto iterations
-                   sum (check-node (build-tree depth))
-                     into result of-type uint
-                   finally (return (format nil "~d~c trees of depth ~d~c check: ~d~%"
-                                           iterations #\Tab depth #\Tab result)))))
-    (declare (inline check-node check-trees-of-depth))
-    (let* ((tasks (sb-concurrency:make-queue
-                   :initial-contents
-                   (loop for depth from min-depth by 2 upto max-depth
-                         collect depth)))
-           (outputs (sb-concurrency:make-queue))
-           (threads
-             (loop for i of-type fixnum from 1 to num-workers
-                   collect (sb-thread:make-thread
-                            #'(lambda ()
-                                (loop as task = (sb-concurrency:dequeue tasks)
-                                      while task
-                                      do (sb-concurrency:enqueue
-                                          (cons task
-                                                (check-trees-of-depth task max-depth))
-                                          outputs)))))))
-      (mapc #'sb-thread:join-thread threads)
-      (let ((results (sort (sb-concurrency:list-queue-contents outputs)
-                           #'< :key #'car)))
-        (loop for (k . v) in results
-              do (format t "~a" v))))))
-
 (declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths (max-depth)
   (declare (type uint max-depth))
