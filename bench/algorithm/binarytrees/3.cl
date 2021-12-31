@@ -1,60 +1,56 @@
-(declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+;;;  Code cleanup and formating by Bela Pecsek
+;;;   * Local functions for speed
+;;;   * MV lookup to improce slot access speed
+;;;   * Some declaration improvement
+(declaim (optimize speed (safety 0) (space 0) (debug 0)))
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defmacro define-constant (name value &optional doc)
-  `(defconstant ,name (if (boundp ',name) (symbol-value ',name) ,value)
-     ,@(when doc (list doc))))
-  
-  (define-constant min-depth 4 "Minimal depth of the binary tree.")
-  (define-constant num-workers 4 "Number of concurrent workers.")
-  (deftype uint () '(unsigned-byte 62))
-  (deftype index () 'sb-int:index))
+(defconstant min-depth 4 "Minimal depth of the binary tree.")
+(deftype uint () '(unsigned-byte 31))
 
 (defclass node ()
-   (
-       (left :accessor left :initarg :left)
-       (right :accessor right :initarg :right)
-   )
-)
+   ((left  :type node :accessor left  :initarg :left)
+    (right :type node :accessor right :initarg :right)))
 
-(defmethod check-node ((n node))
-    (if (null (left n)) 
-        1 
-        (+ 1 (check-node (left n)) (check-node (right n)))
-    )
-)
+(declaim (maybe-inline make-node build-tree values-for-node check-node))
+(defun make-node (left right)
+  (declare (type (or node null) left right))
+  (make-instance 'node :left left :right right))
 
+(defun values-for-node (node)
+  (declare (type (or node null) node))
+  (values (slot-value node 'left) (slot-value node 'right)))
+
+(defun check-node (node)
+  (declare (type node node))
+  (multiple-value-bind (l r) (values-for-node node)
+    (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
+          (t 1))))
+
+(declaim (ftype (function (uint) node) build-tree))
 (defun build-tree (depth)
-    (if (zerop depth) 
-        (make-instance 'node 
-                        :left nil
-                        :right nil
-        )
-        (make-instance 'node 
-                        :left (build-tree (- depth 1))
-                        :right (build-tree (- depth 1))
-        )
-    )
-)
+  (declare (type uint depth))
+  (cond ((zerop depth) (make-node nil nil))
+        (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
 
 (declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths (max-depth)
-  (declare (type uint max-depth)
-	   (optimize (speed 1)))
-    (loop for depth of-type index from min-depth by 2 upto max-depth do
-        (let ((iterations (ash 1 (+ max-depth min-depth (- depth)))) (check 0))
-            (loop for i of-type uint from 1 upto iterations do
-                (setq check (+ check (check-node (build-tree depth))))
-            )
-            (            
-                format t "~D	 trees of depth ~D	 check: ~D~%"
-                    iterations
-                    depth
-                    check
-            )
-        )
-    )
-)
+  (declare (type uint max-depth))
+  (labels ((build-tree (depth)
+             (declare (type uint depth))
+             (cond ((zerop depth) (make-node nil nil))
+                   (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
+           (check-node (node)
+             (declare (type node node))
+             (multiple-value-bind (l r) (values-for-node node)
+               (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
+                     (t 1)))))
+    (declare (maybe-inline build-tree check-node))
+    (loop for depth of-type uint from min-depth by 2 upto max-depth do
+      (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
+            for i of-type uint from 1 upto iterations
+            sum (check-node (build-tree depth)) into result of-type uint
+            finally (return (format t "~D	 trees of depth ~D	 check: ~D~%"
+                                    iterations depth result))))))
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
@@ -66,8 +62,7 @@
     (format t "long lived tree of depth ~d~c check: ~d~%" n #\Tab
             (check-node long-lived-tree))))
 
-(defun main ()
-  (let ((n (parse-integer (or (car (last #+sbcl sb-ext:*posix-argv*
-                                         #+cmu  extensions:*command-line-strings*
-					 #+gcl  si::*command-args*)) "21"))))
+(declaim (ftype (function (&optional uint) null) main))
+(defun main (&optional n-supplied)
+  (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*)) "18")))))
     (binary-trees-upto-size n)))
