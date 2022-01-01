@@ -6,6 +6,7 @@
         "app"
         ;; http://www.sbcl.org/manual/#Function-sb_002dext-save_002dlisp_002dand_002ddie
         :purify t
+        :save-runtime-options t
         ;; :compression t
         ;; this is the main function:
         :toplevel #'main
