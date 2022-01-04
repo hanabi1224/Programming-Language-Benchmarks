@@ -11,17 +11,18 @@
 
 (declaim (ftype (function (uint31) (values uint31 &optional)) nsieve))
 (defun nsieve (limit)
-  "Compute a list of primes less than or equal to LIMIT."
+  "Compute the number of primes less than or equal to LIMIT."
   (if (< limit 2) 0
       (loop with len of-type uint31 = (+ (ash limit -1) (mod limit 2) -1)
             with sieve of-type simple-bit-vector = (make-array (1+ len) :element-type 'bit
                                                                         :initial-element 0)
-            for i below (ash (isqrt limit) -1)
+            for i of-type uint31 below (ash (isqrt limit) -1)
+            for offset of-type uint31 = (+ 3 (* 2 i (+ 3 i)))
+            for delta  of-type uint31 = (+ 3 (* 2 i))
             when (zerop (aref sieve i))
-              do (loop for j from (+ 3 (* 2 i (+ 3 i))) below len
-                       by (+ 3 (* 2 i))
+              do (loop for j of-type uint31 from offset below len by delta
                        do (setf (aref sieve j) 1))
-            finally (return (1+ (loop for i below len
+            finally (return (1+ (loop for i of-type uint31 below len
                                       count (zerop (aref sieve i))))))))
 
 (declaim (ftype (function (&optional (integer 0 16)) null) main))
