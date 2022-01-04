@@ -4,19 +4,25 @@
 ;;; - improved by Bela Pecsek, 2021-09-13
 ;;; - improvement in type declarations by Bela Pecsek, 2021-09-15
 ;;;   resulting in further 10-12% speed gain
+;;; - re-write nsieve based on an algorithm resambling Robert Smith' used in factorial.lisp
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
 (deftype uint31 () '(unsigned-byte 31))
 
 (declaim (ftype (function (uint31) (values uint31 &optional)) nsieve))
-(defun nsieve (m)
-  (let ((a (make-array m :element-type 'bit :initial-element 0)))
-    (declare (type simple-bit-vector a))
-    (loop for i from 2 below m
-          when (zerop (sbit a i))
-            do (loop for j from (ash i 1) below m by i
-                     do (setf (sbit a j) 1))
-            and count t)))
+(defun nsieve (limit)
+  "Compute a list of primes less than or equal to LIMIT."
+  (if (< limit 2) 0
+      (loop with len of-type uint31 = (+ (ash limit -1) (mod limit 2) -1)
+            with sieve of-type simple-bit-vector = (make-array (1+ len) :element-type 'bit
+                                                                        :initial-element 0)
+            for i below (ash (isqrt limit) -1)
+            when (zerop (aref sieve i))
+              do (loop for j from (+ 3 (* 2 i (+ 3 i))) below len
+                       by (+ 3 (* 2 i))
+                       do (setf (aref sieve j) 1))
+            finally (return (1+ (loop for i below len
+                                      count (zerop (aref sieve i))))))))
 
 (declaim (ftype (function (&optional (integer 0 16)) null) main))
 (defun main (&optional n-supplied)
