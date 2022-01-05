@@ -29,6 +29,6 @@
 (defun main (&optional n-supplied)
   (let* ((n (or n-supplied (parse-integer (car (last sb-ext:*posix-argv*))))))
     (declare ((integer 0 16) n))
-    (loop for k of-type (integer 0 16) from n downto (- n 2) 
-          for m = (* 10000 (expt 2 k))
+    (loop for k below 3
+          for m = (ash 10000 (- n k))
           do (format t "Primes up to~T~8<~d~>~T~8<~d~>~%" m (nsieve m)))))
