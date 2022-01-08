@@ -47,7 +47,7 @@
                (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
                      (t 1)))))
     (declare (inline build-tree check-node))
-    (loop for depth of-type uint from 1 by 2 upto max-depth do
+    (loop for depth of-type uint from min-depth by 2 upto max-depth do
       (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
             for i of-type uint from 1 upto iterations
             sum (check-node (build-tree depth)) into result of-type uint
