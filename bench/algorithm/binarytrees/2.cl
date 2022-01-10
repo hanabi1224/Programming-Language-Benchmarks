@@ -4,6 +4,7 @@
 ;;; contributed by Roman Kashitsyn
 ;;; added eval-when by Bela Pecsek to run in container
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require :sb-concurrency)
   (defun get-thread-count ()
@@ -16,8 +17,8 @@
 (declaim (ftype (function (uint) list) build-tree)
          (maybe-inline build-tree check-node))
 (defun build-tree (depth)
-    "Build a binary tree of the specified DEPTH. Leaves are represented by NIL,
-     branches are represented by a cons cell."
+  "Build a binary tree of the specified DEPTH. Leaves are represented by NIL,
+   branches are represented by a cons cell."
   (declare (type uint depth))
   (cond ((zerop depth) (cons nil nil))
         (t (cons (build-tree (- depth 1)) (build-tree (- depth 1))))))
@@ -28,12 +29,17 @@
   (cond ((car node) (the uint (+ 1 (check-node (car node)) (check-node (cdr node)))))
         (t 1)))
 
+(declaim (ftype (function (uint) null) loop-depths-async))
 (defun loop-depths-async (max-depth)
   (declare (fixnum max-depth))
-  (labels ((check-node (node)
+  (labels ((build-tree (depth)
+             (declare (type uint depth))
+             (cond ((zerop depth) (cons nil nil))
+                   (t (cons (build-tree (- depth 1)) (build-tree (- depth 1))))))
+           (check-node (node)
              (declare (type list node))
              (cond ((car node) (the uint (+ 1 (check-node (car node))
-                                              (check-node (cdr node)))))
+                                            (check-node (cdr node)))))
                    (t 1)))
            (check-trees-of-depth (depth max-depth)
              (declare (uint depth max-depth))
@@ -43,7 +49,7 @@
                    summing (check-node (build-tree depth)) into result of-type uint
                    finally (return (format nil "~d~c trees of depth ~d~c check: ~d~%"
                                            iterations #\Tab depth #\Tab result)))))
-    (declare (inline check-node check-trees-of-depth))
+    (declare (inline build-tree check-node check-trees-of-depth))
     (let* ((tasks (sb-concurrency:make-queue
                    :initial-contents (loop for depth from min-depth by 2 upto max-depth
                                            collect depth)))
