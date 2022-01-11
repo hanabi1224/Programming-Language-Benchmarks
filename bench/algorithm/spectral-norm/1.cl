@@ -21,38 +21,38 @@
 ;;      * double-float values are always positive
 ;;      * threading slightly modified - 2021-09-19
 ;;      * eval-A inlines function is optimised for ultimate speed - 2021-12-27
+;;      * Simplified eval-A-times-u code using serapeum with-boolean compile
+;;        time macro and using the -> macro for function type declarations
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (ql:quickload :serapeum :silent t)
+  (use-package :serapeum))
 
 (deftype uint31   () '(unsigned-byte 31))
 (deftype d+       () '(double-float 0d0))
 (deftype array-d+ () '(simple-array d+ (*)))
 
-(declaim (ftype (function (uint31 uint31) uint31) eval-A)
-         (inline eval-A))
-(defun eval-A (i j)
-  (let ((i+1 (1+ i)))
-    (the uint31 (+ (the uint31 (ash (the uint31 (* (the uint31 (+ i j))
-                                                   (the uint31 (+ i+1 j)))) -1))
-                   i+1))))
+(defmacro eval-A (i j)
+  `(let ((i+1 (1+ ,i)))
+     (+ (ash (the uint31 (* (the uint31 (+ ,i ,j))
+                            (the uint31 (+ i+1 ,j)))) -1) i+1)))
 
-(declaim (ftype (function (array-d+ uint31 array-d+ uint31 uint31) null)
-                eval-A-times-u eval-At-times-u))
-(defun eval-A-times-u (u n Au start end)
-  (loop for i of-type uint31 from start below end do
-    (setf (aref Au i) (loop for j of-type uint31 below n
-                            summing (/ (aref u j) (eval-A i j)) of-type d+))))
-
-(defun eval-At-times-u (u n Au start end)
-  (loop for i of-type uint31 from start below end do
-    (setf (aref Au i) (loop for j of-type uint31 below n
-                            summing (/ (aref u j) (eval-A j i)) of-type d+))))
+(-> eval-a-times-u (boolean array-d+ uint31 array-d+ uint31 uint31) null)
+(defun eval-A-times-u (transpose u n Au start end)
+  (with-boolean (transpose)
+    (loop for i from start below end
+          do (setf (aref Au i)
+                   (loop for j below n
+                         sum (/ (aref u j) (if transpose (eval-A j i)
+                                               (eval-A i j))) of-type d+)))))
 
 #+sb-thread
 (defun get-thread-count ()
   (progn (define-alien-routine sysconf long (name int))
          (sysconf 84)))
 
-(declaim (ftype (function (uint31 uint31 function) null) execute-parallel))
+(-> execute-parallel (uint31 uint31 function) null)
 #+sb-thread
 (defun execute-parallel (start end function)
   (declare (optimize (speed 1)))
@@ -68,29 +68,30 @@
 (defun execute-parallel (start end function )
   (funcall function start end))
 
+(-> eval-AtA-times-u (array-d+ array-d+ array-d+ uint31 uint31 uint31) null)
 (defun eval-AtA-times-u (u AtAu v n start end)
   (execute-parallel start end
-                    (lambda (start end) (eval-A-times-u u n v start end)))
+                    (lambda (start end) (eval-A-times-u nil u n v start end)))
   (execute-parallel start end
-                    (lambda (start end) (eval-At-times-u v n AtAu start end))))
+                    (lambda (start end) (eval-A-times-u t v n AtAu start end))))
 
-(declaim (ftype (function (&optional uint31) null) main))
+
+(-> spectralnorm (uint31) null)
 (defun main (&optional n-supplied)
-  (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
-                                  "5000")))))
-    (or (typep (* (- (* 2 n) 1) (- (* 2 n) 2)) 'fixnum)
-        (error "The supplied value of 'n' breaks the optimizations in EVAL-A"))
-    (let ((u   (make-array n :element-type 'd+ :initial-element 1d0))
-          (v   (make-array n :element-type 'd+))
-          (tmp (make-array n :element-type 'd+)))
-      (declare (type array-d+ u v tmp))
-      (loop repeat 10 do
-        (eval-AtA-times-u u v tmp n 0 n)
-        (eval-AtA-times-u v u tmp n 0 n))
-      (let ((vBv 0d0)
-            (vv  0d0))
-        (loop for i of-type uint31 below n do
-          (let ((vi (aref v i)))
-            (incf vBv (* (the d+ (aref u i)) (the d+ vi)))
-            (incf vv  (* (the d+ vi) (the d+ vi)))))
-        (format t "~11,9F~%" (sqrt (the d+ (/ (the d+ vBv) (the d+ vv)))))))))
+  (let* ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
+                                             "8000"))))
+        (u   (make-array n :element-type 'd+ :initial-element 1d0))
+        (v   (make-array n :element-type 'd+))
+        (tmp (make-array n :element-type 'd+)))
+    (declare (type array-d+ u v tmp))
+    (loop repeat 10 do
+      (eval-AtA-times-u u v tmp n 0 n)
+      (eval-AtA-times-u v u tmp n 0 n))
+    (loop with uv of-type d+ = 0d0
+          with vv of-type  d+ = 0d0
+          for i below n
+          for vi of-type d+ = (aref v i)
+          do (incf uv (* (the d+ (aref u i)) (the d+ vi)))
+             (incf vv  (* (the d+ vi) (the d+ vi)))
+          finally (format t "~11,9F~%" (sqrt (the d+ (/ (the d+ uv)
+                                                        (the d+ vv))))))))
