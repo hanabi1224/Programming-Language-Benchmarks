@@ -13,6 +13,7 @@ problems:
   - name: nbody
     source:
       - 3.rs
+      - 4.rs
   - name: spectral-norm
     source:
       - 8.rs
