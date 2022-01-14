@@ -3,6 +3,10 @@
   dune build
   valgrind --tool=callgrind --callgrind-out-file=callgrind.out --  ./_build/default/app.exe 6
   gprof2dot -f callgrind callgrind.out | dot -Tsvg -o perf.svg
+
+  According to https://ocaml.org/manual/intfc.html#ss:c-tuples-and-records and https://ocaml.org/api/Gc.html
+  Records are also represented by zero-tagged blocks, only the tree roots in this implementation
+  are unboxed and GC footprinted
 *)
 
 type node = { left : node option; right : node option }

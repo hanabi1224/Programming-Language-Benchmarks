@@ -49,11 +49,21 @@ environments:
     out_dir: out
     run_cmd: ruby -W0 app.rb
   - os: linux
-    compiler: ruby/jit
+    compiler: ruby/mjit
     version: latest
     docker:
     include:
     runtime_included: false
     build: cp app.rb out
     out_dir: out
-    run_cmd: ruby --jit -W0 app.rb
+    run_cmd: ruby --mjit -W0 app.rb
+    force_check_child_processes: true
+  - os: linux
+    compiler: ruby/yjit
+    version: latest
+    docker:
+    include:
+    runtime_included: false
+    build: cp app.rb out
+    out_dir: out
+    run_cmd: ruby --yjit -W0 app.rb
