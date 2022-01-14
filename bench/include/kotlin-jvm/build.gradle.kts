@@ -9,8 +9,8 @@ plugins {
     // kotlin("plugin.spring").version(kotlinVersion)
     // id("org.springframework.boot").version("2.5.6")
     // id("io.spring.dependency-management").version("1.0.11.RELEASE")
-    id("com.github.johnrengelman.shadow").version("7.1.1")
-    id("com.github.ben-manes.versions").version("0.39.0")
+    id("com.github.johnrengelman.shadow").version("7.1.2")
+    id("com.github.ben-manes.versions").version("0.41.0")
     java
     application
 }
