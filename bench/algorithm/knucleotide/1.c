@@ -84,7 +84,7 @@ void destroy_Hash_Table(hash_table * hash_Table_To_Destroy){
 
 // Grow hash_Table_To_Grow by quadrupling it in size. A new elements array is created, the existing elements are
 // inserted into the new elements array, the old elements array is deleted, and the properties for hash_Table_To_Grow
-// are updated. 
+// are updated.
 void grow_Hash_Table(hash_table * hash_Table_To_Grow){
 
 	intnative_t old_Hash_Table_Size=hash_Table_To_Grow->size;
@@ -281,11 +281,14 @@ void generate_Count_For_Oligonucleotide(char * polynucleotide, intnative_t polyn
 }
 
 
-int main(){
+int main(int argc, char * argv[]){
 	char buffer[4096];
 
+	// Open the file that was specified as a command line argument.
+	FILE * input_File=fopen(argv[1], "r");
+
 	// Find the start of the third polynucleotide.
-	while(fgets(buffer, sizeof(buffer), stdin) && memcmp(">THREE", buffer, sizeof(">THREE")-1));
+	while(fgets(buffer, sizeof(buffer), input_File) && memcmp(">THREE", buffer, sizeof(">THREE")-1));
 
 	// Start with 64 KiB of storage for reading in the polynucleotide and grow geometrically.
 	intnative_t polynucleotide_Capacity=65536;
@@ -293,7 +296,7 @@ int main(){
 	char * polynucleotide=malloc(polynucleotide_Capacity);
 
 	// Start reading and encoding the third polynucleotide.
-	while(fgets(buffer, sizeof(buffer), stdin) && buffer[0]!='>'){
+	while(fgets(buffer, sizeof(buffer), input_File) && buffer[0]!='>'){
 		for(intnative_t i=0; buffer[i]!='\0'; i++)
 			if(buffer[i]!='\n')
 				polynucleotide[polynucleotide_Length++]=code_For_Nucleotide(buffer[i]);
