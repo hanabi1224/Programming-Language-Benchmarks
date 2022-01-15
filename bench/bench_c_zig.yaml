@@ -6,6 +6,12 @@ problems:
   # - name: binarytrees
   #   source:
   #     - 2.c
+  # This is commented out due to some apparent linking issues with "zig cc" when
+  # using OpenMP in a program. It should be OK to uncomment this once those
+  # issues are resolved.
+  #- name: knucleotide
+  #  source:
+  #    - 1.c
   - name: nbody
     source:
       - 2.c
