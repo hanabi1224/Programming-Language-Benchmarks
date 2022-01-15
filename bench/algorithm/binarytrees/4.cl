@@ -17,7 +17,7 @@
    ((left  :type node :accessor left  :initarg :left)
     (right :type node :accessor right :initarg :right)))
 
-(declaim (maybe-inline make-node build-tree values-for-node check-node))
+(declaim (maybe-inline make-node values-for-node check-node build-tree ))
 (defun make-node (left right)
   (declare (type (or node null) left right))
   (make-instance 'node :left left :right right))
@@ -59,20 +59,18 @@
                                          iterations #\Tab depth #\Tab result)))))
     (declare (inline build-tree check-node check-trees-of-depth))
     (let* ((tasks (sb-concurrency:make-queue
-                   :initial-contents
-                   (loop for depth from min-depth by 2 upto max-depth
-                         collect depth)))
+                   :initial-contents (loop for depth from min-depth by 2 upto max-depth
+                                           collect depth)))
            (outputs (sb-concurrency:make-queue))
-           (threads
-             (loop for i of-type fixnum from 1 to num-workers
-                   collect (sb-thread:make-thread
-                            #'(lambda ()
-                                (loop as task = (sb-concurrency:dequeue tasks)
-                                      while task
-                                      do (sb-concurrency:enqueue
-                                          (cons task
-                                                (check-trees-of-depth task max-depth))
-                                          outputs)))))))
+           (threads (loop for i of-type fixnum from 1 to num-workers
+                          collect (sb-thread:make-thread
+                                   #'(lambda ()
+                                       (loop as task = (sb-concurrency:dequeue tasks)
+                                             while task
+                                             do (sb-concurrency:enqueue
+                                                 (cons task
+                                                       (check-trees-of-depth task max-depth))
+                                                 outputs)))))))
       (mapc #'sb-thread:join-thread threads)
       (let ((results (sort (sb-concurrency:list-queue-contents outputs)
                            #'< :key #'car)))
@@ -81,7 +79,7 @@
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
-  (declare (type (integer 0 255) n))
+  (declare (type uint n))
   (format t "stretch tree of depth ~d~c check: ~d~%" (1+ n) #\Tab
           (check-node (build-tree (1+ n))))
   (let ((long-lived-tree (build-tree n)))

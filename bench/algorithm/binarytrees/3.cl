@@ -11,7 +11,7 @@
    ((left  :type node :accessor left  :initarg :left)
     (right :type node :accessor right :initarg :right)))
 
-(declaim (maybe-inline make-node build-tree values-for-node check-node))
+(declaim (maybe-inline make-node values-for-node check-node build-tree))
 (defun make-node (left right)
   (declare (type (or node null) left right))
   (make-instance 'node :left left :right right))
@@ -44,7 +44,7 @@
              (multiple-value-bind (l r) (values-for-node node)
                (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
                      (t 1)))))
-    (declare (maybe-inline build-tree check-node))
+    (declare (inline build-tree check-node))
     (loop for depth of-type uint from min-depth by 2 upto max-depth do
       (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
             for i of-type uint from 1 upto iterations
@@ -54,7 +54,7 @@
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
-  (declare (type (integer 0 255) n))
+  (declare (type uint n))
   (format t "stretch tree of depth ~d~c check: ~d~%" (1+ n) #\Tab
           (check-node (build-tree (1+ n))))
   (let ((long-lived-tree (build-tree n)))

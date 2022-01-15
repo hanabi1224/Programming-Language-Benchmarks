@@ -24,6 +24,7 @@
 
 (declaim (maybe-inline values-for-node build-tree check-node loop-depths-async))
 (defun values-for-node (node)
+  (declare (type node node))
   (values (left node) (right node)))
 
 (declaim (ftype (function (uint) node) build-tree))
@@ -34,17 +35,20 @@
 
 (declaim (ftype (function (node) uint) check-node))
 (defun check-node (node)
+  (declare (type node node))
   (multiple-value-bind (l r) (values-for-node node)
     (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
           (t 1))))
 
+(declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths-async (max-depth)
-  (declare (type fixnum max-depth))
+  (declare (type uint max-depth))
   (labels ((build-tree (depth)
              (declare (type uint depth))
              (cond ((zerop depth) (make-node nil nil))
                    (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
            (check-node (node)
+             (declare (type node node))
              (multiple-value-bind (l r) (values-for-node node)
                (cond (l (+ 1 (check-node l) (check-node r))) 
                      (t 1))))
@@ -78,7 +82,7 @@
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
-  (declare (type (integer 0 255) n))
+  (declare (type uint n))
   (format t "stretch tree of depth ~d~c check: ~d~%" (1+ n) #\Tab
           (check-node (build-tree (1+ n))))
   (let ((long-lived-tree (build-tree n)))
