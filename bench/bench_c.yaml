@@ -6,6 +6,9 @@ problems:
   # - name: binarytrees
   #   source:
   #     - 2.c
+  - name: knucleotide
+    source:
+      - 1.c
   - name: nbody
     source:
       - 2.c
