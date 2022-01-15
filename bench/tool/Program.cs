@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NLog;
@@ -518,6 +519,8 @@ namespace BenchTool
                 Exception error = null;
                 for (int retry = 0; retry < 3; retry++)
                 {
+                    using var cts = new CancellationTokenSource();
+                    cts.CancelAfter(TimeSpan.FromSeconds(60));
                     ProcessUtils.RunProcess(
                         runPsi,
                         printOnConsole: false,
@@ -525,7 +528,7 @@ namespace BenchTool
                         out string stdOut,
                         out string stdErr,
                         env: langEnvConfig.RunCmdEnv,
-                        default);
+                        token: cts.Token);
                     if (StringComparer.Ordinal.Equals(expectedOutput.TrimEnd(), stdOut.TrimEnd()))
                     {
                         Logger.Info($"Test Passed: {buildId}");
