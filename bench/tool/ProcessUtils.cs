@@ -557,9 +557,10 @@ namespace BenchTool
 
                 try
                 {
+                    await p.WaitForExitAsync(token).ConfigureAwait(false);
                     if (!asyncRead && p.StartInfo.RedirectStandardOutput)
                     {
-                        string outRm = p.StandardOutput.ReadToEnd();
+                        string outRm = await p.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
                         if (!outRm.IsEmptyOrWhiteSpace())
                         {
                             stdOutBuilder?.Append(outRm);
@@ -569,8 +570,6 @@ namespace BenchTool
                             }
                         }
                     }
-
-                    await p.WaitForExitAsync(token).ConfigureAwait(false);
                     return p.ExitCode;
                 }
                 catch (Exception e)
