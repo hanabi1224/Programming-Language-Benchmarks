@@ -11,9 +11,6 @@ problems:
       # - 4.cl
       - 5.cl
       - 6.cl
-  - name: knucleotide
-    source:
-      - 1.c
   - name: fannkuch-redux
     source:
       - 1.cl
