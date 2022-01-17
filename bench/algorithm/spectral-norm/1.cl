@@ -38,6 +38,7 @@
      (+ (ash (the uint31 (* (the uint31 (+ ,i ,j))
                             (the uint31 (+ i+1 ,j)))) -1) i+1)))
 
+
 (-> eval-a-times-u (boolean array-d+ uint31 array-d+ uint31 uint31) null)
 (defun eval-A-times-u (transpose u n Au start end)
   (with-boolean (transpose)
@@ -45,7 +46,7 @@
           do (setf (aref Au i)
                    (loop for j below n
                          sum (/ (aref u j) (if transpose (eval-A j i)
-                                               (eval-A i j))) of-type d+)))))
+                                                 (eval-A i j))) of-type d+)))))
 
 #+sb-thread
 (defun get-thread-count ()

@@ -43,8 +43,8 @@
   (serapeum:with-boolean (transpose)
     (loop with src-0 of-type f64 = (f64-aref src 0)
           for i of-type index from begin below end by 8
-          do (multiple-value-bind (eA0 eA1)
-                 (if transpose (eval-A (f32.8 0) (f32.8+ i (make-f32.8 0 1 2 3 4 5 6 7)))
+          do (multiple-value-bind (ea0 ea1)
+                 (if transpose (eval-a (f32.8 0) (f32.8+ i (make-f32.8 0 1 2 3 4 5 6 7)))
                                (eval-A (f32.8+ i (make-f32.8 0 1 2 3 4 5 6 7)) (f32.8 0)))
                (let* ((ti0  (f64.4+ i (if transpose (make-f64.4 1 2 3 4)
                                                     (make-f64.4 0 1 2 3))))
