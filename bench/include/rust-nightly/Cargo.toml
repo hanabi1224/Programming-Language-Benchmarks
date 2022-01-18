@@ -9,7 +9,7 @@ default = []
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 anyhow = "1"
-bitvec = "0"
+bitvec = "1"
 generic-array = "0"
 glam = "0"
 ibig = "0"
@@ -28,6 +28,7 @@ static-rc = "0"
 typed-arena = "2"
 
 core_simd = {git = "https://github.com/rust-lang/portable-simd"}
+std_float = {git = "https://github.com/rust-lang/portable-simd"}
 
 [profile.release]
 codegen-units = 1

@@ -20,7 +20,7 @@ macro_rules! planet {
         Planet {
             position: f64x4::from_array([$x, $y, $z, 0.0]),
             velocity: f64x4::from_array([$vx, $vy, $vz, 0.0]),
-            mass_ratio: $mass_ratio,
+            mass_ratio: f64x4::splat($mass_ratio),
             mass: $mass_ratio * SOLAR_MASS,
             mass_half: $mass_ratio * SOLAR_MASS * 0.5,
         }
@@ -76,13 +76,14 @@ const BODIES: [Planet; N_BODIES] = [
 struct Planet {
     position: f64x4,
     velocity: f64x4,
-    mass_ratio: f64,
+    mass_ratio: f64x4,
     mass: f64,
     mass_half: f64,
 }
 
 #[inline]
 fn advance(bodies: &mut [Planet; N_BODIES], dt: f64, steps: i32) {
+    let dt_simd = f64x4::splat(dt);
     for _ in 0..steps {
         for i in 0..(N_BODIES - 1) {
             let (bi_position, mut bi_velocity, bi_mass) =
@@ -92,17 +93,17 @@ fn advance(bodies: &mut [Planet; N_BODIES], dt: f64, steps: i32) {
                 let mut d = bi_position - bj.position;
                 let d2 = dot(d);
                 let mag = dt / (d2 * d2.sqrt());
-                d *= mag;
-                bj.velocity += d * bi_mass;
-                bi_velocity -= d * bj.mass;
+                d *= f64x4::splat(mag);
+                bj.velocity += d * f64x4::splat(bi_mass);
+                bi_velocity -= d * f64x4::splat(bj.mass);
             }
             let bi = &mut bodies[i];
             bi.velocity = bi_velocity;
-            bi.position += bi_velocity * dt;
+            bi.position += bi_velocity * dt_simd;
         }
         // advance the last one
         let last = &mut bodies[N_BODIES - 1];
-        last.position += last.velocity * dt;
+        last.position += last.velocity * dt_simd;
     }
 }
 
