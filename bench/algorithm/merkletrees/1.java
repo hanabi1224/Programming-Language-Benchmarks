@@ -28,143 +28,75 @@ class app {
         TreeNode stretchTree = TreeNode.make(stretchDepth);
         stretchTree.calHash();
         System.out.println("stretch tree of depth " + stretchDepth + "\t root hash: " + stretchTree.getHash()
-                + " check
-    
+                + " check: " + stretchTree.check());
 
-    
-            for (int depth =  minDepth; depth <= maxDepth; depth += 2) { 
+        TreeNode longLivedTree = TreeNode.make(maxDepth);
 
-                var sum 
-                for (int
-                    Tree
-                    tree.calHash();
-                      sum += tree.getHash();
-                  }
-                  System.out.println(iterations 
-         
-        
-     
+        for (int depth = minDepth; depth <= maxDepth; depth += 2) {
+            int iterations = 1 << (maxDepth - depth + minDepth);
+            var sum = 0;
+            for (int i = 1; i <= iterations; i++) {
+                TreeNode tree = TreeNode.make(depth);
+                tree.calHash();
+                sum += tree.getHash();
+            }
+            System.out.println(iterations + "\t trees of depth " + depth + "\t root hash sum: " + sum);
+        }
 
-                  "long lived tree o
-                            + longLivedTr
+        longLivedTree.calHash();
+        System.out.println(
+                "long lived tree of depth " + maxDepth + "\t root hash: " + longLivedTree.getHash() + " check: "
+                        + longLivedTree.check());
+    }
 
-        
-            ivate static class TreeNode {
-                private Long value = null, hash
-                private TreeNode left = null, r
-                
+    private static class TreeNode {
+        private Long value = null, hash = null;
+        private TreeNode left = null, right = null;
 
-                    if (depth > 0) {
-                        return new TreeNode(null, make(depth
+        public static TreeNode make(int depth) {
+            if (depth > 0) {
+                return new TreeNode(null, make(depth - 1), make(depth - 1));
+            } else {
+                return new TreeNode(1L, null, null);
+            }
+        }
 
-                        return new TreeNode(1L, null, null
-                    }
+        public TreeNode(Long value, TreeNode left, TreeNode right) {
+            this.value = value;
+            this.left = left;
+            this.right = right;
+        }
+
+        public long getHash() {
+            if (hash != null) {
+                return hash;
+            }
+            return -1;
+        }
+
+        public void calHash() {
+            if (hash == null) {
+                if (value != null) {
+                    hash = value;
+                } else if (left != null && right != null) {
+                    left.calHash();
+                    right.calHash();
+                    hash = left.getHash() + right.getHash();
                 }
+            }
+        }
 
-                public TreeNode(Long value, TreeNode left,
-                    this.value = value;
-                    this.left = left;
-             
-         
-
-            public long getHash() {
-                  if (hash != null) {
-                      return hash;
-                  }
-         
-     
-
-          public void calHas
-                if (hash == null) {
-                    if 
-
-                    } else if (left != null && ri
-                    
-                          hash = lef
-                      }
-                            
-                            
-
-              public boolean check() {
-                    if (hash == null) {
-                        return false;
-                    } else {
-
-                            return true;
-                        } else if (left != null && right != null) 
-             
-         
-                 
-              }
+        public boolean check() {
+            if (hash == null) {
+                return false;
+            } else {
+                if (value != null) {
+                    return true;
+                } else if (left != null && right != null) {
+                    return left.check() && right.check();
+                }
+                return false;
+            }
         }
     }
 }
-    
-    
-    
-
-    
-
-    
-    
-
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-
-    
-        
-        
-        
-    
-
-    
-        
-        
-        
-        
-    
