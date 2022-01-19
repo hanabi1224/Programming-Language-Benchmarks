@@ -21,7 +21,7 @@
    branches are represented by a cons cell."
   (declare (type uint depth))
   (cond ((zerop depth) (cons nil nil))
-        (t (cons (build-tree (- depth 1)) (build-tree (- depth 1))))))
+        (t (cons (build-tree (1- depth)) (build-tree (1- depth))))))
 
 (declaim (ftype (function (list) uint) check-node))
 (defun check-node (node)
@@ -35,11 +35,11 @@
   (labels ((build-tree (depth)
              (declare (type uint depth))
              (cond ((zerop depth) (cons nil nil))
-                   (t (cons (build-tree (- depth 1)) (build-tree (- depth 1))))))
+                   (t (cons (build-tree (1- depth)) (build-tree (1- depth))))))
            (check-node (node)
              (declare (type list node))
              (cond ((car node) (the uint (+ 1 (check-node (car node))
-                                            (check-node (cdr node)))))
+                                              (check-node (cdr node)))))
                    (t 1)))
            (check-trees-of-depth (depth max-depth)
              (declare (uint depth max-depth))

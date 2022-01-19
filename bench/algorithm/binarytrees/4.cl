@@ -36,7 +36,7 @@
 (defun build-tree (depth)
   (declare (type uint depth))
   (cond ((zerop depth) (make-node nil nil))
-        (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
+        (t (make-node (build-tree (1- depth)) (build-tree (1- depth))))))
 
 (declaim (ftype (function (uint) null) loop-depths-async))
 (defun loop-depths-async (max-depth)
@@ -44,7 +44,7 @@
   (flet ((build-tree (depth)
            (declare (type uint depth))
            (cond ((zerop depth) (make-node nil nil))
-                 (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
+                 (t (make-node (build-tree (1- depth))(build-tree (1- depth))))))
          (check-node (node)
            (declare (type node node))
            (multiple-value-bind (l r) (values-for-node node)
@@ -61,21 +61,18 @@
     (let* ((tasks (sb-concurrency:make-queue
                    :initial-contents (loop for depth from min-depth by 2 upto max-depth
                                            collect depth)))
-           (outputs (sb-concurrency:make-queue))
-           (threads (loop for i of-type fixnum from 1 to num-workers
-                          collect (sb-thread:make-thread
-                                   #'(lambda ()
-                                       (loop as task = (sb-concurrency:dequeue tasks)
-                                             while task
-                                             do (sb-concurrency:enqueue
-                                                 (cons task
-                                                       (check-trees-of-depth task max-depth))
-                                                 outputs)))))))
-      (mapc #'sb-thread:join-thread threads)
-      (let ((results (sort (sb-concurrency:list-queue-contents outputs)
-                           #'< :key #'car)))
-        (loop for (k . v) in results
-              do (format t "~a" v))))))
+           (outputs (sb-concurrency:make-queue)))
+      (mapc #'sb-thread:join-thread
+            (loop for i of-type fixnum from 1 to num-workers
+                  collect (sb-thread:make-thread
+                           #'(lambda ()
+                               (loop as task = (sb-concurrency:dequeue tasks)
+                                     while task
+                                     do (sb-concurrency:enqueue
+                                         (cons task (check-trees-of-depth task max-depth))
+                                         outputs))))))
+      (loop for (k . v) in (sort (sb-concurrency:list-queue-contents outputs) #'< :key #'car)
+            do (format t "~a" v)))))
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)

@@ -25,7 +25,7 @@
 (defun build-tree (depth)
   (declare (type uint depth))
   (cond ((zerop depth) (make-node nil nil))
-        (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
+        (t (make-node (build-tree (1- depth)) (build-tree (1- depth))))))
 
 (declaim (ftype (function (node) uint) check-node))
 (defun check-node (node)
@@ -40,7 +40,7 @@
   (labels ((build-tree (depth)
              (declare (type uint depth))
              (cond ((zerop depth) (make-node nil nil))
-                   (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
+                   (t (make-node (build-tree (1- depth)) (build-tree (1- depth))))))
            (check-node (node)
              (declare (type node node))
              (multiple-value-bind (l r) (values-for-node node)
