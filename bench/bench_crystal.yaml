@@ -6,6 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 1.cr
+  - name: merkletrees
+    source:
+      - 1.cr
   - name: nbody
     source:
       - 1.cr

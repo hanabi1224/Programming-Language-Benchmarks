@@ -23,7 +23,7 @@ problems:
       - input: 10
         output: 10_out
     tests:
-      - input: 16
+      - input: 15
       - input: 18
   - name: merkletrees
     unittests:
@@ -32,8 +32,8 @@ problems:
       - input: 10
         output: 10_out
     tests:
-      - input: 16
-      - input: 18
+      - input: 15
+      - input: 17
   - name: nbody
     unittests:
       - input: 1000
