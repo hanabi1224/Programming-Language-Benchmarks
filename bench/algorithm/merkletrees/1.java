@@ -8,6 +8,7 @@
     - make in-place updates on every tree node after hash is calculated
     - use self-referencing binary tree data structure, array is not acceptable
     - no arena usage, every tree node needs to be either separately freed or GCed
+    - no multi-threading or multi-processing
     - check function ensures hash value of every tree node is calculated and updated
 
     ref: http://en.wikipedia.org/wiki/Merkle_tree

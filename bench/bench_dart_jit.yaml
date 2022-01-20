@@ -5,7 +5,7 @@ problems:
       - 1.dart
   - name: binarytrees
     source:
-      - 4.dart
+      - 1.dart
   - name: merkletrees
     source:
       - 1.dart

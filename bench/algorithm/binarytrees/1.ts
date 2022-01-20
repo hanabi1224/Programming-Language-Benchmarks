@@ -1,13 +1,5 @@
-/* The Computer Language Benchmarks Game
- * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
- *
- * contributed by François Pirsch
- * Based on the node.js program from Léo Sarrazin and Andrey Filatkin
- * Remove worker_threads usage by hanabi1224
-*/
-
 function main() {
-    const maxDepth = Math.max(6, +process.argv[2] || 0);
+    const maxDepth = Math.max(6, +Deno.args[0] || 0);
     const stretchDepth = maxDepth + 1;
     const stretchTree = createTree(stretchDepth)
     console.log(`stretch tree of depth ${stretchDepth}\t check: ${checksum(stretchTree)}`)
@@ -28,14 +20,14 @@ function main() {
     );
 }
 
-function checksum(node) {
+function checksum(node: any): number {
     if (!node.left) {
         return 1;
     }
     return 1 + checksum(node.left) + checksum(node.right);
 }
 
-function createTree(depth) {
+function createTree(depth: number): any {
     return depth-- > 0
         ? { left: createTree(depth), right: createTree(depth) }
         : { left: null, right: null };
