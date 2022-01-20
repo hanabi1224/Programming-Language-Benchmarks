@@ -1,4 +1,4 @@
-@safe:
+// @safe:
 import std;
 import std.bigint : BigInt;
 

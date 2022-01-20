@@ -95,7 +95,7 @@ const config: NuxtConfig = {
         langBenchResults.forEach((l2) => {
           if (l.lang !== l2.lang) {
             routes.push({
-              name: `${l.lang}-versus-${l2.lang}`,
+              name: `${l.lang}-vs-${l2.lang}`,
               path: `/${l.lang}-vs-${l2.lang}`,
               component: resolve(__dirname, 'components/LangMetaPage.vue'),
               meta: {

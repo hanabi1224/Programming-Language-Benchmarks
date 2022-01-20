@@ -57,7 +57,7 @@ problems:
       - 2.go
   - name: secp256k1
     source:
-      - 0.go
+      - 0-ffi.go
 compiler_version_command: go version
 compiler_version_regex:
 runtime_version_parameter:

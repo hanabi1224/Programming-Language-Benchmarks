@@ -26,7 +26,7 @@
         All {{ lang.langDisplay }} benchmarks
       </h1>
       <h1 v-if="other" class="text-3xl">
-        {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
+        {{ lang.langDisplay }} VS {{ other.langDisplay }} benchmarks
       </h1>
       <h1 v-if="problem" class="text-3xl">
         All {{ problem }} problem benchmarks
@@ -64,6 +64,21 @@
       <div v-if="cpuInfo" class="mt-5 text-xs">
         <label class="font-bold">CPU INFO:</label
         ><span class="italic">{{ cpuInfo }}</span>
+      </div>
+
+      <div v-if="cpuInfo" class="mt-5 text-xs">
+        <p class="italic">
+          * -m in a file name stands for multi-threading or multi-processing
+        </p>
+        <p class="italic">
+          * -ffi in a file name stands for non-stdlib
+          <a
+            href="http://en.wikipedia.org/wiki/Foreign_function_interface"
+            class="underline text-blue-500"
+            >FFI</a
+          >
+          usage
+        </p>
       </div>
 
       <div v-for="test in testOptions" :key="test">
