@@ -6,6 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 1.js
+  - name: merkletrees
+    source:
+      - 1.js
   - name: nbody
     source:
       - 6.js

@@ -6,6 +6,7 @@ problems:
   - name: binarytrees
     source:
       - 3.chpl
+      - 4.chpl
   - name: nbody
     source:
       - 2.chpl

@@ -1,0 +1,6 @@
+stretch tree of depth 11	 root hash: 2048 check: true
+1024	 trees of depth 4	 root hash sum: 16384
+256	 trees of depth 6	 root hash sum: 16384
+64	 trees of depth 8	 root hash sum: 16384
+16	 trees of depth 10	 root hash sum: 16384
+long lived tree of depth 10	 root hash: 1024 check: true
