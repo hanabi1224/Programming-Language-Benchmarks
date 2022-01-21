@@ -77,7 +77,7 @@
                (* 5.15138902046611451d-05 +solar-mass+)))
 
   (defparameter *sun* (make-body 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0d0 0d0 0.0d0
-			         +solar-mass+))
+                                 +solar-mass+))
   (defparameter *system* (list *sun* *jupiter* *saturn* *uranus* *neptune*)))
 
 ;; Helper functions
@@ -128,12 +128,12 @@
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
   (loop for (bi . rest) on system
-	with e of-type f64 = 0d0 do
+        with e of-type f64 = 0d0
           ;; Add the kinetic energy for each body.
-          (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
-          (dolist (bj rest)
-            (declare (type body bj))
-	    ;; Add the potential energy between this body and every other bodies
+        do (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
+           (dolist (bj rest)
+             (declare (type body bj))
+             ;; Add the potential energy between this body and every other bodies
             (f64-decf e (f64/ (f64* (mass bi) (mass bj))
                               (length_ (f64.4- (pos bi) (pos bj))))))
         finally (format t "~,9f~%" e)))
@@ -153,7 +153,7 @@
 (declaim (ftype (function (u32) null) nbody))
 (defun nbody (n-times)
   (let ((system *system*))
-    (offset-momentum system)         
+    (offset-momentum system)
     (energy system)                     ;; Output initial energy of the system
     (scale-bodies system +DT+)          ;; Scale bodies to use unity time step
     (advance system n-times)            ;; Advance system n times
