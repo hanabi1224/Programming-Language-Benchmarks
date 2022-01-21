@@ -41,7 +41,6 @@ problems:
       - input: 10000
         output: 10000_out
     tests:
-      - input: 100000
       - input: 500000
       - input: 5000000
   - name: spectral-norm
@@ -51,7 +50,6 @@ problems:
       # - input: 101
       #   output: 101_out
     tests:
-      - input: 1000
       - input: 4000
       - input: 8000
   - name: pidigits
@@ -61,7 +59,6 @@ problems:
       - input: 30
         output: 30_out
     tests:
-      - input: 1000
       - input: 4000
       - input: 8000
   - name: edigits
@@ -82,8 +79,8 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 1000
-      - input: 8000
+      - input: 2000
+      - input: 7000
   - name: fannkuch-redux
     unittests:
       - input: 7
@@ -165,7 +162,6 @@ problems:
       - input: 10000
         output: 10000_out
     tests:
-      - input: 500000
       - input: 1000000
       - input: 5000000
   - name: secp256k1
@@ -175,6 +171,5 @@ problems:
       - input: 10
         output: 10_out
     tests:
-      - input: 50
       - input: 500
-      - input: 5000
+      - input: 2000

@@ -2,11 +2,11 @@
    https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
 
    modified by Henco Appel
-   removed parallelization by hanabi1224
 */
 
 import java.io.*;
 import java.security.*;
+import java.util.concurrent.atomic.*;
 import java.util.stream.*;
 
 public final class app {
@@ -62,6 +62,7 @@ public final class app {
         int lineLen = (N - 1) / 8 + 1;
         byte[] data = new byte[N * lineLen];
         IntStream.range(0, N)
+                .parallel()
                 .forEach(
                         y -> {
                             double Ciby = y * invN - 1.0;

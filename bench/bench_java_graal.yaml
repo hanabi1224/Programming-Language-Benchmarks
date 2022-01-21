@@ -26,13 +26,14 @@ problems:
       - 4.java
   - name: knucleotide
     source:
-      - 3.java
+      - 3-m.java
   - name: regex-redux
     source:
       - 3.java
   - name: mandelbrot
     source:
       - 4.java
+      - 4-m.java
   - name: spectral-norm
     source:
       - 2.java

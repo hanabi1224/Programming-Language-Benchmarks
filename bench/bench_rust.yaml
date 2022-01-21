@@ -24,14 +24,16 @@ problems:
       - 7-m.rs
   - name: mandelbrot
     source:
+      - 8.rs
       - 8-m.rs
   - name: fasta
     source:
       - 1.rs
-      - 5.rs
+      - 5-m.rs
   - name: knucleotide
     source:
       - 8.rs
+      - 8-m.rs
   - name: regex-redux
     source:
       - 6.rs

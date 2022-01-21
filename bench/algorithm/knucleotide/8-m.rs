@@ -7,10 +7,11 @@
 // Switched to used Hashbrown and removed custom hash code.
 // Removed rayon and use threads directly
 // Copied the read_input function from k-nucleotide Rust #4
-// Removed parallelization
 
 use hashbrown::HashMap;
 use std::io::{BufRead, BufReader};
+use std::sync::Arc;
+use std::thread;
 
 type Map = HashMap<Code, u32>;
 
@@ -170,13 +171,22 @@ fn main() {
         Occ("GGTA"),
         Occ("GGT"),
     ];
-    let input = read_input();
+    let input = Arc::new(read_input());
+
+    // In reverse to spawn big tasks first
+    let results: Vec<_> = occs
+        .into_iter()
+        .map(|item| {
+            let input = input.clone();
+            thread::spawn(move || (item, gen_freq(&input, item.0.len())))
+        })
+        .collect();
 
     Freq(1).print(&gen_freq(&input, 1));
     Freq(2).print(&gen_freq(&input, 2));
 
-    for item in occs.into_iter().rev() {
-        let freq = gen_freq(&input, item.0.len());
+    for t in results.into_iter().rev() {
+        let (item, freq) = t.join().unwrap();
         item.print(&freq);
     }
 }
