@@ -23,6 +23,8 @@ type BenchResult = {
 
   compilerOptions?: string
 
+  par?: boolean
+
   // appveyorBuildId: string,
   githubRunId: string
   buildLog: {

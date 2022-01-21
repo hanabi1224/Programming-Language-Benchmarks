@@ -15,7 +15,6 @@ proc main() {
         maxDepth = max(minDepth + 2, n),   // the deepest normal tree
         strDepth = maxDepth + 1,           // the depth of the "stretch" tree
         depths = minDepth..maxDepth by 2;  // the range of depths to create
-  var stats: [depths] (int,int);           // stores statistics for the trees
 
   //
   // Create the short-lived "stretch" tree, checksum it, and print its stats.
@@ -35,22 +34,15 @@ proc main() {
   // to tasks.  At each depth, create the required trees, compute
   // their sums, and free them.
   //
-  forall depth in dynamic(depths) {
+  for depth in dynamic(depths) {
     const iterations = 2**(maxDepth - depth + minDepth);
     var sum = 0;
-
     for i in 1..iterations {
       const t = new Tree(depth);
       sum += t.sum();
     }
-    stats[depth] = (iterations, sum);
+    writeln(iterations, "\t trees of depth ", depth, "\t check: ", sum);
   }
-
-  //
-  // Print out the stats for the trees of varying depths.
-  //
-  for (depth, (numTrees, checksum)) in zip(depths, stats) do
-    writeln(numTrees, "\t trees of depth ", depth, "\t check: ", checksum);
 
   //
   // Checksum the long-lived tree, print its stats, and free it.

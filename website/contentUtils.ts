@@ -23,6 +23,7 @@ export function mergeLangBenchResults(
     .value()
   benchResults.forEach((i) => {
     i.compilerVersion = getRealShortCompilerVersion(i)
+    i.par = useParallelization(i)
   })
 
   const groupsByLang = _.chain(benchResults)
@@ -63,4 +64,11 @@ export function getRealShortCompilerVersion(i: BenchResult) {
   }
 
   return 'unknown'
+}
+
+export function useParallelization(i: BenchResult): boolean {
+  if (i.code.indexOf('-m.') > 0) {
+    return true
+  }
+  return i.timeMS * 1.5 <= i.cpuTimeMS
 }
