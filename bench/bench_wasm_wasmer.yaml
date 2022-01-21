@@ -7,6 +7,10 @@ problems:
     source:
       - 3.rs
       - 4.rs
+      - 5.rs
+  - name: merkletrees
+    source:
+      - 1.rs
   - name: nbody
     source:
       - 1.rs

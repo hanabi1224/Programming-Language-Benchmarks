@@ -3,18 +3,17 @@
 #
 # Contributed by Adam Beckmeyer. Based on code by Jarret Revels, Alex
 # Arslan, Michal Stransky, Jens Adam.
+# Remove multi-threading by hanabi1224
 
-using Distributed
-
-@everywhere struct Node
+struct Node
     l::Union{Node,Nothing}
     r::Union{Node,Nothing}
 end
 
-@everywhere make(n) =
+make(n) =
     n === 0 ? Node(nothing, nothing) : Node(make(n-1), make(n-1))
 
-@everywhere check(node) =
+check(node) =
     node.l === nothing ? 1 : 1 + check(node.l) + check(node.r)
 
 function binary_trees(io, n)
@@ -25,8 +24,9 @@ function binary_trees(io, n)
     d = 4
     while d <= n
         niter = 1 << (n - d + 4)
-        c = @distributed (+) for _ in 1:niter
-            check(make(d))
+        c = 0
+        for _ in 1:niter
+            c += check(make(d))
         end#for
         write(io, "$niter\t trees of depth $d\t check: $c\n")
         d += 2

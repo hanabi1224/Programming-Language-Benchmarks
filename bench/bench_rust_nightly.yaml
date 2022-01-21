@@ -5,7 +5,7 @@ problems:
       - 1.rs
   - name: mandelbrot
     source:
-      - 9.rs
+      - 9-m.rs
   - name: fasta
     source:
       - 1c.rs
@@ -16,7 +16,7 @@ problems:
       - 4.rs
   - name: spectral-norm
     source:
-      - 8.rs
+      - 8-m.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +nightly -V
 compiler_version_regex:

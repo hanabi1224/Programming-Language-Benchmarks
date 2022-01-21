@@ -7,6 +7,10 @@ problems:
     source:
       - 3.rs
       - 4.rs
+      - 5.rs
+  - name: merkletrees
+    source:
+      - 1.rs
   - name: nbody
     source:
       - 1.rs
@@ -15,12 +19,12 @@ problems:
   - name: spectral-norm
     source:
       - 2.rs
-      - 3.rs
-      - 5.rs
-      - 7.rs
+      - 3-m.rs
+      - 5-m.rs
+      - 7-m.rs
   - name: mandelbrot
     source:
-      - 8.rs
+      - 8-m.rs
   - name: fasta
     source:
       - 1.rs

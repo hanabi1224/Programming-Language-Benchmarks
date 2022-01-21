@@ -6,6 +6,10 @@ problems:
   - name: binarytrees
     source:
       - 1.ml
+  - name: merkletrees
+    source:
+      - 1.ml
+      - 2.ml
   - name: fannkuch-redux
     source:
       - 2.ml

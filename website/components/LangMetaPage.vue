@@ -26,7 +26,7 @@
         All {{ lang.langDisplay }} benchmarks
       </h1>
       <h1 v-if="other" class="text-3xl">
-        {{ lang.langDisplay }} Versus {{ other.langDisplay }} benchmarks
+        {{ lang.langDisplay }} VS {{ other.langDisplay }} benchmarks
       </h1>
       <h1 v-if="problem" class="text-3xl">
         All {{ problem }} problem benchmarks
@@ -64,6 +64,46 @@
       <div v-if="cpuInfo" class="mt-5 text-xs">
         <label class="font-bold">CPU INFO:</label
         ><span class="italic">{{ cpuInfo }}</span>
+      </div>
+
+      <div class="mt-5 text-xs">
+        <p class="italic">
+          * -m in a file name stands for multi-threading or multi-processing
+        </p>
+        <p class="italic">
+          * -ffi in a file name stands for non-stdlib
+          <a
+            href="http://en.wikipedia.org/wiki/Foreign_function_interface"
+            class="underline text-blue-500"
+            >FFI</a
+          >
+          usage
+        </p>
+      </div>
+
+      <div class="mt-5 text-xs">
+        <div class="form-check form-check-inline">
+          <input
+            v-model="show_st"
+            class="form-check-input inline-block"
+            type="checkbox"
+            style="vertical-align: bottom"
+          />
+          <label class="form-check-label inline-block text-gray-500"
+            >show numbers without parallelization</label
+          >
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            v-model="show_mt"
+            class="form-check-input inline-block"
+            type="checkbox"
+            style="vertical-align: bottom"
+          />
+          <label class="form-check-label inline-block text-gray-500"
+            >show numbers with parallelization</label
+          >
+        </div>
       </div>
 
       <div v-for="test in testOptions" :key="test">
@@ -124,7 +164,7 @@
                     :href="`https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/bench/algorithm/${test}/${i.code}`"
                     target="_blank"
                     class="underline text-blue-500"
-                    >{{ i.code }}</a
+                    >{{ getNormalizedCode(i) }}</a
                   >
                 </td>
                 <!-- <td class="text-right">{{ i.input }}</td> -->
@@ -219,6 +259,8 @@ Component.registerHooks(['head'])
 })
 export default class LangMetaPage extends Vue {
   isMenuOn = false
+  show_st = true
+  show_mt = true
   meta?: LangPageMeta
   problem?: string
   allProblems?: string[] = problems
@@ -345,7 +387,15 @@ export default class LangMetaPage extends Vue {
       )
     }
 
+    exp = exp.filter(
+      (i) => (!i.par && this.show_st) || (!!i.par && this.show_mt)
+    )
+
     return exp.value()
+  }
+
+  getNormalizedCode(i: BenchResult) {
+    return !i.code.includes('-') && i.par ? i.code.replace('.', '-m.') : i.code
   }
 
   @Watch('compilerSelected')

@@ -11,6 +11,7 @@
 
 use core_simd::f64x8;
 use rayon::prelude::*;
+use std_float::StdFloat;
 
 const MAX_ITER: usize = 50;
 const VLEN: usize = 8;

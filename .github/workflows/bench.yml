@@ -111,6 +111,14 @@ jobs:
       - name: Install crystal
         if: matrix.lang == 'crystal'
         run: ./.github/crystal.sh
+      - uses: dlang-community/setup-dlang@v1
+        if: matrix.lang == 'd'
+        with: 
+          compiler: dmd-latest
+      - uses: dlang-community/setup-dlang@v1
+        if: matrix.lang == 'd'
+        with: 
+          compiler: ldc-latest
       - uses: shogo82148/actions-setup-perl@v1
         if: matrix.lang == 'perl'
         with:
