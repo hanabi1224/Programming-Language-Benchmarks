@@ -15,8 +15,8 @@
   (let ((sieve (make-array m :element-type 'bit :initial-element 0)))
     (declare (type simple-bit-vector sieve))
     ;; 0 and 1 aren't prime
-    (setf (aref sieve 0) 1)
-    (setf (aref sieve 1) 1)
+    (setf (aref sieve 0) 1
+          (aref sieve 1) 1)
     ;; eliminate even numbers that never prime
     (loop for i of-type uint31 from 4 below m by 2
           do (setf (aref sieve i) 1))
