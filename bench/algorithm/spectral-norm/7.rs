@@ -8,6 +8,7 @@
 // contributed by Cristi Cobzarenco (@cristicbz)
 // contributed by Andre Bogus
 // contributed by Ryohei Machida
+// removed parallelization
 
 #[macro_use]
 extern crate generic_array;
@@ -16,7 +17,6 @@ extern crate numeric_array;
 
 use generic_array::typenum::consts::U4;
 use numeric_array::NumericArray;
-use rayon::prelude::*;
 use std::ops::*;
 
 type F64x4 = NumericArray<f64, U4>;
@@ -51,22 +51,19 @@ fn spectralnorm(mut n: usize) -> f64 {
 }
 
 fn mult_at_av(v: &[F64x4], out: &mut [F64x4], tmp: &mut [F64x4]) {
-    dot_par(v, tmp, |i, j| inv_a(i, j));
-    dot_par(tmp, out, |i, j| inv_a(j, i));
+    dot_vecs(v, tmp, |i, j| inv_a(i, j));
+    dot_vecs(tmp, out, |i, j| inv_a(j, i));
 }
 
-fn dot_par<F>(v: &[F64x4], out: &mut [F64x4], inv_a: F)
+fn dot_vecs<F>(v: &[F64x4], out: &mut [F64x4], inv_a: F)
 where
     F: Fn(I32x4, I32x4) -> F64x4 + Sync,
 {
-    // Parallelize along the output vector, with each pair of slots as a
-    // parallelism unit.
-    out.par_iter_mut().enumerate().for_each(|(i, slot)| {
+    out.iter_mut().enumerate().for_each(|(i, slot)| {
         *slot = dot(i as i32, v, &inv_a);
     });
 }
 
-#[inline(never)]
 fn dot<F>(i: i32, v: &[F64x4], inv_a: F) -> F64x4
 where
     F: Fn(I32x4, I32x4) -> F64x4,
@@ -97,7 +94,6 @@ where
 }
 
 /// Calculate 1 / A[i, j] for each element of i, j
-#[inline]
 fn inv_a(i: I32x4, j: I32x4) -> F64x4 {
     let one = nconstant!(1);
     let two = nconstant!(2);

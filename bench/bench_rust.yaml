@@ -19,8 +19,8 @@ problems:
   - name: spectral-norm
     source:
       - 2.rs
-      - 3-m.rs
-      - 5-m.rs
+      - 2-m.rs
+      - 7.rs
       - 7-m.rs
   - name: mandelbrot
     source:

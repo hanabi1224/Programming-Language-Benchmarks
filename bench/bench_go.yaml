@@ -15,7 +15,8 @@ problems:
       - 1.go
   - name: spectral-norm
     source:
-      - 4.go
+      - 1.go
+      - 4-m.go
   - name: pidigits
     source:
       - 8.go

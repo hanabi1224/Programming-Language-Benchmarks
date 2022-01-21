@@ -16,6 +16,7 @@ problems:
       - 3.rs
   - name: spectral-norm
     source:
+      - 8.rs
       - 8-m.rs
 source_rename_to: main.rs
 compiler_version_command: rustc +nightly -V

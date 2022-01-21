@@ -13,6 +13,7 @@ problems:
   - name: spectral-norm
     source:
       - 1.chpl
+      - 1-m.chpl
   - name: pidigits
     source:
       - 2.chpl

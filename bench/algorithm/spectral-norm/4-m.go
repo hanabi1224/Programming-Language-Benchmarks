@@ -15,8 +15,8 @@ import (
 	"strconv"
 )
 
-var n = 0    // var n = flag.Int("n", 2000, "count")
-var nCPU = 4 // var nCPU = flag.Int("ncpu", 4, "number of cpus")
+var n = 0
+var nCPU = runtime.NumCPU()
 
 type Vec []float64
 

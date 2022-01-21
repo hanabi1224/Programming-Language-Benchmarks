@@ -14,6 +14,7 @@ problems:
     source:
       - 1.zig
       - 2.zig
+      - 2-m.zig
   - name: pidigits
     source:
       - 1.zig

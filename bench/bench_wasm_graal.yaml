@@ -1,4 +1,5 @@
 lang: wasm
+enabled: false
 problems:
   - name: helloworld
     source:
@@ -18,6 +19,7 @@ problems:
   - name: spectral-norm
     source:
       - 2.rs
+      - 7.rs
   - name: mandelbrot
     source:
       - 8.rs

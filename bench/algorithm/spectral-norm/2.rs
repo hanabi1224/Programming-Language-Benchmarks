@@ -9,7 +9,7 @@ fn main() {
     println!("{:.9}", ret);
 }
 
-#[inline]
+// #[inline]
 fn spectralnorm(n: usize) -> f64 {
     let mut u = vec![1.0; n];
     let mut v = vec![1.0; n];
@@ -26,14 +26,14 @@ fn spectralnorm(n: usize) -> f64 {
     (vbv / vv).sqrt()
 }
 
-#[inline]
+// #[inline]
 fn a_times_transp(v: &mut [f64], u: &[f64], len: usize) {
     let mut x = vec![0.0; len];
     times(&mut x, u, len);
     times_trans(v, &x, len);
 }
 
-#[inline]
+// #[inline]
 fn times(v: &mut [f64], u: &[f64], len: usize) {
     for i in 0..len {
         let mut a = 0.0;
@@ -44,7 +44,7 @@ fn times(v: &mut [f64], u: &[f64], len: usize) {
     }
 }
 
-#[inline]
+// #[inline]
 fn times_trans(v: &mut [f64], u: &[f64], len: usize) {
     for i in 0..len {
         let mut a = 0.0;
@@ -55,7 +55,7 @@ fn times_trans(v: &mut [f64], u: &[f64], len: usize) {
     }
 }
 
-#[inline]
+// #[inline]
 fn evala(i: usize, j: usize) -> f64 {
     let sum = i + j;
     (sum * (sum + 1) / 2 + i + 1) as f64

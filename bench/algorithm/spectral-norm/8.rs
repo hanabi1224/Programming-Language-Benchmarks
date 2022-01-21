@@ -9,10 +9,10 @@
 // contributed by Andre Bogus
 // contributed by Ryohei Machida
 // modified by hanabi1224, use portable_simd on nightly rust
+// removed parallelization
 
 #![feature(portable_simd)]
 
-use rayon::prelude::*;
 use std::ops::*;
 use std::simd::Simd;
 
@@ -60,18 +60,16 @@ fn spectralnorm(n: usize) -> f64 {
 #[inline]
 fn mult_at_av(v: &[F64Vec], out: &mut [F64Vec], array_size: usize) {
     let mut tmp = vec![F64Vec::default(); array_size];
-    dot_par(v, &mut tmp, |i, j| inv_a(i, j));
-    dot_par(&tmp, out, |i, j| inv_a(j, i));
+    dot_vecs(v, &mut tmp, |i, j| inv_a(i, j));
+    dot_vecs(&tmp, out, |i, j| inv_a(j, i));
 }
 
 #[inline]
-fn dot_par<F>(v: &[F64Vec], out: &mut [F64Vec], inv_a: F)
+fn dot_vecs<F>(v: &[F64Vec], out: &mut [F64Vec], inv_a: F)
 where
     F: Fn(IntVec, IntVec) -> F64Vec + Sync,
 {
-    // Parallelize along the output vector, with each pair of slots as a
-    // parallelism unit.
-    out.par_iter_mut().enumerate().for_each(|(i, slot)| {
+    out.iter_mut().enumerate().for_each(|(i, slot)| {
         *slot = dot(i as IntType, v, &inv_a);
     });
 }
