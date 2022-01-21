@@ -28,13 +28,13 @@ problems:
       - 6.cl
   - name: spectral-norm
     source:
-      - 1.cl
-      - 2.cl
-      - 3.cl
-      - 4.cl
-      - 5.cl
-      - 6.cl
-      - 7.cl
+      - 1-m.cl
+      - 2-m.cl
+      - 3-m.cl
+      - 4-m.cl
+      - 5-m.cl
+      - 6-m.cl
+      - 7-m.cl
   - name: nsieve
     source:
       - 1.cl
