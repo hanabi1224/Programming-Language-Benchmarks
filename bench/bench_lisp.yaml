@@ -5,12 +5,8 @@ problems:
       - 1.cl
   - name: binarytrees
     source:
-      - 1.cl
-      - 2.cl
-      # - 3.cl
-      # - 4.cl
+      - 3.cl
       - 5.cl
-      - 6.cl
   - name: fannkuch-redux
     source:
       - 1.cl
@@ -46,6 +42,7 @@ problems:
   - name: mandelbrot
     source:
       - 1.cl
+      - 2.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

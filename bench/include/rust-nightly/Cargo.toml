@@ -27,8 +27,8 @@ spin = "0"
 static-rc = "0"
 typed-arena = "2"
 
-core_simd = { git = "https://github.com/rust-lang/portable-simd" }
-std_float = { git = "https://github.com/rust-lang/portable-simd" }
+core_simd = {git = "https://github.com/rust-lang/portable-simd"}
+std_float = {git = "https://github.com/rust-lang/portable-simd"}
 
 [profile.release]
 codegen-units = 1
