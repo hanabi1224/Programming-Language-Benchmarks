@@ -5,11 +5,12 @@ problems:
       - 1.rs
   - name: mandelbrot
     source:
+      - 9.rs
       - 9-m.rs
   - name: fasta
     source:
       - 1c.rs
-      - 5c.rs
+      - 5c-m.rs
   - name: nbody
     source:
       - 3.rs

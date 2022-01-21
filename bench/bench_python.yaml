@@ -20,7 +20,8 @@ problems:
       - 8.py
   - name: fasta
     source:
-      - 5.py
+      - 1.py
+      - 5-m.py
   - name: knucleotide
     source:
       - 3.py
@@ -40,7 +41,6 @@ problems:
   - name: http-server
     source:
       - 1.py
-      # - 2.py
   - name: nsieve
     source:
       - 1.py

@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build": "nuxt generate --force-build",
+    "vercel-build": "tar -xvf content.tar.gz && yarn build",
     "dev": "nuxt dev -s -t server -o",
     "start": "nuxt start -H 0.0.0.0",
     "generate": "nuxt generate --force-build",
@@ -19,7 +20,8 @@
     "test": "jest",
     "content:rm": "rm -r content",
     "content:cp": "cp -a ./../bench/build/_results content",
-    "content": "yarn content:rm && yarn content:cp",
+    "archive-content": "tar -czvf content.tar.gz content/**",
+    "content": "yarn content:rm && yarn content:cp && yarn archive-content",
     "update-db": "npx browserslist@latest --update-db"
   },
   "lint-staged": {

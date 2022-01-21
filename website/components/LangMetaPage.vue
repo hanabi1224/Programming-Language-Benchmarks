@@ -79,6 +79,12 @@
           >
           usage
         </p>
+        <p class="italic">
+          * (You may find time &lt; time(user) + time(sys) for some
+          non-parallelized programs, the overhead is from GC or JIT compiler,
+          which are allowed to take advantage of multi-cores as that's more
+          close to real-world scenarios.)
+        </p>
       </div>
 
       <div class="mt-5 text-xs">
@@ -137,7 +143,7 @@
                 time(user)
               </th>
               <th :class="['text-right', mdHide]" title="cpu-time-kernel">
-                time(kernel)
+                time(sys)
               </th>
               <th class="text-left pl-5">
                 <span class="md-show">compiler</span>

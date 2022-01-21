@@ -36,6 +36,7 @@ problems:
   - name: mandelbrot
     source:
       - 9.cs
+      - 9-m.cs
   - name: json-serde
     source:
       - 1.cs
@@ -74,17 +75,19 @@ environments:
     build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: app
-  - os: linux
-    compiler: dotnet/dynpgo
-    version: 6
-    compiler_version_command: dotnet --version
-    docker: mcr.microsoft.com/dotnet/sdk:6.0
-    docker_volumns:
-      - /tmp/.nuget/packages:/root/.nuget/packages/
-    include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
-    out_dir: out
-    run_cmd: app
-    run_cmd_env:
-      # https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/
-      DOTNET_TieredPGO: 1
+  # dynamic pgo is not showing obvious differences in either cpu or mem usage
+  # disable for now to speed up benchmark generation
+  # - os: linux
+  #   compiler: dotnet/dynpgo
+  #   version: 6
+  #   compiler_version_command: dotnet --version
+  #   docker: mcr.microsoft.com/dotnet/sdk:6.0
+  #   docker_volumns:
+  #     - /tmp/.nuget/packages:/root/.nuget/packages/
+  #   include: dotnet
+  #   build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
+  #   out_dir: out
+  #   run_cmd: app
+  #   run_cmd_env:
+  #     # https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/
+  #     DOTNET_TieredPGO: 1

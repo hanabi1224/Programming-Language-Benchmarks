@@ -90,3 +90,7 @@ sw.*
 *.swp
 
 .vercel
+
+*.tar
+*.tar.bz
+*.tar.gz

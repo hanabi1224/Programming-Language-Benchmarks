@@ -7,7 +7,6 @@
    optimized to use Vector<double> by Tanner Gooding
    small optimisations by Anthony Lloyd
    modified by Grigory Perepechko
-   removed parallelization by hanabi1224
 */
 
 using System;
@@ -15,6 +14,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 public class MandelBrot
 {
@@ -73,14 +73,14 @@ public class MandelBrot
             }
             var _Crb = pCrb;
             var _pdata = pdata;
-            for (var y = 0; y < size; y++)
+            Parallel.For(0, size, y =>
             {
                 var Ciby = _Crb[y] + 0.5;
                 for (var x = 0; x < lineLength; x++)
                 {
                     _pdata[y * lineLength + x] = GetByte(_Crb + x * 8, Ciby);
                 }
-            }
+            });
             using var hasher = MD5.Create();
             var hash = hasher.ComputeHash(data);
             Console.WriteLine(ToHexString(hash));
