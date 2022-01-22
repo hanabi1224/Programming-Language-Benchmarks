@@ -4,7 +4,6 @@
    contributed by Lydia Duncan, Albert Sidelnik, and Brad Chamberlain
    derived from the GNU C version by Sebastien Loisel and the C# version
    by Isaac Gouy
-   removed parallelization
 */
 
 config const n = 500;           // the size of A (n x n), u and v (n-vectors)
@@ -34,7 +33,7 @@ proc multiplyAtAv(v, tmp, AtAv) {
 // Compute A * v ('Av').
 //
 proc multiplyAv(v: [?Dv], Av: [?DAv]) {
-  for i in DAv do
+  forall i in DAv do
     Av[i] = + reduce (for j in Dv do A[i,j] * v[j]);
 }
 
@@ -42,7 +41,7 @@ proc multiplyAv(v: [?Dv], Av: [?DAv]) {
 // Compute A-tranpose * v ('Atv').
 //
 proc multiplyAtv(v: [?Dv], Atv: [?DAtv]) {
-  for i in DAtv do
+  forall i in DAtv do
     Atv[i] = + reduce (for j in Dv do A[j,i] * v[j]);
 }
 
