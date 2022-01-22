@@ -11,6 +11,10 @@ problems:
       - 4-m.cl
       - 5.cl
       - 6-m.cl
+  - name: merkletrees
+    source:
+      - 1.cl
+      - 2-m.cl
   - name: fannkuch-redux
     source:
       - 1.cl
