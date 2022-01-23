@@ -1,4 +1,4 @@
-# another-benchmarks-game
+# Programming-Language-Benchmarks
 
 ## Build Setup
 

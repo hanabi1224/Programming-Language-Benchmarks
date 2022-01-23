@@ -40,8 +40,8 @@ problems:
       - 7.rs
   - name: fannkuch-redux
     source:
-      - 2.rs
-      - 5.rs
+      - 1.rs
+      - 5-m.rs
   - name: pidigits
     source:
       - 1.rs

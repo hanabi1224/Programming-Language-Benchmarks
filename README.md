@@ -1,19 +1,19 @@
 # [Programming Language Benchmarks](https://programming-language-benchmarks.vercel.app/)
 
-[![bench](https://github.com/hanabi1224/Another-Benchmarks-Game/actions/workflows/bench.yml/badge.svg)](https://github.com/hanabi1224/Another-Benchmarks-Game/actions/workflows/bench.yml)
-[![MIT License](https://img.shields.io/github/license/hanabi1224/Another-Benchmarks-Game.svg)](https://github.com/hanabi1224/Another-Benchmarks-Game/blob/master/LICENSE)
+[![bench](https://github.com/hanabi1224/Programming-Language-Benchmarks/actions/workflows/bench.yml/badge.svg)](https://github.com/hanabi1224/Programming-Language-Benchmarks/actions/workflows/bench.yml)
+[![MIT License](https://img.shields.io/github/license/hanabi1224/Programming-Language-Benchmarks.svg)](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/master/LICENSE)
 
-<!-- [![Build status](https://img.shields.io/appveyor/ci/hanabi1224/Another-Benchmarks-Game/main.svg)](https://ci.appveyor.com/project/hanabi1224/Another-Benchmarks-Game) -->
+<!-- [![Build status](https://img.shields.io/appveyor/ci/hanabi1224/Programming-Language-Benchmarks/main.svg)](https://ci.appveyor.com/project/hanabi1224/Programming-Language-Benchmarks) -->
 
 # Why Build This
 
-The idea is to build an automatic process for benchmark generation and pulishing.
+The idea is to build an automated process for benchmark generation and publishing.
 
 ### Comparable numbers
 
 _It currently use CI to generate benchmark results to guarantee all the numbers are generated from the same environment at nearly the same time. All benchmark tests are executed in a single CI job_
 
-### Automatic publish
+### Automatic publishing
 
 _Once a change is merged into main branch, the CI job will re-generate and publish the static website_
 
@@ -37,7 +37,7 @@ The website is hosted on [Vercel](https://vercel.com/)
 ### Development
 
 ```
-git clone https://github.com/hanabi1224/Another-Benchmarks-Game.git
+git clone https://github.com/hanabi1224/Programming-Language-Benchmarks.git
 
 cd website
 yarn
@@ -47,7 +47,7 @@ yarn dev
 
 # Benchmarks
 
-_All benchmarks are defined in [bench.yaml](https://github.com/hanabi1224/Another-Benchmarks-Game/blob/main/bench/bench.yaml)_
+_All benchmarks are defined in [bench.yaml](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/bench/bench.yaml)_
 
 _Current benchmarks problems and their implementations are from [The Computer Language Benchmarks Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/) ([ Repo](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/))_
 
