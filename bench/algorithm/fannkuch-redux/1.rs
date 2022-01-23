@@ -4,7 +4,9 @@ const V_SIZE: usize = 16;
 type VItem = usize;
 type V = [VItem; V_SIZE];
 
-const fn suffle(a: &V, mask: &V) -> V {
+const NEXT_PERM_MASKS: [V; V_SIZE + 1] = next_perm_masks();
+
+const fn shuffle(a: &V, mask: &V) -> V {
     let mut r = [0; V_SIZE];
     let mut i = 0;
     while i < V_SIZE {
@@ -38,7 +40,17 @@ const fn next_perm_mask(n: VItem) -> V {
     let mut v = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     let mut i = 2;
     while i <= n {
-        v = suffle(&v, &rotate_mask(i));
+        v = shuffle(&v, &rotate_mask(i));
+        i += 1;
+    }
+    v
+}
+
+const fn next_perm_masks() -> [V; V_SIZE + 1] {
+    let mut v = [[0; V_SIZE]; V_SIZE + 1];
+    let mut i = 0;
+    while i < V_SIZE + 1 {
+        v[i] = next_perm_mask(i);
         i += 1;
     }
     v
@@ -52,7 +64,7 @@ const fn pfannkuchen(perm: &V) -> u32 {
         if k == 0 {
             return flip_count;
         }
-        a = suffle(&a, &reverse_mask(k + 1));
+        a = shuffle(&a, &reverse_mask(k + 1));
         flip_count += 1;
     }
 }
@@ -87,11 +99,11 @@ const fn calculate(n: usize) -> (i32, u32) {
         if end {
             break;
         }
-        perm = suffle(&perm, &next_perm_mask((r + 1) as VItem));
+        perm = shuffle(&perm, &NEXT_PERM_MASKS[r + 1]);
         count[r] -= 1;
         let mut i = 1;
         while i < r {
-            count[i] = (i + 1) as VItem;
+            count[i] = (i + 1) as u8;
             i += 1;
         }
         parity = !parity;
