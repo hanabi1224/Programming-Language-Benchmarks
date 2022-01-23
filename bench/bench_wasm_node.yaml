@@ -27,7 +27,7 @@ problems:
       - 1.rs
   - name: fannkuch-redux
     source:
-      # - 2.rs
+      - 1.rs
   - name: pidigits
     source:
       # - 1.rs
