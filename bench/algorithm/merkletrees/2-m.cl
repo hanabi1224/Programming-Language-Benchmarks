@@ -50,9 +50,9 @@
 (declaim (ftype (function (node) int64) check-node))
 (defun cal-hash (node)
   (multiple-value-bind (hash value left right) (values-for-node node)
-    (when (null hash)
+    (unless hash
       (if value (setf (hash node) (value node))
-          (if (and left right)
+          (when (and left right)
               (progn (cal-hash left) (cal-hash right)
                      (setf (hash node) (+ (get-hash left) (get-hash right)))))))))
 
@@ -72,9 +72,9 @@
            (cal-hash (node)
              (declare (type node node))
              (multiple-value-bind (hash value left right) (values-for-node node)
-               (when (null hash)
+               (unless hash
                  (if value (setf (hash node) (value node))
-                     (if (and left right)
+                     (when (and left right)
                          (progn (cal-hash left) (cal-hash right)
                                 (setf (hash node) (+ (get-hash left)(get-hash right)))))))))
            (check-trees-of-depth (depth max-depth)

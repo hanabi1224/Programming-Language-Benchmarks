@@ -23,20 +23,17 @@
 
 (declaim (ftype (function (uint) node) build-tree))
 (defun build-tree (depth)
-  (declare (type uint depth))
   (let ((depth-1 (1- depth)))
     (cond ((zerop depth) (make-node 1 nil nil))
           (t (make-node nil (build-tree depth-1) (build-tree depth-1))))))
 
 (declaim (ftype (function (node) int64) get-hash))
 (defun get-hash (node)
-  (declare (type node node))
   (let ((hash (hash node)))
-    (if hash (hash node) (the int64 -1))))
+    (if hash hash -1)))
 
 (declaim (ftype (function (node) boolean) check))
 (defun check (node)
-  (declare (type node node))
   (multiple-value-bind (hash value left right) (values-for-node node)
     (cond ((null hash) nil)
           (value t)
@@ -44,13 +41,12 @@
 
 (declaim (ftype (function (node) int64) check-node))
 (defun cal-hash (node)
-  (declare (type node node))
   (multiple-value-bind (hash value left right) (values-for-node node)
-    (when (null hash)
+    (unless hash
       (if value (setf (hash node) (value node))
-          (if (and left right)
+          (when (and left right)
               (progn (cal-hash left) (cal-hash right)
-                     (setf (hash node) (+ (get-hash left) (get-hash right)))))))))
+                     (setf (hash node) (+ (get-hash left)(get-hash right)))))))))
 
 (declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths (max-depth)
@@ -68,9 +64,9 @@
            (cal-hash (node)
              (declare (type node node))
              (multiple-value-bind (hash value left right) (values-for-node node)
-               (when (null hash)
+               (unless hash
                  (if value (setf (hash node) (value node))
-                     (if (and left right)
+                     (when (and left right)
                          (progn (cal-hash left) (cal-hash right)
                                 (setf (hash node) (+ (get-hash left) (get-hash right))))))))))
     (declare (inline build-tree check cal-hash))
