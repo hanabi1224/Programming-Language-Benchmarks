@@ -41,6 +41,9 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.rs
+      - 1-m.rs
+      - 2.rs
+      - 2-m.rs
       - 5-m.rs
   - name: pidigits
     source:

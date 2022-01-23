@@ -1,7 +1,8 @@
-// Ported from 2.zig
+// Ported from 2-m.zig
 // Use simd
 
 use core::arch::x86_64::*;
+use rayon::prelude::*;
 
 const V_SIZE: usize = 16;
 type VItem = i8;
@@ -83,9 +84,65 @@ fn pfannkuchen(perm: &__m128i) -> u32 {
             return flip_count;
         }
         let mask = REVERSE_MASKS[k as usize + 1];
+        // let mask = reverse_mask(k as i8 + 1);
         a = simd_shuffle(a, to_mask(mask));
         flip_count += 1;
     }
+}
+
+const fn factorial(n: i8) -> usize {
+    let mut res: usize = 1;
+    let mut i = 2;
+    while i <= n as usize {
+        res *= i;
+        i += 1;
+    }
+    return res;
+}
+
+const fn count_at_pos(n: i8, start: usize) -> [i8; 16] {
+    let mut count = [0; 16];
+    let mut r = start;
+    let mut i = n;
+    while i > 0 {
+        i -= 1;
+        let total_perms = factorial(i);
+        count[i as usize] = i + 1 - (r / total_perms) as i8;
+        r %= total_perms;
+    }
+    count
+}
+
+fn perm_with_count(n: i8, count: &[i8; 16]) -> __m128i {
+    let mut perm = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    let mut i = n as usize;
+    while i > 0 {
+        perm[0..i].rotate_left(i - count[i - 1] as usize);
+        i -= 1;
+    }
+    to_mask(perm)
+}
+
+fn next_permutation(perm: __m128i, count: &mut [i8], size: usize) -> Option<__m128i> {
+    let mut r = 0;
+    let mut none = true;
+    for i in 0..size {
+        if count[i] != 1 {
+            r = i;
+            none = false;
+            break;
+        }
+    }
+    if none {
+        return None;
+    }
+    let next_perm = simd_shuffle(perm, to_mask(NEXT_PERM_MASKS[r + 1]));
+    // let next_perm = simd_shuffle(perm, to_mask(next_perm_mask(r as i8 + 1)));
+    count[r] -= 1;
+    for i in 0..r {
+        count[i] = (i + 1) as i8;
+    }
+    Some(next_perm)
 }
 
 fn to_mask(v: [VItem; V_SIZE]) -> __m128i {
@@ -97,47 +154,27 @@ fn to_mask(v: [VItem; V_SIZE]) -> __m128i {
     }
 }
 
-fn calculate(n: usize) -> (i32, u32) {
+fn calculate_part(first: usize, last: usize, n: i8) -> (i32, u32) {
     let mut max_flip_count: u32 = 0;
     let mut checksum: i32 = 0;
-    let mut perm = unsafe { _mm_setr_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15) };
-    let mut count = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    let mut parity = false;
-    loop {
+    let mut count = count_at_pos(n, first);
+    let mut perm = perm_with_count(n, &count);
+    for i in first..last {
         let flip_count = pfannkuchen(&perm);
         if flip_count > max_flip_count {
             max_flip_count = flip_count;
         }
-        if parity {
-            checksum -= flip_count as i32;
-        } else {
+        if i % 2 == 0 {
             checksum += flip_count as i32;
+        } else {
+            checksum -= flip_count as i32;
         }
-        let mut r = 0;
-        let mut end = true;
-        let mut i = 0;
-        while i < n {
-            if count[i] != 1 {
-                r = i;
-                end = false;
-                break;
-            }
-            i += 1;
-        }
-        if end {
+        if let Some(perm_next) = next_permutation(perm, &mut count, n as usize) {
+            perm = perm_next;
+        } else {
             break;
         }
-        let mask = NEXT_PERM_MASKS[r + 1];
-        perm = simd_shuffle(perm, to_mask(mask));
-        count[r] -= 1;
-        let mut i = 1;
-        while i < r {
-            count[i] = (i + 1) as u8;
-            i += 1;
-        }
-        parity = !parity;
     }
-
     (checksum, max_flip_count)
 }
 
@@ -146,8 +183,19 @@ fn main() {
         .nth(1)
         .and_then(|s| s.into_string().ok())
         .and_then(|n| n.parse().ok())
-        .unwrap_or(6);
+        .unwrap_or(3);
 
-    let (checksum, max_flip_count) = calculate(n);
+    let n_cpu = num_cpus::get();
+    let perms_count = factorial(n);
+    let len_per_task = perms_count / n_cpu;
+    let mut task_params = Vec::with_capacity(n_cpu);
+    for first in (0..perms_count).into_iter().step_by(len_per_task) {
+        let last = (first + len_per_task).min(perms_count);
+        task_params.push((first, last));
+    }
+    let (checksum, max_flip_count) = task_params
+        .into_par_iter()
+        .map(|(first, last)| calculate_part(first, last, n))
+        .reduce(|| (0, 0), |a, b| (a.0 + b.0, a.1.max(b.1)));
     println!("{}\nPfannkuchen({}) = {}", checksum, n, max_flip_count);
 }
