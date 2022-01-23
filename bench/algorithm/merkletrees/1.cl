@@ -7,7 +7,7 @@
 
 (defconstant min-depth 4 "Minimal depth of the binary tree.")
 
-(declaim (inline make-node get-hesh hash (setf hash) value (setf value)
+(declaim (inline make-node get-hash hash (setf hash) value (setf value)
                  left (setf left) right (setf right)))
 (defstruct (node (:conc-name nil)
                  (:constructor make-node (value left right)))

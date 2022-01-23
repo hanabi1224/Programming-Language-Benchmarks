@@ -15,7 +15,7 @@
 
 (defconstant min-depth 4 "Minimal depth of the binary tree.")
 
-(declaim (inline make-node get-hesh hash (setf hash) value (setf value)
+(declaim (inline make-node get-hash hash (setf hash) value (setf value)
                  left (setf left) right (setf right)))
 (defstruct (node (:conc-name nil)
                  (:constructor make-node (value left right)))
@@ -84,7 +84,7 @@
                    with sum of-type int64 = 0
                    do (let ((tree (build-tree depth)))
                         (progn (cal-hash tree)
-                               (incf sum (get-hash tree))))
+                               (incf sum (the int64 (get-hash tree)))))
                    finally (return (format nil "~d~c trees of depth ~d~c root hash sum: ~D~%"
                                            iterations #\Tab depth #\Tab sum)))))
     (declare (inline build-tree check cal-hash check-trees-of-depth))
