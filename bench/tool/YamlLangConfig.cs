@@ -113,6 +113,8 @@ namespace BenchTool
 
         public string RunCmd { get; set; }
 
+        public bool Warmup { get; set; }
+
         public Dictionary<string, string> RunCmdEnv { get; set; }
 
         public bool RuntimeIncluded { get; set; } = true;

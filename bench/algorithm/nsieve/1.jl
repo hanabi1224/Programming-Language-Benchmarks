@@ -16,4 +16,10 @@ function main()
     end
 end
 
-isinteractive() || main()
+function real_main()
+    isinteractive() || main()
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

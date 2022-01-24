@@ -9,7 +9,7 @@
 #include <vector>
 
 void nsieve(std::size_t max) {
-  static std::vector<unsigned char> flags;
+  static std::vector<bool> flags;
   flags.assign(max, false);
   std::size_t count = 0;
   for (std::size_t value = 2; value < max; ++value) {

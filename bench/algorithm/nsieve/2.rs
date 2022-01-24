@@ -2,12 +2,14 @@ use bitvec::prelude::*;
 
 fn nsieve(n: usize) {
     let mut count = 0;
-    let mut flags = bitvec![u8, LocalBits; 1; n];
+    let mut flags = bitvec![u32, LocalBits; 0; n];
     for i in 2..n {
-        if flags[i] {
+        // if !flags[i] {
+        if unsafe { !flags.get_unchecked(i) } {
             count += 1;
             for j in ((i << 1)..n).step_by(i) {
-                flags.set(j, false);
+                // flags.set(j, true);
+                unsafe { flags.set_unchecked(j, true) };
             }
         }
     }

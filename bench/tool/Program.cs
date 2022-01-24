@@ -599,6 +599,24 @@ namespace BenchTool
             }
 
             YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
+            if (langEnvConfig.Warmup)
+            {
+                string runCommand = $"{langEnvConfig.RunCmd} {problemTestConfig.Unittests[0].Input}";
+                ProcessStartInfo warmupPsi = runCommand.ConvertToCommand();
+                warmupPsi.FileName = exeName;
+                warmupPsi.WorkingDirectory = buildOutput;
+                await ProcessUtils.RunProcessAsync(
+                    startInfo: warmupPsi,
+                    useShellExecute: true,
+                    printOnConsole: false,
+                    asyncRead: false,
+                    stdOutBuilder: null,
+                    stdErrorBuilder: null,
+                    env: null,
+                    default).ConfigureAwait(false);
+                Logger.Debug($"Warmup finished. Command: {runCommand}");
+            }
+
             foreach (YamlBenchmarkProblemTestConfig test in problemTestConfig.Tests)
             {
                 if (test.SkipOnPullRequest

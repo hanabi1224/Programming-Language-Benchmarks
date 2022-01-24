@@ -8,10 +8,13 @@ The Computer Language Benchmarks Game
  tweaked for performance by maltezfaria and Adam Beckmeyer
 =#
 
+push!(LOAD_PATH, "MD5");
+
 using Base.Cartesian
 using Base64.Base64
+using MD5
+# include("MD5/MD5.jl")
 
-include("MD5/MD5.jl")
 
 # Calculate the byte to print for a given vector of 8 real numbers cr
 # and a given imaginary component ci. This function should give the
