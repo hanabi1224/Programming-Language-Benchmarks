@@ -24,12 +24,8 @@
   (left  nil :type (or node null))
   (right nil :type (or node null)))
 
-(declaim (ftype (function (node) (values)) values-for-node)
-         (maybe-inline values-for-node build-tree cal-hash check))
-(defun values-for-node (node)
-  (values (hash node) (value node) (left node) (right node)))
-
-(declaim (ftype (function (uint) node) build-tree))
+(declaim (ftype (function (uint) node) build-tree)
+         (inline build-tree get-hash check cal-hash))
 (defun build-tree (depth)
   (let ((depth-1 (1- depth)))
     (cond ((zerop depth) (make-node 1 nil nil))
@@ -37,24 +33,24 @@
 
 (declaim (ftype (function (node) int64) get-hash))
 (defun get-hash (node)
-  (let ((hash (hash node)))
-    (if hash (hash node) (the int64 -1))))
+  (with-accessors ((hash hash)) node
+    (if hash hash (the int64 -1))))
 
 (declaim (ftype (function (node) boolean) check))
 (defun check (node)
-  (multiple-value-bind (hash value left right) (values-for-node node)
+  (with-accessors ((hash hash)(value value)(left left)(right right)) node
     (cond ((null hash) nil)
           (value t)
           ((and left right) (and (check left) (check right))))))
 
 (declaim (ftype (function (node) int64) check-node))
 (defun cal-hash (node)
-  (multiple-value-bind (hash value left right) (values-for-node node)
+  (with-accessors ((hash hash)(value value)(left left)(right right)) node
     (unless hash
-      (if value (setf (hash node) (value node))
+      (if value (setf hash value)
           (when (and left right)
               (progn (cal-hash left) (cal-hash right)
-                     (setf (hash node) (+ (get-hash left) (get-hash right)))))))))
+                     (setf hash (+ (get-hash left)(get-hash right)))))))))
 
 (declaim (ftype (function (uint) null) loop-depths-async))
 (defun loop-depths-async (max-depth)
@@ -65,18 +61,18 @@
                      (t (make-node nil (build-tree depth-1) (build-tree depth-1))))))
            (check (node)
              (declare (type node node))
-             (multiple-value-bind (hash value left right) (values-for-node node)
+             (with-accessors ((hash hash)(value value)(left left)(right right)) node
                (cond ((null hash) nil)
                      (value t)
                      ((and left right) (and (check left) (check right))))))
            (cal-hash (node)
              (declare (type node node))
-             (multiple-value-bind (hash value left right) (values-for-node node)
+             (with-accessors ((hash hash)(value value)(left left)(right right)) node
                (unless hash
-                 (if value (setf (hash node) (value node))
+                 (if value (setf hash value)
                      (when (and left right)
                          (progn (cal-hash left) (cal-hash right)
-                                (setf (hash node) (+ (get-hash left)(get-hash right)))))))))
+                                (setf hash (+ (get-hash left)(get-hash right)))))))))
            (check-trees-of-depth (depth max-depth)
              (declare (uint depth max-depth))
              (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
@@ -87,7 +83,6 @@
                                (incf sum (the int64 (get-hash tree)))))
                    finally (return (format nil "~d~c trees of depth ~d~c root hash sum: ~D~%"
                                            iterations #\Tab depth #\Tab sum)))))
-    (declare (inline build-tree check cal-hash check-trees-of-depth))
     (let* ((tasks (sb-concurrency:make-queue
                    :initial-contents
                    (loop for depth from min-depth by 2 upto max-depth collect depth)))
