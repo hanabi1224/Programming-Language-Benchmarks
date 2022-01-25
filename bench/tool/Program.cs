@@ -607,6 +607,7 @@ namespace BenchTool
                 warmupPsi.WorkingDirectory = buildOutput;
                 await ProcessUtils.RunProcessAsync(
                     startInfo: warmupPsi,
+
                     useShellExecute: true,
                     printOnConsole: false,
                     asyncRead: false,

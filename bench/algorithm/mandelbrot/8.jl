@@ -15,6 +15,7 @@ using Base64.Base64
 using MD5
 # include("MD5/MD5.jl")
 
+
 # Calculate the byte to print for a given vector of 8 real numbers cr
 # and a given imaginary component ci. This function should give the
 # same result whether prune is true or false but may be faster or
