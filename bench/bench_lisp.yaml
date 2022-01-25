@@ -44,6 +44,9 @@ problems:
       - 1.cl
       - 2.cl
       - 3.cl
+      - 4.cl
+      - 5.cl
+      - 6.cl
   - name: mandelbrot
     source:
       - 1.cl
