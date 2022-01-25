@@ -153,7 +153,13 @@ function main(io, out)
     end
 end
 
-fileName = length(ARGS) > 0 ? ARGS[1] : "25000_in"
-f = open(fileName, "r")
-isinteractive() || main(f, stdout)
-close(f)
+function real_main()
+    fileName = length(ARGS) > 0 ? ARGS[1] : "25000_in"
+    f = open(fileName, "r")
+    isinteractive() || main(f, stdout)
+    close(f)
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

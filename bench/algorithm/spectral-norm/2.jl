@@ -60,4 +60,10 @@ end
 # The expanded form of Printf.@printf macro takes a significant time to compile, accounting
 # for 25% of the total program runtime. Base.Ryu.writefixed(::Float64, ::Int) should already
 # be compiled into the default system image.
-isinteractive() || println(Base.Ryu.writefixed(main(parse(Int, ARGS[1])), 9))
+function real_main()
+    isinteractive() || println(Base.Ryu.writefixed(main(parse(Int, ARGS[1])), 9))
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

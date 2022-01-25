@@ -171,5 +171,11 @@ function fannkuchredux(n)
     println(chk, "\nPfannkuchen(", n, ") = ", res)
 end
 
-n = parse(Int, ARGS[1])
-fannkuchredux(n)
+function real_main()
+    n = parse(Int, ARGS[1])
+    fannkuchredux(n)
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

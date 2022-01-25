@@ -44,6 +44,11 @@ environments:
     docker: julia
     docker_runtime_dir: /usr/local/julia
     include: julia
-    build: cp c.jl out
+    build: cp c.jl out/App/src
     out_dir: out
-    run_cmd: julia/bin/julia -t auto -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes c.jl
+    # needs extra warmup here because precompiled .ji files
+    # under ~/.julia/compiled use identical file name for all problems.
+    warmup: true
+    run_cmd: julia/bin/julia -t auto -O3 -q --check-bounds=no --startup-file=no --sysimage-native-code=yes run.jl
+    # TODO: compile app with PackageCompiler.jl
+    # it's currently TOOOOOOO SLOW

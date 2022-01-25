@@ -147,8 +147,14 @@ const bodies = [
 ]
 push!(bodies, init_sun(bodies))
 
-if !isinteractive()
-    @printf("%.9f\n", energy(bodies))
-    nbody!(bodies, parse(Int, ARGS[1]))
-    @printf("%.9f\n", energy(bodies))
+function real_main()
+    if !isinteractive()
+        @printf("%.9f\n", energy(bodies))
+        nbody!(bodies, parse(Int, ARGS[1]))
+        @printf("%.9f\n", energy(bodies))
+    end
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
 end

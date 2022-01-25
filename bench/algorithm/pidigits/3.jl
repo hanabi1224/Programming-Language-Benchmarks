@@ -66,5 +66,11 @@ function pidigits(n::Int)
     end
 end
 
-n = parse(Int,ARGS[1])
-pidigits(n)
+function real_main()
+    n = parse(Int,ARGS[1])
+    pidigits(n)
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

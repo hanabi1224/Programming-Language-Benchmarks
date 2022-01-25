@@ -134,4 +134,10 @@ function fasta(n=25000000, io=stdout)
     wait(io3)
 end
 
-isinteractive() || fasta(parse(Int,ARGS[1]))
+function real_main()
+    isinteractive() || fasta(parse(Int,ARGS[1]))
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

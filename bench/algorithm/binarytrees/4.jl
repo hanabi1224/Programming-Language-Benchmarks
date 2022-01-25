@@ -35,4 +35,10 @@ function binary_trees(io, n)
     write(io, "long lived tree of depth $n\t check: $(check(long_tree))\n")
 end#function
 
-isinteractive() || binary_trees(stdout, parse(Int, ARGS[1]))
+function real_main()
+    isinteractive() || binary_trees(stdout, parse(Int, ARGS[1]))
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    real_main()
+end

@@ -23,7 +23,6 @@ contains
   pure function MultiplyAv(v) result (Av)
     real(dp), dimension(:), intent(in) :: v
     real(dp), dimension(size(v))       :: Av
-    
     integer :: n, i, j
 
     n = size(v)
@@ -34,7 +33,7 @@ contains
        end do
     end do
   end function MultiplyAv
-       
+
   ! Multiply v by A transpose
   pure function MultiplyAtv(v) result (Atv)
     real(dp), dimension(:), intent(in) :: v
@@ -55,7 +54,7 @@ contains
   pure function MultiplyAtAv(v) result (AtAv)
     real(dp), dimension(:), intent(in) :: v
     real(dp), dimension(size(v))       :: AtAv
-    
+
     AtAv = MultiplyAtv(MultiplyAv(v))
   end function MultiplyAtAv
 end module norm_subs

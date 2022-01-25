@@ -1,0 +1,6 @@
+Manifest.toml
+src/*.jl
+!src/App.jl
+!.gitignore
+!precompile_app.jl
+!Project.toml
