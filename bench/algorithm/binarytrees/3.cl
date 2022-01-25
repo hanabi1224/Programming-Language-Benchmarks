@@ -11,18 +11,15 @@
    ((left  :type node :accessor left  :initarg :left)
     (right :type node :accessor right :initarg :right)))
 
-(declaim (maybe-inline make-node values-for-node check-node build-tree))
+(declaim (inline make-node check-node build-tree))
 (defun make-node (left right)
   (declare (type (or node null) left right))
   (make-instance 'node :left left :right right))
 
-(defun values-for-node (node)
-  (declare (type (or node null) node))
-  (values (slot-value node 'left) (slot-value node 'right)))
-
+(declaim (ftype (function (node) uint) check-node))
 (defun check-node (node)
   (declare (type node node))
-  (multiple-value-bind (l r) (values-for-node node)
+  (with-accessors ((l left) (r right)) node 
     (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
           (t 1))))
 
@@ -41,7 +38,7 @@
                    (t (make-node (build-tree (1- depth))(build-tree (1- depth))))))
            (check-node (node)
              (declare (type node node))
-             (multiple-value-bind (l r) (values-for-node node)
+             (with-accessors ((l left) (r right)) node 
                (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
                      (t 1)))))
     (declare (inline build-tree check-node))

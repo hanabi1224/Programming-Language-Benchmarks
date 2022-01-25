@@ -17,11 +17,8 @@
   (left  nil :type (or node null))
   (right nil :type (or node null)))
 
-(declaim (maybe-inline values-for-node build-tree check-node))
-(defun values-for-node (node)
-  (values (left node) (right node)))
-
-(declaim (ftype (function (uint) node) build-tree))
+(declaim (ftype (function (uint) node) build-tree)
+         (inline build-tree check-node))
 (defun build-tree (depth)
   (declare (type uint depth))
   (cond ((zerop depth) (make-node nil nil))
@@ -30,7 +27,7 @@
 (declaim (ftype (function (node) uint) check-node))
 (defun check-node (node)
   (declare (type node node))
-  (multiple-value-bind (l r) (values-for-node node)
+  (with-accessors ((l left) (r right)) node 
     (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
           (t 1))))
 
@@ -43,7 +40,7 @@
                    (t (make-node (build-tree (1- depth)) (build-tree (1- depth))))))
            (check-node (node)
              (declare (type node node))
-             (multiple-value-bind (l r) (values-for-node node)
+             (with-accessors ((l left) (r right)) node 
                (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
                      (t 1)))))
     (declare (inline build-tree check-node))

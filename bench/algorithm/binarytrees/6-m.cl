@@ -22,12 +22,8 @@
   (left  nil :type (or node null))
   (right nil :type (or node null)))
 
-(declaim (maybe-inline values-for-node build-tree check-node loop-depths-async))
-(defun values-for-node (node)
-  (declare (type node node))
-  (values (left node) (right node)))
-
-(declaim (ftype (function (uint) node) build-tree))
+(declaim (ftype (function (uint) node) build-tree)
+         (inline build-tree check-node loop-depths-async))
 (defun build-tree (depth)
   (declare (type uint depth))
   (cond ((zerop depth) (make-node nil nil))
@@ -36,7 +32,7 @@
 (declaim (ftype (function (node) uint) check-node))
 (defun check-node (node)
   (declare (type node node))
-  (multiple-value-bind (l r) (values-for-node node)
+  (with-accessors ((l left) (r right)) node
     (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
           (t 1))))
 
@@ -49,7 +45,7 @@
                    (t (make-node (build-tree (1- depth)) (build-tree (1- depth))))))
            (check-node (node)
              (declare (type node node))
-             (multiple-value-bind (l r) (values-for-node node)
+             (with-accessors ((l left) (r right)) node
                (cond (l (+ 1 (check-node l) (check-node r))) 
                      (t 1))))
            (check-trees-of-depth (depth max-depth)
@@ -60,7 +56,7 @@
                    summing (check-node (build-tree depth)) into result of-type uint
                    finally (return (format nil "~d~c trees of depth ~d~c check: ~d~%"
                                            iterations #\Tab depth #\Tab result)))))
-    (declare (inline check-trees-of-depth build-tree check-node))
+    (declare (inline build-tree check-node loop-depths-async))
     (let* ((tasks (sb-concurrency:make-queue
                    :initial-contents
                    (loop for depth from min-depth by 2 upto max-depth collect depth)))
