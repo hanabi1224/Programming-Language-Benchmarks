@@ -1,0 +1,24 @@
+lang: hack
+problems:
+  - name: helloworld
+    source:
+      - 1.hack
+  - name: coro-prime-sieve
+    source:
+      - 1.hack
+compiler_version_command: hh_client --version
+compiler_version_regex:
+runtime_version_parameter: --version
+runtime_version_regex:
+source_rename_to: app.hack
+environments:
+  - os: linux
+    compiler: hhvm
+    version: latest
+    docker:
+    include: hack
+    build: hh_client && cp app.hack out
+    out_dir: out
+    run_cmd: hhvm --no-config app.hack
+    runtime_included: false
+    
