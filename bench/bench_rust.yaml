@@ -44,6 +44,8 @@ problems:
       - 1-m.rs
       - 2.rs
       - 2-m.rs
+      - 3.rs
+      - 3-m.rs
       - 5-m.rs
   - name: pidigits
     source:
