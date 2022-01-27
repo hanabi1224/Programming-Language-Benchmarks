@@ -1,4 +1,5 @@
 lang: java
+enabled: false
 problems:
   - name: helloworld
     source:

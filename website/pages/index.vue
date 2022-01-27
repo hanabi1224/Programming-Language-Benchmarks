@@ -47,9 +47,11 @@
             </li>
             <li class="pt-5">
               Facilitate benchmarking on real server environments as nowadays
-              more and more applications are deployed with docker/k8s. It's
-              likely to get a very different result from what you get on your
-              dev machine.
+              more and more applications are deployed in hosted cloud VMs or
+              docker/podman(via k8s). It's likely to get a very different result
+              from what you get on your dev machine. You can simply use the tool
+              to generate numbers on your PROD host environment to check if
+              everything works as expected.
             </li>
             <li class="pt-5">
               A reference for CI setup / Dev environment setup / package
