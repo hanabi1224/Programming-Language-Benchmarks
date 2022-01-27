@@ -26,6 +26,7 @@ jobs:
             elixir,
             fortran,
             go,
+            hack,
             haskell,
             haxe,
             java,
@@ -111,6 +112,9 @@ jobs:
       - name: Install crystal
         if: matrix.lang == 'crystal'
         run: ./.github/crystal.sh
+      - name: Install hhvm
+        if: matrix.lang == 'hack'
+        run: ./.github/hhvm.sh
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with: 
@@ -213,6 +217,7 @@ jobs:
       - run: ./.github/fortran.sh
       - run: ./.github/loom.sh
       - run: ./.github/racket.sh
+      - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
         with:
