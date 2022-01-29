@@ -24,7 +24,7 @@
     ;; 1 aren't prime but 2 is for this problem
     (setf (sbit sieve 1) 0
           (sbit sieve 2) 1)
-    (loop for i of-type uint31 from 3 to (isqrt m) by 2
+    (loop for i of-type uint31 from 7 to (isqrt m) by 2
           when (= 1 (sbit sieve i))
             do (loop for j of-type uint31 from (* i 3) below m by (* i 2)
                      do (setf (sbit sieve j) 0)))

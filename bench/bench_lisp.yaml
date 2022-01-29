@@ -6,18 +6,19 @@ problems:
   - name: binarytrees
     source:
       - 1.cl
+      - 1-m.cl
+      - 2.cl
       - 2-m.cl
       - 3.cl
-      - 4-m.cl
-      - 5.cl
-      - 6-m.cl
+      - 3-m.cl
   - name: merkletrees
     source:
       - 1.cl
-      - 2-m.cl
+      - 1-m.cl
   - name: fannkuch-redux
     source:
       - 1.cl
+      - 1-m.cl
   - name: fasta
     source:
       - 1.cl
@@ -49,7 +50,7 @@ problems:
       - 6.cl
   - name: mandelbrot
     source:
-      - 1.cl
+      - 1-m.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

@@ -124,11 +124,30 @@
 		             (next-permutation perm count)))
 	           (values csum fmax))))
 
+
     (let* ((cflip (the (function ((simple-array sb (*)))) (eval `(countfliplambda ,n))))
-	         (copyfn (the (function ((simple-array sb (*)) (simple-array sb (*)))) (eval `(setlambda ,n)))))
-      (multiple-value-bind (csum fmax) (fannkuch-sub n cflip copyfn 0 (pre-computed-factorial n))
-        (declare (type sb csum fmax))
-        (format t "~s~%Pfannkuchen(~s) = ~s~%" csum n fmax)))))
+	         (copyfn (the (function ((simple-array sb (*)) (simple-array sb (*)))) (eval `(setlambda ,n))))
+	         (csum 0) (fmax 0))
+      (declare (type sb csum fmax))
+      #-sb-thread (multiple-value-setq (csum fmax) (fannkuch-sub n cflip copyfn 0 (pre-computed-factorial n)))
+
+      #+sb-thread
+      (let* ((cores 4)
+	           (index 0)
+	           (index-step (truncate (the fixnum (+ (the fixnum (pre-computed-factorial n)) (- cores 1))) cores))
+	           (threads (loop for i from 0 below cores
+			                      collecting  (sb-thread:make-thread (let ((start index) (end (+ index index-step)))
+							                                                   (declare (fixnum start end))
+							                                                   (lambda () (fannkuch-sub n cflip copyfn start end))))
+			                      do (The fixnum (incf index index-step)))))
+	      (declare (type fixnum cores index index index-step))
+	      (dolist (thread threads) 
+	        (multiple-value-bind (sum max) (sb-thread:join-thread thread)
+	          (declare (type fixnum sum max))
+	          (incf csum sum)
+	          (when (> max fmax)
+	            (setf fmax max)))))
+      (format t "~s~%Pfannkuchen(~s) = ~s~%" csum n fmax))))
 
 (defun main ()  
   (let* ((args (cdr sb-ext:*posix-argv*))
