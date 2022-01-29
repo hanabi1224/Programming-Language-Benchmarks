@@ -15,6 +15,7 @@ problems:
     source:
       - 1.rs
       - 2.rs
+      - 4.rs
       - 7.rs
   - name: spectral-norm
     source:
