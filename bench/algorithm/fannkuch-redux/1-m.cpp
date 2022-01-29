@@ -156,7 +156,7 @@ inline __m128i reverse(__m128i x, small_int_t idx, const Masks &masks) {
 int main(int argc, char **argv) {
   int n = atoi(argv[1]);
   auto factorials = compute_factorials(n);
-  auto [blocks, block_size] = get_blocks_and_size(n, factorials);
+  auto block_size = get_blocks_and_size(n, factorials)[1];
 
   small_int_t max_flips = 0;
   big_int_t checksum = 0;

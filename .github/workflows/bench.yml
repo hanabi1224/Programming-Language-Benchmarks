@@ -50,7 +50,8 @@ jobs:
             zig,
           ]
     steps:
-      - run: lscpu      
+      - run: lscpu
+      - run: dotnet --info
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.x'
