@@ -147,22 +147,21 @@
 	         (,trv vops::+zero+)
 	         (,tiv vops::+zero+))
        (block ,escaped 
-	       ,@(nreverse
-            (loop for i of-type fixnum from 0 below n
-		              collecting `(progn
-				                        (let* ((,temp (complex-double-float/sse-*
-					                                     ,zrv ,ziv)))
-				                          (setf ,zrv (+ (- ,trv ,tiv) ,crv))
-				                          (setf ,trv (complex-double-float/sse-*
-					                                    ,zrv ,zrv))
-				                          (setf ,ziv (+ ,temp ,temp ,civ))
-				                          (setf ,tiv (complex-double-float/sse-*
-					                                    ,ziv ,ziv)))
-				                        (let ((,temp2 (+ ,trv ,tiv)))
-				                          (setf ,two-pixels (cmple-movmskpd
-						                                         ,temp2 ,vops::+four+)))
-				                        (when (= ,two-pixels 0)
-				                          (return-from ,escaped)))))))))
+	       ,@(loop for i of-type fixnum from 0 below n
+		             collecting `(progn
+				                       (let* ((,temp (complex-double-float/sse-*
+					                                    ,zrv ,ziv)))
+				                         (setf ,zrv (+ (- ,trv ,tiv) ,crv))
+				                         (setf ,trv (complex-double-float/sse-*
+					                                   ,zrv ,zrv))
+				                         (setf ,ziv (+ ,temp ,temp ,civ))
+				                         (setf ,tiv (complex-double-float/sse-*
+					                                   ,ziv ,ziv)))
+				                       (let ((,temp2 (+ ,trv ,tiv)))
+				                         (setf ,two-pixels (cmple-movmskpd
+						                                        ,temp2 ,vops::+four+)))
+				                       (when (= ,two-pixels 0)
+				                         (return-from ,escaped))))))))
 
 (declaim (ftype (function (fixnum fixnum (simple-array uint8 (*))
                                   fixnum (simple-array complex-double (*))
