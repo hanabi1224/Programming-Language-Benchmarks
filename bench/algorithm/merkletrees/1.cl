@@ -2,12 +2,12 @@
 ;;;   based on 5.cl binary tree code 
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
-(deftype uint () '(unsigned-byte 31))
+(deftype uint  () '(unsigned-byte 31))
 (deftype int64 () '(signed-byte 64))
 
 (defconstant min-depth 4 "Minimal depth of the binary tree.")
 
-(declaim (inline make-node get-hash hash (setf hash) value (setf value)
+(declaim (inline make-node hash (setf hash) value (setf value)
                  left (setf left) right (setf right)))
 (defstruct (node (:conc-name nil)
                  (:constructor make-node (value left right)))
@@ -16,8 +16,8 @@
   (left  nil :type (or node null))
   (right nil :type (or node null)))
 
-(declaim (ftype (function (uint) node) build-tree)
-         (inline build-tree get-hash check cal-hash))
+(declaim (inline build-tree get-hash check cal-hash)
+         (ftype (function (uint) node) build-tree))
 (defun build-tree (depth)
   (let ((depth-1 (1- depth)))
     (cond ((zerop depth) (make-node 1 nil nil))
@@ -42,7 +42,8 @@
       (if value (setf hash value)
           (when (and left right)
               (progn (cal-hash left) (cal-hash right)
-                     (setf hash (+ (get-hash left)(get-hash right)))))))))
+                     (setf hash (the int64 (+ (the int64 (get-hash left))
+                                              (the int64 (get-hash right)))))))))))
 
 (declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths (max-depth)
@@ -65,6 +66,7 @@
                      (when (and left right)
                          (progn (cal-hash left) (cal-hash right)
                                 (setf hash (+ (get-hash left) (get-hash right))))))))))
+    ;(declare (inline build-tree check cal-hash))
     (loop for depth of-type uint from min-depth by 2 upto max-depth do
       (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
             for i of-type uint from 1 upto iterations
