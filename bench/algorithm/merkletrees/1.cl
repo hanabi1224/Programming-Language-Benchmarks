@@ -42,8 +42,7 @@
       (if value (setf hash value)
           (when (and left right)
               (progn (cal-hash left) (cal-hash right)
-                     (setf hash (the int64 (+ (the int64 (get-hash left))
-                                              (the int64 (get-hash right)))))))))))
+                     (setf hash (+ (get-hash left)(get-hash right)))))))))
 
 (declaim (ftype (function (uint) null) loop-depths))
 (defun loop-depths (max-depth)
@@ -66,7 +65,6 @@
                      (when (and left right)
                          (progn (cal-hash left) (cal-hash right)
                                 (setf hash (+ (get-hash left) (get-hash right))))))))))
-    ;(declare (inline build-tree check cal-hash))
     (loop for depth of-type uint from min-depth by 2 upto max-depth do
       (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
             for i of-type uint from 1 upto iterations
