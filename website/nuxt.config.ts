@@ -80,6 +80,13 @@ const config: NuxtConfig = {
   },
   router: {
     async extendRoutes(routes, resolve) {
+      routes.push({
+        name: "compiler",
+        path: "/compiler",
+        component: resolve(__dirname, 'components/CompilerPage.vue'),
+        meta: {} as LangPageMeta,
+      })
+
       const langBenchResults = await getLangBenchResults($content)
 
       langBenchResults.forEach((l) => {

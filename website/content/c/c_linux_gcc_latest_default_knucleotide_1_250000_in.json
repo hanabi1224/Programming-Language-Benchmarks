@@ -1,0 +1,30 @@
+{
+  "cpuInfo": "[x86_64][6 cores] Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+  "lang": "c",
+  "os": "linux",
+  "compiler": "gcc",
+  "compilerVersion": "latest",
+  "unstable": false,
+  "test": "knucleotide",
+  "code": "1.c",
+  "input": "250000_in",
+  "timeMS": 26.4915,
+  "timeStdDevMS": 1.3673608021781714,
+  "memBytes": 17793024,
+  "cpuTimeMS": 180.0,
+  "cpuTimeUserMS": 180.0,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "gcc (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "start": "2022-02-01T23:03:19.3540985+00:00",
+    "finished": "2022-02-01T23:03:30.871765+00:00",
+    "durationMs": 11517
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2022-02-01T23:11:03.7138041+00:00",
+    "finished": "2022-02-01T23:11:03.74307+00:00",
+    "durationMs": 29
+  }
+}

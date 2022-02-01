@@ -1,0 +1,30 @@
+{
+  "cpuInfo": "[x86_64][6 cores] Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+  "lang": "rust",
+  "os": "linux",
+  "compiler": "rustc",
+  "compilerVersion": "stable",
+  "unstable": false,
+  "test": "regex-redux",
+  "code": "7.rs",
+  "input": "250000_in",
+  "timeMS": 46.0134,
+  "timeStdDevMS": 0.9268665563787174,
+  "memBytes": 14327808,
+  "cpuTimeMS": 66.6666,
+  "cpuTimeUserMS": 66.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "rustc 1.58.1 (db9d1b20b 2022-01-20)",
+    "start": "2022-02-01T23:08:23.5041032+00:00",
+    "finished": "2022-02-01T23:08:35.4187435+00:00",
+    "durationMs": 11914
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2022-02-01T23:11:05.2351013+00:00",
+    "finished": "2022-02-01T23:11:05.2882895+00:00",
+    "durationMs": 53
+  }
+}

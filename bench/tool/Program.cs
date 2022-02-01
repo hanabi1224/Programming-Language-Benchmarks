@@ -713,6 +713,7 @@ namespace BenchTool
                         os = langEnvConfig.Os,
                         compiler = langEnvConfig.Compiler,
                         compilerVersion = langEnvConfig.Version,
+                        unstable = langEnvConfig.Unstable,
                         test = problem.Name,
                         code = codePath,
                         input = test.Input,

@@ -117,6 +117,8 @@ namespace BenchTool
 
         public Dictionary<string, string> RunCmdEnv { get; set; }
 
+        public bool Unstable { get; set; } = false;
+        
         public bool RuntimeIncluded { get; set; } = true;
 
         public bool ForceCheckChildProcesses { get; set; } = false;

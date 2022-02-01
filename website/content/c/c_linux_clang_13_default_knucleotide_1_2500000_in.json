@@ -1,0 +1,30 @@
+{
+  "cpuInfo": "[x86_64][6 cores] Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+  "lang": "c",
+  "os": "linux",
+  "compiler": "clang",
+  "compilerVersion": "13",
+  "unstable": false,
+  "test": "knucleotide",
+  "code": "1.c",
+  "input": "2500000_in",
+  "timeMS": 266.2723,
+  "timeStdDevMS": 30.29108352023744,
+  "memBytes": 33193984,
+  "cpuTimeMS": 2520.0,
+  "cpuTimeUserMS": 2470.0,
+  "cpuTimeKernelMS": 50.0,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "clang version 13.0.0\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2022-02-01T23:03:03.1960037+00:00",
+    "finished": "2022-02-01T23:03:05.0314594+00:00",
+    "durationMs": 1835
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2022-02-01T23:11:03.6205544+00:00",
+    "finished": "2022-02-01T23:11:03.6646902+00:00",
+    "durationMs": 44
+  }
+}

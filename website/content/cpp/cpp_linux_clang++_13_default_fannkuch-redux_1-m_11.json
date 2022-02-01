@@ -1,0 +1,30 @@
+{
+  "cpuInfo": "[x86_64][6 cores] Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+  "lang": "cpp",
+  "os": "linux",
+  "compiler": "clang++",
+  "compilerVersion": "13",
+  "unstable": false,
+  "test": "fannkuch-redux",
+  "code": "1-m.cpp",
+  "input": "11",
+  "timeMS": 172.6772,
+  "timeStdDevMS": 38.71066700058268,
+  "memBytes": 10485760,
+  "cpuTimeMS": 1759.9999,
+  "cpuTimeUserMS": 1753.3333,
+  "cpuTimeKernelMS": 6.6666,
+  "githubRunId": null,
+  "buildLog": {
+    "compilerVersion": "clang version 13.0.0\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin",
+    "start": "2022-02-01T23:04:50.8298312+00:00",
+    "finished": "2022-02-01T23:04:51.9701198+00:00",
+    "durationMs": 1140
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2022-02-01T23:11:03.7698873+00:00",
+    "finished": "2022-02-01T23:11:03.7871725+00:00",
+    "durationMs": 17
+  }
+}
