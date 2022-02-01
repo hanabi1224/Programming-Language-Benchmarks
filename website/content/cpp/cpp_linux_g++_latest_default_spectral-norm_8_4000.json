@@ -1,30 +1,29 @@
 {
-  "cpuInfo": "[x86_64][6 cores] Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz",
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
   "lang": "cpp",
   "os": "linux",
   "compiler": "g++",
   "compilerVersion": "latest",
-  "unstable": false,
   "test": "spectral-norm",
   "code": "8.cpp",
   "input": "4000",
-  "timeMS": 73.1412,
-  "timeStdDevMS": 11.78553950016713,
-  "memBytes": 1294336,
-  "cpuTimeMS": 806.6666,
-  "cpuTimeUserMS": 806.6666,
+  "timeMS": 230.7206,
+  "timeStdDevMS": 0.8835767387914597,
+  "memBytes": 999424,
+  "cpuTimeMS": 436.6666,
+  "cpuTimeUserMS": 436.6666,
   "cpuTimeKernelMS": 0.0,
-  "githubRunId": null,
+  "githubRunId": "1531343699",
   "buildLog": {
     "compilerVersion": "g++ (GCC) 11.2.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
-    "start": "2022-02-01T23:05:03.7497017+00:00",
-    "finished": "2022-02-01T23:05:05.0681608+00:00",
-    "durationMs": 1318
+    "start": "2021-12-02T16:09:01.1799178+00:00",
+    "finished": "2021-12-02T16:09:02.7431345+00:00",
+    "durationMs": 1563
   },
   "testLog": {
     "runtimeVersion": null,
-    "start": "2022-02-01T23:11:03.8625637+00:00",
-    "finished": "2022-02-01T23:11:03.8647117+00:00",
-    "durationMs": 2
+    "start": "2021-12-02T16:36:40.8209538+00:00",
+    "finished": "2021-12-02T16:36:40.8241636+00:00",
+    "durationMs": 3
   }
 }

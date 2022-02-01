@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "swift",
+  "os": "linux",
+  "compiler": "swift",
+  "compilerVersion": "latest",
+  "test": "fannkuch-redux",
+  "code": "1.swift",
+  "input": "11",
+  "timeMS": 2804.6927,
+  "timeStdDevMS": 11.774750141439332,
+  "memBytes": 2379776,
+  "cpuTimeMS": 2786.6666,
+  "cpuTimeUserMS": 2786.6666,
+  "cpuTimeKernelMS": 0.0,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "Swift version 5.5.1 (swift-5.5.1-RELEASE)\nTarget: x86_64-unknown-linux-gnu",
+    "start": "2021-12-02T16:09:40.0732222+00:00",
+    "finished": "2021-12-02T16:10:22.6886519+00:00",
+    "durationMs": 42615
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:39:19.0106275+00:00",
+    "finished": "2021-12-02T16:39:19.2670965+00:00",
+    "durationMs": 256
+  }
+}

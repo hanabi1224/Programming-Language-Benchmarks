@@ -1,0 +1,29 @@
+{
+  "cpuInfo": "[x86_64][2 cores] Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz",
+  "lang": "csharp",
+  "os": "linux",
+  "compiler": "dotnet/dynpgo",
+  "compilerVersion": "6",
+  "test": "mandelbrot",
+  "code": "9.cs",
+  "input": "1000",
+  "timeMS": 126.4785,
+  "timeStdDevMS": 2.3226225400037253,
+  "memBytes": 38563840,
+  "cpuTimeMS": 109.9999,
+  "cpuTimeUserMS": 93.3333,
+  "cpuTimeKernelMS": 16.6666,
+  "githubRunId": "1531343699",
+  "buildLog": {
+    "compilerVersion": "6.0.100",
+    "start": "2021-12-02T16:12:41.5050054+00:00",
+    "finished": "2021-12-02T16:12:49.8834615+00:00",
+    "durationMs": 8378
+  },
+  "testLog": {
+    "runtimeVersion": null,
+    "start": "2021-12-02T16:36:56.1360039+00:00",
+    "finished": "2021-12-02T16:36:56.4540536+00:00",
+    "durationMs": 318
+  }
+}
