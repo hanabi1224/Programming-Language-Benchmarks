@@ -98,11 +98,11 @@
 ;; order to offset that body's momentum.
 (declaim (ftype (function (list) null) offset-momentum))
 (defun offset-momentum (system)
-  (loop for bi in system
-        with pos = (f64.4 0)
-        with sun = (car system) do
-          (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos)
-                (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
+  (loop with pos = (f64.4 0)
+        with sun = (car system)
+        for bi in system
+        do (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos)
+                 (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
 
 ;; Advances with timestem dt = 1.0d0
 ;; Advance all the bodies in the system by one timestep. Calculate the
@@ -127,15 +127,15 @@
 ;; Output the total energy of the system.
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
-  (loop for (bi . rest) on system
-        with e of-type f64 = 0d0
-          ;; Add the kinetic energy for each body.
+  (loop with e of-type f64 = (f64 0)
+        for (bi . rest) on system
+        ;; Add the kinetic energy for each body.
         do (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
            (dolist (bj rest)
              (declare (type body bj))
              ;; Add the potential energy between this body and every other bodies
-            (f64-decf e (f64/ (f64* (mass bi) (mass bj))
-                              (length_ (f64.4- (pos bi) (pos bj))))))
+             (f64-decf e (f64/ (f64* (mass bi) (mass bj))
+                               (length_ (f64.4- (pos bi) (pos bj))))))
         finally (format t "~,9f~%" e)))
 
 ;; Rescale certain properties of bodies. That allows doing
