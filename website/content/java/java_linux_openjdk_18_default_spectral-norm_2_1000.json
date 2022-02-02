@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk",
   "compilerVersion": "18",
+  "unstable": true,
   "test": "spectral-norm",
   "code": "2.java",
   "input": "1000",

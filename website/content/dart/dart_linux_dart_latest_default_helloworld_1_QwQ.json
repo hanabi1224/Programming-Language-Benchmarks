@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dart",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.dart",
   "input": "QwQ",

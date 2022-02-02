@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "clang",
   "compilerVersion": "13",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "3.c",
   "input": "1000",

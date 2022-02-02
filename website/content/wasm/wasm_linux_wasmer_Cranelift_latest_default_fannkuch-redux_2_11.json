@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmer/Cranelift",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fannkuch-redux",
   "code": "2.rs",
   "input": "11",

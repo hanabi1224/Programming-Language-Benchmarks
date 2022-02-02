@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "go",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "1.go",
   "input": "18",

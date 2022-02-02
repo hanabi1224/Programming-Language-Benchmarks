@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmedgec",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.rs",
   "input": "5000000",

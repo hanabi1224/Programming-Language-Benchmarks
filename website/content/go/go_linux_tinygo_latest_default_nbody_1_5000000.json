@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "tinygo",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.go",
   "input": "5000000",

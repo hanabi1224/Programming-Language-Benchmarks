@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "tinygo",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.go",
   "input": "QwQ",

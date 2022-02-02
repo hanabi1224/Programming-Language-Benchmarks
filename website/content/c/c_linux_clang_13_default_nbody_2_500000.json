@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "clang",
   "compilerVersion": "13",
+  "unstable": false,
   "test": "nbody",
   "code": "2.c",
   "input": "500000",

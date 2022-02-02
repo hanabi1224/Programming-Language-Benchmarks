@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ocamlc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.ml",
   "input": "5000000",

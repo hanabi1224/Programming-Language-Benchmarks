@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wren",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.wren",
   "input": "500000",

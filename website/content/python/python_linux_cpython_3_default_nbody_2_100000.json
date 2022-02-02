@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "cpython",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "nbody",
   "code": "2.py",
   "input": "100000",

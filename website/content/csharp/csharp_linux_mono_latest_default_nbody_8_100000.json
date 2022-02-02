@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "mono",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "8.cs",
   "input": "100000",

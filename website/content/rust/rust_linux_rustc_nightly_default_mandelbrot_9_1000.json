@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "nightly",
+  "unstable": true,
   "test": "mandelbrot",
   "code": "9.rs",
   "input": "1000",

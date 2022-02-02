@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "Kotlin/jvm",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.kt",
   "input": "sample 5000",

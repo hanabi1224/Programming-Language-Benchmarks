@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "flang",
   "compilerVersion": "7",
+  "unstable": false,
   "test": "fasta",
   "code": "4.f90",
   "input": "2500000",

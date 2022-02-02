@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ocamlc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "mandelbrot",
   "code": "6.ml",
   "input": "1000",

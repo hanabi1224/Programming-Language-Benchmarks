@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmedgec",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fannkuch-redux",
   "code": "2.rs",
   "input": "10",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "racket",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.rkt",
   "input": "1000",

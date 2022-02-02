@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node/graal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.js",
   "input": "QwQ",

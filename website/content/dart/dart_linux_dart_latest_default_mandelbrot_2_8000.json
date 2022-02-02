@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dart",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "mandelbrot",
   "code": "2.dart",
   "input": "8000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmedgec",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "1.rs",
   "input": "14",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "current",
+  "unstable": true,
   "test": "nbody",
   "code": "6.js",
   "input": "5000000",

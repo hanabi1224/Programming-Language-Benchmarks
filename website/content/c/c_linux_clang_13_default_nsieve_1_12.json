@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "clang",
   "compilerVersion": "13",
+  "unstable": false,
   "test": "nsieve",
   "code": "1.c",
   "input": "12",

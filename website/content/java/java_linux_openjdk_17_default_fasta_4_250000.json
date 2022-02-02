@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "fasta",
   "code": "4.java",
   "input": "250000",

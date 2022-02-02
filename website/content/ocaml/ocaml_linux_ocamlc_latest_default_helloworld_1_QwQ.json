@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ocamlc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.ml",
   "input": "QwQ",

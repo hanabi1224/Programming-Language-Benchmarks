@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "nim",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "2.nim",
   "input": "12",

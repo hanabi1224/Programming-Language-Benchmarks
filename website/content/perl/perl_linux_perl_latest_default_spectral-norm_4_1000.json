@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "perl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "4.pl",
   "input": "1000",

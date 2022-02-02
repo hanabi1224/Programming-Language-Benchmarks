@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "zigcc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "5.c",
   "input": "500000",

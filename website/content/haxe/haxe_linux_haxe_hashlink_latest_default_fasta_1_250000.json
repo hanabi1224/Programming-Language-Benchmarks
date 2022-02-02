@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "haxe/hashlink",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "1.hx",
   "input": "250000",

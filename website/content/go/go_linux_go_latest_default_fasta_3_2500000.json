@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "go",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "3.go",
   "input": "2500000",

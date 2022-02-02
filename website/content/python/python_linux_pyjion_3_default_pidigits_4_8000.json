@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pyjion",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "pidigits",
   "code": "4.py",
   "input": "8000",

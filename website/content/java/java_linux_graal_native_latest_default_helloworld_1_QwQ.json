@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "graal/native",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.java",
   "input": "QwQ",

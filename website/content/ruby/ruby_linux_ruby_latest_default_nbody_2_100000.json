@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ruby",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.rb",
   "input": "100000",

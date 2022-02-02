@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "loom",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.java",
   "input": "1000",

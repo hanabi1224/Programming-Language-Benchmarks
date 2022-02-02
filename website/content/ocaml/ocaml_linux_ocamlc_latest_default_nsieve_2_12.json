@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ocamlc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "2.ml",
   "input": "12",

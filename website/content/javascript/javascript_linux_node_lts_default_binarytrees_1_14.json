@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "lts",
+  "unstable": false,
   "test": "binarytrees",
   "code": "1.js",
   "input": "14",

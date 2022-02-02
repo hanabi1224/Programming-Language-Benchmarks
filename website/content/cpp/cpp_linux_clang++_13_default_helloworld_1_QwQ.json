@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "clang++",
   "compilerVersion": "13",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.cpp",
   "input": "QwQ",

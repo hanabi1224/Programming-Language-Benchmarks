@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "go",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "http-server",
   "code": "1.go",
   "input": "3000",

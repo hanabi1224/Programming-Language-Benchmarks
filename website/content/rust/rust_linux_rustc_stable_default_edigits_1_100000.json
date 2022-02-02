@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "edigits",
   "code": "1.rs",
   "input": "100000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node/graal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "6.js",
   "input": "100000",

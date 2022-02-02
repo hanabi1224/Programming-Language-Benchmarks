@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "Kotlin/jvm",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "nbody",
   "code": "1.kt",
   "input": "500000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pyjion",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "fasta",
   "code": "5.py",
   "input": "250000",

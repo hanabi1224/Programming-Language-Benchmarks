@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "nim",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "mandelbrot",
   "code": "1.nim",
   "input": "8000",

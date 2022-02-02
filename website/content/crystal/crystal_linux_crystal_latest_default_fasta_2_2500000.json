@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "crystal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "2.cr",
   "input": "2500000",

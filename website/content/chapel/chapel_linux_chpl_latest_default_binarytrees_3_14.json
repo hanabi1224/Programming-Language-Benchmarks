@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "chpl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "3.chpl",
   "input": "14",

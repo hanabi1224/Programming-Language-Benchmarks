@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet/dynpgo",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "fannkuch-redux",
   "code": "9.cs",
   "input": "11",

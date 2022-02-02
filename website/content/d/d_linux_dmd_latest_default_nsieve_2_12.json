@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dmd",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "2.d",
   "input": "12",

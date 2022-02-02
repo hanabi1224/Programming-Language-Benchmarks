@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasm/graal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "2.rs",
   "input": "1000",

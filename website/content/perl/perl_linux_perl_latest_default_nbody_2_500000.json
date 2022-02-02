@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "perl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.pl",
   "input": "500000",

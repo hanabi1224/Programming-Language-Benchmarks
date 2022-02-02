@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk",
   "compilerVersion": "18",
+  "unstable": true,
   "test": "edigits",
   "code": "1.java",
   "input": "100000",

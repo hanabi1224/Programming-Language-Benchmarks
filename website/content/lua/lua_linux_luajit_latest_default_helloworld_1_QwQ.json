@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "luajit",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.lua",
   "input": "QwQ",

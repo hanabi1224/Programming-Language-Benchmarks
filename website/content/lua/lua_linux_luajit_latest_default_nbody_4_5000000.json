@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "luajit",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "4.lua",
   "input": "5000000",

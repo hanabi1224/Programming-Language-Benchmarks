@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk/zgc",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "mandelbrot",
   "code": "4.java",
   "input": "8000",

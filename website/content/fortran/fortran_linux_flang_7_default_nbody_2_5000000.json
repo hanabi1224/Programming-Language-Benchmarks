@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "flang",
   "compilerVersion": "7",
+  "unstable": false,
   "test": "nbody",
   "code": "2.f90",
   "input": "5000000",

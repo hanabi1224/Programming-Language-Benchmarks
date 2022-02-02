@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "chpl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "5.chpl",
   "input": "2500000",

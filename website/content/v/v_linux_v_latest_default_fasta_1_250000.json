@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "v",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "1.v",
   "input": "250000",

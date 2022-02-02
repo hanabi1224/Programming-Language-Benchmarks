@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "sbcl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.cl",
   "input": "QwQ",

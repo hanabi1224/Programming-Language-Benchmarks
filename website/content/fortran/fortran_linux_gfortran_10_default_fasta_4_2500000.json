@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "gfortran",
   "compilerVersion": "10",
+  "unstable": false,
   "test": "fasta",
   "code": "4.f90",
   "input": "2500000",

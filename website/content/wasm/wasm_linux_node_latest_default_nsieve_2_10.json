@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "2.rs",
   "input": "10",

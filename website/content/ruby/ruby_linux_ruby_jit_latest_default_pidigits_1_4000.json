@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ruby/jit",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.rb",
   "input": "4000",

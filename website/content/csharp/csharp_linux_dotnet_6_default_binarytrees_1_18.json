@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "binarytrees",
   "code": "1.cs",
   "input": "18",

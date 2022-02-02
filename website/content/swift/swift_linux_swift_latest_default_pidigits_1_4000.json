@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "swift",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.swift",
   "input": "4000",

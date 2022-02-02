@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.rs",
   "input": "QwQ",

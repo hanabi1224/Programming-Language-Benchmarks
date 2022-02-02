@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "racket",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "3.rkt",
   "input": "2500000",

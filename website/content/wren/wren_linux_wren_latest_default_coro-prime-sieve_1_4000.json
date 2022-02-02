@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wren",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.wren",
   "input": "4000",

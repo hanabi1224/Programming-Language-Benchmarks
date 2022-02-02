@@ -111,6 +111,7 @@ environments:
     out_dir: out
     run_cmd: openjdk-18/bin/java app
     allow_failure: true
+    unstable: true
   # - os: linux
   #   compiler: zuluopenjdk
   #   version: 16

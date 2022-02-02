@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "swift",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "7.swift",
   "input": "5000000",

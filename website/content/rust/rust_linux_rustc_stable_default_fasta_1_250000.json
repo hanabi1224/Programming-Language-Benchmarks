@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "fasta",
   "code": "1.rs",
   "input": "250000",

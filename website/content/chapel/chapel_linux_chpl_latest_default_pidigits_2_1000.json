@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "chpl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "2.chpl",
   "input": "1000",

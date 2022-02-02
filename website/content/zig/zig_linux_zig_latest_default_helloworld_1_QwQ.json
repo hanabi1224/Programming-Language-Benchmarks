@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "zig",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.zig",
   "input": "QwQ",

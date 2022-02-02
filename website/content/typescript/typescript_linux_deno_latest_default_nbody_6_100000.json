@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "deno",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "6.ts",
   "input": "100000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "julia",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.jl",
   "input": "4000",
