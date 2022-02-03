@@ -114,6 +114,6 @@ pub fn main() !void {
 fn get_steps() !usize {
     var arg_it = std.process.args();
     _ = arg_it.skip();
-    const arg = arg_it.nextPosix() orelse return 10;
+    const arg = arg_it.next() orelse return 10;
     return try std.fmt.parseInt(usize, arg, 10);
 }

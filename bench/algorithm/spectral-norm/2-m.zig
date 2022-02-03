@@ -104,6 +104,6 @@ pub fn main() !void {
 fn get_n() !usize {
     var arg_it = std.process.args();
     _ = arg_it.skip();
-    const arg = arg_it.nextPosix() orelse return 100;
+    const arg = arg_it.next() orelse return 100;
     return try std.fmt.parseInt(usize, arg, 10);
 }

@@ -65,7 +65,7 @@ fn make_repeat_fasta(id string, desc string, src []byte, n int) {
 	}
 	for _ in 0 .. (n / src.len + 1) {
 		for c in src {
-			sb.write_b(c)
+			sb.write_byte(c)
 			char_print_idx += 1
 			if char_print_idx >= n {
 				if char_print_idx % line_width != 0 {
@@ -101,7 +101,7 @@ fn make_random_fasta(mut rand_gen RandGen, id string, desc string, mut table map
 		rand := rand_gen.gen_random()
 		for k, p in table {
 			if p > rand {
-				sb.write_b(k)
+				sb.write_byte(k)
 				n_char_printed += 1
 				if n_char_printed % line_width == 0 {
 					println(sb.str())
