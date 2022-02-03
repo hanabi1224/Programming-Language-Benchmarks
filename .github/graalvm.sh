@@ -5,10 +5,9 @@
 echo $GRAALVM_11_ROOT
 
 # sudo ln -sf $GRAALVM_11_ROOT $HOME/graalvm-ce-java11
-
-wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.3.0/graalvm-ce-java17-linux-amd64-21.3.0.tar.gz
-tar -xvf graalvm-ce-java17-linux-amd64-21.3.0.tar.gz
-sudo ln -sf $PWD/graalvm-ce-java17-21.3.0 $HOME/graalvm-ce-java17
+wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-22.0.0.2/graalvm-ce-java17-linux-amd64-22.0.0.2.tar.gz
+tar -xvf graalvm-ce-java17-linux-amd64-22.0.0.2.tar.gz
+sudo ln -sf $PWD/graalvm-ce-java17-22.0.0.2 $HOME/graalvm-ce-java17
 
 ls -al $HOME/graalvm-ce-java17
 sudo ln -sf $HOME/graalvm-ce-java17/bin/gu /usr/bin/gu
