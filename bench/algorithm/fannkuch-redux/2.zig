@@ -69,6 +69,6 @@ pub fn main() !void {
 fn get_n() !u8 {
     var arg_it = std.process.args();
     _ = arg_it.skip();
-    const arg = arg_it.nextPosix() orelse return 10;
+    const arg = arg_it.next() orelse return 10;
     return try std.fmt.parseInt(u8, arg, 10);
 }
