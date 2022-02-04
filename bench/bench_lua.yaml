@@ -22,9 +22,9 @@ environments:
     compiler: lua
     version: latest
     include: lua
-    build: cp app.lua out
+    build: luac -s -o out/app.out app.lua
     out_dir: out
-    run_cmd: lua app.lua
+    run_cmd: lua app.out
   - os: linux
     compiler: luajit
     version: latest
