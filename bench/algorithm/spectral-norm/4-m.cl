@@ -39,24 +39,24 @@
 (defun eval-A-times-u (transpose src dst begin end length)
   (with-boolean (transpose)
     (loop with src-0 of-type f64 = (f64-aref src 0)
-	  for i of-type index from begin below end by 4
+	        for i of-type index from begin below end by 4
           do (let* ((ti0   (if transpose (make-f64.2 (+ i 1) (+ i 2))
-                                         (make-f64.2 (+ i 0) (+ i 1))))
-		    (ti1   (if transpose (make-f64.2 (+ i 3) (+ i 4))
-                                         (make-f64.2 (+ i 2) (+ i 3))))
-		    (eA0   (if transpose (eval-A (f64.2 0) (f64.2- ti0 1))
-                                         (eval-A ti0 (f64.2 0))))
-		    (eA1   (if transpose (eval-A (f64.2 0) (f64.2- ti1 1))
-                                         (eval-A ti1 (f64.2 0))))
-		    (sum0  (f64.2/ src-0 eA0))
-		    (sum1  (f64.2/ src-0 eA1)))
-	       (loop for j of-type index from 1 below length
-		     do (let ((src-j (f64-aref src j))
+                               (make-f64.2 (+ i 0) (+ i 1))))
+		                (ti1   (if transpose (make-f64.2 (+ i 3) (+ i 4))
+                               (make-f64.2 (+ i 2) (+ i 3))))
+		                (eA0   (if transpose (eval-A (f64.2 0) (f64.2- ti0 1))
+                               (eval-A ti0 (f64.2 0))))
+		                (eA1   (if transpose (eval-A (f64.2 0) (f64.2- ti1 1))
+                               (eval-A ti1 (f64.2 0))))
+		                (sum0  (f64.2/ src-0 eA0))
+		                (sum1  (f64.2/ src-0 eA1)))
+	             (loop for j of-type index from 1 below length
+		                 do (let ((src-j (f64-aref src j))
                               (idx0 (f64.2+ eA0 ti0 j))
-			      (idx1 (f64.2+ eA1 ti1 j)))
-			  (setf eA0 idx0 eA1 idx1)
-			  (f64.2-incf sum0 (f64.2/ src-j idx0))
-			  (f64.2-incf sum1 (f64.2/ src-j idx1))))
+			                        (idx1 (f64.2+ eA1 ti1 j)))
+			                    (setf eA0 idx0 eA1 idx1)
+			                    (f64.2-incf sum0 (f64.2/ src-j idx0))
+			                    (f64.2-incf sum1 (f64.2/ src-j idx1))))
                (setf (f64.2-aref dst i) sum0)
                (setf (f64.2-aref dst (+ i 2)) sum1)))))
 
@@ -84,11 +84,11 @@
 
 (-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
 (defun eval-AtA-times-u (src dst tmp start end N)
-      (progn
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u t src tmp start end N)))
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u nil tmp dst start end N)))))
+  (progn
+	  (execute-parallel start end (lambda (start end)
+				                          (eval-A-times-u t src tmp start end N)))
+	  (execute-parallel start end (lambda (start end)
+				                          (eval-A-times-u nil tmp dst start end N)))))
 
 (-> spectralnorm (u32) f64)
 (defun spectralnorm (n)

@@ -32,8 +32,8 @@
 (defun eval-A (i j)
   (let ((i+1 (1+ i)))
     (the uint31 (+ (the uint31 (ash (the uint31 (* (the uint31 (+ i j))
-                                                   (the uint31 (+ i+1 j)))) -1))
-                   i+1))))
+                                                   (the uint31 (+ i+1 j))))
+                                    -1)) i+1))))
 
 (declaim (ftype (function (array-d+ uint31 array-d+ uint31 uint31) null)
                 eval-A-times-u eval-At-times-u))
@@ -57,12 +57,12 @@
 (defun execute-parallel (start end function)
   (declare (optimize (speed 1)))
   (mapc #'sb-thread:join-thread
-          (loop with step = (truncate (- end start) (get-thread-count))
-                for index from start below end by step
-                collecting (let ((start index)
-                                 (end (min end (+ index step))))
-                             (sb-thread:make-thread
-                              (lambda () (funcall function start end)))))))
+        (loop with step = (truncate (- end start) (get-thread-count))
+              for index from start below end by step
+              collecting (let ((start index)
+                               (end (min end (+ index step))))
+                           (sb-thread:make-thread
+                            (lambda () (funcall function start end)))))))
 
 #-sb-thread
 (defun execute-parallel (start end function )
@@ -77,7 +77,7 @@
 (declaim (ftype (function (&optional uint31) null) main))
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
-                                  "5000")))))
+                                             "5000")))))
     (or (typep (* (- (* 2 n) 1) (- (* 2 n) 2)) 'fixnum)
         (error "The supplied value of 'n' breaks the optimizations in EVAL-A"))
     (let ((u   (make-array n :element-type 'd+ :initial-element 1d0))
