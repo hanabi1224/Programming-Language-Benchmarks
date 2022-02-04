@@ -47,9 +47,9 @@
                  (if transpose (eval-A (f32.8 0) (f32.8+ i (make-f32.8 0 1 2 3 4 5 6 7)))
                      (eval-A (f32.8+ i (make-f32.8 0 1 2 3 4 5 6 7)) (f32.8 0)))
                (let* ((ti0  (f64.4+ i (if transpose (make-f64.4 1 2 3 4)
-                                          (make-f64.4 0 1 2 3))))
+                                                    (make-f64.4 0 1 2 3))))
 	                    (ti1  (f64.4+ i (if transpose (make-f64.4 5 6 7 8)
-                                          (make-f64.4 4 5 6 7))))
+                                                    (make-f64.4 4 5 6 7))))
                       (sum0 (f64.4/ src-0 eA0))
 		                  (sum1 (f64.4/ src-0 eA1)))
 	               (loop for j of-type index from 1 below length

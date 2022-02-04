@@ -40,9 +40,9 @@
     (loop with src-0 of-type f64 = (f64-aref src 0)
           for i of-type index from begin below end by 2
           do (let* ((ti  (if transpose (make-f64.2 (+ i 1) (+ i 2))
-                             (make-f64.2 (+ i 0) (+ i 1))))
+                                       (make-f64.2 (+ i 0) (+ i 1))))
                     (eA  (if transpose (eval-A (f64.2 0) (f64.2- ti 1))
-                             (eval-A ti (f64.2 0))))
+                                       (eval-A ti (f64.2 0))))
 		                (sum (f64.2/ src-0 eA)))
 	             (loop for j of-type index from 1 below length
 		                 do (let ((src-j (f64-aref src j))
