@@ -10,7 +10,7 @@ plugins {
     // id("org.springframework.boot").version("2.5.6")
     // id("io.spring.dependency-management").version("1.0.11.RELEASE")
     id("com.github.johnrengelman.shadow").version("7.1.2")
-    id("com.github.ben-manes.versions").version("0.41.0")
+    id("com.github.ben-manes.versions").version("0.42.0")
     java
     application
 }

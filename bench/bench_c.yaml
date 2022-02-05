@@ -31,11 +31,11 @@ source_rename_to: app.c
 environments:
   - os: linux
     compiler: clang
-    compiler_version_command: clang-13 --version
-    version: 13
+    compiler_version_command: clang-14 --version
+    version: latest
     docker:
     include: c
-    build: clang-13 @app.rsp
+    build: clang-14 @app.rsp
     after_build:
       - mv app out
     out_dir: out
