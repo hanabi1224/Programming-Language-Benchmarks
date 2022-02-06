@@ -25,13 +25,13 @@ var iub = {
   'V': 0.02,
   'W': 0.02,
   'Y': 0.02,
-}.toOrderedTable
+}
 var homosapiens = {
   'a': 0.3029549426680,
   'c': 0.1979883004921,
   'g': 0.1975473066391,
   't': 0.3015094502008,
-}.toOrderedTable
+}
 
 proc nextRand():auto=
   randGen.seed = (randGen.seed * ia + ic) mod im
@@ -53,18 +53,18 @@ proc make_repeat_fasta(id:string, desc:string, src:string, n: int):auto =
           echo sb[0..<rmd_len]
         break
 
-proc make_random_fasta(id:string, desc:string, table: var OrderedTable[char, float64], n: int): auto=
+proc make_random_fasta(id:string, desc:string, table: var openArray[(char, float64)], n: int): auto=
   echo &">{id} {desc}"
   var prob = 0.0
-  for k, p in table:
+  for i, (k, p) in table:
     prob += p
-    table[k] = prob
+    table[i][1] = prob
   
   var n_char_printed = 0
   var sb = newString(line_width)
   for _ in 0..<n:
     let rand = nextRand()
-    for k, p in table:
+    for (k, p) in table:
       if p > rand:
         sb[n_char_printed mod line_width] = k
         n_char_printed += 1
