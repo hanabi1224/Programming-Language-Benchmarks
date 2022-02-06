@@ -29,7 +29,6 @@ method put(lru: LRU, key:uint32, value:uint32) =
   if lru.tbl.contains(key):
     let v = lru.tbl[key]
     lru.tbl.del(key)
-    lru.tbl[key] = v
   elif lru.tbl.len() == lru.size:
     for k in lru.tbl.keys:
       lru.tbl.del(k)
