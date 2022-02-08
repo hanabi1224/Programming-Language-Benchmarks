@@ -15,7 +15,7 @@ problems:
   - name: spectral-norm
     source:
       - 1.nim
-      - 2.nim
+      # - 2.nim
   - name: nsieve
     source:
       - 1.nim
@@ -26,6 +26,7 @@ problems:
   - name: fasta
     source:
       - 1.nim
+      - 2.nim
   - name: http-server
     source:
       - 1.nim
@@ -48,7 +49,7 @@ environments:
     include: nim
     include_sub_dir:
     before_build:
-    build: nimble build app -y -x:off -a:off -d:release -d:danger -d:nimCoroutines --threads:on --opt:speed --verbose
+    build: nimble build app -y -x:off -a:off --mm:orc -d:release -d:danger -d:nimCoroutines --threads:on --opt:speed --verbose
     after_build:
       - cp app out
     out_dir: out
