@@ -26,6 +26,7 @@ problems:
   - name: fasta
     source:
       - 1.nim
+      - 2.nim
   - name: http-server
     source:
       - 1.nim
