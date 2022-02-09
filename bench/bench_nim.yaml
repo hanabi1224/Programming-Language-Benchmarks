@@ -49,7 +49,7 @@ environments:
     include: nim
     include_sub_dir:
     before_build:
-    build: nimble build app -y --cc:clang --mm:orc -d:danger --panics:on -d:nimCoroutines --threads:on --tlsEmulation:off --verbose
+    build: nimble build app -y --mm:orc -d:danger --panics:on -d:nimCoroutines --threads:on --tlsEmulation:off --verbose
     after_build:
       - cp app out
     out_dir: out
