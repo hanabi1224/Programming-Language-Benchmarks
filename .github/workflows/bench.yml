@@ -14,8 +14,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-20.04]
-        lang:
-          [
+        lang: [
             c,
             chapel,
             cpp,
@@ -54,9 +53,9 @@ jobs:
       - run: dotnet --info
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.x'
+          dotnet-version: "6.x"
       - name: Install
-        run: |   
+        run: |
           echo '# placeholder' > $PROFILE
           dotnet --info
           sudo apt-get update -y
@@ -79,7 +78,7 @@ jobs:
         if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
         run: ./.github/graalvm.sh
       - name: Install clang
-        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
+        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'nim' || matrix.lang == 'v'
         run: ./.github/clang.sh
       # - name: Install c deps
       #   if: matrix.lang == 'c'
@@ -121,12 +120,15 @@ jobs:
         run: ./.github/hhvm.sh
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
-        with: 
+        with:
           compiler: dmd-latest
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
-        with: 
+        with:
           compiler: ldc-latest
+      - name: Install nim
+        if: matrix.lang == 'nim'
+        run: ./.github/nim.sh
       - uses: shogo82148/actions-setup-perl@v1
         if: matrix.lang == 'perl'
         with:
@@ -203,7 +205,7 @@ jobs:
       - run: lscpu
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.x'
+          dotnet-version: "6.x"
       - name: Install
         run: |
           dotnet --info

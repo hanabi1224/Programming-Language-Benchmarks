@@ -45,11 +45,23 @@ environments:
   - os: linux
     compiler: nim
     version: latest
-    docker: nimlang/nim
+    # docker: nimlang/nim
     include: nim
     include_sub_dir:
     before_build:
     build: nimble build app -y --mm:orc -d:danger --panics:on -d:nimCoroutines --threads:on --tlsEmulation:off --verbose
+    after_build:
+      - cp app out
+    out_dir: out
+    run_cmd: app
+  - os: linux
+    compiler: nim/clang
+    version: latest
+    # docker: nimlang/nim
+    include: nim
+    include_sub_dir:
+    before_build:
+    build: nimble build app -y --mm:orc --cc:clang -d:danger --panics:on -d:nimCoroutines --threads:on --tlsEmulation:off --verbose
     after_build:
       - cp app out
     out_dir: out
