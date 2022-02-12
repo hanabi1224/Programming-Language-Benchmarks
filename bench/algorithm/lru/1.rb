@@ -1,48 +1,33 @@
-A = 1103515245
-C =      12345
-M = 1 << 31
-
 class LCG
+  A = 1103515245
+  C =      12345
+  M = 1 << 31
+
   def initialize(seed)
     @seed = seed
   end
 
   def next
-    _lcg()
-    return @seed
-  end
-
-  def _lcg
     @seed = (A * @seed + C) % M
   end
 end
 
 class LRU
-    def initialize(size)
-        @size = size
-        @hash = Hash.new
+  def initialize(size)
+    @size = size
+    @hash = Hash.new
+  end
+
+  def get(key)
+    if v = @hash.delete(key)
+      @hash[key] = v
     end
-  
-    def get(key)
-      v = @hash[key]
-      if v != nil
-        @hash.delete(key)
-        @hash[key] = v
-      end
-      return v
-    end
-  
-    def put(key, value)
-      v = @hash[key]
-      if v == nil
-        if @hash.size == @size
-          @hash.delete(@hash.keys.first)
-        end
-      else
-        @hash.delete(key)
-      end
-      @hash[key] = value
-    end
+  end
+
+  def put(key, value)
+    @hash.shift unless @hash.delete(key) || @hash.size < @size
+    @hash[key] = value
+  end
 end
 
 n = ARGV.size > 0 ? ARGV[0].to_i : 100
@@ -52,15 +37,15 @@ missed = 0
 rng0 = LCG.new 0
 rng1 = LCG.new 1
 lru = LRU.new 10
-(0...n).each do |i|
-    n0 = rng0.next % 100
-    lru.put(n0, n0)
-    n1 = rng1.next % 100
-    if lru.get(n1) == nil
-        missed += 1
-    else
-        hit += 1
-    end
+n.times do
+  n0 = rng0.next % 100
+  lru.put(n0, n0)
+  n1 = rng1.next % 100
+  if lru.get(n1)
+    hit += 1
+  else
+    missed += 1
+  end
 end
 
 puts hit
