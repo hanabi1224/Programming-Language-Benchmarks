@@ -1,66 +1,50 @@
-A = 1103515245_u64
-C =      12345_u64
-M = 1_u64 << 31
+struct LCG
+  A = 1103515245_u32
+  C =      12345_u32
+  M = 1_u32 << 31
 
-class LCG
-  def initialize(seed : UInt64)
-    @seed = seed
+  def initialize(@seed : UInt32)
   end
 
   def next
-    _lcg()
-    return @seed
-  end
-
-  def _lcg
-    @seed = (A * @seed + C) % M
+    @seed = (A &* @seed &+ C) % M
   end
 end
 
 class LRU
-  def initialize(size : Int32)
-    @size = size
-    @hash = Hash(UInt64, UInt64).new
+  def initialize(@size : Int32)
+    @hash = Hash(UInt32, UInt32).new
   end
 
-  def get(key : UInt64)
-    v = @hash[key]?
-    if v != nil
-      @hash.delete(key)
-      @hash[key] = v.as UInt64
-      return v
+  def get(key)
+    if v = @hash.delete(key)
+      @hash[key] = v
     end
-    return v
   end
 
-  def put(key : UInt64, value : UInt64)
-    v = @hash[key]?
-    if v == nil
-      if @hash.size == @size
-        @hash.delete(@hash.first_key)
-      end
-    else
-      @hash.delete(key)
-    end
+  def put(key, value)
+    @hash.shift unless @hash.delete(key) || @hash.size < @size
     @hash[key] = value
   end
 end
 
 n = ARGV.size > 0 ? ARGV[0].to_i : 100
+
 hit = 0
 missed = 0
 rng0 = LCG.new 0
 rng1 = LCG.new 1
 lru = LRU.new 10
-(0...n).each do |i|
+n.times do
   n0 = rng0.next % 100
   lru.put(n0, n0)
   n1 = rng1.next % 100
-  if lru.get(n1) == nil
-    missed += 1
-  else
+  if lru.get(n1)
     hit += 1
+  else
+    missed += 1
   end
 end
+
 puts hit
 puts missed
