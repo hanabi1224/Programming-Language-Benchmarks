@@ -1,6 +1,7 @@
 import sys
 from collections import deque
 
+
 class LRU:
     def __init__(self, size: int):
         self._size = size
@@ -16,7 +17,7 @@ class LRU:
         k, v = self._entries[idx]
         self._move_to_end(idx, (k, v))
         return v
-        
+
     def put(self, key, value):
         idx = self._key_lookup.get(key, None)
         if idx == None:
@@ -40,7 +41,7 @@ class LRU:
             for i in range(0, len(self._entries)):
                 k, v = self._entries[i]
                 self._key_lookup[k] = i
-            
+
     def _move_to_end(self, idx, pair):
         if idx + 1 < len(self._entries):
             self._entries.remove(pair)
@@ -49,6 +50,7 @@ class LRU:
                 k, v = self._entries[i]
                 self._key_lookup[k] = i + self._idx_offset
 
+
 def lcg(seed: int):
     A = 1103515245
     C = 12345
@@ -56,6 +58,7 @@ def lcg(seed: int):
     while True:
         seed = (A*seed + C) % M
         yield seed
+
 
 def main():
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 1000
@@ -74,6 +77,7 @@ def main():
             hit += 1
     print(hit)
     print(missed)
+
 
 if __name__ == '__main__':
     main()
