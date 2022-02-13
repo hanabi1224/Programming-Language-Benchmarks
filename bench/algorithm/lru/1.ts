@@ -47,18 +47,20 @@ class LRU {
 }
 
 function main() {
-    const n = +Deno.args[0] || 100
+    const size = +Deno.args[0] || 100
+    const n = +Deno.args[1] || 100
+    const mod = BigInt(size * 10)
 
     const rng0 = new LCG(0n)
     const rng1 = new LCG(1n)
-    const lru = new LRU(10)
+    const lru = new LRU(size)
     let hit = 0
     let missed = 0
 
     for (var i = 0; i < n; i++) {
-        const n0 = rng0.next() % 100n
+        const n0 = rng0.next() % mod
         lru.put(n0, n0)
-        const n1 = rng1.next() % 100n
+        const n1 = rng1.next() % mod
         if (lru.get(n1) === null) {
             missed += 1
         } else {

@@ -61,16 +61,18 @@ def lcg(seed: int):
 
 
 def main():
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 1000
+    size = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+    n = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    mod = size * 10
     rng0 = lcg(0)
     rng1 = lcg(1)
     hit = 0
     missed = 0
-    lru = LRU(10)
+    lru = LRU(size)
     for i in range(0, n):
-        n0 = next(rng0) % 100
+        n0 = next(rng0) % mod
         lru.put(n0, n0)
-        n1 = next(rng1) % 100
+        n1 = next(rng1) % mod
         if lru.get(n1) == None:
             missed += 1
         else:

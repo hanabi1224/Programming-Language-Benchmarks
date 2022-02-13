@@ -35,9 +35,11 @@ method put(lru: LRU, key:uint32, value:uint32) =
       break
   lru.tbl[key] = value
 
-let n =  if paramCount() > 0: parseInt(paramStr(1)) else: 100
+let size =  if paramCount() > 0: parseInt(paramStr(1)) else: 100
+let n =  if paramCount() > 1: parseInt(paramStr(2)) else: 100
+let modular = uint32(size) * 10
 
-let lru = LRU(size:10, tbl: newOrderedTable[uint32, uint32](10))
+let lru = LRU(size:size, tbl: newOrderedTable[uint32, uint32](size))
 let rng0 = lcg(0)
 let rng1 = lcg(1)
 
@@ -45,9 +47,9 @@ var hit = 0
 var missed = 0
 
 for i in 0..<n:
-    let n0 = rng0() mod 100
+    let n0 = rng0() mod modular
     lru.put(n0, n0)
-    let n1 = rng1() mod 100
+    let n1 = rng1() mod modular
     let (_, ok) = lru.get(n1)
     if ok:
       inc hit 

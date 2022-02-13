@@ -28,17 +28,19 @@ class LRU
   end
 end
 
-n = ARGV.size > 0 ? ARGV[0].to_i : 100
+size = ARGV.size > 0 ? ARGV[0].to_i : 100
+n = ARGV.size > 0 ? ARGV[1].to_i : 100
+mod = size * 10
 
 hit = 0
 missed = 0
 rng0 = LCG.new 0
 rng1 = LCG.new 1
-lru = LRU.new 10
+lru = LRU.new size
 n.times do
-  n0 = rng0.next % 100
+  n0 = rng0.next % mod
   lru.put(n0, n0)
-  n1 = rng1.next % 100
+  n1 = rng1.next % mod
   if lru.get(n1)
     hit += 1
   else

@@ -1,17 +1,18 @@
 import kotlin.collections.*
 
 fun main(args: Array<String>) {
-    val n = if (args.size > 0) args[0].toInt() else 100
+    val size = if (args.size > 0) args[0].toInt() else 100
+    val n = if (args.size > 1) args[1].toInt() else 100
+    val mod = (size * 10).toUInt()
     var hit = 0
     var missed = 0
     val rng0 = LCG(0.toUInt())
     val rng1 = LCG(1.toUInt())
-    val lru = LRU(10)
-    val upperBound = 100.toUInt()
+    val lru = LRU(size)
     repeat(n) {
-        val n0 = rng0.next() % upperBound
+        val n0 = rng0.next() % mod
         lru.put(n0, n0)
-        var n1 = rng1.next() % upperBound
+        var n1 = rng1.next() % mod
         if (lru.get(n1) == null) {
             missed += 1
         } else {

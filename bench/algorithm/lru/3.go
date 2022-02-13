@@ -62,22 +62,29 @@ func (c *LRU) Put(key, value uint32) {
 }
 
 func main() {
-	n := 10000
+	size := 100
 	if len(os.Args) > 1 {
-		if _n, err := strconv.Atoi(os.Args[1]); err == nil {
+		if _size, err := strconv.Atoi(os.Args[1]); err == nil {
+			size = int(_size)
+		}
+	}
+	n := 10000
+	if len(os.Args) > 2 {
+		if _n, err := strconv.Atoi(os.Args[2]); err == nil {
 			n = int(_n)
 		}
 	}
+	M := uint32(size) * 10
 	rng0 := lcg(0)
 	rng1 := lcg(1)
 	hit := 0
 	missed := 0
-	lru := newLRU(10)
+	lru := newLRU(size)
 	for i := 0; i < n; i++ {
-		n0 := rng0() % 100
+		n0 := rng0() % M
 		lru.Put(n0, n0)
 
-		n1 := rng1() % 100
+		n1 := rng1() % M
 		if _, ok := lru.Get(n1); ok {
 			hit += 1
 		} else {
