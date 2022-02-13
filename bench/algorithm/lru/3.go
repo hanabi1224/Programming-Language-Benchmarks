@@ -1,11 +1,10 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 	"os"
 	"strconv"
-
-	"github.com/things-go/container/linkedmap"
 )
 
 const (
@@ -13,6 +12,10 @@ const (
 	C uint32 = 12345
 	M uint32 = 1 << 31
 )
+
+type Pair = struct {
+	Key, Value uint32
+}
 
 func lcg(seed uint32) func() uint32 {
 	r := seed
@@ -24,32 +27,38 @@ func lcg(seed uint32) func() uint32 {
 
 type LRU struct {
 	Size int
-	m    *linkedmap.LinkedMap
+
+	keys    map[uint32]*list.Element
+	entries *list.List
 }
 
 func newLRU(size int) LRU {
-	return LRU{Size: size, m: linkedmap.New()}
+	return LRU{Size: size, keys: make(map[uint32]*list.Element, size), entries: list.New()}
 }
 
 func (c *LRU) Get(key uint32) (uint32, bool) {
-	v := c.m.Get(key, nil)
-	if v != nil {
-		v := v.(uint32)
-		c.m.Remove(key)
-		c.m.PushBack(key, v)
-		return v, true
+	ele, ok := c.keys[key]
+	if ok {
+		c.entries.MoveToBack(ele)
+		return ele.Value.(Pair).Value, true
 	} else {
 		return 0, false
 	}
 }
 
 func (c *LRU) Put(key, value uint32) {
-	if c.m.Get(key, nil) != nil {
-		c.m.Remove(key)
-	} else if c.m.Len() == c.Size {
-		c.m.PollFront()
+	pair := Pair{key, value}
+	ele, ok := c.keys[key]
+	if ok {
+		ele.Value = pair
+		c.entries.MoveToBack(ele)
+		return
+	} else if c.entries.Len() == c.Size {
+		ele := c.entries.Front()
+		delete(c.keys, ele.Value.(Pair).Key)
+		c.entries.Remove(ele)
 	}
-	c.m.PushBack(key, value)
+	c.keys[key] = c.entries.PushBack(pair)
 }
 
 func main() {

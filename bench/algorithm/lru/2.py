@@ -1,6 +1,7 @@
 import sys
 from collections import deque
 
+
 class LRU:
     def __init__(self, size: int):
         self._size = size
@@ -16,7 +17,7 @@ class LRU:
         k, v = self._entries[idx]
         self._move_to_end(idx, (k, v))
         return v
-        
+
     def put(self, key, value):
         idx = self._key_lookup.get(key, None)
         if idx == None:
@@ -40,7 +41,7 @@ class LRU:
             for i in range(0, len(self._entries)):
                 k, v = self._entries[i]
                 self._key_lookup[k] = i
-            
+
     def _move_to_end(self, idx, pair):
         if idx + 1 < len(self._entries):
             self._entries.remove(pair)
@@ -48,6 +49,7 @@ class LRU:
             for i in range(idx, len(self._entries)):
                 k, v = self._entries[i]
                 self._key_lookup[k] = i + self._idx_offset
+
 
 def lcg(seed: int):
     A = 1103515245
@@ -57,23 +59,27 @@ def lcg(seed: int):
         seed = (A*seed + C) % M
         yield seed
 
+
 def main():
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 1000
+    size = int(sys.argv[1]) if len(sys.argv) > 1 else 100
+    n = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    mod = size * 10
     rng0 = lcg(0)
     rng1 = lcg(1)
     hit = 0
     missed = 0
-    lru = LRU(10)
+    lru = LRU(size)
     for i in range(0, n):
-        n0 = next(rng0) % 100
+        n0 = next(rng0) % mod
         lru.put(n0, n0)
-        n1 = next(rng1) % 100
+        n1 = next(rng1) % mod
         if lru.get(n1) == None:
             missed += 1
         else:
             hit += 1
     print(hit)
     print(missed)
+
 
 if __name__ == '__main__':
     main()

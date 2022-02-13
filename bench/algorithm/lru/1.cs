@@ -5,18 +5,20 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var n = args.Length > 0 ? int.Parse(args[0]) : 10000;
+        var size = args.Length > 0 ? int.Parse(args[0]) : 100;
+        var n = args.Length > 0 ? int.Parse(args[1]) : 10000;
+        var mod = (uint)size * 10;
         var rng0 = new LCG(0);
         var rng1 = new LCG(1);
-        var lru = new LRU(10);
+        var lru = new LRU(size);
         var hit = 0;
         var missed = 0;
         for (var i = 0; i < n; i++)
         {
-            var n0 = rng0.NextRandom() % 100;
+            var n0 = rng0.NextRandom() % mod;
             lru.Put(n0, n0);
 
-            var n1 = rng1.NextRandom() % 100;
+            var n1 = rng1.NextRandom() % mod;
             if (lru.TryGet(n1, out _))
             {
                 hit += 1;

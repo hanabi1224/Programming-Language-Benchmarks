@@ -42,17 +42,19 @@ class LRU {
   }
 }
 
-void main(List<String> arguments) async {
-  final n = arguments.length > 0 ? int.parse(arguments[0]) : 1000;
+void main(List<String> arguments) {
+  final size = arguments.length > 0 ? int.parse(arguments[0]) : 100;
+  final n = arguments.length > 0 ? int.parse(arguments[1]) : 1000;
+  final mod = size * 10;
   var hit = 0;
   var missed = 0;
   final rng0 = LCG(0);
   final rng1 = LCG(1);
-  final lru = LRU(10);
+  final lru = LRU(size);
   for (var i = 0; i < n; i++) {
-    final n0 = rng0.next() % 100;
+    final n0 = rng0.next() % mod;
     lru.put(n0, n0);
-    final n1 = rng1.next() % 100;
+    final n1 = rng1.next() % mod;
     if (lru.get(n1) == null) {
       missed += 1;
     } else {
