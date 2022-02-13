@@ -12,6 +12,7 @@ problems:
   - name: nbody
     source:
       - 8.cs
+      - 9.cs
   - name: spectral-norm
     source:
       - 3.cs

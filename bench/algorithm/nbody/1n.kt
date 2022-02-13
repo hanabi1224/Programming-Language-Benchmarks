@@ -9,12 +9,35 @@
 import kotlin.math.*
 
 fun main(args: Array<String>) {
-    val n = if (args.size > 0) args[0].toInt() else 1000
+    val n = args[0].toInt()
 
     val bodies = NBodySystem()
-    println("%.9f".format(bodies.energy()))
+    println(bodies.energy().toString(9))
     for (i in 0..n - 1) bodies.advance(0.01)
-    println("%.9f".format(bodies.energy()))
+    println(bodies.energy().toString(9))
+}
+
+fun Double.toString(numOfDec: Int): String {
+    var integerDigits = this.toInt()
+    var floats = this - integerDigits
+    var needReverseSign = floats < 0
+    if (needReverseSign && integerDigits < 0) {
+        integerDigits -= 1
+        floats += 1
+        needReverseSign = false
+    }
+
+    if (needReverseSign) {
+        floats = -floats
+    }
+
+    val floatDigits = (floats * 10f.pow(numOfDec)).roundToInt()
+    var result = "${integerDigits}.${floatDigits}"
+    if (needReverseSign) {
+        result = "-${result}"
+    }
+
+    return result
 }
 
 internal class NBodySystem {
