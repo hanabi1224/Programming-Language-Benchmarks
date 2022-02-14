@@ -1,19 +1,21 @@
 use hashbrown::HashMap;
-use std::{cell::RefCell, hash::Hash, rc::Rc};
+use std::{
+    cell::RefCell,
+    hash::Hash,
+    rc::{Rc, Weak},
+};
 
 type NodePtr<T> = Rc<RefCell<LinkedListNode<T>>>;
+type NodeWeakPtr<T> = Weak<RefCell<LinkedListNode<T>>>;
 
 #[derive(Debug)]
 struct LinkedListNode<T> {
-    prev: Option<NodePtr<T>>,
+    prev: Option<NodeWeakPtr<T>>,
     next: Option<NodePtr<T>>,
     data: T,
 }
 
-impl<T> LinkedListNode<T>
-where
-    T: PartialEq,
-{
+impl<T> LinkedListNode<T> {
     pub fn new(data: T) -> Self {
         Self {
             prev: None,
@@ -25,14 +27,12 @@ where
 
 struct LinkedList<T> {
     head: Option<NodePtr<T>>,
+    // Using Option<NodeWeakPtr<T>> for tail makes the program slightly slower
     tail: Option<NodePtr<T>>,
     len: usize,
 }
 
-impl<T> LinkedList<T>
-where
-    T: PartialEq,
-{
+impl<T> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             head: None,
@@ -54,7 +54,7 @@ where
             node_mut.prev = None;
             self.head = Some(node.clone());
         } else if let Some(tail) = &self.tail {
-            node_mut.prev = self.tail.clone();
+            node_mut.prev = Some(Rc::downgrade(tail));
             let mut tail_mut = tail.borrow_mut();
             tail_mut.next = Some(node.clone());
         }
@@ -63,19 +63,26 @@ where
     }
 
     fn _remove(&mut self, node: &NodePtr<T>) {
+        let node_ptr = node.as_ptr();
         let node_im = node.borrow();
         if let Some(head) = &self.head {
-            if head.borrow().data == node_im.data {
+            if head.as_ptr() == node_ptr {
                 self.head = node_im.next.clone();
             }
         }
         if let Some(tail) = &self.tail {
-            if tail.borrow().data == node_im.data {
-                self.tail = node_im.prev.clone();
+            if tail.as_ptr() == node_ptr {
+                if let Some(prev) = &node_im.prev {
+                    self.tail = prev.upgrade();
+                } else {
+                    self.tail = None;
+                }
             }
         }
         if let Some(prev) = &node_im.prev {
-            prev.borrow_mut().next = node_im.next.clone();
+            if let Some(prev) = prev.upgrade() {
+                prev.borrow_mut().next = node_im.next.clone();
+            }
         }
         if let Some(next) = &node_im.next {
             next.borrow_mut().prev = node_im.prev.clone();
@@ -131,7 +138,7 @@ struct LRU<K, V> {
 impl<K, V> LRU<K, V>
 where
     K: Eq + Hash + Clone,
-    V: Clone + PartialEq,
+    V: Clone,
 {
     pub fn new(size: usize) -> Self {
         Self {
