@@ -1,54 +1,82 @@
 import sys
-from collections import deque
+
+
+class LinkedListNode(object):
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+
+class LinkedList(object):
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.len = 0
+
+    def add(self, data):
+        node = LinkedListNode(data)
+        self.__add_node(node)
+        self.len += 1
+        return node
+
+    def __add_node(self, node):
+        if self.head is None:
+            self.head = node
+            node.prev = None
+        elif self.tail:
+            node.prev = self.tail
+            self.tail.next = node
+        self.tail = node
+        node.next = None
+
+    def __remove(self, node):
+        if self.head == node:
+            self.head = node.next
+        if self.tail == node:
+            self.tail = node.prev
+        if node.prev:
+            node.prev.next = node.next
+        if node.next:
+            node.next.prev = node.prev
+
+    def move_to_end(self, node):
+        self.__remove(node)
+        self.__add_node(node)
+
+    def pop_head(self):
+        if self.head:
+            head = self.head
+            self.head = head.next
+            self.len -= 1
+            return head
+        else:
+            return None
 
 
 class LRU:
     def __init__(self, size: int):
         self._size = size
         self._key_lookup = {}
-        self._entries = deque(maxlen=size)
-        self._idx_offset = 0
+        self._entries = LinkedList()
 
     def get(self, key):
-        idx = self._key_lookup.get(key, None)
-        if idx == None:
+        node = self._key_lookup.get(key, None)
+        if node == None:
             return None
-        idx -= self._idx_offset
-        k, v = self._entries[idx]
-        self._move_to_end(idx, (k, v))
-        return v
+        self._entries.move_to_end(node)
+        return node.data[1]
 
     def put(self, key, value):
-        idx = self._key_lookup.get(key, None)
-        if idx == None:
-            if len(self._entries) == self._size:
-                self._pop_front()
-            self._key_lookup[key] = len(self._entries) + self._idx_offset
-            self._entries.append((key, value))
-        else:
-            idx -= self._idx_offset
-            k, v = self._entries[idx]
-            self._move_to_end(idx, (k, v))
-            self._entries[-1] = (k, value)
-
-    def _pop_front(self):
-        k, v = self._entries.popleft()
-        del self._key_lookup[k]
-        if self._idx_offset < 10000:
-            self._idx_offset += 1
-        else:
-            self._idx_offset = 0
-            for i in range(0, len(self._entries)):
-                k, v = self._entries[i]
-                self._key_lookup[k] = i
-
-    def _move_to_end(self, idx, pair):
-        if idx + 1 < len(self._entries):
-            self._entries.remove(pair)
-            self._entries.append(pair)
-            for i in range(idx, len(self._entries)):
-                k, v = self._entries[i]
-                self._key_lookup[k] = i + self._idx_offset
+        node = self._key_lookup.get(key, None)
+        if node != None:
+            node.data = (key, value)
+            self._entries.move_to_end(node)
+            return
+        elif self._entries.len == self._size:
+            head = self._entries.pop_head()
+            del self._key_lookup[head.data[0]]
+        self._key_lookup[key] = self._entries.add((key, value))
 
 
 def lcg(seed: int):

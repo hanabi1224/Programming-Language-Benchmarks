@@ -1,4 +1,4 @@
-use lru::LruCache;
+use hashlink::LruCache;
 
 struct LCG {
     seed: u32,
@@ -43,7 +43,7 @@ fn main() {
     let mut missed = 0;
     for _i in 0..n {
         let n0 = rng0.next() % modular;
-        lru.put(n0, n0);
+        lru.insert(n0, n0);
         let n1 = rng1.next() % modular;
         if let Some(_) = lru.get(&n1) {
             hit += 1;
