@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ruby/jit",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.rb",
   "input": "sample 5000",

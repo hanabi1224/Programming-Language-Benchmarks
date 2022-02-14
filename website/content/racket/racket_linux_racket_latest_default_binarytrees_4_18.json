@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "racket",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "4.rkt",
   "input": "18",

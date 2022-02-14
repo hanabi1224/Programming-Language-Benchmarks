@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "zig",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.zig",
   "input": "500000",

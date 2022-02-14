@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "chpl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "edigits",
   "code": "1.chpl",
   "input": "250001",

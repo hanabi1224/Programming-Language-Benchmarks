@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "julia",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "7.jl",
   "input": "500000",

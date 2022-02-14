@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmer/Cranelift",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.rs",
   "input": "QwQ",

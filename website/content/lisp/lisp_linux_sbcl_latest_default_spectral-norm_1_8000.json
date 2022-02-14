@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "sbcl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "1.cl",
   "input": "8000",

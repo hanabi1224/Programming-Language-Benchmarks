@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk",
   "compilerVersion": "18",
+  "unstable": true,
   "test": "nsieve",
   "code": "2.java",
   "input": "12",

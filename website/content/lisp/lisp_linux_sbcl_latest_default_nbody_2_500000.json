@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "sbcl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.cl",
   "input": "500000",

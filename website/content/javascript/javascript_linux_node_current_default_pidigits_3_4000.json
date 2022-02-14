@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "current",
+  "unstable": true,
   "test": "pidigits",
   "code": "3.js",
   "input": "4000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "gcc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.c",
   "input": "QwQ",

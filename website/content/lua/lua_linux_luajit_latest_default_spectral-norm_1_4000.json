@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "luajit",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "1.lua",
   "input": "4000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "julia",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "4.jl",
   "input": "18",

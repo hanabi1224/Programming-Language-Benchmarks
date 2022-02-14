@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "Kotlin/jvm",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "2.kt",
   "input": "1000",

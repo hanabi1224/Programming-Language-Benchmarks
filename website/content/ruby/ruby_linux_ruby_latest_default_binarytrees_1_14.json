@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ruby",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "1.rb",
   "input": "14",

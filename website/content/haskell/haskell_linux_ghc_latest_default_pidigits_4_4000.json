@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ghc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "4.hs",
   "input": "4000",

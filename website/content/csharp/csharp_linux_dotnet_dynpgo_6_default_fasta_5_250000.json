@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet/dynpgo",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "fasta",
   "code": "5.cs",
   "input": "250000",

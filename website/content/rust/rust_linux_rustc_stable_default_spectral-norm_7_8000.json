@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "7.rs",
   "input": "8000",

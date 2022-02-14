@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "haxe/hashlink",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "1.hx",
   "input": "1000",

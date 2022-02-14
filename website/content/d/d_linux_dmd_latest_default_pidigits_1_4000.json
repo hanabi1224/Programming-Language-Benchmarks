@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dmd",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.d",
   "input": "4000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasmer/Cranelift",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "2.rs",
   "input": "1000",

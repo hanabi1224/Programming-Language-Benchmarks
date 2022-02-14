@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "crystal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fannkuch-redux",
   "code": "1.cr",
   "input": "10",

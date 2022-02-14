@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "zigc++",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.cpp",
   "input": "500000",

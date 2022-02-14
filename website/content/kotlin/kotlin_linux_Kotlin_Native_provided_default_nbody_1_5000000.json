@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "Kotlin/Native",
   "compilerVersion": "provided",
+  "unstable": false,
   "test": "nbody",
   "code": "1.kt",
   "input": "5000000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ldc2",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "1.d",
   "input": "1000",

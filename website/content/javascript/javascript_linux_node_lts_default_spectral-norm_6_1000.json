@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "lts",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "6.js",
   "input": "1000",

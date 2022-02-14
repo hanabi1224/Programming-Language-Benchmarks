@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "nim",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.nim",
   "input": "500000",

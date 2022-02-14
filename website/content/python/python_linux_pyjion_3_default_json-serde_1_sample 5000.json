@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pyjion",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.py",
   "input": "sample 5000",

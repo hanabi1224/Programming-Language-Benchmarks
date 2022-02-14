@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk/zgc",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "edigits",
   "code": "1.java",
   "input": "100000",

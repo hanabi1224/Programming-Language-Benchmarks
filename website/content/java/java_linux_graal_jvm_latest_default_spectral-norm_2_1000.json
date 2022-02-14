@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "graal/jvm",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "2.java",
   "input": "1000",

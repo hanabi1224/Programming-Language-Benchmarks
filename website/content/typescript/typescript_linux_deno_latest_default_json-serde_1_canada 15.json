@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "deno",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.ts",
   "input": "canada 15",

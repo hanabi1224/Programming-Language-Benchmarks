@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "deno",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.ts",
   "input": "4000",

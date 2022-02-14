@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "binarytrees",
   "code": "2.rs",
   "input": "14",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "racket",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "2.rkt",
   "input": "5000000",

@@ -1,0 +1,18 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"eslint.options": {
+		"configFile": "./.vscode/.eslintrc.yaml"
+	},
+	"eslint.validate": [ "typescript" ],
+	"files.exclude": {
+		"dist": true,
+		"node_modules": true,
+	},
+	"files.insertFinalNewline": true,
+	"typescript.tsdk": "./node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.preferences.importModuleSpecifier": "shortest",
+	"typescript.tsserver.experimental.enableProjectDiagnostics": false
+}

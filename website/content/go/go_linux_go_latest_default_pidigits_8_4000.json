@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "go",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "pidigits",
   "code": "8.go",
   "input": "4000",

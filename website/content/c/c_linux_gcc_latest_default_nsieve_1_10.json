@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "gcc",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "1.c",
   "input": "10",

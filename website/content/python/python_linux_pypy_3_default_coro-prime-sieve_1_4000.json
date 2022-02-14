@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pypy",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.py",
   "input": "4000",

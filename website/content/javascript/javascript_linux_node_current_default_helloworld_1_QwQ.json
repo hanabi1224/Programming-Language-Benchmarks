@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "current",
+  "unstable": true,
   "test": "helloworld",
   "code": "1.js",
   "input": "QwQ",

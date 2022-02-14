@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "zig",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "2.zig",
   "input": "1000",

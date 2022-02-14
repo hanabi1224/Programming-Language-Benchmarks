@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "mono",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "3.cs",
   "input": "1000",

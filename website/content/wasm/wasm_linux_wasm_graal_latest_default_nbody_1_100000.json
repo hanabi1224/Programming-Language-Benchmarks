@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "wasm/graal",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nbody",
   "code": "1.rs",
   "input": "100000",

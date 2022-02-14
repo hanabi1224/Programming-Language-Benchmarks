@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "g++",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "8.cpp",
   "input": "8000",

@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet/dynpgo",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "3.cs",
   "input": "8000",

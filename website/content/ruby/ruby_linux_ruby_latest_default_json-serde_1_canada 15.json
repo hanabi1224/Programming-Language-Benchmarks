@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "ruby",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.rb",
   "input": "canada 15",

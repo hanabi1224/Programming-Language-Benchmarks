@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "tinygo",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "2.go",
   "input": "10",

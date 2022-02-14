@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pypy",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "pidigits",
   "code": "4.py",
   "input": "4000",

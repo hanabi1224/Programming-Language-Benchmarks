@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "flang",
   "compilerVersion": "7",
+  "unstable": false,
   "test": "helloworld",
   "code": "1.f90",
   "input": "QwQ",

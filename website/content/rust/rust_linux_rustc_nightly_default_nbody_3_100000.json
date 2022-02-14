@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "nightly",
+  "unstable": true,
   "test": "nbody",
   "code": "3.rs",
   "input": "100000",

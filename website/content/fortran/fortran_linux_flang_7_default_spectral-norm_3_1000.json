@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "flang",
   "compilerVersion": "7",
+  "unstable": false,
   "test": "spectral-norm",
   "code": "3.f90",
   "input": "1000",

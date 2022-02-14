@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "mono",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "binarytrees",
   "code": "2.cs",
   "input": "18",

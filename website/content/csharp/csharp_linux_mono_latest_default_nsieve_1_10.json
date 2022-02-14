@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "mono",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "nsieve",
   "code": "1.cs",
   "input": "10",

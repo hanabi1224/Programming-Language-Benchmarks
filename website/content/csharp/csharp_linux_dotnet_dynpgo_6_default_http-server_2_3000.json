@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet/dynpgo",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "http-server",
   "code": "2.cs",
   "input": "3000",

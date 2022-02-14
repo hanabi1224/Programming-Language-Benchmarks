@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk/parallelgc",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "pidigits",
   "code": "1.java",
   "input": "1000",

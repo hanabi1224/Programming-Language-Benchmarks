@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "rustc",
   "compilerVersion": "stable",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.rs",
   "input": "sample 5000",

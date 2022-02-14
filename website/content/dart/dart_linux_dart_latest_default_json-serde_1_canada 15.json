@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dart",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.dart",
   "input": "canada 15",

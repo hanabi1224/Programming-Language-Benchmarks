@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "openjdk/parallelgc",
   "compilerVersion": "17",
+  "unstable": false,
   "test": "binarytrees",
   "code": "2.java",
   "input": "14",

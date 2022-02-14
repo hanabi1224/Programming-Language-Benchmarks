@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "go",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.go",
   "input": "1000",

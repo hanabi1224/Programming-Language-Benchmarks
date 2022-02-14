@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "nbody",
   "code": "8.cs",
   "input": "5000000",

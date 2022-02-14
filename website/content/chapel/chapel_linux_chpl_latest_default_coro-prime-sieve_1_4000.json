@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "chpl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "coro-prime-sieve",
   "code": "1.chpl",
   "input": "4000",

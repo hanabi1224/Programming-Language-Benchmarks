@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "pypy",
   "compilerVersion": "3",
+  "unstable": false,
   "test": "json-serde",
   "code": "1.py",
   "input": "sample 5000",

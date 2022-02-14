@@ -1,0 +1,34 @@
+{
+	"version": "0.2.0",
+	"configurations": [ {
+		"name": "Server",
+		"type": "node",
+		"request": "launch",
+		"internalConsoleOptions": "openOnSessionStart",
+		"envFile": "${workspaceFolder}/.env",
+		"program": "${workspaceFolder}/dist/config/entry.js",
+		"args": [ "start" ],
+	}, {
+		"name": "Test",
+		"type": "node",
+		"request": "launch",
+		"internalConsoleOptions": "openOnSessionStart",
+		"envFile": "${workspaceFolder}/.env",
+		"program": "${workspaceFolder}/dist/config/entry.js",
+		"args": [ "test" ],
+	}, {
+		"name": "Script",
+		"type": "node",
+		"request": "launch",
+		"internalConsoleOptions": "openOnSessionStart",
+		"envFile": "${workspaceFolder}/.env",
+		"program": "${workspaceFolder}/dist/config/entry.js",
+		"args": [ "${workspaceRoot}/dist/${input:scriptName}" ]
+	}	],
+	"inputs": [ {
+		"id": "scriptName",
+		"type": "promptString",
+		"default": ".js",
+		"description": "File name",
+	} ],
+}

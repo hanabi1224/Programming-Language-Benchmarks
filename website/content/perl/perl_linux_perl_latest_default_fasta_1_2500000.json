@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "perl",
   "compilerVersion": "latest",
+  "unstable": false,
   "test": "fasta",
   "code": "1.pl",
   "input": "2500000",

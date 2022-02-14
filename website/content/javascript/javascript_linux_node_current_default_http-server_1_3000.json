@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "node",
   "compilerVersion": "current",
+  "unstable": true,
   "test": "http-server",
   "code": "1.js",
   "input": "3000",

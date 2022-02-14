@@ -4,6 +4,7 @@
   "os": "linux",
   "compiler": "dotnet",
   "compilerVersion": "6",
+  "unstable": false,
   "test": "mandelbrot",
   "code": "9.cs",
   "input": "1000",
