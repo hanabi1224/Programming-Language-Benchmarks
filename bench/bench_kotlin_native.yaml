@@ -11,7 +11,7 @@ problems:
       - 1.kt
   - name: nbody
     source:
-      - 1.kt
+      - 1n.kt
   # - name: json-serde
   #   source:
   #     - 1.kt

@@ -14,24 +14,22 @@ namespace nbody
     {
         public static void Main(String[] args)
         {
-                int n = args.Length > 0 ? Int32.Parse(args[0]) : 10000;
-                NBodySystem bodies = new NBodySystem();
-                Console.WriteLine("{0:f9}", bodies.Energy());
-                for (int i = 0; i < n; i++) bodies.Advance(0.01);
-                Console.WriteLine("{0:f9}", bodies.Energy());
+            int n = args.Length > 0 ? Int32.Parse(args[0]) : 10000;
+            NBodySystem sys = new NBodySystem();
+            sys.OffsetMomentum();
+            Console.WriteLine("{0:f9}", sys.Energy());
+            for (int i = 0; i < n; i++) sys.Advance(0.01);
+            Console.WriteLine("{0:f9}", sys.Energy());
         }
     }
 
     public class Body { public double x, y, z, vx, vy, vz, mass; }
-    
+
 
     public class NBodySystem
     {
         private Body[] _bodies;
-        private Body[] _pairL;
-        private Body[] _pairR;
-        private byte bodyCount = 5;
-
+        const byte bodyCount = 5;
         const double Pi = 3.141592653589793;
         const double Solarmass = 4 * Pi * Pi;
         const double DaysPeryear = 365.24;
@@ -90,43 +88,55 @@ namespace nbody
                     mass = 5.15138902046611451e-05*Solarmass,
                 },
             };
+        }
 
-            _pairL = new Body[(bodyCount * (bodyCount - 1) / 2)];
-            _pairR = new Body[(bodyCount * (bodyCount - 1) / 2)];
-            var pi = 0;
-            for (var i = 0; i < bodyCount - 1; i++)
-                for (var j = i + 1; j < bodyCount; j++)
-                {
-                    _pairL[pi] = _bodies[i];
-                    _pairR[pi] = _bodies[j];
-                    pi++;
-                }
-
-        double px = 0.0, py = 0.0, pz = 0.0;
+        public void OffsetMomentum()
+        {
+            double px = 0, py = 0, pz = 0;
             foreach (var b in _bodies)
             {
-                px += b.vx * b.mass; py += b.vy * b.mass; pz += b.vz * b.mass;
+                px -= b.vx * b.mass;
+                py -= b.vy * b.mass;
+                pz -= b.vz * b.mass;
             }
             var sol = _bodies[0];
-            sol.vx = -px / Solarmass; sol.vy = -py / Solarmass; sol.vz = -pz / Solarmass;
+            sol.vx = px / Solarmass;
+            sol.vy = py / Solarmass;
+            sol.vz = pz / Solarmass;
         }
 
         public void Advance(double dt)
         {
-            var length = _pairL.Length;
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < bodyCount - 1; i++)
             {
-                Body bi =  _pairL[i], bj = _pairR[i];
-                double dx = bi.x - bj.x, dy = bi.y - bj.y, dz = bi.z - bj.z;
-                double d2 = dx * dx + dy * dy + dz * dz;
-                double mag = dt / (d2 * Math.Sqrt(d2));
-                bi.vx -= dx * bj.mass * mag; bj.vx += dx * bi.mass * mag;
-                bi.vy -= dy * bj.mass * mag; bj.vy += dy * bi.mass * mag;
-                bi.vz -= dz * bj.mass * mag; bj.vz += dz * bi.mass * mag;
+                var bi = _bodies[i];
+                var vx = bi.vx;
+                var vy = bi.vy;
+                var vz = bi.vz;
+                for (var j = i + 1; j < bodyCount; j++)
+                {
+                    var bj = _bodies[j];
+                    var dx = bi.x - bj.x;
+                    var dy = bi.y - bj.y;
+                    var dz = bi.z - bj.z;
+                    double d2 = dx * dx + dy * dy + dz * dz;
+                    double mag = dt / (d2 * Math.Sqrt(d2));
+                    vx -= dx * bj.mass * mag;
+                    vy -= dy * bj.mass * mag;
+                    vz -= dz * bj.mass * mag;
+                    bj.vx += dx * bi.mass * mag;
+                    bj.vy += dy * bi.mass * mag;
+                    bj.vz += dz * bi.mass * mag;
+                }
+                bi.vx = vx;
+                bi.vy = vy;
+                bi.vz = vz;
             }
             foreach (var b in _bodies)
             {
-                b.x += dt * b.vx; b.y += dt * b.vy; b.z += dt * b.vz;
+                b.x += b.vx * dt;
+                b.y += b.vy * dt;
+                b.z += b.vz * dt;
             }
         }
 

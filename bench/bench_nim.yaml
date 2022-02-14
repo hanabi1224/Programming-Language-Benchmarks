@@ -36,6 +36,7 @@ problems:
   - name: lru
     source:
       - 1.nim
+      - 2.nim
 compiler_version_command: nim --version
 compiler_version_regex:
 runtime_version_parameter:

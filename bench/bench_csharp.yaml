@@ -12,6 +12,7 @@ problems:
   - name: nbody
     source:
       - 8.cs
+      - 9.cs
   - name: spectral-norm
     source:
       - 3.cs
@@ -55,6 +56,7 @@ problems:
   - name: lru
     source:
       - 1.cs
+      - 2.cs
   - name: secp256k1
     source:
       - 1.cs
