@@ -1,5 +1,5 @@
-use indexmap::IndexMap;
-use std::hash::Hash;
+use hashbrown::HashMap;
+use std::{collections::VecDeque, hash::Hash};
 
 struct LCG {
     seed: u32,
@@ -27,7 +27,9 @@ impl LCG {
 
 struct LRU<K, V> {
     size: usize,
-    m: IndexMap<K, V>,
+    key_lookup: HashMap<K, usize>,
+    entries: VecDeque<(K, V)>,
+    idx_offset: usize,
 }
 
 impl<K, V> LRU<K, V>
@@ -38,25 +40,69 @@ where
     pub fn new(size: usize) -> Self {
         Self {
             size,
-            m: IndexMap::with_capacity(size),
+            key_lookup: HashMap::with_capacity(size),
+            entries: VecDeque::with_capacity(size),
+            idx_offset: 0,
         }
     }
 
-    pub fn get(&mut self, key: K) -> Option<V> {
-        if let Some(v) = self.m.shift_remove(&key) {
-            self.m.insert(key, v.clone());
-            Some(v)
+    pub fn get(&mut self, key: &K) -> Option<V> {
+        if let Some(&i) = self.key_lookup.get(key) {
+            let i_fixed = i - self.idx_offset;
+            let (_, v) = &self.entries[i_fixed];
+            let vc = v.clone();
+            self.move_to_back(i_fixed);
+            Some(vc)
         } else {
             None
         }
     }
 
     pub fn put(&mut self, key: K, value: V) {
-        let not_found = self.m.shift_remove(&key).is_none();
-        if not_found && self.m.len() == self.size {
-            self.m.shift_remove_index(0);
+        if let Some(&i) = self.key_lookup.get(&key) {
+            self.move_to_back(i - self.idx_offset);
+            if let Some(back_mut) = self.entries.back_mut() {
+                (*back_mut).1 = value;
+            }
+        } else {
+            if self.entries.len() == self.size {
+                self.pop_front();
+            }
+            self.key_lookup
+                .insert(key.clone(), self.entries.len() + self.idx_offset);
+            self.entries.push_back((key, value));
         }
-        self.m.insert(key, value);
+    }
+
+    fn pop_front(&mut self) {
+        if let Some((key, _)) = self.entries.pop_front() {
+            self.key_lookup.remove(&key);
+            if self.idx_offset < 10000 {
+                self.idx_offset += 1;
+            } else {
+                self.idx_offset = 0;
+                let end = self.entries.len() - 1;
+                let key_lookup = &mut self.key_lookup;
+                for i in 0..=end {
+                    let (k, _) = &self.entries[i];
+                    *key_lookup.entry(k.clone()).or_default() = i;
+                }
+            }
+        }
+    }
+
+    fn move_to_back(&mut self, i: usize) {
+        let end = self.entries.len() - 1;
+        if i != end {
+            let key_lookup = &mut self.key_lookup;
+            if let Some(pair) = self.entries.remove(i) {
+                self.entries.push_back(pair);
+            }
+            for j in i..=end {
+                let (k, _) = &self.entries[j];
+                *key_lookup.entry(k.clone()).or_default() = j + self.idx_offset;
+            }
+        }
     }
 }
 
@@ -81,7 +127,7 @@ fn main() {
         let n0 = rng0.next() % modular;
         lru.put(n0, n0);
         let n1 = rng1.next() % modular;
-        if let Some(_) = lru.get(n1) {
+        if let Some(_) = lru.get(&n1) {
             hit += 1;
         } else {
             missed += 1;

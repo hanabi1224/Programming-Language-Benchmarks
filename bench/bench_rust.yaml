@@ -78,6 +78,7 @@ problems:
       - 0-unsafe.rs
       - 1.rs
       - 2.rs
+      - 3.rs
   - name: secp256k1
     source:
       - 0.rs
