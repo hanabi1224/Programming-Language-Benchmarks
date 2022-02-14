@@ -1,5 +1,102 @@
 use hashbrown::HashMap;
-use std::{collections::VecDeque, hash::Hash};
+use std::{cell::RefCell, hash::Hash, rc::Rc};
+
+type NodePtr<T> = Rc<RefCell<LinkedListNode<T>>>;
+
+#[derive(Debug)]
+struct LinkedListNode<T> {
+    prev: Option<NodePtr<T>>,
+    next: Option<NodePtr<T>>,
+    data: T,
+}
+
+impl<T> LinkedListNode<T>
+where
+    T: PartialEq,
+{
+    pub fn new(data: T) -> Self {
+        Self {
+            prev: None,
+            next: None,
+            data,
+        }
+    }
+}
+
+struct LinkedList<T> {
+    head: Option<NodePtr<T>>,
+    tail: Option<NodePtr<T>>,
+    len: usize,
+}
+
+impl<T> LinkedList<T>
+where
+    T: PartialEq,
+{
+    pub fn new() -> Self {
+        Self {
+            head: None,
+            tail: None,
+            len: 0,
+        }
+    }
+
+    pub fn add(&mut self, data: T) -> NodePtr<T> {
+        let node = Rc::new(RefCell::new(LinkedListNode::new(data)));
+        self._add_node(node.clone());
+        self.len += 1;
+        node
+    }
+
+    fn _add_node(&mut self, node: NodePtr<T>) {
+        let mut node_mut = node.borrow_mut();
+        if self.head.is_none() {
+            node_mut.prev = None;
+            self.head = Some(node.clone());
+        } else if let Some(tail) = &self.tail {
+            node_mut.prev = self.tail.clone();
+            let mut tail_mut = tail.borrow_mut();
+            tail_mut.next = Some(node.clone());
+        }
+        node_mut.next = None;
+        self.tail = Some(node.clone());
+    }
+
+    fn _remove(&mut self, node: &NodePtr<T>) {
+        let node_im = node.borrow();
+        if let Some(head) = &self.head {
+            if head.borrow().data == node_im.data {
+                self.head = node_im.next.clone();
+            }
+        }
+        if let Some(tail) = &self.tail {
+            if tail.borrow().data == node_im.data {
+                self.tail = node_im.prev.clone();
+            }
+        }
+        if let Some(prev) = &node_im.prev {
+            prev.borrow_mut().next = node_im.next.clone();
+        }
+        if let Some(next) = &node_im.next {
+            next.borrow_mut().prev = node_im.prev.clone();
+        }
+    }
+
+    pub fn move_to_end(&mut self, node: NodePtr<T>) {
+        self._remove(&node);
+        self._add_node(node);
+    }
+
+    pub fn pop_head(&mut self) -> Option<NodePtr<T>> {
+        if let Some(head) = self.head.clone() {
+            self.head = head.borrow().next.clone();
+            self.len -= 1;
+            Some(head)
+        } else {
+            None
+        }
+    }
+}
 
 struct LCG {
     seed: u32,
@@ -27,82 +124,47 @@ impl LCG {
 
 struct LRU<K, V> {
     size: usize,
-    key_lookup: HashMap<K, usize>,
-    entries: VecDeque<(K, V)>,
-    idx_offset: usize,
+    key_lookup: HashMap<K, NodePtr<(K, V)>>,
+    entries: LinkedList<(K, V)>,
 }
 
 impl<K, V> LRU<K, V>
 where
     K: Eq + Hash + Clone,
-    V: Clone,
+    V: Clone + PartialEq,
 {
     pub fn new(size: usize) -> Self {
         Self {
             size,
             key_lookup: HashMap::with_capacity(size),
-            entries: VecDeque::with_capacity(size),
-            idx_offset: 0,
+            entries: LinkedList::new(),
         }
     }
 
     pub fn get(&mut self, key: &K) -> Option<V> {
-        if let Some(&i) = self.key_lookup.get(key) {
-            let i_fixed = i - self.idx_offset;
-            let (_, v) = &self.entries[i_fixed];
-            let vc = v.clone();
-            self.move_to_back(i_fixed);
-            Some(vc)
+        if let Some(node) = self.key_lookup.get(key) {
+            self.entries.move_to_end(node.clone());
+            Some(node.borrow().data.1.clone())
         } else {
             None
         }
     }
 
     pub fn put(&mut self, key: K, value: V) {
-        if let Some(&i) = self.key_lookup.get(&key) {
-            self.move_to_back(i - self.idx_offset);
-            if let Some(back_mut) = self.entries.back_mut() {
-                (*back_mut).1 = value;
+        if let Some(node) = self.key_lookup.get_mut(&key) {
+            {
+                let mut node_mut = node.borrow_mut();
+                node_mut.data = (key, value);
             }
-        } else {
-            if self.entries.len() == self.size {
-                self.pop_front();
-            }
-            self.key_lookup
-                .insert(key.clone(), self.entries.len() + self.idx_offset);
-            self.entries.push_back((key, value));
-        }
-    }
-
-    fn pop_front(&mut self) {
-        if let Some((key, _)) = self.entries.pop_front() {
-            self.key_lookup.remove(&key);
-            if self.idx_offset < 10000 {
-                self.idx_offset += 1;
-            } else {
-                self.idx_offset = 0;
-                let end = self.entries.len() - 1;
-                let key_lookup = &mut self.key_lookup;
-                for i in 0..=end {
-                    let (k, _) = &self.entries[i];
-                    *key_lookup.entry(k.clone()).or_default() = i;
-                }
+            self.entries.move_to_end(node.clone());
+            return;
+        } else if self.entries.len == self.size {
+            if let Some(head) = self.entries.pop_head() {
+                self.key_lookup.remove(&head.borrow().data.0);
             }
         }
-    }
-
-    fn move_to_back(&mut self, i: usize) {
-        let end = self.entries.len() - 1;
-        if i != end {
-            let key_lookup = &mut self.key_lookup;
-            if let Some(pair) = self.entries.remove(i) {
-                self.entries.push_back(pair);
-            }
-            for j in i..=end {
-                let (k, _) = &self.entries[j];
-                *key_lookup.entry(k.clone()).or_default() = j + self.idx_offset;
-            }
-        }
+        let node = self.entries.add((key.clone(), value));
+        self.key_lookup.insert(key, node);
     }
 }
 
@@ -116,7 +178,7 @@ fn main() {
         .nth(2)
         .and_then(|s| s.into_string().ok())
         .and_then(|n| n.parse().ok())
-        .unwrap_or(1000);
+        .unwrap_or(10000);
     let modular = size as u32 * 10;
     let mut rng0 = LCG::new(0);
     let mut rng1 = LCG::new(1);
@@ -133,5 +195,5 @@ fn main() {
             missed += 1;
         }
     }
-    println!("{}\n{}", hit, missed);
+    println!("{hit}\n{missed}");
 }

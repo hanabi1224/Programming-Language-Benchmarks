@@ -35,6 +35,9 @@ problems:
     source:
       - 1.v
       - 2.v
+  - name: lru
+    source:
+      - 1.v
 compiler_version_command: v --version
 compiler_version_regex:
 runtime_version_parameter:
