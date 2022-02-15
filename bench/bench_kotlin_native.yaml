@@ -22,7 +22,7 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.kt
-      - 2.kt
+      - 2-m.kt
   - name: lru
     source:
       - 1.kt

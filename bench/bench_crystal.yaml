@@ -39,6 +39,7 @@ problems:
   #     - 1.cr
   - name: lru
     source:
+      - 0-unsafe.cr
       - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
