@@ -41,11 +41,12 @@ impl<T> LinkedList<T> {
         }
     }
 
-    pub fn add(&mut self, data: T) -> NodePtr<T> {
+    pub fn add(&mut self, data: T) -> NodeWeakPtr<T> {
         let node = Rc::new(RefCell::new(LinkedListNode::new(data)));
-        self._add_node(node.clone());
+        let weak = Rc::downgrade(&node);
+        self._add_node(node);
         self.len += 1;
-        node
+        weak
     }
 
     fn _add_node(&mut self, node: NodePtr<T>) {
@@ -131,7 +132,7 @@ impl LCG {
 
 struct LRU<K, V> {
     size: usize,
-    key_lookup: HashMap<K, NodePtr<(K, V)>>,
+    key_lookup: HashMap<K, NodeWeakPtr<(K, V)>>,
     entries: LinkedList<(K, V)>,
 }
 
@@ -150,20 +151,24 @@ where
 
     pub fn get(&mut self, key: &K) -> Option<V> {
         if let Some(node) = self.key_lookup.get(key) {
-            self.entries.move_to_end(node.clone());
-            Some(node.borrow().data.1.clone())
-        } else {
-            None
+            if let Some(node) = node.upgrade() {
+                let v = node.borrow().data.1.clone();
+                self.entries.move_to_end(node);
+                return Some(v);
+            }
         }
+        None
     }
 
     pub fn put(&mut self, key: K, value: V) {
         if let Some(node) = self.key_lookup.get_mut(&key) {
-            {
-                let mut node_mut = node.borrow_mut();
-                node_mut.data = (key, value);
+            if let Some(node) = node.upgrade() {
+                {
+                    let mut node_mut = node.borrow_mut();
+                    node_mut.data = (key, value);
+                }
+                self.entries.move_to_end(node);
             }
-            self.entries.move_to_end(node.clone());
             return;
         } else if self.entries.len == self.size {
             if let Some(head) = self.entries.pop_head() {

@@ -1,6 +1,4 @@
 import kotlin.jvm.internal.iterator
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
 
 fun main(args: Array<String>) {
     var n = if (args.size > 0) args[0].toInt() else 100
