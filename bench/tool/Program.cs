@@ -657,6 +657,7 @@ namespace BenchTool
                         {
                             ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(
                                 runPsi,
+                                redirectStdoutToDevNull: !problemTestConfig.Trival,
                                 forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses,
                                 timeoutSeconds: test.TimeoutSeconds,
                                 env: langEnvConfig.RunCmdEnv).ConfigureAwait(false);

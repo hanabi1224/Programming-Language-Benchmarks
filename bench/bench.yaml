@@ -1,13 +1,6 @@
-udocker: false
 problems:
-  - name: nsieve
-    unittests:
-      - input: 4
-        output: 4_out
-    tests:
-      - input: 10
-      - input: 12
   - name: helloworld
+    trival: true
     unittests:
       - input: T_T
         output: T_T_out
@@ -16,6 +9,13 @@ problems:
     tests:
       - input: QwQ
         repeat: 5
+  - name: nsieve
+    unittests:
+      - input: 4
+        output: 4_out
+    tests:
+      - input: 10
+      - input: 12
   - name: binarytrees
     unittests:
       - input: 6
