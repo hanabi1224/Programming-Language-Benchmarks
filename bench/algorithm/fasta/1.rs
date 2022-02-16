@@ -60,7 +60,11 @@ impl<'a> Iterator for AAGen<'a> {
     }
 }
 
-fn make_fasta<I: Iterator<Item = u8>>(header: &str, mut it: I, mut n: usize) -> anyhow::Result<()> {
+fn make_fasta<I: Iterator<Item = u8>>(
+    header: &str,
+    mut it: I,
+    mut n: usize,
+) -> Result<(), std::io::Error> {
     let mut stdout = BufWriter::new(io::stdout());
     stdout.write_all(header.as_bytes())?;
     let mut line = [0u8; LINE_LENGTH + 1];
@@ -76,7 +80,7 @@ fn make_fasta<I: Iterator<Item = u8>>(header: &str, mut it: I, mut n: usize) -> 
     Ok(())
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<(), std::io::Error> {
     let n = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())

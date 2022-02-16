@@ -29,8 +29,8 @@ problems:
       - 5.cs
   - name: mandelbrot
     source:
-      - 9.cs
-      - 9-m.cs
+      - 1.cs
+      - 2.cs
   - name: json-serde
     source:
       - 1.cs

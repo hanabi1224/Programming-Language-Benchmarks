@@ -28,6 +28,9 @@ problems:
   - name: regex-redux
     source:
       - 5.cs
+  - name: mandelbrot
+    source:
+      - 1.cs
   - name: lru
     source:
       - 1.cs

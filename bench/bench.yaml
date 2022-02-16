@@ -79,8 +79,8 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 2000
-      - input: 7000
+      - input: 1000
+      - input: 6000
   - name: fannkuch-redux
     unittests:
       - input: 7
