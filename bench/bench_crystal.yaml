@@ -41,6 +41,13 @@ problems:
     source:
       - 0-unsafe.cr
       - 1.cr
+  - name: nsieve
+    source:
+      - 1.cr
+      - 2.cr
+  - name: mandelbrot
+    source:
+      - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:

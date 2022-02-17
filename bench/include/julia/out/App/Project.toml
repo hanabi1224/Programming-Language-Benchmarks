@@ -1,4 +1,7 @@
-authors = ["hanabi1224"]
 name = "App"
 uuid = "7a11844c-db7e-4ac5-9d28-94c9c5ff66b1"
+authors = ["hanabi1224"]
 version = "0.1.0"
+
+[deps]
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
