@@ -4,10 +4,10 @@ def nsieve(n)
   count = 0
   flags = BitArray.new n
   (2...n).each do |i|
-    if !flags.unsafe_fetch(i)
+    unless flags[i]
       count += 1
-      (i*2...n).step(i).each do |j|
-        flags.unsafe_put j, true
+      (i << 1).step(to: n - 1, by: i) do |j|
+        flags[j] = true
       end
     end
   end
