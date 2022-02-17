@@ -24,9 +24,9 @@ problems:
   - name: json-serde
     source:
       - 1.ts
-  - name: coro-prime-sieve
-    source:
-      - 1.ts
+  # - name: coro-prime-sieve
+  #   source:
+  #     - 1.ts
   - name: http-server
     source:
       - 1.ts
@@ -48,6 +48,6 @@ environments:
     include:
     include_sub_dir:
     # before_build:
-    build: deno compile --allow-net --allow-read --unstable -o out/_app c.ts
+    build: deno bundle c.ts app.ts && deno compile --no-check --allow-net --allow-read --unstable -o out/_app app.ts
     out_dir: out
     run_cmd: _app
