@@ -12,6 +12,7 @@ problems:
   - name: nbody
     source:
       - 1.cr
+      - 2.cr
   - name: spectral-norm
     source:
       - 1.cr

@@ -5,49 +5,57 @@
 # From version ported by Michael Neumann from the C gcc version,
 # which was written by Christoph Bauer.
 # ported from ruby to crystal by hanabi1224
+# use StaticArray
+
+alias F64x3 = Float64[3]
 
 SOLAR_MASS    = 4_f64 * Math::PI**2
 DAYS_PER_YEAR = 365.24_f64
 
+def sum(a : F64x3) : Float64
+  return a.reduce { |s, v| s + v }
+end
+
+def add(a : F64x3, b : F64x3) : F64x3
+  return F64x3.new { |i| a.unsafe_fetch(i) + b.unsafe_fetch(i) }
+end
+
+def minus(a : F64x3, b : F64x3) : F64x3
+  return F64x3.new { |i| a.unsafe_fetch(i) - b.unsafe_fetch(i) }
+end
+
+def mul(a : F64x3, b : F64x3) : F64x3
+  return F64x3.new { |i| a.unsafe_fetch(i) * b.unsafe_fetch(i) }
+end
+
+def div(a : F64x3, b : F64x3) : F64x3
+  return F64x3.new { |i| a.unsafe_fetch(i) / b.unsafe_fetch(i) }
+end
+
 class Planet
-  property x
-  property y
-  property z
-  property vx
-  property vy
-  property vz
+  property pos : F64x3
+  property velocity : F64x3
   property mass
 
   def initialize(x : Float64, y : Float64, z : Float64, vx : Float64, vy : Float64, vz : Float64, mass : Float64)
-    @x, @y, @z = x, y, z
-    @vx, @vy, @vz = Float64.new(vx * DAYS_PER_YEAR), Float64.new(vy * DAYS_PER_YEAR), Float64.new(vz * DAYS_PER_YEAR)
+    @pos = F64x3[x, y, z]
+    @velocity = F64x3[vx * DAYS_PER_YEAR, vy * DAYS_PER_YEAR, vz * DAYS_PER_YEAR]
     @mass = Float64.new(mass * SOLAR_MASS)
   end
 
   def move_from_i(bodies, nbodies, dt, i)
     while i < nbodies
       b2 = bodies[i]
-      dx = @x - b2.x
-      dy = @y - b2.y
-      dz = @z - b2.z
-
-      distance_square = dx * dx + dy * dy + dz * dz
+      d = minus(@pos, b2.pos)
+      distance_square = sum(mul(d, d))
       distance = Math.sqrt(distance_square)
-      mag = dt / (distance * distance_square)
+      mag = dt / (distance_square * distance)
       b_mass_mag, b2_mass_mag = @mass * mag, b2.mass * mag
-
-      @vx -= dx * b2_mass_mag
-      @vy -= dy * b2_mass_mag
-      @vz -= dz * b2_mass_mag
-      b2.vx += dx * b_mass_mag
-      b2.vy += dy * b_mass_mag
-      b2.vz += dz * b_mass_mag
+      @velocity = minus(@velocity, d.map { |v| v * b2_mass_mag })
+      b2.velocity = add(b2.velocity, d.map { |v| v * b_mass_mag })
       i += 1
     end
-
-    @x += dt * @vx
-    @y += dt * @vy
-    @z += dt * @vz
+    @pos = add(@pos, @velocity.map { |v| v * dt })
   end
 end
 
@@ -57,13 +65,11 @@ def energy(bodies)
 
   (0...nbodies).each do |i|
     b = bodies[i]
-    e += 0.5 * b.mass * (b.vx * b.vx + b.vy * b.vy + b.vz * b.vz)
+    e += 0.5 * b.mass * sum(mul(b.velocity, b.velocity))
     ((i + 1)...nbodies).each do |j|
       b2 = bodies[j]
-      dx = b.x - b2.x
-      dy = b.y - b2.y
-      dz = b.z - b2.z
-      distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
+      d = minus(b.pos, b2.pos)
+      distance = Math.sqrt(sum(mul(d, d)))
       e -= (b.mass * b2.mass) / distance
     end
   end
@@ -71,19 +77,15 @@ def energy(bodies)
 end
 
 def offset_momentum(bodies)
-  px, py, pz = 0.0, 0.0, 0.0
+  p = F64x3.new 0
 
   bodies.each do |b|
     m = b.mass
-    px -= b.vx * m
-    py -= b.vy * m
-    pz -= b.vz * m
+    p = minus(p, b.velocity.map { |v| v*m })
   end
 
   b = bodies[0]
-  b.vx = px / SOLAR_MASS
-  b.vy = py / SOLAR_MASS
-  b.vz = pz / SOLAR_MASS
+  b.velocity = p.map { |v| v/SOLAR_MASS }
 end
 
 BODIES = [
