@@ -87,14 +87,14 @@ fn advance(bodies: &mut [Planet; N_BODIES], dt: f64, steps: i32) {
     for _ in 0..steps {
         for i in 0..(N_BODIES - 1) {
             let (bi_position, mut bi_velocity, bi_mass) =
-                (|p: &Planet| (p.position, p.velocity, p.mass))(&bodies[i]);
+                (|p: &Planet| (p.position, p.velocity, f64x4::splat(p.mass)))(&bodies[i]);
             for j in (i + 1)..N_BODIES {
                 let bj = &mut bodies[j];
                 let mut d = bi_position - bj.position;
                 let d2 = dot(d);
                 let mag = dt / (d2 * d2.sqrt());
                 d *= f64x4::splat(mag);
-                bj.velocity += d * f64x4::splat(bi_mass);
+                bj.velocity += d * bi_mass;
                 bi_velocity -= d * f64x4::splat(bj.mass);
             }
             let bi = &mut bodies[i];

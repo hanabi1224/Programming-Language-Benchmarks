@@ -16,7 +16,7 @@ namespace nbody
     {
         public static void Main(String[] args)
         {
-            var n = args.Length > 0 ? int.Parse(args[0]) : 10000;
+            var n = args.Length > 0 ? int.Parse(args[0]) : 1000;
             NBodySystem sys = new NBodySystem();
             sys.OffsetMomentum();
             Console.WriteLine("{0:f9}", sys.Energy());
@@ -123,24 +123,24 @@ namespace nbody
 
         public void Advance(double dt)
         {
-            for (var i = 0; i < bodyCount - 1; i++)
+            for (var i = 0; i < bodyCount; i++)
             {
                 var bi = _bodies[i];
                 var v = bi.Velocity;
+                var pos = bi.Pos;
+                var mi = bi.Mass;
                 for (var j = i + 1; j < bodyCount; j++)
                 {
                     var bj = _bodies[j];
-                    var dpos = bi.Pos - bj.Pos;
+                    var dpos = pos - bj.Pos;
                     double d2 = Vector.Dot(dpos, dpos);
                     double mag = dt / (d2 * Math.Sqrt(d2));
-                    v -= dpos * bj.Mass * mag;
-                    bj.Velocity += dpos * bi.Mass * mag;
+                    dpos *= mag;
+                    v -= dpos * bj.Mass;
+                    bj.Velocity += dpos * mi;
                 }
                 bi.Velocity = v;
-            }
-            foreach (var b in _bodies)
-            {
-                b.Pos += b.Velocity * dt;
+                bi.Pos += v * dt;
             }
         }
 

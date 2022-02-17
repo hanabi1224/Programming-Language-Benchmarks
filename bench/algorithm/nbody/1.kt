@@ -37,12 +37,15 @@ internal class NBodySystem {
 
     fun advance(dt: Double) {
         val b = bodies
-        for (i in 0..LENGTH - 1 - 1) {
+        for (i in 0..LENGTH - 1) {
             val iBody = b[i]
             val iMass = iBody.mass
             val ix = iBody.x
             val iy = iBody.y
             val iz = iBody.z
+            var vx = iBody.vx
+            var vy = iBody.vy
+            var vz = iBody.vz
 
             for (j in i + 1..LENGTH - 1) {
                 val jBody = b[j]
@@ -55,22 +58,25 @@ internal class NBodySystem {
                 val mag = dt / (dSquared * distance)
 
                 val jMass = jBody.mass
+                val mjMag = jMass * mag
 
-                iBody.vx -= dx * jMass * mag
-                iBody.vy -= dy * jMass * mag
-                iBody.vz -= dz * jMass * mag
+                vx -= dx * mjMag
+                vy -= dy * mjMag
+                vz -= dz * mjMag
 
-                jBody.vx += dx * iMass * mag
-                jBody.vy += dy * iMass * mag
-                jBody.vz += dz * iMass * mag
+                val miMag = iMass * mag
+                jBody.vx += dx * miMag
+                jBody.vy += dy * miMag
+                jBody.vz += dz * miMag
             }
-        }
 
-        for (i in 0..LENGTH - 1) {
-            val body = b[i]
-            body.x += dt * body.vx
-            body.y += dt * body.vy
-            body.z += dt * body.vz
+            iBody.vx = vx
+            iBody.vy = vy
+            iBody.vz = vz
+
+            iBody.x += dt * vx
+            iBody.y += dt * vy
+            iBody.z += dt * vz
         }
     }
 

@@ -23,6 +23,9 @@ class App {
 	private static function advance(bodies:Array<Planet>) {
 		for (i in 0...bodies.length) {
 			var b = bodies[i];
+			var vx = b.vx;
+			var vy = b.vy;
+			var vz = b.vz;
 			for (j in (i + 1)...bodies.length) {
 				var b2 = bodies[j];
 				var dx = b.x - b2.x;
@@ -30,18 +33,20 @@ class App {
 				var dz = b.z - b2.z;
 				var invDist = 1.0 / Math.sqrt(dx * dx + dy * dy + dz * dz);
 				var mag = invDist * invDist * invDist;
-				b.vx -= dx * b2.mass * mag;
-				b.vy -= dy * b2.mass * mag;
-				b.vz -= dz * b2.mass * mag;
+				vx -= dx * b2.mass * mag;
+				vy -= dy * b2.mass * mag;
+				vz -= dz * b2.mass * mag;
 				b2.vx += dx * b.mass * mag;
 				b2.vy += dy * b.mass * mag;
 				b2.vz += dz * b.mass * mag;
 			}
-		}
-		for (b in bodies) {
-			b.x += b.vx;
-			b.y += b.vy;
-			b.z += b.vz;
+			b.vx = vx;
+			b.vy = vy;
+			b.vz = vz;
+
+			b.x += vx;
+			b.y += vy;
+			b.z += vz;
 		}
 	}
 

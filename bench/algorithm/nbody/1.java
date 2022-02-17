@@ -27,6 +27,7 @@ final class app {
 }
 
 final class NBodySystem {
+  static final int N = 5;
   private Body[] bodies;
 
   public NBodySystem() {
@@ -44,31 +45,36 @@ final class NBodySystem {
   }
 
   public void advance(double dt) {
-    double dx, dy, dz, distance, mag;
+    for (int i = 0; i < N; ++i) {
+      final var bi = bodies[i];
+      var vx = bi.vx;
+      var vy = bi.vy;
+      var vz = bi.vz;
+      for (int j = i + 1; j < N; ++j) {
+        final var bj = bodies[j];
+        final var dx = bi.x - bj.x;
+        final var dy = bi.y - bj.y;
+        final var dz = bi.z - bj.z;
 
-    for (int i = 0; i < bodies.length; ++i) {
-      for (int j = i + 1; j < bodies.length; ++j) {
-        dx = bodies[i].x - bodies[j].x;
-        dy = bodies[i].y - bodies[j].y;
-        dz = bodies[i].z - bodies[j].z;
+        final var distance2 = dx * dx + dy * dy + dz * dz;
+        final var mag = dt / (distance2 * Math.sqrt(distance2));
 
-        distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        mag = dt / (distance * distance * distance);
+        final var mj_mag = bj.mass * mag;
+        vx -= dx * mj_mag;
+        vy -= dy * mj_mag;
+        vz -= dz * mj_mag;
 
-        bodies[i].vx -= dx * bodies[j].mass * mag;
-        bodies[i].vy -= dy * bodies[j].mass * mag;
-        bodies[i].vz -= dz * bodies[j].mass * mag;
-
-        bodies[j].vx += dx * bodies[i].mass * mag;
-        bodies[j].vy += dy * bodies[i].mass * mag;
-        bodies[j].vz += dz * bodies[i].mass * mag;
+        final var mi_mag = bi.mass * mag;
+        bj.vx += dx * mi_mag;
+        bj.vy += dy * mi_mag;
+        bj.vz += dz * mi_mag;
       }
-    }
-
-    for (int i = 0; i < bodies.length; ++i) {
-      bodies[i].x += dt * bodies[i].vx;
-      bodies[i].y += dt * bodies[i].vy;
-      bodies[i].z += dt * bodies[i].vz;
+      bi.vx = vx;
+      bi.vy = vy;
+      bi.vz = vz;
+      bi.x += dt * vx;
+      bi.y += dt * vy;
+      bi.z += dt * vz;
     }
   }
 

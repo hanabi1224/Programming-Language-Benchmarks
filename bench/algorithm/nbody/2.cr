@@ -44,18 +44,22 @@ class Planet
   end
 
   def move_from_i(bodies, nbodies, dt, i)
+    velocity = @velocity
+    mass = @mass
+    pos = @pos
     while i < nbodies
       b2 = bodies[i]
-      d = minus(@pos, b2.pos)
+      d = minus(pos, b2.pos)
       distance_square = sum(mul(d, d))
       distance = Math.sqrt(distance_square)
       mag = dt / (distance_square * distance)
-      b_mass_mag, b2_mass_mag = @mass * mag, b2.mass * mag
-      @velocity = minus(@velocity, d.map { |v| v * b2_mass_mag })
+      b_mass_mag, b2_mass_mag = mass * mag, b2.mass * mag
+      velocity = minus(velocity, d.map { |v| v * b2_mass_mag })
       b2.velocity = add(b2.velocity, d.map { |v| v * b_mass_mag })
       i += 1
     end
-    @pos = add(@pos, @velocity.map { |v| v * dt })
+    @pos = add(pos, velocity.map { |v| v * dt })
+    @velocity = velocity
   end
 end
 

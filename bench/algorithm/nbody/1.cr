@@ -25,29 +25,40 @@ class Planet
   end
 
   def move_from_i(bodies, nbodies, dt, i)
+    vx = @vx
+    vy = @vy
+    vz = @vz
+    x = @x
+    y = @y
+    z = @z
+    mass = @mass
     while i < nbodies
       b2 = bodies[i]
-      dx = @x - b2.x
-      dy = @y - b2.y
-      dz = @z - b2.z
+      dx = x - b2.x
+      dy = y - b2.y
+      dz = z - b2.z
 
       distance_square = dx * dx + dy * dy + dz * dz
       distance = Math.sqrt(distance_square)
       mag = dt / (distance * distance_square)
-      b_mass_mag, b2_mass_mag = @mass * mag, b2.mass * mag
+      b_mass_mag, b2_mass_mag = mass * mag, b2.mass * mag
 
-      @vx -= dx * b2_mass_mag
-      @vy -= dy * b2_mass_mag
-      @vz -= dz * b2_mass_mag
+      vx -= dx * b2_mass_mag
+      vy -= dy * b2_mass_mag
+      vz -= dz * b2_mass_mag
       b2.vx += dx * b_mass_mag
       b2.vy += dy * b_mass_mag
       b2.vz += dz * b_mass_mag
       i += 1
     end
 
-    @x += dt * @vx
-    @y += dt * @vy
-    @z += dt * @vz
+    @x += dt * vx
+    @y += dt * vy
+    @z += dt * vz
+
+    @vx = vx
+    @vy = vy
+    @vz = vz
   end
 end
 

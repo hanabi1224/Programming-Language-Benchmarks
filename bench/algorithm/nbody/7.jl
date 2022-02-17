@@ -62,7 +62,7 @@ end
 
     # Update the velocities of each body using the precalculated mag.
     k = 1
-    @inbounds for i=1:4
+    @inbounds for i=1:5
         bi = bodies[i]
         # For body i, since velocity is the only part of the object
         # changing on each iteration, it's more efficient to update
@@ -75,13 +75,8 @@ end
                              bodies[j].m)
             k += 1
         end
-        bodies[i] = Body(bi.x, iv, bi.m)
-    end
-
-    # Advance body positions using the updated velocities.
-    @inbounds for i=1:5
-        bi = bodies[i]
-        bodies[i] = Body(bi.x .+ bi.v .* 0.01, bi.v, bi.m)
+        # Advance body positions using the updated velocities.
+        bodies[i] = Body(bi.x .+ (iv .* 0.01), iv, bi.m)
     end
 end
 
