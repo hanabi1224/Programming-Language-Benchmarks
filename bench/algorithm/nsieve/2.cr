@@ -6,9 +6,9 @@ def nsieve(n)
   (2...n).each do |i|
     if !flags.unsafe_fetch(i)
       count += 1
-    end
-    (i*2...n).step(i).each do |j|
-      flags.unsafe_put j, true
+      (i*2...n).step(i).each do |j|
+        flags.unsafe_put j, true
+      end
     end
   end
   puts "Primes up to %8d %8d" % [n, count]

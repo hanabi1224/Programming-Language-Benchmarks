@@ -38,6 +38,7 @@ problems:
     source:
       - 1.cs
       - 2.cs
+      - 3.cs
   - name: json-serde
     source:
       - 1.cs
