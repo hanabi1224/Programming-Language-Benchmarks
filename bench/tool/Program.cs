@@ -617,7 +617,9 @@ namespace BenchTool
             YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             if (langEnvConfig.Warmup)
             {
-                string runCommand = $"{langEnvConfig.RunCmd} {problemTestConfig.Unittests[0].Input}";
+                var input = problemTestConfig.Unittests[0].Input;
+                input = problemTestConfig.Data?.Length > 0 ? Path.Combine(Path.GetTempPath(), benchConfig.TmpDir, input) : input;
+                string runCommand = $"{langEnvConfig.RunCmd} {input}";
                 ProcessStartInfo warmupPsi = runCommand.ConvertToCommand();
                 warmupPsi.FileName = exeName;
                 warmupPsi.WorkingDirectory = buildOutput;

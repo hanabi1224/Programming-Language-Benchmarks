@@ -14,10 +14,10 @@ final class app {
     boolean[] flags = new boolean[n];
     for (int i = 2; i < n; i++) {
       if (!flags[i]) {
-        count += 1;
-      }
-      for (int j = i << 1; j < n; j += i) {
-        flags[j] = true;
+        count += 1;      
+        for (int j = i << 1; j < n; j += i) {
+          flags[j] = true;
+        }
       }
     }
     System.out.printf("Primes up to %8d %8d\n", n, count);

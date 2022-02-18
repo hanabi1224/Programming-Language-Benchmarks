@@ -17,9 +17,9 @@ final class app {
     for (int i = 2; i < n; i++) {
       if (!flags.get(i)) {
         count += 1;
-      }
-      for (int j = i << 1; j < n; j += i) {
-        flags.set(j);
+        for (int j = i << 1; j < n; j += i) {
+          flags.set(j);
+        }
       }
     }
     System.out.printf("Primes up to %8d %8d\n", n, count);
