@@ -36,7 +36,6 @@ problems:
       - 8-m.rs
   - name: regex-redux
     source:
-      - 6.rs
       - 7.rs
   - name: fannkuch-redux
     source:

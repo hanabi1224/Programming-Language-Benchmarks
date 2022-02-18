@@ -2,8 +2,8 @@
 // https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
 //
 // contributed by Tom Kaitchuck
+// removed parallelization
 
-use rayon::prelude::*;
 use std::io::{self, BufWriter, Read, Write};
 use std::mem;
 
@@ -45,8 +45,8 @@ fn count_reverse_complements(sequence: &Vec<u8>) -> Vec<String> {
         Regex::new("agggtaa[cgt]|[acg]ttaccct"),
     ];
     variants
-        .par_iter()
-        .map(|ref variant| {
+        .iter()
+        .map(|variant| {
             format!(
                 "{} {}",
                 variant.string,

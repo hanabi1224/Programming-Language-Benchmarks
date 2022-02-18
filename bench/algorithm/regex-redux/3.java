@@ -7,11 +7,9 @@
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.Map.Entry;
 import java.util.function.*;
 import java.util.regex.*;
-
 import static java.util.stream.Collectors.*;
 
 public class app {
@@ -29,26 +27,8 @@ public class app {
         }
 
         final String input = baos.toString("US-ASCII");
-
         final int initialLength = input.length();
-
         final String sequence = input.replaceAll(">.*\n|\n", "");
-
-        CompletableFuture<String> replacements = CompletableFuture.supplyAsync(() -> {
-            final Map<String, String> iub = new LinkedHashMap<>();
-            iub.put("tHa[Nt]", "<4>");
-            iub.put("aND|caN|Ha[DS]|WaS", "<3>");
-            iub.put("a[NSt]|BY", "<2>");
-            iub.put("<[^>]*>", "|");
-            iub.put("\\|[^|][^|]*\\|", "-");
-
-            String buffer = sequence;
-            for (Map.Entry<String, String> entry : iub.entrySet()) {
-                buffer = Pattern.compile(entry.getKey()).matcher(buffer).replaceAll(entry.getValue());
-            }
-            return buffer;
-        });
-
         final int codeLength = sequence.length();
 
         final List<String> variants = Arrays.asList("agggtaaa|tttaccct",
@@ -66,7 +46,7 @@ public class app {
             return new AbstractMap.SimpleEntry<>(v, count);
         };
 
-        final Map<String, Long> results = variants.parallelStream()
+        final Map<String, Long> results = variants.stream()
                 .map(variant -> counts.apply(variant, sequence))
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -75,6 +55,19 @@ public class app {
         System.out.println();
         System.out.println(initialLength);
         System.out.println(codeLength);
-        System.out.println(replacements.join().length());
+
+        final Map<String, String> iub = new LinkedHashMap<>();
+        iub.put("tHa[Nt]", "<4>");
+        iub.put("aND|caN|Ha[DS]|WaS", "<3>");
+        iub.put("a[NSt]|BY", "<2>");
+        iub.put("<[^>]*>", "|");
+        iub.put("\\|[^|][^|]*\\|", "-");
+
+        String buffer = sequence;
+        for (Map.Entry<String, String> entry : iub.entrySet()) {
+            buffer = Pattern.compile(entry.getKey()).matcher(buffer).replaceAll(entry.getValue());
+        }
+
+        System.out.println(buffer.length());
     }
 }

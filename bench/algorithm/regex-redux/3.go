@@ -4,6 +4,7 @@ package main
    https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
 
    Contributed by Dean Becker
+   removed parallelization
 */
 
 import (
@@ -35,43 +36,17 @@ var (
 )
 
 func main() {
-
-	doneCh := make(chan int)
-
 	// initialize concurrently
-	go loadFile(doneCh)
-	go initRegexes(doneCh)
-
-	// wait for the above routines to finish
-	<-doneCh
-	<-doneCh
+	loadFile()
+	initRegexes()
 
 	// clean the input
 	bytes = cleanRE.re.ReplaceAllLiteral(bytes, cleanRE.replacementString)
 	cleanedLen = len(bytes)
 
-	// since this one takes longest, start it first
-	finalLen := make(chan int)
-	go func() {
-		// copy our bytes so we don't trounce the variant routines
-		bb := make([]byte, len(bytes))
-		copy(bb, bytes)
-
-		for _, sub := range substitutions {
-			bb = sub.re.ReplaceAll(bb, sub.replacementString)
-		}
-
-		finalLen <- len(bb)
-	}()
-
 	// variant routines
 	for _, v := range variants {
-		go countVariants(doneCh, v)
-	}
-
-	// await all variant results (so we can see them in order)
-	for range variants {
-		<-doneCh
+		countVariants(v)
 	}
 
 	// print all variant results
@@ -79,12 +54,15 @@ func main() {
 		fmt.Printf("%s %d\n", v.re.String(), v.result)
 	}
 
+	for _, sub := range substitutions {
+		bytes = sub.re.ReplaceAll(bytes, sub.replacementString)
+	}
 	// print finalLen when it's available
-	fmt.Printf("\n%d\n%d\n%d\n", originalLen, cleanedLen, <-finalLen)
+	fmt.Printf("\n%d\n%d\n%d\n", originalLen, cleanedLen, len(bytes))
 
 }
 
-func loadFile(doneCh chan int) {
+func loadFile() {
 	fileName := "25000_in"
 	if len(os.Args) > 1 {
 		fileName = os.Args[1]
@@ -99,19 +77,16 @@ func loadFile(doneCh chan int) {
 			os.Exit(2)
 		}
 		originalLen = len(bytes)
-		doneCh <- 1
 	} else {
 		panic(err)
 	}
 }
 
-func countVariants(doneCh chan int, v *variant) {
+func countVariants(v *variant) {
 	v.result = len(v.re.FindAll(bytes, -1))
-	doneCh <- 1
 }
 
-func initRegexes(doneCh chan int) {
-
+func initRegexes() {
 	variants = []*variant{
 		{re: regexp.MustCompile("agggtaaa|tttaccct")},
 		{re: regexp.MustCompile("[cgt]gggtaaa|tttaccc[acg]")},
@@ -129,10 +104,8 @@ func initRegexes(doneCh chan int) {
 		{regexp.MustCompile("aND|caN|Ha[DS]|WaS"), []byte("<3>")},
 		{regexp.MustCompile("a[NSt]|BY"), []byte("<2>")},
 		{regexp.MustCompile("<[^>]*>"), []byte("|")},
-		{regexp.MustCompile("\\|[^|][^|]*\\|"), []byte("-")},
+		{regexp.MustCompile(`\|[^|][^|]*\|`), []byte("-")},
 	}
 
 	cleanRE = &subst{regexp.MustCompile("(>[^\n]+)?\n"), []byte("")}
-
-	doneCh <- 1
 }
