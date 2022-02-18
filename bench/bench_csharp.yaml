@@ -24,7 +24,7 @@ problems:
       - 1.cs
   - name: fannkuch-redux
     source:
-      - 9.cs
+      # - 9.cs
   - name: fasta
     source:
       - 5.cs
@@ -36,8 +36,9 @@ problems:
       - 5.cs
   - name: mandelbrot
     source:
-      - 9.cs
-      - 9-m.cs
+      - 1.cs
+      - 2.cs
+      - 3.cs
   - name: json-serde
     source:
       - 1.cs
@@ -72,7 +73,7 @@ environments:
     compiler_version_command: dotnet --version
     docker: mcr.microsoft.com/dotnet/sdk:6.0
     docker_volumns:
-      - /tmp/.nuget/packages:/root/.nuget/packages/
+      - /tmp/.nuget/packages:/root/.nuget/packages
     include: dotnet
     build: dotnet publish -c Release -r linux-x64 -f net6 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out

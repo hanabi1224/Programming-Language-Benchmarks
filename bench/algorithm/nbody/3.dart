@@ -11,7 +11,7 @@ import 'dart:math' as Math;
 import 'dart:typed_data';
 
 void main(args) {
-  int n = args.length > 0 ? int.parse(args[0]) : 10000;
+  int n = args.length > 0 ? int.parse(args[0]) : 1000;
 
   NBodySystem system = NBodySystem();
   print(system.energy().toStringAsFixed(9));
@@ -23,58 +23,30 @@ void main(args) {
 
 class Body {
   final Float64List _data = Float64List(7);
-  get x => _data[0];
-  get y => _data[1];
-  get z => _data[2];
-  get vx => _data[3];
-  get vy => _data[4];
-  get vz => _data[5];
-  get mass => _data[6];
+  double x;
+  double y;
+  double z;
+  double vx;
+  double vy;
+  double vz;
+  double mass;
 
-  set x(v) {
-    _data[0] = v;
-  }
-
-  set y(v) {
-    _data[1] = v;
-  }
-
-  set z(v) {
-    _data[2] = v;
-  }
-
-  set vx(v) {
-    _data[3] = v;
-  }
-
-  set vy(v) {
-    _data[4] = v;
-  }
-
-  set vz(v) {
-    _data[5] = v;
-  }
-
-  set mass(v) {
-    _data[6] = v;
-  }
-
-  Body({x, y, z, vx, vy, vz, mass}) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.vx = vx;
-    this.vy = vy;
-    this.vz = vz;
-    this.mass = mass;
-  }
+  Body(
+      {required this.x,
+      required this.y,
+      required this.z,
+      required this.vx,
+      required this.vy,
+      required this.vz,
+      required this.mass}) {}
 }
 
 class NBodySystem {
   var bodies;
 
-  static double solarmass = 4 * Math.pi * Math.pi;
-  static double daysPeryear = 365.24;
+  static const solarmass = 4 * Math.pi * Math.pi;
+  static const daysPeryear = 365.24;
+  static const N = 5;
 
   NBodySystem() {
     bodies = <Body>[];
@@ -139,29 +111,28 @@ class NBodySystem {
   }
 
   void advance(double dt) {
-    for (int na = 0; na < bodies.length; na++) {
-      Body a = bodies[na];
-      for (int nb = na + 1; nb < bodies.length; nb++) {
-        Body b = bodies[nb];
+    for (var na = 0; na < N; na++) {
+      final a = bodies[na];
+      for (var nb = na + 1; nb < N; nb++) {
+        final b = bodies[nb];
 
-        double dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
-        double d2 = dx * dx + dy * dy + dz * dz;
-        double mag = dt / (d2 * Math.sqrt(d2));
+        final dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
+        final d2 = dx * dx + dy * dy + dz * dz;
+        final mag = dt / (d2 * Math.sqrt(d2));
 
-        a.vx -= dx * b.mass * mag;
-        b.vx += dx * a.mass * mag;
+        final bm_mag = b.mass * mag;
+        a.vx -= dx * bm_mag;
+        a.vy -= dy * bm_mag;
+        a.vz -= dz * bm_mag;
 
-        a.vy -= dy * b.mass * mag;
-        b.vy += dy * a.mass * mag;
-
-        a.vz -= dz * b.mass * mag;
-        b.vz += dz * a.mass * mag;
+        final am_mag = a.mass * mag;
+        b.vx += dx * am_mag;
+        b.vy += dy * am_mag;
+        b.vz += dz * am_mag;
       }
-    }
-    for (var b in bodies) {
-      b.x += dt * b.vx;
-      b.y += dt * b.vy;
-      b.z += dt * b.vz;
+      a.x += dt * a.vx;
+      a.y += dt * a.vy;
+      a.z += dt * a.vz;
     }
   }
 

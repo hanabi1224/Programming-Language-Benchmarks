@@ -18,9 +18,9 @@ problems:
   - name: pidigits
     source:
       - 1.rkt
-  - name: mandelbrot
-    source:
-      - 4.rkt
+  # - name: mandelbrot
+  #   source:
+  #     - 4.rkt
 compiler_version_command: racket --version
 compiler_version_regex:
 runtime_version_parameter:

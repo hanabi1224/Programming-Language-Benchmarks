@@ -6,7 +6,7 @@
 */
 
 
-config const n = 10000;       // The number of timesteps to simulate
+config const n = 1000;       // The number of timesteps to simulate
 
 const pi = 3.141592653589793,
       solarMass = 4 * pi**2,
@@ -93,13 +93,12 @@ proc initSun() {
 //
 proc advance(dt) {
   for i in 0..<numBodies {
+    ref b1 = bodies[i];
     for j in i+1..<numBodies {
-      ref b1 = bodies[i],
-          b2 = bodies[j];
-
+      ref b2 = bodies[j];
       const dpos = b1.pos - b2.pos,
-            mag = dt / sqrt(sumOfSquares(dpos))**3;
-
+            dist2 = sumOfSquares(dpos),
+            mag = dt / (sqrt(dist2) * dist2);
       b1.vel -= dpos * b2.mass * mag;
       b2.vel += dpos * b1.mass * mag;
     }

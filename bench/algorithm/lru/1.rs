@@ -50,17 +50,19 @@ impl<T> LinkedList<T> {
     }
 
     fn _add_node(&mut self, node: NodePtr<T>) {
-        let mut node_mut = node.borrow_mut();
-        if self.head.is_none() {
-            node_mut.prev = None;
-            self.head = Some(node.clone());
-        } else if let Some(tail) = &self.tail {
-            node_mut.prev = Some(Rc::downgrade(tail));
-            let mut tail_mut = tail.borrow_mut();
-            tail_mut.next = Some(node.clone());
+        {
+            let mut node_mut = node.borrow_mut();
+            if self.head.is_none() {
+                node_mut.prev = None;
+                self.head = Some(node.clone());
+            } else if let Some(tail) = &self.tail {
+                node_mut.prev = Some(Rc::downgrade(tail));
+                let mut tail_mut = tail.borrow_mut();
+                tail_mut.next = Some(node.clone());
+            }
+            node_mut.next = None;
         }
-        node_mut.next = None;
-        self.tail = Some(node.clone());
+        self.tail = Some(node);
     }
 
     fn _remove(&mut self, node: &NodePtr<T>) {

@@ -48,10 +48,9 @@ problems:
       - 4.cl
       - 5.cl
       - 6.cl
-  - name: mandelbrot
-    source:
-      - 1.cl
-      - 1-m.cl
+  # - name: mandelbrot
+  #   source:
+  #     - 1.cl
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:

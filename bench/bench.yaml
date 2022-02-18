@@ -1,13 +1,6 @@
-udocker: false
 problems:
-  - name: nsieve
-    unittests:
-      - input: 4
-        output: 4_out
-    tests:
-      - input: 10
-      - input: 12
   - name: helloworld
+    trival: true
     unittests:
       - input: T_T
         output: T_T_out
@@ -16,6 +9,13 @@ problems:
     tests:
       - input: QwQ
         repeat: 5
+  - name: nsieve
+    unittests:
+      - input: 4
+        output: 4_out
+    tests:
+      - input: 10
+      - input: 12
   - name: binarytrees
     unittests:
       - input: 6
@@ -79,8 +79,8 @@ problems:
       - input: 500
         output: 500_out
     tests:
-      - input: 2000
-      - input: 7000
+      - input: 1000
+      - input: 6000
   - name: fannkuch-redux
     unittests:
       - input: 7
@@ -101,8 +101,7 @@ problems:
     data:
       - in.zip
     data_setup_cmd:
-      - unzip in.zip
-      - rm in.zip
+      - unzip -u in.zip
     unittests:
       - input: 25000_in
         output: 25000_out
@@ -115,8 +114,7 @@ problems:
     data:
       - ../knucleotide/in.zip
     data_setup_cmd:
-      - unzip in.zip
-      - rm in.zip
+      - unzip -u in.zip
     unittests:
       - input: 25000_in
         output: 25000_out
@@ -166,7 +164,7 @@ problems:
     tests:
       - input: 100 1000000
       - input: 1000 1000000
-      - input: 1000 2000000
+      - input: 1000 3000000
   - name: secp256k1
     unittests:
       - input: 1
@@ -176,3 +174,4 @@ problems:
     tests:
       - input: 500
       - input: 2000
+tmp_dir: _bench

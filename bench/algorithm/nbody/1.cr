@@ -6,57 +6,70 @@
 # which was written by Christoph Bauer.
 # ported from ruby to crystal by hanabi1224
 
-SOLAR_MASS = Float64.new(4 * Math::PI**2)
-DAYS_PER_YEAR = Float64.new(365.24)
+SOLAR_MASS    = 4_f64 * Math::PI**2
+DAYS_PER_YEAR = 365.24_f64
 
 class Planet
- property x
- property y
- property z
- property vx
- property vy
- property vz
- property mass
- def initialize(x : Float64, y : Float64, z : Float64, vx : Float64, vy : Float64, vz : Float64, mass : Float64)
-  @x, @y, @z = x, y, z
-  @vx, @vy, @vz = Float64.new(vx * DAYS_PER_YEAR), Float64.new(vy * DAYS_PER_YEAR), Float64.new(vz * DAYS_PER_YEAR)
-  @mass = Float64.new(mass * SOLAR_MASS)
- end
+  property x
+  property y
+  property z
+  property vx
+  property vy
+  property vz
+  property mass
 
- def move_from_i(bodies, nbodies, dt, i)
-  while i < nbodies
-   b2 = bodies[i]
-   dx = @x - b2.x
-   dy = @y - b2.y
-   dz = @z - b2.z
-
-   distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
-   mag = dt / (distance * distance * distance)
-   b_mass_mag, b2_mass_mag = @mass * mag, b2.mass * mag
-
-   @vx -= dx * b2_mass_mag
-   @vy -= dy * b2_mass_mag
-   @vz -= dz * b2_mass_mag
-   b2.vx += dx * b_mass_mag
-   b2.vy += dy * b_mass_mag
-   b2.vz += dz * b_mass_mag
-   i += 1
+  def initialize(x : Float64, y : Float64, z : Float64, vx : Float64, vy : Float64, vz : Float64, mass : Float64)
+    @x, @y, @z = x, y, z
+    @vx, @vy, @vz = Float64.new(vx * DAYS_PER_YEAR), Float64.new(vy * DAYS_PER_YEAR), Float64.new(vz * DAYS_PER_YEAR)
+    @mass = Float64.new(mass * SOLAR_MASS)
   end
 
-  @x += dt * @vx
-  @y += dt * @vy
-  @z += dt * @vz
- end
+  def move_from_i(bodies, nbodies, dt, i)
+    vx = @vx
+    vy = @vy
+    vz = @vz
+    x = @x
+    y = @y
+    z = @z
+    mass = @mass
+    while i < nbodies
+      b2 = bodies[i]
+      dx = x - b2.x
+      dy = y - b2.y
+      dz = z - b2.z
+
+      distance_square = dx * dx + dy * dy + dz * dz
+      distance = Math.sqrt(distance_square)
+      mag = dt / (distance * distance_square)
+      b_mass_mag, b2_mass_mag = mass * mag, b2.mass * mag
+
+      vx -= dx * b2_mass_mag
+      vy -= dy * b2_mass_mag
+      vz -= dz * b2_mass_mag
+      b2.vx += dx * b_mass_mag
+      b2.vy += dy * b_mass_mag
+      b2.vz += dz * b_mass_mag
+      i += 1
+    end
+
+    @x += dt * vx
+    @y += dt * vy
+    @z += dt * vz
+
+    @vx = vx
+    @vy = vy
+    @vz = vz
+  end
 end
 
 def energy(bodies)
   e = 0.0
   nbodies = bodies.size
 
-  (0 ... nbodies).each do |i|
+  (0...nbodies).each do |i|
     b = bodies[i]
     e += 0.5 * b.mass * (b.vx * b.vx + b.vy * b.vy + b.vz * b.vz)
-    ((i + 1) ... nbodies).each do |j|
+    ((i + 1)...nbodies).each do |j|
       b2 = bodies[j]
       dx = b.x - b2.x
       dy = b.y - b2.y
@@ -73,15 +86,15 @@ def offset_momentum(bodies)
 
   bodies.each do |b|
     m = b.mass
-    px += b.vx * m
-    py += b.vy * m
-    pz += b.vz * m
+    px -= b.vx * m
+    py -= b.vy * m
+    pz -= b.vz * m
   end
 
   b = bodies[0]
-  b.vx = - px / SOLAR_MASS
-  b.vy = - py / SOLAR_MASS
-  b.vz = - pz / SOLAR_MASS
+  b.vx = px / SOLAR_MASS
+  b.vy = py / SOLAR_MASS
+  b.vz = pz / SOLAR_MASS
 end
 
 BODIES = [
@@ -126,9 +139,8 @@ BODIES = [
     2.68067772490389322e-03,
     1.62824170038242295e-03,
     -9.51592254519715870e-05,
-    5.15138902046611451e-05)
+    5.15138902046611451e-05),
 ]
-
 
 n = ARGV.size > 0 ? ARGV[0].to_i : 1000
 

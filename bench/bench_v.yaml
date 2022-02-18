@@ -54,13 +54,13 @@ environments:
     out_dir: out
     run_cmd: app
     allow_failure: true
-  - os: linux
-    compiler: v+gc+zig
-    version: latest
-    include:
-    build: v -prod -gc boehm_full_opt -cc zig -cflags "cc -march=broadwell" -stats -showcc -no-rsp app.v
-    after_build:
-      - mv app out
-    out_dir: out
-    run_cmd: app
-    allow_failure: true
+  # - os: linux
+  #   compiler: v+gc+zig
+  #   version: latest
+  #   include:
+  #   build: v -prod -gc boehm_full_opt -cc zig -cflags "cc -march=broadwell" -stats -showcc -no-rsp app.v
+  #   after_build:
+  #     - mv app out
+  #   out_dir: out
+  #   run_cmd: app
+  #   allow_failure: true

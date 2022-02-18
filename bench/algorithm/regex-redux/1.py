@@ -6,17 +6,20 @@
 # mp by Ahmad Syukri
 # modified by Justin Peel
 # converted from regex-dna program
+# removed parallelization
 
 import sys
 from re import sub, findall
-from multiprocessing import Pool
+
 
 def init(arg):
     global seq
     seq = arg
 
+
 def var_find(f):
     return len(findall(f, seq))
+
 
 def main():
     file_name = '25000_in' if len(sys.argv) < 2 else sys.argv[1]
@@ -27,25 +30,23 @@ def main():
 
     seq = sub('>.*\n|\n', '', seq)
     clen = len(seq)
-
-    pool = Pool(initializer = init, initargs = (seq,))
-
+    init(seq)
     variants = (
-          'agggtaaa|tttaccct',
-          '[cgt]gggtaaa|tttaccc[acg]',
-          'a[act]ggtaaa|tttacc[agt]t',
-          'ag[act]gtaaa|tttac[agt]ct',
-          'agg[act]taaa|ttta[agt]cct',
-          'aggg[acg]aaa|ttt[cgt]ccct',
-          'agggt[cgt]aa|tt[acg]accct',
-          'agggta[cgt]a|t[acg]taccct',
-          'agggtaa[cgt]|[acg]ttaccct')
-    for f in zip(variants, pool.imap(var_find, variants)):
-        print(f[0], f[1])
+        'agggtaaa|tttaccct',
+        '[cgt]gggtaaa|tttaccc[acg]',
+        'a[act]ggtaaa|tttacc[agt]t',
+        'ag[act]gtaaa|tttac[agt]ct',
+        'agg[act]taaa|ttta[agt]cct',
+        'aggg[acg]aaa|ttt[cgt]ccct',
+        'agggt[cgt]aa|tt[acg]accct',
+        'agggta[cgt]a|t[acg]taccct',
+        'agggtaa[cgt]|[acg]ttaccct')
+    for v in variants:
+        print(v, var_find(v))
 
     subst = {
-          'tHa[Nt]' : '<4>', 'aND|caN|Ha[DS]|WaS' : '<3>', 'a[NSt]|BY' : '<2>',
-          '<[^>]*>' : '|', '\\|[^|][^|]*\\|' : '-'}
+        'tHa[Nt]': '<4>', 'aND|caN|Ha[DS]|WaS': '<3>', 'a[NSt]|BY': '<2>',
+        '<[^>]*>': '|', '\\|[^|][^|]*\\|': '-'}
     for f, r in list(subst.items()):
         seq = sub(f, r, seq)
 
@@ -54,5 +55,6 @@ def main():
     print(clen)
     print(len(seq))
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()

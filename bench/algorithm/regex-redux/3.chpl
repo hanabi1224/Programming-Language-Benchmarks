@@ -4,6 +4,7 @@
    contributed by Engin Kayraklioglu
    derived from the converted regex-dna Chapel version by Ben Harshbarger
    which was derived from the GNU C++ RE2 version by Alexey Zolotov
+   removed parallelization
 */
 
 use IO, Regex;
@@ -38,22 +39,12 @@ proc main(args: [] string) {
   // remove newlines
   data = compile(b">.*\n|\n").sub(b"", data);
 
-  var copy = data; // make a copy so we can perform replacements in parallel
-
   var results: [variants.domain] int;
 
-  sync {
-    // fire off a task to perform replacements
-    begin with (ref copy) {
-      for (f, r) in subst do
-        copy = compile(f).sub(r, copy);
-    }
-
-    // count patterns
-    forall (pattern, result) in zip(variants, results) do
-      for m in compile(pattern).matches(data) do
-        result += 1;
-  }
+  // count patterns
+  for (pattern, result) in zip(variants, results) do
+    for m in compile(pattern).matches(data) do
+      result += 1;
 
   // print results
   for (p,r) in zip(variants, results) do
@@ -62,5 +53,7 @@ proc main(args: [] string) {
 
   writeln(initLen);
   writeln(data.size);
-  writeln(copy.size);
+  for (f, r) in subst do
+     data = compile(f).sub(r, data);
+  writeln(data.size);
 }

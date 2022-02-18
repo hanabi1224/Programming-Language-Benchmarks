@@ -124,7 +124,7 @@ namespace BenchTool
             HashSet<int> result = new HashSet<int>();
             // Looking for child processes
             StringBuilder stdoutBuilder = new StringBuilder();
-            // FIXME: child process lookup logic is not for windows here
+            // FIXME: child process lookup logic does not work on windows here
             await RunCommandAsync(command: $"pgrep -P {pid}", stdOutBuilder: stdoutBuilder).ConfigureAwait(false);
             string stdout = stdoutBuilder.ToString().Trim();
             if (!stdout.IsEmptyOrWhiteSpace())
@@ -149,6 +149,7 @@ namespace BenchTool
         public static async Task<ProcessMeasurement> MeasureAsync(
             ProcessStartInfo startInfo,
             int sampleIntervalMS = 3,
+            bool redirectStdoutToDevNull = false,
             bool forceCheckChildProcesses = false,
             double timeoutSeconds = 0.0,
             IDictionary<string, string> env = null,
@@ -161,7 +162,17 @@ namespace BenchTool
             }
 
             ProcessMeasurement m = new ProcessMeasurement();
-            startInfo.UseShellExecute = false;
+            // TODO: Find better way to redirect stdout to /dev/null 
+            if (redirectStdoutToDevNull && s_isLinux)
+            {
+                startInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = s_isLinux,
+                    FileName = "sh",
+                    Arguments = $"-c \"{startInfo.FileName} {startInfo.Arguments} > /dev/null\"",
+                    WorkingDirectory = startInfo.WorkingDirectory,
+                };
+            }
             using Process p = new Process
             {
                 StartInfo = startInfo,
@@ -173,7 +184,29 @@ namespace BenchTool
                 IList<Process> childProcesses = null;
                 int nLoop = 0;
                 manualResetEvent.Wait(cts.Token);
-                int pid = p.Id;
+                var mainProcess = p;
+                int pid = mainProcess.Id;
+                if (redirectStdoutToDevNull && s_isLinux)
+                {
+                    while (!cts.Token.IsCancellationRequested)
+                    {
+                        try
+                        {
+                            var childrenSet = GetImmediateChildProcessIdsLinuxAsync(pid).ConfigureAwait(false).GetAwaiter().GetResult();
+                            if (childrenSet?.Count > 0)
+                            {
+                                pid = childrenSet.First();
+                                mainProcess = Process.GetProcessById(pid);
+                                break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(e);
+                        }
+                        Thread.Sleep(1);
+                    }
+                }
                 while (!cts.Token.IsCancellationRequested)
                 {
                     try
@@ -192,14 +225,14 @@ namespace BenchTool
                                     totalMemoryBytes = (long)status.VmRSS;
                                 }
                             }
-                            p.Refresh();
+                            mainProcess.Refresh();
                         }
                         else
                         {
-                            p.Refresh();
-                            m.CpuTimeUser = p.UserProcessorTime;
-                            m.CpuTimeKernel = p.PrivilegedProcessorTime;
-                            totalMemoryBytes = p.WorkingSet64;
+                            mainProcess.Refresh();
+                            m.CpuTimeUser = mainProcess.UserProcessorTime;
+                            m.CpuTimeKernel = mainProcess.PrivilegedProcessorTime;
+                            totalMemoryBytes = mainProcess.WorkingSet64;
                         }
 
                         // Look for children process after first recording
@@ -281,7 +314,7 @@ namespace BenchTool
                             Thread.Sleep(sampleIntervalMS);
                         }
 
-                        if (p.HasExited)
+                        if (mainProcess.HasExited)
                         {
                             return;
                         }
@@ -295,11 +328,10 @@ namespace BenchTool
                     catch (Exception e)
                     {
                         Logger.Error(e);
-                        if (cts.Token.IsCancellationRequested || p.HasExited)
+                        if (cts.Token.IsCancellationRequested || mainProcess.HasExited)
                         {
                             return;
                         }
-
                         Thread.Sleep(1);
                     }
                 }
@@ -481,7 +513,7 @@ namespace BenchTool
                     }
                 }
 
-                string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
+                string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead},pwd:{p.StartInfo.WorkingDirectory}]:";
                 Logger.Debug($"{prefix}: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
 
                 if (p.StartInfo.RedirectStandardOutput)

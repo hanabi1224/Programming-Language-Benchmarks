@@ -41,15 +41,20 @@ fn offset_momentum(bodies: []Body) void {
 
 fn advance(bodies: []Body, dt: f64) void {
     @setFloatMode(.Optimized);
-    for (bodies[0..]) |*bi, i| for (bodies[i + 1 ..]) |*bj| {
-        const d = bi.pos - bj.pos;
-        const dsq = length_sq(d);
-        const dst = math.sqrt(dsq);
-        const mag = dt / (dsq * dst);
-
-        bi.vel -= scale(d, bj.mass * mag);
-        bj.vel += scale(d, bi.mass * mag);
-    };
+    for (bodies[0..]) |*bi, i| {
+        var vel = bi.vel;
+        var mi = bi.mass;
+        for (bodies[i + 1 ..]) |*bj| {
+            var d = bi.pos - bj.pos;
+            const dsq = length_sq(d);
+            const dst = math.sqrt(dsq);
+            const mag = dt / (dsq * dst);
+            d = scale(d, mag);
+            vel -= scale(d, bj.mass);
+            bj.vel += scale(d, mi);
+        }
+        bi.vel = vel;
+    }
 
     for (bodies) |*bi| bi.pos += scale(bi.vel, dt);
 }
@@ -114,6 +119,6 @@ pub fn main() !void {
 fn get_steps() !usize {
     var arg_it = std.process.args();
     _ = arg_it.skip();
-    const arg = arg_it.next() orelse return 10;
+    const arg = arg_it.next() orelse return 1000;
     return try std.fmt.parseInt(usize, arg, 10);
 }

@@ -33,6 +33,9 @@ problems:
     source:
       - 1.zig
       - 2.zig
+  - name: mandelbrot
+    source:
+      - 1.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:

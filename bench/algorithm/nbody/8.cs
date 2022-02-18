@@ -14,7 +14,7 @@ namespace nbody
     {
         public static void Main(String[] args)
         {
-            int n = args.Length > 0 ? Int32.Parse(args[0]) : 10000;
+            int n = args.Length > 0 ? Int32.Parse(args[0]) : 1000;
             NBodySystem sys = new NBodySystem();
             sys.OffsetMomentum();
             Console.WriteLine("{0:f9}", sys.Energy());
@@ -107,36 +107,41 @@ namespace nbody
 
         public void Advance(double dt)
         {
-            for (var i = 0; i < bodyCount - 1; i++)
+            for (var i = 0; i < bodyCount; i++)
             {
                 var bi = _bodies[i];
+                var x = bi.x;
+                var y = bi.y;
+                var z = bi.z;
                 var vx = bi.vx;
                 var vy = bi.vy;
                 var vz = bi.vz;
+                var mi = bi.mass;
                 for (var j = i + 1; j < bodyCount; j++)
                 {
                     var bj = _bodies[j];
-                    var dx = bi.x - bj.x;
-                    var dy = bi.y - bj.y;
-                    var dz = bi.z - bj.z;
-                    double d2 = dx * dx + dy * dy + dz * dz;
-                    double mag = dt / (d2 * Math.Sqrt(d2));
-                    vx -= dx * bj.mass * mag;
-                    vy -= dy * bj.mass * mag;
-                    vz -= dz * bj.mass * mag;
-                    bj.vx += dx * bi.mass * mag;
-                    bj.vy += dy * bi.mass * mag;
-                    bj.vz += dz * bi.mass * mag;
+                    var dx = x - bj.x;
+                    var dy = y - bj.y;
+                    var dz = z - bj.z;
+                    var d2 = dx * dx + dy * dy + dz * dz;
+                    var mag = dt / (d2 * Math.Sqrt(d2));
+                    var bj_m_mag = bj.mass * mag;
+                    vx -= dx * bj_m_mag;
+                    vy -= dy * bj_m_mag;
+                    vz -= dz * bj_m_mag;
+
+                    var bi_m_mag = mi * mag;
+                    bj.vx += dx * bi_m_mag;
+                    bj.vy += dy * bi_m_mag;
+                    bj.vz += dz * bi_m_mag;
                 }
                 bi.vx = vx;
                 bi.vy = vy;
                 bi.vz = vz;
-            }
-            foreach (var b in _bodies)
-            {
-                b.x += b.vx * dt;
-                b.y += b.vy * dt;
-                b.z += b.vz * dt;
+
+                bi.x += vx * dt;
+                bi.y += vy * dt;
+                bi.z += vz * dt;
             }
         }
 

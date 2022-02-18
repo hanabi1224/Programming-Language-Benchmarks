@@ -24,6 +24,9 @@ fn advance(bodies: []Planet, dt: f64, steps: usize) void {
     var i: usize = 0;
     while (i < steps) : (i += 1) {
         for (bodies) |*bi, j| {
+            var vx = bi.vx;
+            var vy = bi.vy;
+            var vz = bi.vz;
             for (bodies[j + 1 ..]) |*bj| {
                 const dx = bi.x - bj.x;
                 const dy = bi.y - bj.y;
@@ -34,20 +37,22 @@ fn advance(bodies: []Planet, dt: f64, steps: usize) void {
                 const mag = dt / (dsq * dst);
                 const mi = bi.mass;
 
-                bi.vx -= dx * bj.mass * mag;
-                bi.vy -= dy * bj.mass * mag;
-                bi.vz -= dz * bj.mass * mag;
+                vx -= dx * bj.mass * mag;
+                vy -= dy * bj.mass * mag;
+                vz -= dz * bj.mass * mag;
 
                 bj.vx += dx * mi * mag;
                 bj.vy += dy * mi * mag;
                 bj.vz += dz * mi * mag;
             }
-        }
 
-        for (bodies) |*bi| {
-            bi.x += dt * bi.vx;
-            bi.y += dt * bi.vy;
-            bi.z += dt * bi.vz;
+            bi.vx = vx;
+            bi.vy = vy;
+            bi.vz = vz;
+
+            bi.x += dt * vx;
+            bi.y += dt * vy;
+            bi.z += dt * vz;
         }
     }
 }
@@ -76,15 +81,15 @@ fn offset_momentum(bodies: []Planet) void {
     var pz: f64 = 0.0;
 
     for (bodies) |b| {
-        px += b.vx * b.mass;
-        py += b.vy * b.mass;
-        pz += b.vz * b.mass;
+        px -= b.vx * b.mass;
+        py -= b.vy * b.mass;
+        pz -= b.vz * b.mass;
     }
 
     var sun = &bodies[0];
-    sun.vx = -px / solar_mass;
-    sun.vy = -py / solar_mass;
-    sun.vz = -pz / solar_mass;
+    sun.vx = px / solar_mass;
+    sun.vy = py / solar_mass;
+    sun.vz = pz / solar_mass;
 }
 
 const solar_bodies = [_]Planet{
@@ -159,11 +164,8 @@ pub fn main() !void {
 }
 
 fn get_n() !usize {
-    const args = try std.process.argsAlloc(global_allocator);
-    defer std.process.argsFree(global_allocator, args);
-    if (args.len > 1) {
-        return try std.fmt.parseInt(usize, args[1], 10);
-    } else {
-        return 10;
-    }
+    var arg_it = std.process.args();
+    _ = arg_it.skip();
+    const arg = arg_it.next() orelse return 1000;
+    return try std.fmt.parseInt(usize, arg, 10);
 }

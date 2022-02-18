@@ -21,10 +21,10 @@ internal static class Program
             if (!flags[i])
             {
                 count += 1;
-            }
-            for (var j = i << 1; j < n; j += i)
-            {
-                flags[j] = true;
+                for (var j = i << 1; j < n; j += i)
+                {
+                    flags[j] = true;
+                }
             }
         }
         Console.WriteLine($"Primes up to {n,8} {count,8}");

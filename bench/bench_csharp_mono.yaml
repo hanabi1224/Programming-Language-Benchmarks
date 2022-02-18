@@ -25,9 +25,9 @@ problems:
   - name: knucleotide
     source:
       - 6.cs
-  - name: regex-redux
+  - name: mandelbrot
     source:
-      - 5.cs
+      - 1.cs
   - name: lru
     source:
       - 1.cs

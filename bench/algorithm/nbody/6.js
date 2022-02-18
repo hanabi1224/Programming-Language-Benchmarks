@@ -120,13 +120,10 @@ function advance(dt) {
         bodyi.vx = vxi;
         bodyi.vy = vyi;
         bodyi.vz = vzi;
-    }
 
-    for (let i = 0; i < size; i++) {
-        const body = bodies[i];
-        body.x += dt * body.vx;
-        body.y += dt * body.vy;
-        body.z += dt * body.vz;
+        bodyi.x += dt * vxi;
+        bodyi.y += dt * vyi;
+        bodyi.z += dt * vzi;
     }
 }
 

@@ -4,7 +4,7 @@
 # contributed by Antoine Pitrou
 # modified by Dominique Wahli and Daniel Nanz
 # modified by Joerg Baumann
-# remove multiprocessing by hanabi1224
+# remove parallelization
 
 import sys
 

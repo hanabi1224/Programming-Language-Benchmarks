@@ -40,10 +40,10 @@ fn mbrot8(cr [8]f64, civ f64) byte {
 	mut tr := [8]f64{init: 0.0}
 	mut ti := [8]f64{init: 0.0}
 	mut absz := [8]f64{init: 0.0}
+	mut tmp := [8]f64{}
 	for _ in 0 .. 10 {
 		for _ in 0 .. 5 {
-			// zi = add(mul(add(zr, zr), zi), ci)
-			mut tmp := [8]f64{}
+			// zi = add(mul(add(zr, zr), zi), ci)			
 			add(zr, zr, mut tmp)
 			mul(tmp, zi, mut tmp)
 			add(tmp, ci, mut zi)

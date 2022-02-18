@@ -4,11 +4,12 @@ namespace BenchTool
 {
     public class YamlBenchmarkConfig
     {
-        public bool Udocker { get; set; }
 
         public List<YamlBenchmarkProblemConfig> Problems { get; set; }
 
         public List<YamlLangConfig> Langs { get; set; }
+
+        public string TmpDir { get; set; } = "_bench";
     }
 
     public class YamlBenchmarkProblemConfig
@@ -22,6 +23,8 @@ namespace BenchTool
         public YamlBenchmarkProblemUnittestConfig[] Unittests { get; set; }
 
         public YamlBenchmarkProblemTestConfig[] Tests { get; set; }
+
+        public bool Trival { get; set; } = false;
     }
 
     public class YamlBenchmarkProblemUnittestConfig

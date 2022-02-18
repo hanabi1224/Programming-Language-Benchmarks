@@ -9,8 +9,7 @@
 
 #![feature(portable_simd)]
 
-use core_simd::f64x8;
-use std_float::StdFloat;
+use std::simd::{f64x8, StdFloat};
 
 const MAX_ITER: usize = 50;
 const VLEN: usize = 8;
@@ -18,11 +17,11 @@ const VLEN: usize = 8;
 #[inline(always)]
 pub fn mbrot8(out: &mut u8, cr: f64x8, ci: f64) {
     let ci = f64x8::splat(ci);
-    let mut zr = f64x8::splat(0f64);
-    let mut zi = f64x8::splat(0f64);
-    let mut tr = f64x8::splat(0f64);
-    let mut ti = f64x8::splat(0f64);
-    let mut absz = f64x8::splat(0f64);
+    let mut zr = f64x8::default();
+    let mut zi = f64x8::default();
+    let mut tr = f64x8::default();
+    let mut ti = f64x8::default();
+    let mut absz = f64x8::default();
 
     for _ in 0..MAX_ITER / 5 {
         for _ in 0..5 {

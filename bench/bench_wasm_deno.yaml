@@ -65,6 +65,7 @@ environments:
     build: rustup target add wasm32-wasi && cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
     after_build:
       - sudo mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
-      - deno compile --unstable --allow-env --allow-read -o out/app wrapper.ts
+      - deno bundle --unstable wrapper.ts app.ts
+      - deno compile --no-check --unstable --allow-env --allow-read -o out/app app.ts
     out_dir: out
     run_cmd: app --

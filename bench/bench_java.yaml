@@ -32,8 +32,7 @@ problems:
       - 3.java
   - name: mandelbrot
     source:
-      - 4.java
-      - 4-m.java
+      - 1.java
   - name: spectral-norm
     source:
       - 2.java

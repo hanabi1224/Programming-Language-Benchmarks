@@ -1,29 +1,30 @@
-import math, os, strutils, strformat, md5
+import os, strutils, strformat, md5
 
-proc add(a: array[8, float64], b: array[8, float64], r: var array[8, float64]):auto=
+proc add(a: array[8, float64], b: array[8, float64], r: var array[8,
+    float64]): auto =
   for i in 0..<8:
     r[i] = a[i] + b[i]
 
-proc minus(a: array[8, float64], b: array[8, float64], r: var array[8, float64]):auto=
+proc minus(a: array[8, float64], b: array[8, float64], r: var array[8,
+    float64]): auto =
   for i in 0..<8:
     r[i] = a[i] - b[i]
 
-proc mul(a: array[8, float64], b: array[8, float64], r: var array[8, float64]):auto=
+proc mul(a: array[8, float64], b: array[8, float64], r: var array[8,
+    float64]): auto =
   for i in 0..<8:
     r[i] = a[i] * b[i]
 
-proc mbrot8(cr: array[8, float64], civ:float64):auto=
-  var ci: array[8, float64]
-  for i in 0..<8:
-    ci[i] = civ
+proc mbrot8(cr: array[8, float64], civ: float64): auto =
+  var ci: array[8, float64] = [civ, civ, civ, civ, civ, civ, civ, civ]
   var zr: array[8, float64]
   var zi: array[8, float64]
   var tr: array[8, float64]
   var ti: array[8, float64]
   var absz: array[8, float64]
+  var tmp: array[8, float64]
   for _ in 0..<10:
     for _ in 0..<5:
-      var tmp: array[8, float64]
       add(zr, zr, tmp)
       mul(tmp, zi, tmp)
       add(tmp, ci, zi)

@@ -18,9 +18,9 @@ problems:
   - name: fannkuch-redux
     source:
       - 2.dart
-  - name: mandelbrot
-    source:
-      - 2.dart
+  # - name: mandelbrot
+  #   source:
+  #     - 2.dart
   - name: nbody
     source:
       - 3.dart
