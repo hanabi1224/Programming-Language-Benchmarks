@@ -513,7 +513,7 @@ namespace BenchTool
                     }
                 }
 
-                string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead}]:";
+                string prefix = $"Command[shell:{useShellExecute},print:{printOnConsole},async:{asyncRead},pwd:{p.StartInfo.WorkingDirectory}]:";
                 Logger.Debug($"{prefix}: {p.StartInfo.FileName} {p.StartInfo.Arguments}");
 
                 if (p.StartInfo.RedirectStandardOutput)

@@ -8,6 +8,8 @@ namespace BenchTool
         public List<YamlBenchmarkProblemConfig> Problems { get; set; }
 
         public List<YamlLangConfig> Langs { get; set; }
+
+        public string TmpDir { get; set; } = "_bench";
     }
 
     public class YamlBenchmarkProblemConfig

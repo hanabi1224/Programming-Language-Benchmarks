@@ -120,6 +120,26 @@ namespace BenchTool
             List<Task> parallelTasks = new List<Task>();
             List<Exception> aggregatedExceptions = new List<Exception>();
             HashSet<string> SetupDockerProvidedRuntimeDedupContext = new HashSet<string>();
+
+            // Setup test data
+            // TODO: Make Data a separate section in yaml config
+            if (task == TaskTest || task == TaskBench)
+            {
+                foreach (var problemConfig in benchConfig.Problems)
+                {
+                    if (problems?.Length > 0
+                        && !problems.Contains(problemConfig.Name))
+                    {
+                        continue;
+                    }
+
+                    await SetupTestData(
+                       problemConfig,
+                       algorithmDir: algorithm,
+                       tmpSubDirName: benchConfig.TmpDir).ConfigureAwait(false);
+                }
+            }
+
             foreach (YamlLangConfig c in langConfigs.OrderBy(i => i.Lang))
             {
                 if (!c.Enabled)
@@ -272,14 +292,14 @@ namespace BenchTool
             string srcCodePath = Path.Combine(algorithmDir, problem.Name, codePath);
             srcCodePath.EnsureFileExists();
 
-            var tmpRoot = Path.Combine(Path.GetTempPath(), "__benchmarks");
+            var tmpRoot = Path.Combine(Path.GetTempPath(), benchConfig.TmpDir);
             if (!Directory.Exists(tmpRoot))
             {
                 Directory.CreateDirectory(tmpRoot);
             }
 
             // Setup tmp build folder
-            using TempFolder tmpDir = new TempFolder(Path.Combine("__benchmarks", buildId));
+            using TempFolder tmpDir = new TempFolder(Path.Combine(benchConfig.TmpDir, buildId));
 
             Logger.Debug($"Temp build folder: {tmpDir.FullPath}");
 
@@ -407,11 +427,6 @@ namespace BenchTool
                 langEnvConfig.AfterBuild,
                 workingDir: tmpDir.FullPath).ConfigureAwait(false);
 
-            await SetupTestData(
-                benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name),
-                algorithmDir: algorithmDir,
-                tmpBuildOutput: tmpBuildOutput).ConfigureAwait(false);
-
             if (Directory.Exists(buildOutput))
             {
                 Directory.Delete(buildOutput, recursive: true);
@@ -509,7 +524,8 @@ namespace BenchTool
 
                 string expectedOutput = File.ReadAllText(expectedOutputPath);
 
-                string runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
+                var input = problemTestConfig.Data?.Length > 0 ? Path.Combine(Path.GetTempPath(), benchConfig.TmpDir, test.Input) : test.Input;
+                string runCommand = $"{langEnvConfig.RunCmd} {input}";
 
                 ProcessStartInfo runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
@@ -631,7 +647,8 @@ namespace BenchTool
                     continue;
                 }
 
-                string runCommand = $"{langEnvConfig.RunCmd} {test.Input}";
+                var input = problemTestConfig.Data?.Length > 0 ? Path.Combine(Path.GetTempPath(), benchConfig.TmpDir, test.Input) : test.Input;
+                string runCommand = $"{langEnvConfig.RunCmd} {input}";
 
                 ProcessStartInfo runPsi = runCommand.ConvertToCommand();
                 runPsi.FileName = exeName;
@@ -739,21 +756,26 @@ namespace BenchTool
         private static async Task SetupTestData(
             YamlBenchmarkProblemConfig problemConfig,
             string algorithmDir,
-            string tmpBuildOutput)
+            string tmpSubDirName)
         {
-            //YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
             if (problemConfig.Data?.Length > 0)
             {
+                var tmpFileDir = Path.Combine(Path.GetTempPath(), tmpSubDirName);
+                if (!Directory.Exists(tmpFileDir))
+                {
+                    Directory.CreateDirectory(tmpFileDir);
+                }
+
                 foreach (string fileName in problemConfig.Data)
                 {
                     string dataFileFromPath = Path.Combine(algorithmDir, problemConfig.Name, fileName);
-                    string dataFileToPath = Path.Combine(tmpBuildOutput, Path.GetFileName(fileName));
+                    string dataFileToPath = Path.Combine(tmpFileDir, Path.GetFileName(fileName));
                     Logger.Debug($"Copying {dataFileFromPath} to {dataFileToPath}");
                     File.Copy(dataFileFromPath, dataFileToPath, overwrite: true);
                 }
                 if (problemConfig.DataSetupCmd?.Length > 0)
                 {
-                    await ProcessUtils.RunCommandsAsync(problemConfig.DataSetupCmd, workingDir: tmpBuildOutput).ConfigureAwait(false);
+                    await ProcessUtils.RunCommandsAsync(problemConfig.DataSetupCmd, workingDir: tmpFileDir).ConfigureAwait(false);
                 }
             }
         }

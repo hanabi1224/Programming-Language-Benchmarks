@@ -153,6 +153,6 @@ public unsafe static class FannkuchRedux
         {
             threads[i].Join();
         }
-        Console.WriteLine(chkSums.Sum() + "\nPfannkuchen(" + n + ") = " + maxFlips.Max());
+        Console.WriteLine($"{chkSums.Sum()}\nPfannkuchen({n}) = {maxFlips.Max()}");
     }
 }

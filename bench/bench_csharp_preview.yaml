@@ -12,6 +12,7 @@ problems:
   - name: nbody
     source:
       - 8.cs
+      - 9.cs
   - name: spectral-norm
     source:
       - 3.cs
@@ -23,14 +24,22 @@ problems:
       - 1.cs
   - name: fannkuch-redux
     source:
-      - 9.cs
+      # - 9.cs
   - name: fasta
     source:
       - 5.cs
+  - name: knucleotide
+    source:
+      - 6.cs
+  - name: regex-redux
+    source:
+      - 5.cs
+      - 5p.cs
   - name: mandelbrot
     source:
       - 1.cs
       - 2.cs
+      - 3.cs
   - name: json-serde
     source:
       - 1.cs
@@ -41,25 +50,32 @@ problems:
   - name: http-server
     source:
       - 1.cs
+      - 2.cs
   - name: nsieve
     source:
       - 1.cs
       - 2.cs
+  - name: lru
+    source:
+      - 1.cs
+      - 2.cs
+  - name: secp256k1
+    source:
+      - 1.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: app.cs
 environments:
-  # - os: linux
-  #   compiler: dotnet
-  #   version: 7
-  #   compiler_version_command: dotnet --version
-  #   docker: mcr.microsoft.com/dotnet/sdk:7.0
-  #   docker_volumns:
-  #     - /tmp/.nuget/packages:/root/.nuget/packages/
-  #   include: dotnet_preview
-  #   build: dotnet publish -c Release -r linux-x64 -f net7 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
-  #   out_dir: out
-  #   run_cmd: app
-  #   allow_failure: true
+  - os: linux
+    compiler: dotnet
+    version: 7
+    compiler_version_command: dotnet --version
+    docker: mcr.microsoft.com/dotnet/sdk:7.0
+    docker_volumns:
+      - /tmp/.nuget/packages:/root/.nuget/packages
+    include: dotnet_preview
+    build: dotnet publish -c Release -r linux-x64 -f net7 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
+    out_dir: out
+    run_cmd: app

@@ -101,8 +101,7 @@ problems:
     data:
       - in.zip
     data_setup_cmd:
-      - unzip in.zip
-      - rm in.zip
+      - unzip -u in.zip
     unittests:
       - input: 25000_in
         output: 25000_out
@@ -115,8 +114,7 @@ problems:
     data:
       - ../knucleotide/in.zip
     data_setup_cmd:
-      - unzip in.zip
-      - rm in.zip
+      - unzip -u in.zip
     unittests:
       - input: 25000_in
         output: 25000_out
@@ -176,3 +174,4 @@ problems:
     tests:
       - input: 500
       - input: 2000
+tmp_dir: _bench
