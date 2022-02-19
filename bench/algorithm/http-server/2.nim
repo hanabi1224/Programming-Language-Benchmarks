@@ -1,16 +1,18 @@
 import os, strutils, json, strformat, random, lists
-import asynchttpserver, asyncdispatch, httpclient
+import asyncdispatch, httpclient
+import httpbeast, options, threadpool
 
-proc runServer(port: int) {.async.} =
-  var server = newAsyncHttpServer()
-  proc cb(req: Request) {.async.} =
-    await req.respond(Http200, $parseJson(req.body)["value"].num)
-  server.listen Port(port), "localhost"
-  while true:
-    if server.shouldAcceptRequest():
-      await server.acceptRequest(cb)
+proc onRequest(req: Request) {.async.} =
+  if req.httpMethod == some(HttpPost):
+    case req.path.get()
+    of "/":
+      let n = parseJson(req.body.get())["value"].num
+      req.send(Http200, fmt"{n}")
     else:
-      poll()
+      req.send(Http404)
+
+proc runServer(port: int) =
+  httpbeast.run onRequest, initSettings(Port(port), "localhost")
 
 proc send(url: string, v: BiggestInt): Future[BiggestInt] {.async.} =
   let client = newAsyncHttpClient()
@@ -44,5 +46,5 @@ proc main(port: int) {.async.} =
 randomize()
 let rand = initRand(1)
 let port = rand(20000..40000)
-asyncCheck runServer(port)
+spawn runServer port
 waitFor main(port)

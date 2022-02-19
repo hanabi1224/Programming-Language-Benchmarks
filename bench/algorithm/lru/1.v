@@ -36,6 +36,7 @@ fn (mut lru LRU) put(key u32, value u32) {
 	if key in lru.m {
 		lru.m.delete(key)
 	} else if lru.m.len == lru.size {
+		// Any better API to get the first key?
 		lru.m.delete(lru.m.keys()[0])
 	}
 	lru.m[key] = value

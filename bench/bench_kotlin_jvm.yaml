@@ -39,7 +39,7 @@ runtime_version_regex:
 source_rename_to: main.kt
 environments:
   - os: linux
-    compiler: Kotlin/jvm
+    compiler: kotlin/jvm
     version: 17
     docker: openjdk:17-slim
     docker_runtime_dir: /usr/local/openjdk-17

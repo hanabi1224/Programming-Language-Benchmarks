@@ -1,4 +1,5 @@
 lang: wasm
+enabled: false
 problems:
   - name: helloworld
     source:

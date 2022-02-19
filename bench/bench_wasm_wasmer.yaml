@@ -56,7 +56,7 @@ runtime_version_parameter: -V
 runtime_version_regex:
 environments:
   - os: linux
-    compiler: wasmer/LLVM
+    compiler: wasmer/llvm
     version: latest
     env:
       RUSTFLAGS: -C target-feature=+simd128
@@ -69,7 +69,8 @@ environments:
     run_cmd: wasmer run --llvm _app.wasm
     runtime_included: false
   - os: linux
-    compiler: wasmer/Cranelift
+    compiler: wasmer/cranelift
+    enabled: false
     version: latest
     env:
       RUSTFLAGS: -C target-feature=+simd128

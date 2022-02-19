@@ -48,6 +48,6 @@ environments:
     include:
     include_sub_dir:
     # before_build:
-    build: deno bundle c.ts app.ts && deno compile --no-check --allow-net --allow-read --unstable -o out/_app app.ts
+    build: deno bundle c.ts app.ts && deno compile --no-check --allow-net --allow-read --unstable -o out/app app.ts
     out_dir: out
-    run_cmd: _app
+    run_cmd: app
