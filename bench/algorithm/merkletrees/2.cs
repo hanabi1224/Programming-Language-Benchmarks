@@ -2,41 +2,23 @@ using System;
 
 class MerkleTrees
 {
-    class TreeNode
+    interface IBaseNode<T>
     {
-        public long? value;
-        public long? hash;
-        public TreeNode left;
-        public TreeNode right;
+        bool HasHash();
+        T GetHash();
+    }
 
-        public TreeNode(long? value, TreeNode left = null, TreeNode right = null)
-        {
-            this.value = value;
-            this.left = left;
-            this.right = right;
-        }
+    interface INode<T> : IBaseNode<T>
+    {
+        void CalHash();
+        bool Check();
+    }
 
-        public static TreeNode Create(int d)
-        {
-            return d == 0 ? new TreeNode(1L, null, null)
-                          : new TreeNode(null, Create(d - 1), Create(d - 1));
-        }
+    abstract class BaseNode : IBaseNode<long>
+    {
+        protected long? hash;
 
-        public bool Check()
-        {
-            if (hash != null)
-            {
-                if (value != null)
-                {
-                    return true;
-                }
-                else if (left != null && right != null)
-                {
-                    return left.Check() && right.Check();
-                }
-            }
-            return false;
-        }
+        public bool HasHash() => hash.HasValue;
 
         public long GetHash()
         {
@@ -46,21 +28,57 @@ class MerkleTrees
             }
             return default;
         }
+    }
+
+    class Leaf : BaseNode, INode<long>
+    {
+        private long value;
+
+        public Leaf(long value)
+        {
+            this.value = value;
+        }
+
+        public bool Check() => HasHash();
+
+        public void CalHash()
+        {
+            if (!HasHash())
+            {
+                hash = value;
+            }
+        }
+    }
+
+    class TreeNode : BaseNode, INode<long>
+    {
+        public INode<long> left;
+        public INode<long> right;
+
+        public TreeNode(INode<long> left, INode<long> right)
+        {
+            this.left = left;
+            this.right = right;
+        }
+
+        public static INode<long> Create(int d)
+        {
+            return d == 0 ? new Leaf(1L)
+                          : new TreeNode(Create(d - 1), Create(d - 1));
+        }
+
+        public bool Check()
+        {
+            return HasHash() && left.Check() && right.Check();
+        }
 
         public void CalHash()
         {
             if (hash == null)
             {
-                if (value.HasValue)
-                {
-                    hash = value;
-                }
-                else if (left != null && right != null)
-                {
-                    left.CalHash();
-                    right.CalHash();
-                    hash = left.GetHash() + right.GetHash();
-                }
+                left.CalHash();
+                right.CalHash();
+                hash = left.GetHash() + right.GetHash();
             }
         }
     }

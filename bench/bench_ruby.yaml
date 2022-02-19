@@ -53,6 +53,7 @@ environments:
     run_cmd: ruby -W0 app.rb
   - os: linux
     compiler: ruby/mjit
+    enabled: false
     version: latest
     docker:
     include:

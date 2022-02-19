@@ -45,6 +45,7 @@ environments:
   - os: linux
     compiler: node
     version: lts
+    enabled: false
     docker: node:lts-slim
     docker_runtime_file: /usr/local/bin/node
     include:

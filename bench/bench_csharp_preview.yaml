@@ -9,6 +9,7 @@ problems:
   - name: merkletrees
     source:
       - 1.cs
+      - 2.cs
   - name: nbody
     source:
       - 8.cs
