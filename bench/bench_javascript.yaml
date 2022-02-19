@@ -58,7 +58,6 @@ environments:
     docker: node:current-slim
     docker_runtime_file: /usr/local/bin/node
     include:
-    include_sub_dir: out
     build: cp c.js out
     out_dir: out
     run_cmd: node --stack-size=10000 c.js

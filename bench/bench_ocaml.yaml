@@ -49,14 +49,14 @@ environments:
     version: latest
     compiler_version_command: ocamlc --version
     docker: ocaml/opam
-    # docker_volumns:
-    #   - /tmp/.opam/download-cache/:/home/opam/.opam/download-cache
+    docker_volumns:
+      - /tmp/.opam/download-cache:/home/opam/.opam/download-cache
     include: ocaml
     before_build:
-      - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
+      # - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
     build: opam install . -y && dune build
     after_build:
-      - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
+      # - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
       - cp _build/default/app.exe out
     out_dir: out
     run_cmd: app.exe

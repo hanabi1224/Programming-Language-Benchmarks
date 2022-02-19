@@ -31,6 +31,7 @@ namespace BenchTool
 
         private static bool s_verbose = false;
         private static CpuInfo s_cpuInfo;
+        private static string s_dockerCmd = "docker";
 
         /// <summary>
         /// Main function
@@ -92,6 +93,7 @@ namespace BenchTool
             {
                 benchConfig.Langs = new List<YamlLangConfig>();
             }
+            s_dockerCmd = benchConfig.DockerCmd;
             string configDir = Path.GetDirectoryName(config);
             foreach (string lcPath in Directory.GetFiles(configDir.FallBackTo("."), "bench_*.yaml", SearchOption.TopDirectoryOnly))
             {
@@ -335,7 +337,7 @@ namespace BenchTool
             bool useDocker = !noDocker && !docker.IsEmptyOrWhiteSpace();
             if (useDocker && forcePullDocker)
             {
-                await ProcessUtils.RunCommandAsync($"docker pull {docker}").ConfigureAwait(false);
+                await ProcessUtils.RunCommandAsync($"{s_dockerCmd} pull {docker}").ConfigureAwait(false);
             }
 
             // Before Build
@@ -350,7 +352,7 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    compilerVersionCommand = $"docker run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {compilerVersionCommand}";
+                    compilerVersionCommand = $"{s_dockerCmd} run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {compilerVersionCommand}";
                 }
                 else
                 {
@@ -407,7 +409,7 @@ namespace BenchTool
                         additionalDockerEnv = string.Join(" ", langEnvConfig.Env.Select(p => $"--env {p.Key.Trim()}=\"{p.Value.Trim()}\""));
                     }
 
-                    buildCommand = $"docker run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    buildCommand = $"{s_dockerCmd} run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
                     await ProcessUtils.RunCommandAsync(
                         buildCommand,
                         workingDir: tmpDir.FullPath,
@@ -499,7 +501,7 @@ namespace BenchTool
             {
                 string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
                 exeName = Path.Combine(exeRoot, exeName);
-                await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+                // await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
             string runtimeVersionParameter = langEnvConfig.RuntimeVersionParameter.FallBackTo(langConfig.RuntimeVersionParameter);
@@ -611,7 +613,7 @@ namespace BenchTool
             {
                 string exeRoot = GetIncludedRuntimeRoot(langEnvConfig: langEnvConfig, buildOutputRoot: buildOutputRoot, buildOutput: buildOutput);
                 exeName = Path.Combine(exeRoot, exeName);
-                await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
+                // await ProcessUtils.RunCommandAsync($"chmod +x \"{exeName}\"", asyncRead: false, workingDir: buildOutput).ConfigureAwait(false);
             }
 
             YamlBenchmarkProblemConfig problemTestConfig = benchConfig.Problems.FirstOrDefault(i => i.Name == problem.Name);
@@ -809,7 +811,7 @@ namespace BenchTool
                 Directory.CreateDirectory(dir);
             }
             const string DockerTmpDir = "/tmp/runtime";
-            string cmd = $"docker run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.Docker}";
+            string cmd = $"{s_dockerCmd} run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.Docker}";
             if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
             {
                 cmd = $"{cmd} cp -a {langEnvConfig.DockerRuntimeDir} .";

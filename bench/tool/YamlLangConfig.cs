@@ -10,6 +10,8 @@ namespace BenchTool
         public List<YamlLangConfig> Langs { get; set; }
 
         public string TmpDir { get; set; } = "_bench";
+
+        public string DockerCmd { get; set; } = "podman";
     }
 
     public class YamlBenchmarkProblemConfig

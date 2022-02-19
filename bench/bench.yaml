@@ -177,3 +177,4 @@ problems:
       - input: 500
       - input: 2000
 tmp_dir: _bench
+docker_cmd: podman
