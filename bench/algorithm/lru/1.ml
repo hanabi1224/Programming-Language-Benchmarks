@@ -58,6 +58,7 @@ let next rng =
   rng.seed <- ((1103515245 * rng.seed) + 12345) mod 2147483648;
   rng.seed
 
+(* type ('a, 'b) pair = 'a * 'b has simliar performance *)
 type ('a, 'b) pair = { k : 'a; v : 'b }
 
 type ('a, 'b) lru = {
