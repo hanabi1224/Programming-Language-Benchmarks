@@ -2,9 +2,8 @@ name: bencher
 version: 0.1.0
 publish_to: none
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
 dependencies:
   crypto: ^3.0.1
-  kt_dart: ^0.10.0
-  shelf: ^1.2.0  
+  shelf: ^1.2.0
 #   ffi: ^1.0.0

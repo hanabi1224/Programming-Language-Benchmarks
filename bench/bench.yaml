@@ -137,8 +137,10 @@ problems:
       - input: canada 15
   - name: coro-prime-sieve
     unittests:
-      - input: 1000
-        output: 1000_out
+      - input: 100
+        output: 100_out
+      - input: 200
+        output: 200_out
     tests:
       - input: 1000
       - input: 4000

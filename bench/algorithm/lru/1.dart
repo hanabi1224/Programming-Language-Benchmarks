@@ -1,4 +1,4 @@
-import 'package:kt_dart/kt.dart';
+import "dart:collection";
 
 class LCG {
   int seed;
@@ -16,29 +16,29 @@ class LCG {
   }
 }
 
-class LRU {
+class LRU<K, V> {
   final int size;
-  final KtLinkedMap map = KtLinkedMap.empty();
+  final LinkedHashMap<K, V> map = LinkedHashMap<K, V>();
   LRU(int this.size);
 
-  int? get(int key) {
-    final ret = map.getOrDefault(key, null);
+  V? get(K key) {
+    final ret = map[key];
     if (ret != null) {
       map.remove(key);
-      map.put(key, ret);
+      map[key] = ret;
     }
     return ret;
   }
 
-  void put(int key, int value) {
+  void put(K key, V value) {
     if (map.containsKey(key)) {
       map.remove(key);
     } else {
-      if (map.size == size) {
-        map.remove(map.keys.first());
+      if (map.length == size) {
+        map.remove(map.keys.first);
       }
     }
-    map.put(key, value);
+    map[key] = value;
   }
 }
 
@@ -50,7 +50,7 @@ void main(List<String> arguments) {
   var missed = 0;
   final rng0 = LCG(0);
   final rng1 = LCG(1);
-  final lru = LRU(size);
+  final lru = LRU<int, int>(size);
   for (var i = 0; i < n; i++) {
     final n0 = rng0.next() % mod;
     lru.put(n0, n0);
