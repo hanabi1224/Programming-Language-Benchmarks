@@ -14,7 +14,7 @@ final class app {
     nf.setMinimumFractionDigits(9);
     nf.setGroupingUsed(false);
 
-    int n = Integer.parseInt(args[0]);
+    int n = args.length > 0 ? Integer.parseInt(args[0]) : 1000;
 
     NBodySystem bodies = new NBodySystem();
 
