@@ -9,7 +9,7 @@
 SOLAR_MASS    = 4_f64 * Math::PI**2
 DAYS_PER_YEAR = 365.24_f64
 
-class Planet
+struct Planet
   property x
   property y
   property z
