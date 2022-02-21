@@ -12,6 +12,7 @@ problems:
   - name: nbody
     source:
       - 1.java
+      - 2.java
   - name: pidigits
     source:
       - 1.java
@@ -33,6 +34,7 @@ problems:
   - name: mandelbrot
     source:
       - 1.java
+      - 2.java
   - name: spectral-norm
     source:
       - 2.java
@@ -79,18 +81,18 @@ environments:
     docker: openjdk:17-slim
     docker_runtime_dir: /usr/local/openjdk-17
     include:
-    build: javac app.java -d out
+    build: javac --add-modules jdk.incubator.vector app.java -d out
     out_dir: out
-    run_cmd: openjdk-17/bin/java app
+    run_cmd: openjdk-17/bin/java --add-modules jdk.incubator.vector app
   - os: linux
     compiler: openjdk/zgc
     version: 17
     docker: openjdk:17-slim
     docker_runtime_dir: /usr/local/openjdk-17
     include:
-    build: javac app.java -d out
+    build: javac --add-modules jdk.incubator.vector app.java -d out
     out_dir: out
-    run_cmd: openjdk-17/bin/java -XX:+UseZGC -Xlog:all=off app
+    run_cmd: openjdk-17/bin/java -XX:+UseZGC -Xlog:all=off --add-modules jdk.incubator.vector app
   # - os: linux
   #   compiler: openjdk/parallelgc
   #   version: 17
@@ -106,9 +108,9 @@ environments:
     docker: openjdk:19-slim
     docker_runtime_dir: /usr/local/openjdk-19
     include:
-    build: javac app.java -d out
+    build: javac --add-modules jdk.incubator.vector app.java -d out
     out_dir: out
-    run_cmd: openjdk-19/bin/java app
+    run_cmd: openjdk-19/bin/java --add-modules jdk.incubator.vector app
     allow_failure: true
   # - os: linux
   #   compiler: zuluopenjdk

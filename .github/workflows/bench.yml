@@ -134,6 +134,12 @@ jobs:
         with:
           perl-version: "5"
           multi-thread: true
+      # - uses: ocaml/setup-ocaml@v2
+      #   if: matrix.lang == 'ocaml'
+      #   with:
+      #     ocaml-compiler: 4.x
+      #     dune-cache: true
+      #     # opam-disable-sandboxing: true
       - name: Install python
         if: matrix.lang == 'python'
         uses: actions/setup-python@v2

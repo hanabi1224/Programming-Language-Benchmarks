@@ -45,18 +45,18 @@ runtime_version_regex:
 source_rename_to: app.ml
 environments:
   - os: linux
-    compiler: ocamlc
+    compiler: ocaml
     version: latest
-    compiler_version_command: ocamlc --version
+    compiler_version_command: opam exec -- ocaml -version
     docker: ocaml/opam
     # docker_volumns:
     #   - /tmp/.opam/download-cache:/home/opam/.opam/download-cache
     include: ocaml
     before_build:
       - sh -c "sudo chown $USER -R . && sudo chmod -R 777 ."
-    build: opam install . -y && dune build
+    build: opam install . -y && dune build && cp _build/default/app.exe out && rm -r _build
     after_build:
       # - sh -c "sudo chown $USER -R _build && sudo chmod -R 755 _build"
-      - cp _build/default/app.exe out
+      # - cp _build/default/app.exe out
     out_dir: out
     run_cmd: app.exe
