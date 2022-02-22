@@ -80,7 +80,7 @@ problems:
         output: 500_out
     tests:
       - input: 1000
-      - input: 6000
+      - input: 5000
   - name: fannkuch-redux
     unittests:
       - input: 7

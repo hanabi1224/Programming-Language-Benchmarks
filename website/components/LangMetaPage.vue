@@ -114,7 +114,7 @@
 
       <div v-for="test in testOptions" :key="test">
         <h2 class="text-2xl my-5 mb-2 underline text-blue-500">
-          <a :href="`/problem/${test}`"> {{ test }} </a>
+          <a :id="test" :href="`/problem/${test}`"> {{ test }} </a>
         </h2>
         <div v-for="input in getInputs(test)" :key="input" class="mt-5">
           <h3 class="text-base font-bold text-red-800">Input: {{ input }}</h3>

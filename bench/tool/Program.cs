@@ -400,6 +400,14 @@ namespace BenchTool
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT
                         && langEnvConfig.DockerVolumns?.Length > 0)
                     {
+                        foreach (var volumnMapping in langEnvConfig.DockerVolumns)
+                        {
+                            var localVolumn = volumnMapping.Split(':').First();
+                            if (!Directory.Exists(localVolumn))
+                            {
+                                Directory.CreateDirectory(localVolumn);
+                            }
+                        }
                         additonalDockerVolumn = string.Join(" ", langEnvConfig.DockerVolumns.Select(v => $"-v {v}"));
                     }
 
