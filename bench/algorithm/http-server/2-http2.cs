@@ -9,11 +9,20 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Logging;
 
 static class Program
 {
-    private static readonly HttpClient s_client = new HttpClient() { Timeout = TimeSpan.FromSeconds(1) };
+    private static readonly HttpClient s_client = new HttpClient(new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+    })
+    {
+        Timeout = TimeSpan.FromSeconds(1),
+        DefaultRequestVersion = HttpVersion.Version20,
+        DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher,
+    };
 
     static Program()
     {
@@ -45,7 +54,7 @@ static class Program
 
         using var serverTask = app.RunAsync();
         var sum = 0;
-        var api = $"http://localhost:{port}/";
+        var api = $"https://localhost:{port}/";
         var tasks = new List<Task<int>>(n);
         for (var i = 1; i <= n; i++)
         {
@@ -72,7 +81,12 @@ static class Program
                 var response = await s_client.PostAsync(api, content).ConfigureAwait(false);
                 return int.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
-            catch { }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.Error.WriteLine(e);
+#endif
+            }
         }
     }
 
@@ -85,7 +99,11 @@ static class Program
         }).UseKestrel(options =>
         {
             options.Limits.MaxRequestBodySize = null;
-            options.ListenLocalhost(port);
+            options.ListenLocalhost(port, listenOptions =>
+            {
+                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                listenOptions.UseHttps();
+            });
         });
         return builder.Build();
     }

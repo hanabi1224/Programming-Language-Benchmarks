@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -9,11 +8,22 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/valyala/fasthttp"
 )
 
 var (
-	client = http.Client{
-		Timeout: 10 * time.Second,
+	client = &fasthttp.Client{
+		ReadTimeout:                   time.Second,
+		WriteTimeout:                  time.Second,
+		MaxIdleConnDuration:           time.Minute,
+		NoDefaultUserAgentHeader:      true,
+		DisableHeaderNamesNormalizing: true,
+		DisablePathNormalizing:        true,
+		Dial: (&fasthttp.TCPDialer{
+			Concurrency:      4096,
+			DNSCacheDuration: time.Hour,
+		}).Dial,
 	}
 )
 
@@ -38,11 +48,20 @@ func send(api string, value int, ch chan<- int) {
 	ret := -1
 	payload := Payload{Value: value}
 	payloadBytes, _ := json.Marshal(payload)
+
+	req := fasthttp.AcquireRequest()
+	defer fasthttp.ReleaseRequest(req)
+	req.SetRequestURI(api)
+	req.Header.SetMethod(fasthttp.MethodPost)
+	req.SetBodyRaw(payloadBytes)
+
+	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseResponse(resp)
+
 	for {
-		if resp, err := client.Post(api, "", bytes.NewReader(payloadBytes)); err == nil {
-			if resp.StatusCode == 200 {
-				decoder := json.NewDecoder(resp.Body)
-				decoder.Decode(&ret)
+		err := client.DoTimeout(req, resp, time.Second)
+		if err == nil && resp.StatusCode() == 200 {
+			if ret, err = strconv.Atoi(string(resp.Body())); err == nil {
 				ch <- ret
 				return
 			}
@@ -61,6 +80,8 @@ func main() {
 	// println(port)
 	go runServer(port)
 	api := fmt.Sprintf("http://localhost:%d/api", port)
+	url := fasthttp.AcquireURI()
+	url.Parse(nil, []byte(api))
 	ch := make(chan int, n)
 	for i := 1; i <= n; i++ {
 		go send(api, i, ch)
