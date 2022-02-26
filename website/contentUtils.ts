@@ -67,7 +67,7 @@ export function getRealShortCompilerVersion(i: BenchResult) {
 }
 
 export function useParallelization(i: BenchResult): boolean {
-  if (i.code.indexOf('-m.') > 0) {
+  if (/-\w?m/.test(i.code)) {
     return true
   }
   return i.timeMS * 1.5 <= i.cpuTimeMS

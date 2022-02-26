@@ -71,6 +71,10 @@
           * -m in a file name stands for multi-threading or multi-processing
         </p>
         <p class="italic">
+          * -i in a file name stands for direct intrinsics usage. (Usage of simd
+          intrinsics via libraries is not counted)
+        </p>
+        <p class="italic">
           * -ffi in a file name stands for non-stdlib
           <a
             href="http://en.wikipedia.org/wiki/Foreign_function_interface"
@@ -99,7 +103,7 @@
             >show numbers without parallelization</label
           >
         </div>
-        <div class="form-check form-check-inline">
+        <div class="mt-2 form-check form-check-inline">
           <input
             v-model="show_mt"
             class="form-check-input inline-block"

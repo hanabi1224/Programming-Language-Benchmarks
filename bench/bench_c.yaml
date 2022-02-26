@@ -13,13 +13,13 @@ problems:
     source:
       - 2.c
       - 5.c
-      - 8.c
+      - 8-i.c
   - name: spectral-norm
     source:
       - 3.c
       - 4.c
-      - 5.c
-      - 6.c
+      - 5-im.c
+      - 6-im.c
   - name: nsieve
     source:
       - 1.c

@@ -16,7 +16,7 @@ problems:
     source:
       - 2.c
       - 5.c
-      - 8.c
+      - 8-i.c
   - name: spectral-norm
     source:
       # - 3.c

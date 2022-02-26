@@ -6,7 +6,7 @@ problems:
       - 1.cpp
   - name: nbody
     source:
-      - 0.cpp
+      - 0-i.cpp
       - 1.cpp
   - name: spectral-norm
     source:
