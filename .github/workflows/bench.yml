@@ -37,6 +37,7 @@ jobs:
             nim,
             ocaml,
             perl,
+            php,
             python,
             racket,
             ruby,
@@ -140,6 +141,11 @@ jobs:
       #     ocaml-compiler: 4.x
       #     dune-cache: true
       #     # opam-disable-sandboxing: true
+      - name: Install PHP
+        if: matrix.lang == 'php'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
       - name: Install python
         if: matrix.lang == 'python'
         uses: actions/setup-python@v2
@@ -228,6 +234,7 @@ jobs:
       - run: ./.github/wasm.sh
       - run: ./.github/fortran.sh
       - run: ./.github/loom.sh
+      - run: ./.github/lua.sh
       - run: ./.github/racket.sh
       - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
@@ -235,6 +242,10 @@ jobs:
         with:
           perl-version: "5"
           multi-thread: true
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
       - uses: actions/setup-python@v2
         with:
           python-version: "3.x"
