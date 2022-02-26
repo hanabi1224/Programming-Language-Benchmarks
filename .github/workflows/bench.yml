@@ -234,6 +234,7 @@ jobs:
       - run: ./.github/wasm.sh
       - run: ./.github/fortran.sh
       - run: ./.github/loom.sh
+      - run: ./.github/lua.sh
       - run: ./.github/racket.sh
       - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
