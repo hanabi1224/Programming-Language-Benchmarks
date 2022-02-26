@@ -9,6 +9,9 @@
         <PublishReadyToRun>true</PublishReadyToRun>
     </PropertyGroup>
     <ItemGroup>
+      <RuntimeHostConfigurationOption Include="System.Net.SocketsHttpHandler.Http3Support" Value="true" />
+    </ItemGroup>
+    <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.*" />
     </ItemGroup>
 </Project>

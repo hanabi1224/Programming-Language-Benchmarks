@@ -19,8 +19,7 @@ using Microsoft.Extensions.Logging;
 
 static class Program
 {
-    private const string MimeType = "application/json";
-    private static readonly HttpClient s_client = new HttpClient() { Timeout = TimeSpan.FromSeconds(15) };
+    private static readonly HttpClient s_client = new HttpClient() { Timeout = TimeSpan.FromSeconds(1) };
 
     static Program()
     {
@@ -68,7 +67,7 @@ static class Program
         {
             try
             {
-                var content = new StringContent(payload, Encoding.UTF8, MimeType);
+                var content = new StringContent(payload, Encoding.UTF8);
                 var response = await s_client.PostAsync(api, content).ConfigureAwait(false);
                 return int.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             }

@@ -11,7 +11,7 @@ static class ConcurrentPrimeSieve
     {
         SingleWriter = true,
         SingleReader = true,
-        AllowSynchronousContinuations = true,
+        AllowSynchronousContinuations = false,
     };
 
     public static async Task Main(string[] args)
@@ -24,7 +24,7 @@ static class ConcurrentPrimeSieve
 
         using var cts = new CancellationTokenSource();
         var ch = Channel.CreateBounded<int>(s_channelOptions);
-        _ = GenerateAsync(ch.Writer);
+        _ = GenerateAsync(ch.Writer, cts.Token);
         for (var i = 0; i < n; i++)
         {
             var prime = await ch.Reader.ReadAsync().ConfigureAwait(false);
@@ -33,16 +33,14 @@ static class ConcurrentPrimeSieve
             _ = FilterAsync(ch.Reader, chNext.Writer, prime, cts.Token);
             ch = chNext;
         }
-
         cts.Cancel();
     }
 
-    static async Task GenerateAsync(ChannelWriter<int> writer)
+    static async Task GenerateAsync(ChannelWriter<int> writer, CancellationToken ct)
     {
-        await Task.Yield();
-        for (var i = 2; ; i++)
+        for (var i = 2; !ct.IsCancellationRequested; i++)
         {
-            await writer.WriteAsync(i).ConfigureAwait(false);
+            await writer.WriteAsync(i, ct).ConfigureAwait(false);
         }
     }
 
@@ -52,7 +50,6 @@ static class ConcurrentPrimeSieve
         int prime,
         CancellationToken ct)
     {
-        await Task.Yield();
         while (!ct.IsCancellationRequested)
         {
             var n = await reader.ReadAsync(ct).ConfigureAwait(false);
