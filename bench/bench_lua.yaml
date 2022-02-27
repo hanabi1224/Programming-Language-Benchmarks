@@ -3,9 +3,12 @@ problems:
   - name: helloworld
     source:
       - 1.lua
-  # - name: binarytrees
-  #   source:
-  #     - 4.lua
+  - name: binarytrees
+    source:
+      - 1.lua
+  - name: merkletrees
+    source:
+      - 1.lua
   - name: nbody
     source:
       - 4.lua
@@ -21,14 +24,16 @@ environments:
   - os: linux
     compiler: lua
     version: latest
-    include: lua
+    # include: lua
     build: luac -s -o out/app.out app.lua
     out_dir: out
     run_cmd: lua app.out
+    runtime_included: false
   - os: linux
     compiler: luajit
     version: latest
-    include: lua
-    build: cp app.lua out
+    # include: lua
+    build: luajit -b app.lua out/app.out
     out_dir: out
-    run_cmd: luajit app.lua
+    run_cmd: luajit app.out
+    runtime_included: false

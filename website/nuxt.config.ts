@@ -49,6 +49,8 @@ const config: NuxtConfig = {
     // '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     // '@nuxtjs/pwa',
+    // https://github.com/nuxt-community/amp-module
+    '@nuxtjs/amp',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
   ],
