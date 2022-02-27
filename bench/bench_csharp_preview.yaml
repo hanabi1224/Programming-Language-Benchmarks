@@ -48,10 +48,9 @@ problems:
   # - name: coro-prime-sieve
   #   source:
   #     - 1.cs
-  # - name: http-server
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
+  - name: http-server
+    source:
+      - 2-http3.cs
   # - name: nsieve
   #   source:
   #     - 1.cs

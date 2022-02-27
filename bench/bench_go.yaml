@@ -48,6 +48,8 @@ problems:
   - name: http-server
     source:
       - 1.go
+      - 2.go
+      - 3.go
   - name: nsieve
     source:
       - 1.go

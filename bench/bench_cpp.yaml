@@ -2,17 +2,17 @@ lang: cpp
 problems:
   - name: fannkuch-redux
     source:
-      - 1-m.cpp
+      - 1-im.cpp
   - name: helloworld
     source:
       - 1.cpp
   - name: nbody
     source:
-      - 0.cpp
+      - 0-i.cpp
       - 1.cpp
   - name: spectral-norm
     source:
-      - 6.cpp
+      - 6-im.cpp
       - 7.cpp
       - 8.cpp
   - name: nsieve

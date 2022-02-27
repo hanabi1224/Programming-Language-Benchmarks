@@ -42,7 +42,7 @@ async fn filter(
     mut receiver: Receiver<usize>,
     sender: Sender<usize>,
     prime: usize,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     while let Some(i) = receiver.recv().await {
         if i % prime != 0 {
             if sender.send(i).await.is_err() {

@@ -16,7 +16,7 @@ fn main() {
 }
 
 #[tokio::main]
-async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn async_main(n: usize) -> anyhow::Result<()> {
     let mut stdout = BufWriter::new(io::stdout());
     let (sender, mut receiver) = flume::bounded::<usize>(1);
     let mut handles = Vec::with_capacity(n + 1);
@@ -31,7 +31,7 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
     Ok(())
 }
 
-async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
+async fn generate(sender: Sender<usize>) -> anyhow::Result<()> {
     let mut i = 2;
     while sender.send_async(i).await.is_ok() {
         i += 1;
@@ -43,7 +43,7 @@ async fn filter(
     receiver: Receiver<usize>,
     sender: Sender<usize>,
     prime: usize,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     loop {
         let i = receiver.recv_async().await?;
         if i % prime != 0 {

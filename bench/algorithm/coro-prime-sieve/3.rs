@@ -15,7 +15,7 @@ fn main() {
 }
 
 #[tokio::main(flavor = "current_thread")]
-async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn async_main(n: usize) -> anyhow::Result<()> {
     let mut stdout = BufWriter::new(io::stdout());
     let (sender, mut receiver) = mpsc::channel::<usize>(1);
     let mut handles = Vec::with_capacity(n + 1);
@@ -30,7 +30,7 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
     Ok(())
 }
 
-async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
+async fn generate(sender: Sender<usize>) -> anyhow::Result<()> {
     let mut i = 2;
     while sender.send(i).await.is_ok() {
         i += 1;
@@ -42,7 +42,7 @@ async fn filter(
     mut receiver: Receiver<usize>,
     sender: Sender<usize>,
     prime: usize,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     while let Some(i) = receiver.recv().await {
         if i % prime != 0 {
             if sender.send(i).await.is_err() {

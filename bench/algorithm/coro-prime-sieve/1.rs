@@ -41,7 +41,7 @@ async fn filter(
     receiver: Receiver<usize>,
     sender: Sender<usize>,
     prime: usize,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     loop {
         let i = receiver.recv().await?;
         if i % prime != 0 {

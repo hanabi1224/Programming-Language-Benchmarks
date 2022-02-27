@@ -101,6 +101,9 @@ jobs:
       - name: Install lua
         if: matrix.lang == 'lua'
         run: ./.github/lua.sh
+      - name: Install dotnet
+        if: matrix.lang == 'csharp'
+        run: ./.github/dotnet.sh
       - name: Install loom
         if: matrix.lang == 'java'
         run: ./.github/loom.sh
@@ -228,6 +231,7 @@ jobs:
         with:
           name: build
           path: bench/build/
+      - run: ./.github/dotnet.sh
       - run: ./.github/graalvm.sh
       - run: ./.github/graalvm-node.sh
       - run: ./.github/truffleruby.sh

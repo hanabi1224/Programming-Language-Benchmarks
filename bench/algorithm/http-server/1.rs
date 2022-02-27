@@ -8,7 +8,7 @@ lazy_static::lazy_static! {
     static ref HTTP_CLIENT: reqwest::Client = reqwest::Client::new();
 }
 
-fn main() -> anyhow::Result<(), anyhow::Error> {
+fn main() -> anyhow::Result<()> {
     let n = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
@@ -21,7 +21,7 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
 }
 
 #[tokio::main]
-async fn tokio_main(n: usize, port: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn tokio_main(n: usize, port: usize) -> anyhow::Result<()> {
     tokio::spawn(run_server(port));
     let (sender, mut receiver) = mpsc::channel::<usize>(n);
     let mut sum = 0;
@@ -38,7 +38,7 @@ async fn tokio_main(n: usize, port: usize) -> anyhow::Result<(), anyhow::Error> 
     Ok(())
 }
 
-async fn run_server(port: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn run_server(port: usize) -> anyhow::Result<()> {
     let app = axum::Router::new().route("/api", post(handler));
     axum::Server::bind(&format!("{}:{}", HOST, port).parse()?)
         .serve(app.into_make_service())
@@ -50,7 +50,7 @@ async fn send_with_retry(
     api: String,
     value: usize,
     sender: Sender<usize>,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     loop {
         if let Ok(r) = send_once(&api, value).await {
             sender.send(r).await?;
@@ -60,7 +60,7 @@ async fn send_with_retry(
     Ok(())
 }
 
-async fn send_once(api: &str, value: usize) -> anyhow::Result<usize, anyhow::Error> {
+async fn send_once(api: &str, value: usize) -> anyhow::Result<usize> {
     let payload = Payload { value };
     let resp = HTTP_CLIENT.post(api).json(&payload).send().await?;
     let resp_text = resp.text().await?;

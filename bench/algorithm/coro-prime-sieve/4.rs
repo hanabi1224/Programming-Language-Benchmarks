@@ -5,7 +5,7 @@ use std::io::{self, prelude::*, BufWriter};
 
 static EX: Executor = Executor::new();
 
-fn main() -> anyhow::Result<(), anyhow::Error> {
+fn main() -> anyhow::Result<()> {
     let n = std::env::args_os()
         .nth(1)
         .and_then(|s| s.into_string().ok())
@@ -16,7 +16,7 @@ fn main() -> anyhow::Result<(), anyhow::Error> {
     Ok(())
 }
 
-async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
+async fn async_main(n: usize) -> anyhow::Result<()> {
     let mut stdout = BufWriter::new(io::stdout());
     let (sender, mut receiver) = async_channel::bounded::<usize>(1);
     let mut tasks = Vec::with_capacity(n + 1);
@@ -33,7 +33,7 @@ async fn async_main(n: usize) -> anyhow::Result<(), anyhow::Error> {
     Ok(())
 }
 
-async fn generate(sender: Sender<usize>) -> anyhow::Result<(), anyhow::Error> {
+async fn generate(sender: Sender<usize>) -> anyhow::Result<()> {
     let mut i = 2;
     loop {
         sender.send(i).await?;
@@ -45,7 +45,7 @@ async fn filter(
     receiver: Receiver<usize>,
     sender: Sender<usize>,
     prime: usize,
-) -> anyhow::Result<(), anyhow::Error> {
+) -> anyhow::Result<()> {
     loop {
         let i = receiver.recv().await?;
         if i % prime != 0 {
