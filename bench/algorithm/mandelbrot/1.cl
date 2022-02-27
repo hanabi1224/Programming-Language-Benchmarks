@@ -121,13 +121,13 @@
 (deftype complex-double () '(complex double-float))
 (deftype uint8 () '(unsigned-byte 8))
 (eval-when (:load-toplevel :compile-toplevel :execute)
-  (defmacro cbyte (form)
-    (cond ((stringp form) (map '(simple-array uint8 (*)) #'char-code form))
-	        ((characterp form) (char-code form))
-	        ((listp form) `(map '(simple-array uint8 (*)) #'char-code ,form)))))
+  (defun vops::get-thread-count ()
+    (progn (define-alien-routine sysconf long (name int))
+           (sysconf 84))))
 
 (defconstant +zero+ (complex 0.0d0 0.0d0))
 (defconstant +four+ (complex 4.0d0 4.0d0))
+(defconstant +workers+ 1)
 
 (defmacro escapes? (n two-pixels  crv civ)
   (let ((escaped (gensym "escaped"))
@@ -142,22 +142,21 @@
 	         (,trv vops::+zero+)
 	         (,tiv vops::+zero+))
        (block ,escaped 
-	       ,@(nreverse
-            (loop for i of-type fixnum from 0 below n
-		              collecting `(progn
-				                        (let* ((,temp (complex-double-float/sse-*
-					                                     ,zrv ,ziv)))
-				                          (setf ,zrv (+ (- ,trv ,tiv) ,crv))
-				                          (setf ,trv (complex-double-float/sse-*
-					                                    ,zrv ,zrv))
-				                          (setf ,ziv (+ ,temp ,temp ,civ))
-				                          (setf ,tiv (complex-double-float/sse-*
-					                                    ,ziv ,ziv)))
-				                        (let ((,temp2 (+ ,trv ,tiv)))
-				                          (setf ,two-pixels (cmple-movmskpd
-						                                         ,temp2 ,vops::+four+)))
-				                        (when (= ,two-pixels 0)
-				                          (return-from ,escaped)))))))))
+	       ,@(loop for i of-type fixnum from 0 below n
+		             collecting `(progn
+				                       (let* ((,temp (complex-double-float/sse-*
+					                                    ,zrv ,ziv)))
+				                         (setf ,zrv (+ (- ,trv ,tiv) ,crv))
+				                         (setf ,trv (complex-double-float/sse-*
+					                                   ,zrv ,zrv))
+				                         (setf ,ziv (+ ,temp ,temp ,civ))
+				                         (setf ,tiv (complex-double-float/sse-*
+					                                   ,ziv ,ziv)))
+				                       (let ((,temp2 (+ ,trv ,tiv)))
+				                         (setf ,two-pixels (cmple-movmskpd
+						                                        ,temp2 ,vops::+four+)))
+				                       (when (= ,two-pixels 0)
+				                         (return-from ,escaped))))))))
 
 (declaim (ftype (function (fixnum fixnum (simple-array uint8 (*))
                                   fixnum (simple-array complex-double (*))
@@ -202,8 +201,15 @@
 	        do (setf (aref crvs (ash i -1))
 		               (complex (- (* (+ i 1.0d0) inverse-w) 1.5d0)
 			                      (- (* i inverse-w) 1.5d0))))
-    (loop for y of-type fixnum from 0 below n
-	        do (calc-row y n bitmap bytes-per-row crvs inverse-h))
+    (mapcar #'sb-thread:join-thread
+	          (loop for i from 0 below +workers+
+		              collecting (sb-thread:make-thread
+			                        (let ((thread-num i))
+				                        (lambda ()
+				                          (loop for y of-type fixnum
+					                              from thread-num below n by +workers+
+					                              do (calc-row y n bitmap bytes-per-row
+						                                         crvs inverse-h)))))))
     (format t "P4~%~d ~d~%" n n)
     (format t "~(~{~2,'0X~}~)~%" (coerce (sb-md5:md5sum-sequence bitmap) 'list))))
 
