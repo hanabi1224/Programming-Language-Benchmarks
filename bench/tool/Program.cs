@@ -733,7 +733,7 @@ namespace BenchTool
                     await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
                 }
 
-                if (statsMeasurement.Elapsed.TotalMilliseconds > 0)
+                //if (statsMeasurement.Elapsed.TotalMilliseconds > 0)
                 {
                     string benchResultJsonPath = Path.Combine(benchResultDir, $"{buildId}_{test.Input}.json");
                     await File.WriteAllTextAsync(benchResultJsonPath, JsonConvert.SerializeObject(new
@@ -752,16 +752,15 @@ namespace BenchTool
                         cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
                         cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,
                         cpuTimeKernelMS = statsMeasurement.CpuTimeKernel.TotalMilliseconds,
-                        //appveyorBuildId = AppveyorUtils.BuildId,
                         githubRunId = GithubActionUtils.RunId,
                         buildLog = BuildOutputJson.LoadFrom(buildOutput),
                         testLog = TestOutputJson.LoadFrom(buildOutput),
                     }, Formatting.Indented)).ConfigureAwait(false);
                 }
-                else
-                {
-                    Logger.Error("No valid benchmark results is produced.");
-                }
+                //else
+                //{
+                //    Logger.Error("No valid benchmark results is produced.");
+                //}
             }
         }
 

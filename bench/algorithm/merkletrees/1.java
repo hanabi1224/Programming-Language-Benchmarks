@@ -17,87 +17,94 @@
 class app {
 
     private static final int minDepth = 4;
-
+  
     public static void main(String[] args) {
-        int n = 0;
-        if (args.length > 0)
-            n = Integer.parseInt(args[0]);
-
-        int maxDepth = (minDepth + 2 > n) ? minDepth + 2 : n;
-        int stretchDepth = maxDepth + 1;
-
-        TreeNode stretchTree = TreeNode.make(stretchDepth);
-        stretchTree.calHash();
-        System.out.println("stretch tree of depth " + stretchDepth + "\t root hash: " + stretchTree.getHash()
-                + " check: " + stretchTree.check());
-
-        TreeNode longLivedTree = TreeNode.make(maxDepth);
-
-        for (int depth = minDepth; depth <= maxDepth; depth += 2) {
-            int iterations = 1 << (maxDepth - depth + minDepth);
-            var sum = 0;
-            for (int i = 1; i <= iterations; i++) {
-                TreeNode tree = TreeNode.make(depth);
-                tree.calHash();
-                sum += tree.getHash();
-            }
-            System.out.println(iterations + "\t trees of depth " + depth + "\t root hash sum: " + sum);
+      final var n = args.length > 0 ? Integer.parseInt(args[0]) : 4;
+      final var maxDepth = (minDepth + 2 > n) ? minDepth + 2 : n;
+      final var stretchDepth = maxDepth + 1;
+  
+      final var stretchTree = TreeNode.make(stretchDepth);
+      stretchTree.calHash();
+      System.out.println(
+          "stretch tree of depth "
+              + stretchDepth
+              + "\t root hash: "
+              + stretchTree.getHash()
+              + " check: "
+              + stretchTree.check());
+  
+      final var longLivedTree = TreeNode.make(maxDepth);
+  
+      for (var depth = minDepth; depth <= maxDepth; depth += 2) {
+        final var iterations = 1 << (maxDepth - depth + minDepth);
+        var sum = 0;
+        for (var i = 1; i <= iterations; i++) {
+          final var tree = TreeNode.make(depth);
+          tree.calHash();
+          sum += tree.getHash();
         }
-
-        longLivedTree.calHash();
-        System.out.println(
-                "long lived tree of depth " + maxDepth + "\t root hash: " + longLivedTree.getHash() + " check: "
-                        + longLivedTree.check());
+        System.out.println(iterations + "\t trees of depth " + depth + "\t root hash sum: " + sum);
+      }
+  
+      longLivedTree.calHash();
+      System.out.println(
+          "long lived tree of depth "
+              + maxDepth
+              + "\t root hash: "
+              + longLivedTree.getHash()
+              + " check: "
+              + longLivedTree.check());
     }
-
+  
     private static class TreeNode {
-        private Long value = null, hash = null;
-        private TreeNode left = null, right = null;
-
-        public static TreeNode make(int depth) {
-            if (depth > 0) {
-                return new TreeNode(null, make(depth - 1), make(depth - 1));
-            } else {
-                return new TreeNode(1L, null, null);
-            }
+      private Long value = null, hash = null;
+      private TreeNode left = null, right = null;
+  
+      public static TreeNode make(int depth) {
+        if (depth > 0) {
+          return new TreeNode(null, make(depth - 1), make(depth - 1));
+        } else {
+          return new TreeNode(1L, null, null);
         }
-
-        public TreeNode(Long value, TreeNode left, TreeNode right) {
-            this.value = value;
-            this.left = left;
-            this.right = right;
+      }
+  
+      public TreeNode(Long value, TreeNode left, TreeNode right) {
+        this.value = value;
+        this.left = left;
+        this.right = right;
+      }
+  
+      public long getHash() {
+        if (hash != null) {
+          return hash;
         }
-
-        public long getHash() {
-            if (hash != null) {
-                return hash;
-            }
-            return -1;
+        return -1;
+      }
+  
+      public void calHash() {
+        if (hash == null) {
+          if (value != null) {
+            hash = value;
+          } else if (left != null && right != null) {
+            left.calHash();
+            right.calHash();
+            hash = left.getHash() + right.getHash();
+          }
         }
-
-        public void calHash() {
-            if (hash == null) {
-                if (value != null) {
-                    hash = value;
-                } else if (left != null && right != null) {
-                    left.calHash();
-                    right.calHash();
-                    hash = left.getHash() + right.getHash();
-                }
-            }
+      }
+  
+      public boolean check() {
+        if (hash == null) {
+          return false;
+        } else {
+          if (value != null) {
+            return true;
+          } else if (left != null && right != null) {
+            return left.check() && right.check();
+          }
+          return false;
         }
-
-        public boolean check() {
-            if (hash == null) {
-                return false;
-            } else {
-                if (value != null) {
-                    return true;
-                } else if (left != null && right != null) {
-                    return left.check() && right.check();
-                }
-                return false;
-            }
-        }
+      }
     }
-}
+  }
+  

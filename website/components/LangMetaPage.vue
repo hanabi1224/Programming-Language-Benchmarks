@@ -178,7 +178,9 @@
                   >
                 </td>
                 <!-- <td class="text-right">{{ i.input }}</td> -->
-                <td class="text-right">{{ msToFixed(i.timeMS) }}ms</td>
+                <td class="text-right">
+                  {{ msToText(i.timeMS) }}
+                </td>
                 <td :class="['text-right', mdHide]">
                   {{ msToFixed(i.timeStdDevMS) }}ms
                 </td>
@@ -296,6 +298,10 @@ export default class LangMetaPage extends Vue {
     this.isMenuOn = !this.isMenuOn
   }
 
+  msToText(ms: number): string {
+    return ms <= 0 ? 'timeout' : `${this.msToFixed(ms)}ms`
+  }
+
   msToFixed(ms: number): string {
     return ms < 10 ? ms.toFixed(1) : ms.toFixed(0)
   }
@@ -392,8 +398,16 @@ export default class LangMetaPage extends Vue {
     if (!this.problem) {
       // Lang page sort
       exp = exp.orderBy(
-        ['input', 'timeMS', 'os', 'lang', 'compiler', 'compilerVersion'],
-        ['asc', 'asc', 'asc', 'asc', 'asc', 'asc']
+        [
+          'input',
+          'timeout',
+          'timeMS',
+          'os',
+          'lang',
+          'compiler',
+          'compilerVersion',
+        ],
+        ['asc', 'asc', 'asc', 'asc', 'asc', 'asc', 'asc']
       )
     }
 
@@ -481,7 +495,7 @@ export default class LangMetaPage extends Vue {
       _.chain(this.langs)
         .flatMap((i) => i.benchmarks)
         .filter((i) => i.test === this.problem)
-        .orderBy(['input', 'timeMS'], ['asc', 'asc'])
+        .orderBy(['input', 'timeout', 'timeMS'], ['asc', 'asc', 'asc'])
         .value()
 
     this.testOptions = _.chain(this.activeBenchmarks)

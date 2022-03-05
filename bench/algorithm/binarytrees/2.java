@@ -11,19 +11,16 @@ class app {
   private static final int minDepth = 4;
 
   public static void main(String[] args) {
-    int n = 0;
-    if (args.length > 0) n = Integer.parseInt(args[0]);
-
-    int maxDepth = (minDepth + 2 > n) ? minDepth + 2 : n;
-    int stretchDepth = maxDepth + 1;
-
-    int check = (TreeNode.bottomUpTree(stretchDepth)).itemCheck();
+    final var n = args.length > 0 ? Integer.parseInt(args[0]) : 4;
+    final var maxDepth = (minDepth + 2 > n) ? minDepth + 2 : n;
+    final var stretchDepth = maxDepth + 1;
+    var check = (TreeNode.bottomUpTree(stretchDepth)).itemCheck();
     System.out.println("stretch tree of depth " + stretchDepth + "\t check: " + check);
 
-    TreeNode longLivedTree = TreeNode.bottomUpTree(maxDepth);
+    final var longLivedTree = TreeNode.bottomUpTree(maxDepth);
 
     for (int depth = minDepth; depth <= maxDepth; depth += 2) {
-      int iterations = 1 << (maxDepth - depth + minDepth);
+      final var iterations = 1 << (maxDepth - depth + minDepth);
       check = 0;
 
       for (int i = 1; i <= iterations; i++) {
