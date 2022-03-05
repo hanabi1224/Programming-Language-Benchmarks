@@ -24,6 +24,7 @@ type BenchResult = {
   compilerOptions?: string
 
   par?: boolean
+  timeout?: boolean
 
   // appveyorBuildId: string,
   githubRunId: string

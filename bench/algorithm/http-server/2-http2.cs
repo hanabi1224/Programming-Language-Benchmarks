@@ -60,7 +60,6 @@ static class Program
         {
             tasks.Add(SendAsync(api, i));
         }
-        // await Task.WhenAll(tasks).ConfigureAwait(false);
         foreach (var task in tasks)
         {
             sum += await task.ConfigureAwait(false);
@@ -71,7 +70,6 @@ static class Program
 
     private static async Task<int> SendAsync(string api, int value)
     {
-        // await Task.Yield();
         var payload = JsonSerializer.Serialize(new Payload { Value = value });
         while (true)
         {

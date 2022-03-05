@@ -24,6 +24,7 @@ export function mergeLangBenchResults(
   benchResults.forEach((i) => {
     i.compilerVersion = getRealShortCompilerVersion(i)
     i.par = useParallelization(i)
+    i.timeout = i.timeMS <= 0
   })
 
   const groupsByLang = _.chain(benchResults)
