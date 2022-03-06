@@ -21,11 +21,18 @@ environments:
   - os: linux
     compiler: haxe/hashlink
     version: latest
-    docker: haxe
+    # docker: haxe
     include: haxe
     include_sub_dir:
-    # before_build:
     build: haxe -m App --hl out/app.hl
-    # after_build:
     out_dir: out
     run_cmd: hl app.hl
+  - os: linux
+    compiler: haxe/cpp
+    version: latest
+    # docker: haxe
+    include: haxe
+    include_sub_dir:
+    build: haxe -m App --cpp cpp && mv cpp/App cppout/app
+    out_dir: cppout
+    run_cmd: app
