@@ -113,6 +113,9 @@ jobs:
       - name: Install graalnode
         if: matrix.lang == 'javascript'
         run: ./.github/graalvm-node.sh
+      - name: Install haxe
+        if: matrix.lang == 'haxe'
+        run: ./.github/haxe.sh
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
         run: ./.github/zig.sh

@@ -9,23 +9,43 @@ problems:
   - name: nbody
     source:
       - 1.hx
+      - 2.hx
+      - 3.hx
   - name: spectral-norm
+    source:
+      - 1.hx
+  - name: binarytrees
+    source:
+      - 1.hx
+      - 2.hx
+  - name: merkletrees
+    source:
+      - 1.hx
+  - name: lru
     source:
       - 1.hx
 compiler_version_command: haxe --version
 compiler_version_regex:
-runtime_version_parameter: --version
+runtime_version_parameter:
 runtime_version_regex:
 source_rename_to: App.hx
 environments:
   - os: linux
     compiler: haxe/hashlink
     version: latest
-    docker: haxe
+    # docker: haxe
     include: haxe
     include_sub_dir:
-    # before_build:
     build: haxe -m App --hl out/app.hl
-    # after_build:
     out_dir: out
     run_cmd: hl app.hl
+    runtime_version_parameter: --version
+  - os: linux
+    compiler: haxe/cpp
+    version: latest
+    # docker: haxe
+    include: haxe
+    include_sub_dir:
+    build: haxe -m App --cpp cpp && mv cpp/App cppout/app
+    out_dir: cppout
+    run_cmd: app

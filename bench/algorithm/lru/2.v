@@ -21,14 +21,14 @@ fn (mut lcg LCG) next() u32 {
 
 struct LinkedListNode<T> {
 mut:
-	prev &LinkedListNode
-	next &LinkedListNode
+	prev &LinkedListNode<T>
+	next &LinkedListNode<T>
 	data T
 }
 
 struct LinkedList<T> {
-	len int
 mut:
+	len  int
 	head &LinkedListNode<T> = 0
 	tail &LinkedListNode<T> = 0
 }

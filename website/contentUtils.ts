@@ -71,5 +71,5 @@ export function useParallelization(i: BenchResult): boolean {
   if (/-\w?m/.test(i.code)) {
     return true
   }
-  return i.timeMS * 1.5 <= i.cpuTimeMS
+  return i.timeMS > 0 && i.timeMS * 1.5 <= i.cpuTimeMS
 }
