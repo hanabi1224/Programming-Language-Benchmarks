@@ -20,7 +20,7 @@ class App {
 	private static var DT = 1e-2;
 	private static var RECIP_DT = (1.0 / DT);
 
-	private static function advance(bodies:Array<Planet>) {
+	private static function advance(bodies:Array<Planet>, dt:Float) {
 		for (i in 0...bodies.length) {
 			var b = bodies[i];
 			var vx = b.vx;
@@ -31,8 +31,8 @@ class App {
 				var dx = b.x - b2.x;
 				var dy = b.y - b2.y;
 				var dz = b.z - b2.z;
-				var invDist = 1.0 / Math.sqrt(dx * dx + dy * dy + dz * dz);
-				var mag = invDist * invDist * invDist;
+				var dist2 = dx * dx + dy * dy + dz * dz;
+				var mag = dt / (dist2 * Math.sqrt(dist2));
 				vx -= dx * b2.mass * mag;
 				vy -= dy * b2.mass * mag;
 				vz -= dz * b2.mass * mag;
@@ -44,9 +44,9 @@ class App {
 			b.vy = vy;
 			b.vz = vz;
 
-			b.x += vx;
-			b.y += vy;
-			b.z += vz;
+			b.x += vx * dt;
+			b.y += vy * dt;
+			b.z += vz * dt;
 		}
 	}
 
@@ -77,21 +77,6 @@ class App {
 		bodies[0].vx = -px / SOLAR_MASS;
 		bodies[0].vy = -py / SOLAR_MASS;
 		bodies[0].vz = -pz / SOLAR_MASS;
-	}
-
-	/*
-	 * Rescale certain properties of bodies. That allows doing
-	 * consequential advance()'s as if dt were equal to 1.0.
-	 *
-	 * When all advances done, rescale bodies back to obtain correct energy.
-	 */
-	private static function scaleBodies(bodies:Array<Planet>, scale:Float) {
-		for (b in bodies) {
-			b.mass *= scale * scale;
-			b.vx *= scale;
-			b.vy *= scale;
-			b.vz *= scale;
-		}
 	}
 
 	inline private static function round(val:Float) {
@@ -146,13 +131,13 @@ class App {
 			mass: 5.15138902046611451e-05 * SOLAR_MASS
 		});
 
-		var n = Std.parseInt(Sys.args()[0]);
+		var args = Sys.args();
+		var n = args.length > 0 ? Std.parseInt(args[0]) : 1000;
 		offsetMomentum(bodies);
 		Sys.println(round(energy(bodies)));
-		scaleBodies(bodies, DT);
-		for (i in 0...n)
-			advance(bodies);
-		scaleBodies(bodies, RECIP_DT);
+		for (i in 0...n) {
+			advance(bodies, DT);
+		}
 		Sys.println(round(energy(bodies)));
 	}
 }
