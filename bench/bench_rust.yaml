@@ -57,11 +57,13 @@ problems:
   - name: json-serde
     source:
       - 1.rs
+      - 2.rs
+      - 3.rs
   - name: coro-prime-sieve
     source:
       - 1.rs
-      - 2.rs
       - 3.rs
+      - 3-m.rs
       - 4.rs
       - 5.rs
   - name: http-server
