@@ -57,8 +57,7 @@ func main() {
 	}
 	_ = n
 	rand.Seed(time.Now().UTC().UnixNano())
-	port := 30000 + rand.Intn(10000)
-	// println(port)
+	port := 20000 + rand.Intn(30000)
 	go runServer(port)
 	api := fmt.Sprintf("http://localhost:%d/api", port)
 	ch := make(chan int, n)

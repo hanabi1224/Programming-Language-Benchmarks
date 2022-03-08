@@ -15,7 +15,7 @@ pub fn build(b: *Builder) void {
     const exe = b.addExecutable("app", "app.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
-    exe.setOutputDir("out");
+    // exe.setOutputDir("out");
     exe.install();
 
     const run_cmd = exe.run();

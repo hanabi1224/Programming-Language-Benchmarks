@@ -11,31 +11,27 @@ import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import kotlin.random.Random
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 
-val httpClient = HttpClient()
+val httpClient = HttpClient(io.ktor.client.engine.cio.CIO)
 
 fun main(args: Array<String>) {
     val n = if (args.size > 0) args[0].toInt() else 10
-    val port = Random.nextInt(30000, 40000)
-    // println(port)
+    val port = Random.nextInt(20000, 50000)
     val engine = runServer(port)
     val api = "http://localhost:$port/api"
     var sum = 0
     runBlocking {
-        val channel = Channel<Int>(n)
-        for (i in 1..n) {
-            launch(Dispatchers.IO) { sendRequest(api, i, channel) }
-        }
-        repeat(n) { sum += channel.receive() }
+        val tasks = (1..n).map { i -> async(Dispatchers.IO) { sendRequest(api, i) } }
+        tasks.forEach { t -> sum += t.await() }
     }
     println(sum)
+    // exitProcess(0)
     engine.stop(0, 0)
 }
 
-suspend fun sendRequest(api: String, value: Int, channel: SendChannel<Int>) {
+suspend fun sendRequest(api: String, value: Int): Int {
     while (true) {
         try {
             val response: HttpResponse =
@@ -43,9 +39,7 @@ suspend fun sendRequest(api: String, value: Int, channel: SendChannel<Int>) {
                         method = HttpMethod.Post
                         body = Json.encodeToString(Payload(value))
                     }
-            val ret = response.receive<Int>()
-            channel.send(ret)
-            return
+            return response.receive<Int>()
         } catch (e: Exception) {}
     }
 }

@@ -8,3 +8,4 @@ cd /tmp/vlang
 make && ./v -version
 ./v symlink
 v --version
+v install hanabi1224.biginteger

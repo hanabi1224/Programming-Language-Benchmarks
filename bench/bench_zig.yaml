@@ -48,5 +48,5 @@ environments:
     docker:
     include: zig
     build: zig build -Dcpu=broadwell --verbose-llvm-cpu-features
-    out_dir: out
+    out_dir: zig-out/bin
     run_cmd: app

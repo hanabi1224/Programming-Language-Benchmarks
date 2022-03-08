@@ -35,8 +35,7 @@ def send(api: str, value: int):
 
 def main():
     n = 10 if len(sys.argv) < 2 else int(sys.argv[1])
-    random.seed(0)
-    port = 30000 + int(10000*random.random())
+    port = 20000 + int(30000*random.random())
     t = Thread(target=run_server, args=(port,), daemon=True)
     t.start()
     api = f'http://localhost:{port}'
