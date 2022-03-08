@@ -11,7 +11,7 @@ problems:
       - 1.v
   - name: pidigits
     source:
-      # - 1.v
+      - 1.v
       - 2.v
   - name: fasta
     source:

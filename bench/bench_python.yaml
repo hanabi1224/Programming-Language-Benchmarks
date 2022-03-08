@@ -41,6 +41,7 @@ problems:
   - name: http-server
     source:
       - 1.py
+      - 2.py
   - name: nsieve
     source:
       - 1.py
@@ -51,16 +52,18 @@ problems:
   - name: secp256k1
     source:
       - 1.py
-source_rename_to: c.py
+source_rename_to: app.py
 environments:
   - os: linux
     compiler: cpython
     version: 3
     runtime_version_parameter: -V
-    include:
-    build: cp c.py out
+    include: python
+    before_build:
+      - pip3 install -r requirements.txt -t out
+    build: cp app.py out && python3 compile.py
     out_dir: out
-    run_cmd: python3 -OO c.py
+    run_cmd: python3 -OO app.pyc
     runtime_included: false
     force_check_child_processes: true
   - os: linux
@@ -70,10 +73,11 @@ environments:
     runtime_version_parameter: -V
     include: python
     before_build:
-      - sh -c "cat pyjion.py > out/c.py"
-    build: sh -c "cat c.py >> out/c.py"
+      - pip3 install -r requirements.txt -t out
+      - sh -c "cat pyjion.py > out/app.py"
+    build: sh -c "cat c.py >> out/app.py" && python3 compile.py
     out_dir: out
-    run_cmd: python3 -OO c.py
+    run_cmd: python3 -OO app.pyc
     runtime_included: false
     force_check_child_processes: true
   - os: linux
@@ -82,8 +86,10 @@ environments:
     docker: pypy:3-slim
     docker_runtime_dir: /opt/pypy/
     runtime_version_parameter: -V
-    include:
-    build: cp c.py out
+    include: python
+    before_build:
+      - pip3 install -r requirements.txt -t out
+    build: cp app.py out && pypy3 compile.py
     out_dir: out
-    run_cmd: pypy/bin/pypy3 -OO c.py
+    run_cmd: pypy/bin/pypy3 -OO app.pyc
     force_check_child_processes: true

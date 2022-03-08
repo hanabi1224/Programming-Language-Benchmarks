@@ -8,10 +8,9 @@ final HttpClient _client = new HttpClient();
 
 Future main(List<String> arguments) async {
   final n = arguments.length > 0 ? int.parse(arguments[0]) : 10;
-  final port = 30000 + Random().nextInt(10000);
+  final port = 20000 + Random().nextInt(30000);
   var handler = const Pipeline().addHandler(_handlePostAsync);
-  var server = await shelf_io.serve(handler, 'localhost', port)
-    ..autoCompress = true;
+  var server = await shelf_io.serve(handler, 'localhost', port);
   // print(port);
   var sum = 0;
   final api = Uri.parse("http://localhost:$port/");

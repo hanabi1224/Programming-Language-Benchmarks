@@ -61,6 +61,8 @@ jobs:
           dotnet --info
           sudo apt-get update -y
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'

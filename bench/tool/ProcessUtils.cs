@@ -169,7 +169,7 @@ namespace BenchTool
                 {
                     UseShellExecute = s_isLinux,
                     FileName = "sh",
-                    Arguments = $"-c \"{startInfo.FileName} {startInfo.Arguments} > /dev/null\"",
+                    Arguments = $"-c \"{startInfo.FileName} {startInfo.Arguments} > /dev/null 2>&1\"",
                     WorkingDirectory = startInfo.WorkingDirectory,
                 };
             }

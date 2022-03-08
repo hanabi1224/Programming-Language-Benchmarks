@@ -3,9 +3,38 @@ import random
 import json
 import concurrent.futures
 import urllib.request
+import uvicorn
 from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from io import BytesIO
+
+
+async def read_body(receive):
+    """
+    Read and return the entire body from an incoming ASGI message.
+    """
+    body = b''
+    more_body = True
+    while more_body:
+        message = await receive()
+        body += message.get('body', b'')
+        more_body = message.get('more_body', False)
+    return body
+
+
+async def app(scope, receive, send):
+    assert scope['type'] == 'http'
+    body = await read_body(receive)
+    obj = json.loads(body)
+    await send({
+        'type': 'http.response.start',
+        'status': 200,
+        'headers': [],
+    })
+    await send({
+        'type': 'http.response.body',
+        'body': str(obj['value']).encode('utf-8'),
+    })
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -20,8 +49,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 def run_server(port: int):
-    httpd = ThreadingHTTPServer(('localhost', port), SimpleHTTPRequestHandler)
-    httpd.serve_forever()
+    uvicorn.run("app:app", host="localhost", port=port, log_level="critical")
 
 
 def send(api: str, value: int):
@@ -35,8 +63,7 @@ def send(api: str, value: int):
 
 def main():
     n = 10 if len(sys.argv) < 2 else int(sys.argv[1])
-    random.seed(0)
-    port = 30000 + int(10000*random.random())
+    port = 20000 + int(30000*random.random())
     t = Thread(target=run_server, args=(port,), daemon=True)
     t.start()
     api = f'http://localhost:{port}'
@@ -50,3 +77,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # uvicorn.run("app:app", host="localhost", port=5000, log_level="info")
