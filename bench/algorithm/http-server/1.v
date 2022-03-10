@@ -12,7 +12,7 @@ fn main() {
 	if os.args.len == 2 {
 		n = strconv.atoi(os.args[1]) or { 10 }
 	}
-	port := int(rand.u32_in_range(20000, 40000))
+	port := int(rand.u32_in_range(20000, 50000) or { 23333 })
 	go vweb.run(&App{}, port)
 	url := 'http://localhost:$port/api'
 	mut ch := chan int{cap: n}
