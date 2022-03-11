@@ -7,5 +7,7 @@
 	"description": "A minimal D application.",
 	"license": "MIT",
 	"name": "app",
-	"targetPath": "out"
+	"targetPath": "out",
+	"dflags-dmd": ["-mcpu=avx2"],
+	"dflags-ldc2": ["--march=broadwell"]
 }
