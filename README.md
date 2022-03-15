@@ -55,13 +55,11 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 ## Prerequisites
 
-[docker](https://www.docker.com/)
-
 [net6](https://dotnet.microsoft.com/)
 
 [nodejs 14](https://nodejs.org/)
 
-[yarn](https://yarnpkg.com/)
+[yarn](https://classic.yarnpkg.com/en/docs/install)
 
 [podman](https://podman.io/getting-started/installation) (or [docker](https://www.docker.com/) by changing `docker_cmd: podman` to `docker_cmd: docker` in `bench/bench.yaml`)
 

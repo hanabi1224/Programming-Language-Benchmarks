@@ -1,66 +1,74 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/valyala/fasthttp"
+	"github.com/evanphx/wildcat"
+	"github.com/panjf2000/gnet"
 )
 
 var (
-	client = &fasthttp.Client{
-		ReadTimeout:                   time.Second,
-		WriteTimeout:                  time.Second,
-		MaxIdleConnDuration:           time.Minute,
-		NoDefaultUserAgentHeader:      true,
-		DisableHeaderNamesNormalizing: true,
-		DisablePathNormalizing:        true,
-		Dial: (&fasthttp.TCPDialer{
-			Concurrency:      4096,
-			DNSCacheDuration: time.Hour,
-		}).Dial,
+	client = http.Client{
+		Timeout: 10 * time.Second,
 	}
 )
 
-func requestHandler(ctx *fasthttp.RequestCtx) {
-	req := ctx.Request
-	var payload Payload
-	if json.Unmarshal(req.Body(), &payload) == nil {
-		fmt.Fprintf(ctx, "%d", payload.Value)
+type httpServer struct {
+	*gnet.EventServer
+}
+
+type httpCodec struct {
+	parser *wildcat.HTTPParser
+}
+
+func (hs httpServer) OnOpened(c gnet.Conn) ([]byte, gnet.Action) {
+	c.SetContext(&httpCodec{parser: wildcat.NewHTTPParser()})
+	return nil, gnet.None
+}
+
+func (hs *httpServer) React(data []byte, c gnet.Conn) (out []byte, action gnet.Action) {
+	hc := c.Context().(*httpCodec)
+
+	headerOffset, err := hc.parser.Parse(data)
+	if err != nil {
+		return []byte("HTTP/1.1 500 Error\r\n\r\n"), gnet.Close
 	}
+	jsonBytes := data[headerOffset:]
+	var req Payload
+	if json.Unmarshal(jsonBytes, &req) != nil {
+		return jsonBytes, gnet.Close
+	}
+	responseText := fmt.Sprintf("HTTP/1.1 200 OK\r\n\r\n%d\r\n", req.Value)
+	return []byte(responseText), gnet.None
 }
 
 func runServer(port int) {
-	if err := fasthttp.ListenAndServe(fmt.Sprintf("localhost:%d", port), requestHandler); err != nil {
-		panic(err)
-	}
+	http := new(httpServer)
+	gnet.Serve(http, fmt.Sprintf("tcp://127.0.0.1:%d", port), gnet.WithMulticore(true))
 }
 
 func send(api string, value int, ch chan<- int) {
 	ret := -1
 	payload := Payload{Value: value}
 	payloadBytes, _ := json.Marshal(payload)
-
-	req := fasthttp.AcquireRequest()
-	defer fasthttp.ReleaseRequest(req)
-	req.SetRequestURI(api)
-	req.Header.SetMethod(fasthttp.MethodPost)
-	req.SetBodyRaw(payloadBytes)
-
-	resp := fasthttp.AcquireResponse()
-	defer fasthttp.ReleaseResponse(resp)
-
 	for {
-		err := client.DoTimeout(req, resp, time.Second)
-		if err == nil && resp.StatusCode() == 200 {
-			if ret, err = strconv.Atoi(string(resp.Body())); err == nil {
+		resp, err := client.Post(api, "", bytes.NewReader(payloadBytes))
+		if err == nil {
+			if resp.StatusCode == 200 {
+				decoder := json.NewDecoder(resp.Body)
+				decoder.Decode(&ret)
 				ch <- ret
 				return
 			}
+		} else {
+			// println(err.Error())
 		}
 	}
 }
@@ -75,8 +83,6 @@ func main() {
 	port := 20000 + rand.Intn(30000)
 	go runServer(port)
 	api := fmt.Sprintf("http://localhost:%d/", port)
-	url := fasthttp.AcquireURI()
-	url.Parse(nil, []byte(api))
 	ch := make(chan int, n)
 	for i := 1; i <= n; i++ {
 		go send(api, i, ch)
