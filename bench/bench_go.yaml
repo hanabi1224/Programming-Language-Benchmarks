@@ -71,7 +71,9 @@ environments:
   - os: linux
     compiler: go
     version: latest
-    docker: golang
+    docker: golang:1.18
+    env:
+      GOAMD64: v3 # https://github.com/golang/go/wiki/MinimumRequirements#amd64
     include:
     build: go mod init tmp.org/tmp/v2 && go mod tidy && go build -o out/app
     out_dir: out
