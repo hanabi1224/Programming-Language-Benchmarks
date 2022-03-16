@@ -97,7 +97,7 @@ where
         }
 
         // Sum the four lanes for each slot.
-        result[k as usize] = sum.horizontal_sum();
+        result[k as usize] = sum.reduce_sum();
     }
 
     result
@@ -122,5 +122,5 @@ fn inner_product(v: &[F64Vec], u: &[F64Vec]) -> f64 {
         .fold(F64Vec::default(), |s, x| s + x);
 
     // (2) sum the four lanes.
-    r.horizontal_sum()
+    r.reduce_sum()
 }
