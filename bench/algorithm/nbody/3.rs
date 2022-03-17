@@ -134,7 +134,7 @@ fn offset_momentum(bodies: &mut [Planet; N_BODIES]) {
 
 #[inline]
 fn dot(v: f64x4) -> f64 {
-    (v * v).horizontal_sum()
+    (v * v).reduce_sum()
 }
 
 fn main() {

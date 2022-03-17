@@ -91,12 +91,14 @@ func advance(_ bodies: UnsafeMutablePointer<Body>, n: Int, dt: Double) {
             let dSquared: Double = dx*dx + dy*dy + dz*dz
             let mag: Double = dt / (dSquared * dSquared.squareRoot())
 
-            vx -= dx * mj * mag
-            vy -= dy * mj * mag
-            vz -= dz * mj * mag
-            bodies[j].v = (bodies[j].v.x + dx * mi * mag,
-                           bodies[j].v.y + dy * mi * mag,
-                           bodies[j].v.z + dz * mi * mag)
+            let mj_mag = mj * mag
+            vx -= dx * mj_mag
+            vy -= dy * mj_mag
+            vz -= dz * mj_mag
+            let mi_mag = mi * mag
+            bodies[j].v = (bodies[j].v.x + dx * mi_mag,
+                           bodies[j].v.y + dy * mi_mag,
+                           bodies[j].v.z + dz * mi_mag)
         }        
         bodies[i].r = (
             bodies[i].r.x + dt * vx,

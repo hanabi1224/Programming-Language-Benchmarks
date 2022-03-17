@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -13,33 +14,21 @@ import (
 )
 
 var (
-	client = &fasthttp.Client{
-		ReadTimeout:                   time.Second,
-		WriteTimeout:                  time.Second,
-		MaxIdleConnDuration:           time.Minute,
-		NoDefaultUserAgentHeader:      true,
-		DisableHeaderNamesNormalizing: true,
-		DisablePathNormalizing:        true,
-		Dial: (&fasthttp.TCPDialer{
-			Concurrency:      4096,
-			DNSCacheDuration: time.Hour,
-		}).Dial,
+	client = http.Client{
+		Timeout: 10 * time.Second,
 	}
 )
 
-func api(w http.ResponseWriter, r *http.Request) {
-	n := -1
-	decoder := json.NewDecoder(r.Body)
+func requestHandler(ctx *fasthttp.RequestCtx) {
+	req := ctx.Request
 	var payload Payload
-	if decoder.Decode(&payload) == nil {
-		n = payload.Value
+	if json.Unmarshal(req.Body(), &payload) == nil {
+		fmt.Fprintf(ctx, "%d", payload.Value)
 	}
-	w.Write([]byte(fmt.Sprintf("%d", n)))
 }
 
 func runServer(port int) {
-	http.HandleFunc("/api", api)
-	if err := http.ListenAndServe(fmt.Sprintf("localhost:%d", port), nil); err != nil {
+	if err := fasthttp.ListenAndServe(fmt.Sprintf("localhost:%d", port), requestHandler); err != nil {
 		panic(err)
 	}
 }
@@ -48,20 +37,11 @@ func send(api string, value int, ch chan<- int) {
 	ret := -1
 	payload := Payload{Value: value}
 	payloadBytes, _ := json.Marshal(payload)
-
-	req := fasthttp.AcquireRequest()
-	defer fasthttp.ReleaseRequest(req)
-	req.SetRequestURI(api)
-	req.Header.SetMethod(fasthttp.MethodPost)
-	req.SetBodyRaw(payloadBytes)
-
-	resp := fasthttp.AcquireResponse()
-	defer fasthttp.ReleaseResponse(resp)
-
 	for {
-		err := client.DoTimeout(req, resp, time.Second)
-		if err == nil && resp.StatusCode() == 200 {
-			if ret, err = strconv.Atoi(string(resp.Body())); err == nil {
+		if resp, err := client.Post(api, "", bytes.NewReader(payloadBytes)); err == nil {
+			if resp.StatusCode == 200 {
+				decoder := json.NewDecoder(resp.Body)
+				decoder.Decode(&ret)
 				ch <- ret
 				return
 			}
@@ -78,9 +58,7 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	port := 20000 + rand.Intn(30000)
 	go runServer(port)
-	api := fmt.Sprintf("http://localhost:%d/api", port)
-	url := fasthttp.AcquireURI()
-	url.Parse(nil, []byte(api))
+	api := fmt.Sprintf("http://localhost:%d/", port)
 	ch := make(chan int, n)
 	for i := 1; i <= n; i++ {
 		go send(api, i, ch)

@@ -31,7 +31,7 @@ pub fn mbrot8(out: &mut u8, cr: f64x8, ci: f64) {
             ti = zi * zi;
         }
         absz = tr + ti;
-        if absz.horizontal_min() > 4. {
+        if absz.reduce_min() > 4. {
             return;
         }
     }
