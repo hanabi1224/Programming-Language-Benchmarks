@@ -1,0 +1,22 @@
+lang: pony
+problems:
+  - name: helloworld
+    source:
+      - 1.pony
+  - name: binarytrees
+    source:
+      - 1.pony
+compiler_version_command: ponyc --version
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.pony
+environments:
+  - os: linux
+    compiler: ponyc
+    version: latest
+    docker: ponylang/ponyc:release
+    include: pony
+    build: corral update && corral run -- ponyc --cpu=broadwell -s -o=out -b=app --verbose=3
+    out_dir: out
+    run_cmd: app

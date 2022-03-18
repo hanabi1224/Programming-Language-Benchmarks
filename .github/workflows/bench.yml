@@ -38,6 +38,7 @@ jobs:
             ocaml,
             perl,
             php,
+            pony,
             python,
             racket,
             ruby,
