@@ -6,6 +6,9 @@ problems:
   - name: binarytrees
     source:
       - 1.pony
+  - name: nbody
+    source:
+      - 1.pony
 compiler_version_command: ponyc --version
 compiler_version_regex:
 runtime_version_parameter:
