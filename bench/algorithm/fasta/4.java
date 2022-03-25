@@ -1,9 +1,9 @@
-/*
+﻿/*
  * The Computer Language Benchmarks Game
  * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
  *
  * modified by Mehmet D. AKIN
- * modified by Rikard Mustajärvi
+ * modified by Rikard Mustajarvi
  */
 
 import java.io.IOException;
