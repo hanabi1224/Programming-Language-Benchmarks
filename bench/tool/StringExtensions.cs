@@ -66,5 +66,14 @@ namespace System
         {
             return $"sh -c \"{command}\"";
         }
+
+        public static string WrapCommandWithShIfNeeded(this string command)
+        {
+            if (command.Contains("&&") || command.Contains("||"))
+            {
+                return command.WrapCommandWithSh();
+            }
+            return command;
+        }
     }
 }

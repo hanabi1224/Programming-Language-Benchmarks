@@ -5,11 +5,13 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+env:
+  PROFILE: /tmp/.tmpprofile
+  # https://doc.rust-lang.org/cargo/reference/profiles.html#incremental
+  CARGO_INCREMENTAL: 1
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    env:
-      PROFILE: /tmp/.tmpprofile
     strategy:
       fail-fast: true
       matrix:
@@ -78,9 +80,9 @@ jobs:
           # sudo ln -sf $HOME/.rustup/toolchains/nightly-2021-08-28-x86_64-unknown-linux-gnu $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu
           rustup update nightly
           cargo +nightly --version
-      - name: Install graal
-        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
-        run: ./.github/graalvm.sh
+      # - name: Install graal
+      #   if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
+      #   run: ./.github/graalvm.sh
       - name: Install clang
         if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'nim' || matrix.lang == 'v'
         run: ./.github/clang.sh
@@ -110,12 +112,12 @@ jobs:
       - name: Install loom
         if: matrix.lang == 'java'
         run: ./.github/loom.sh
-      - name: Install graalvm native-image
-        if: matrix.lang == 'java'
-        run: ./.github/graalvm-native-image.sh
-      - name: Install graalnode
-        if: matrix.lang == 'javascript'
-        run: ./.github/graalvm-node.sh
+      # - name: Install graalvm native-image
+      #   if: matrix.lang == 'java'
+      #   run: ./.github/graalvm-native-image.sh
+      # - name: Install graalnode
+      #   if: matrix.lang == 'javascript'
+      #   run: ./.github/graalvm-node.sh
       - name: Install haxe
         if: matrix.lang == 'haxe'
         run: ./.github/haxe.sh
@@ -169,9 +171,9 @@ jobs:
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Install truffleruby
-        if: matrix.lang == 'ruby'
-        run: ./.github/truffleruby.sh
+      # - name: Install truffleruby
+      #   if: matrix.lang == 'ruby'
+      #   run: ./.github/truffleruby.sh
       # - name: Install dart
       #   if: matrix.lang == 'dart'
       #   run: sudo ./.github/dart.sh
@@ -216,8 +218,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: [build]
     runs-on: ${{ matrix.os }}
-    env:
-      PROFILE: /tmp/.tmpprofile
     strategy:
       fail-fast: true
       matrix:
@@ -233,14 +233,20 @@ jobs:
           echo '# placeholder' > $PROFILE
           sudo apt-get update -y
       - uses: actions/checkout@v2
+      - name: Check CPU Model
+        run: |
+          source $PROFILE
+          pushd bench
+          dotnet run -c Release --project tool -- --task checkcpu
+          popd
       - uses: actions/download-artifact@v2
         with:
           name: build
           path: bench/build/
       - run: ./.github/dotnet.sh
-      - run: ./.github/graalvm.sh
-      - run: ./.github/graalvm-node.sh
-      - run: ./.github/truffleruby.sh
+      # - run: ./.github/graalvm.sh
+      # - run: ./.github/graalvm-node.sh
+      # - run: ./.github/truffleruby.sh
       - run: ./.github/wasm.sh
       - run: ./.github/fortran.sh
       - run: ./.github/loom.sh

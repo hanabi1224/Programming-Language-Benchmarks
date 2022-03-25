@@ -49,23 +49,25 @@ environments:
   - os: linux
     compiler: graal/jvm
     version: latest
-    docker:
+    # https://github.com/graalvm/container/pkgs/container/graalvm-ce
+    docker: ghcr.io/graalvm/jdk
+    docker_runtime_dir: /usr/lib64/graalvm/graalvm22-ce-java17
     include:
-    compiler_version_command: graaljavac -version
+    compiler_version_command: javac -version
     runtime_version_parameter: -version
-    build: graaljavac app.java -d out
+    build: javac app.java -d out
     out_dir: out
-    run_cmd: graaljava app
-    runtime_included: false
+    run_cmd: graalvm22-ce-java17/bin/java app
   - os: linux
     compiler: graal/native
     version: latest
     enabled: false # Build is super slow, disable for now
-    docker:
+    docker: ghcr.io/graalvm/native-image
+    docker_entry_point: native-image
     include:
-    compiler_version_command: native-image --version
+    compiler_version_command: --version
     before_build:
-      - graaljavac app.java
+      - javac app.java
     build: native-image --static -da -dsa --initialize-at-build-time=app --native-image-info app
     after_build:
       - cp app out

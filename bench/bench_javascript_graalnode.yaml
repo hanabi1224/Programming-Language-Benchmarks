@@ -1,4 +1,5 @@
 lang: javascript
+enabled: false
 problems:
   - name: helloworld
     source:
@@ -37,15 +38,14 @@ compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
 runtime_version_regex:
-source_rename_to: c.js
+source_rename_to: app.js
 environments:
   - os: linux
     compiler: node/graal
     version: latest
-    docker:
+    docker: ghcr.io/graalvm/nodejs
+    docker_runtime_dir: /usr/lib64/graalvm/graalvm22-ce-java17
     include:
-    include_sub_dir: out
-    build: ls -al out
+    build: cp app.js out
     out_dir: out
-    run_cmd: graalnode --stack-size=10000 c.js
-    runtime_included: false
+    run_cmd: graalvm22-ce-java17/bin/node --stack-size=10000 app.js

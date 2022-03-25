@@ -94,6 +94,8 @@ namespace BenchTool
 
         public string Docker { get; set; }
 
+        public string DockerEntryPoint { get; set; }
+
         public string DockerRuntimeDir { get; set; }
 
         public string DockerRuntimeFile { get; set; }
@@ -127,5 +129,10 @@ namespace BenchTool
         public bool ForceCheckChildProcesses { get; set; } = false;
 
         public bool AllowFailure { get; set; } = false;
+
+        public string GetEntryPointArgument()
+        {
+            return string.IsNullOrWhiteSpace(DockerEntryPoint) ? "" : $"--entrypoint {DockerEntryPoint}";
+        }
     }
 }

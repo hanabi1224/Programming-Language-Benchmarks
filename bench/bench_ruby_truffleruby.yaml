@@ -39,9 +39,9 @@ environments:
   - os: linux
     compiler: truffleruby
     version: latest
-    docker:
+    docker: ghcr.io/graalvm/truffleruby
+    docker_runtime_dir: /opt/truffleruby-22.0.0.2-linux-amd64
     include:
-    runtime_included: false
     build: cp app.rb out
     out_dir: out
-    run_cmd: truffleruby -W0 app.rb
+    run_cmd: truffleruby-22.0.0.2-linux-amd64/bin/ruby -W0 app.rb

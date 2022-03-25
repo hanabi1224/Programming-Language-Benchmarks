@@ -25,9 +25,10 @@ namespace BenchTool
             NLogUtils.Configure();
         }
 
-        private const string TaskBuild = "build";
-        private const string TaskTest = "test";
-        private const string TaskBench = "bench";
+        private const string TASK_BUILD = "build";
+        private const string TASK_TEST = "test";
+        private const string TASK_BENCH = "bench";
+        private const string TASK_CHECK_CPU = "checkcpu";
 
         private static bool s_verbose = false;
         private static CpuInfo s_cpuInfo;
@@ -40,7 +41,7 @@ namespace BenchTool
         /// <param name="algorithm">Root path that contains all algorithm code</param>
         /// <param name="include">Root path that contains all include project templates</param>
         /// <param name="buildOutput">Output folder of build step</param>
-        /// <param name="task">Benchmark task to run, valid values: build, test, bench</param>
+        /// <param name="task">Benchmark task to run, valid values: build, test, bench, checkcpu</param>
         /// <param name="forcePullDocker">A flag that indicates whether to force pull docker image even when it exists</param>
         /// <param name="forceRebuild">A flag that indicates whether to force rebuild</param>
         /// <param name="failFast">A Flag that indicates whether to fail fast when error occurs</param>
@@ -78,7 +79,7 @@ namespace BenchTool
 
             buildOutput.CreateDirectoryIfNotExist();
 
-            if (!new HashSet<string> { TaskBuild, TaskTest, TaskBench }.Contains(task))
+            if (!new HashSet<string> { TASK_BUILD, TASK_TEST, TASK_BENCH, TASK_CHECK_CPU }.Contains(task))
             {
                 throw new NotSupportedException($"Unknown task: {task}");
             }
@@ -110,13 +111,17 @@ namespace BenchTool
             if (s_cpuInfo != null)
             {
                 Logger.Info($"CPU: {s_cpuInfo}");
-                if (GithubActionUtils.IsGithubBuild && task == TaskBench && s_cpuInfo.Model < 79)
+                if (task == TASK_CHECK_CPU && s_cpuInfo.Model < 80)
                 {
                     // To print cpu features, use
                     // either: 'rustc +nightly --print=cfg -C target-cpu=broadwell' (features like avx512 are missing from stable)
                     // or 'zig build -Dcpu=broadwell --verbose-llvm-cpu-features'
                     throw new Exception("[github action] Fail intentionally on old cpu model prior to broadwell, please retry.");
                 }
+            }
+            if (task == TASK_CHECK_CPU)
+            {
+                return;
             }
 
             List<Task> parallelTasks = new List<Task>();
@@ -125,7 +130,7 @@ namespace BenchTool
 
             // Setup test data
             // TODO: Make Data a separate section in yaml config
-            if (task == TaskTest || task == TaskBench)
+            if (task == TASK_TEST || task == TASK_BENCH)
             {
                 foreach (var problemConfig in benchConfig.Problems)
                 {
@@ -184,12 +189,12 @@ namespace BenchTool
 
                         foreach (string codePath in p.Source ?? Enumerable.Empty<string>())
                         {
-                            if (!noDocker && task == TaskBuild)
+                            if (!noDocker && task == TASK_BUILD)
                             {
                                 await SetupDockerProvidedRuntimeAsync(langEnvConfig: env, buildOutputRoot: buildOutput, dedupContext: SetupDockerProvidedRuntimeDedupContext).ConfigureAwait(false);
                             }
 
-                            bool allowParallel = task == TaskBuild && buildPool;
+                            bool allowParallel = task == TASK_BUILD && buildPool;
                             Task rawJobExecutionTask = null;
                             string buildId = $"{c.Lang}_{env.Os}_{env.Compiler}_{env.Version}_{env.CompilerOptionsText}_{p.Name}_{Path.GetFileNameWithoutExtension(codePath)}";
                             buildId = Regex.Replace(buildId, @"[\\\/\?]", "_", RegexOptions.Compiled);
@@ -198,13 +203,13 @@ namespace BenchTool
 
                             switch (task)
                             {
-                                case TaskBuild:
+                                case TASK_BUILD:
                                     rawJobExecutionTask = BuildAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputDir: buildOutput, includeDir: include, forcePullDocker: forcePullDocker, forceRebuild: forceRebuild, noDocker: noDocker);
                                     break;
-                                case TaskTest:
+                                case TASK_TEST:
                                     rawJobExecutionTask = TestAsync(buildId, benchConfig, c, env, p, algorithmDir: algorithm, buildOutputRoot: buildOutput, ignoreMissing: ignoreMissing);
                                     break;
-                                case TaskBench:
+                                case TASK_BENCH:
                                     rawJobExecutionTask = BenchAsync(buildId, benchConfig, c, env, p, codePath: codePath, algorithmDir: algorithm, buildOutputRoot: buildOutput, ignoreMissing: ignoreMissing);
                                     break;
                                 default:
@@ -352,7 +357,7 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    compilerVersionCommand = $"{s_dockerCmd} run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {compilerVersionCommand}";
+                    compilerVersionCommand = $"{s_dockerCmd} run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {compilerVersionCommand}";
                 }
                 else
                 {
@@ -417,7 +422,7 @@ namespace BenchTool
                         additionalDockerEnv = string.Join(" ", langEnvConfig.Env.Select(p => $"--env {p.Key.Trim()}=\"{p.Value.Trim()}\""));
                     }
 
-                    buildCommand = $"{s_dockerCmd} run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {docker} {buildCommand.WrapCommandWithSh()}";
+                    buildCommand = $"{s_dockerCmd} run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {buildCommand.WrapCommandWithShIfNeeded()}";
                     await ProcessUtils.RunCommandAsync(
                         buildCommand,
                         workingDir: tmpDir.FullPath,
@@ -729,8 +734,9 @@ namespace BenchTool
                     {
                         break;
                     }
-                    Logger.Warn("Standard deviation is too large, retrying in 5s...");
-                    await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(false);
+                    const int RETRY_BACKOFF_SEC = 3;
+                    Logger.Warn($"Standard deviation is too large, retrying in {RETRY_BACKOFF_SEC}s...");
+                    await Task.Delay(TimeSpan.FromSeconds(RETRY_BACKOFF_SEC)).ConfigureAwait(false);
                 }
 
                 //if (statsMeasurement.Elapsed.TotalMilliseconds > 0)
@@ -818,7 +824,7 @@ namespace BenchTool
                 Directory.CreateDirectory(dir);
             }
             const string DockerTmpDir = "/tmp/runtime";
-            string cmd = $"{s_dockerCmd} run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.Docker}";
+            string cmd = $"{s_dockerCmd} run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.GetEntryPointArgument()} {langEnvConfig.Docker}";
             if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
             {
                 cmd = $"{cmd} cp -a {langEnvConfig.DockerRuntimeDir} .";
@@ -855,7 +861,7 @@ namespace BenchTool
 
         private static string GetDirNameFromDockerName(string docker)
         {
-            return Regex.Replace(docker, @"[:/\\]", "_");
+            return Regex.Replace(docker, @"[:/\\\.]", "_");
         }
     }
 }

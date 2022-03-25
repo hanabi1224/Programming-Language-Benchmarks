@@ -16,9 +16,6 @@ problems:
   - name: fannkuch-redux
     source:
       - 2.dart
-  # - name: mandelbrot
-  #   source:
-  #     - 2.dart
   - name: nbody
     source:
       - 3.dart
@@ -31,13 +28,9 @@ problems:
   - name: spectral-norm
     source:
       - 1.dart
-  # - name: json-serde
-  #   source:
-  #     - 1.dart
   - name: coro-prime-sieve
     source:
       - 1.dart
-      # - 2.dart
   - name: http-server
     source:
       - 1.dart
@@ -53,7 +46,6 @@ environments:
     docker: dart
     docker_runtime_dir: /usr/lib/dart
     include: dart
-    include_sub_dir:
     build: dart pub get && dart compile jit-snapshot app.dart -o out/app.jit
     out_dir: out
     run_cmd: dart/bin/dart run app.jit
