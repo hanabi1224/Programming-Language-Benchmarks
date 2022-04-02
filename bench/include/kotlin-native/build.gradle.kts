@@ -2,7 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-  val kotlinVersion = "1.6.10"
+  val kotlinVersion = "1.6.20"
   kotlin("multiplatform").version(kotlinVersion)
   kotlin("plugin.serialization").version(kotlinVersion)
   id("com.github.ben-manes.versions").version("0.42.0")
