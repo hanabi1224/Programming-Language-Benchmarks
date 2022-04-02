@@ -161,8 +161,8 @@ class JacobianPoint {
         k2p = new_zero_j(),
         d = this.clone();
     while k1 > 0 || k2 > 0 {
-      if k1.odd_p() then k1p.add_mut(d);
-      if k2.odd_p() then k2p.add_mut(d);
+      if k1.isOdd() then k1p.add_mut(d);
+      if k2.isOdd() then k2p.add_mut(d);
       d.double_mut();
       k1 >>= 1;
       k2 >>= 1;
