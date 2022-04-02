@@ -1,5 +1,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
   val kotlinVersion = "1.6.20"
@@ -27,6 +28,21 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
       }
     }
+  }
+}
+
+// https://github.com/JetBrains/kotlin/blob/master/kotlin-native/NEW_MM.md
+// To verify:
+// // main.kt
+// @kotlin.ExperimentalStdlibApi
+// fun main(args: Array<String>) {
+//   println(kotlin.native.isExperimentalMM())
+// }
+//
+kotlin.targets.withType(KotlinNativeTarget::class.java) {
+  binaries.all {
+    binaryOptions["memoryModel"] = "experimental"
+    // freeCompilerArgs += "-Xruntime-logs=gc=info"
   }
 }
 
