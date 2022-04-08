@@ -5,6 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 import kotlin.random.Random
 import kotlin.system.exitProcess
 import kotlinx.coroutines.*
@@ -27,6 +28,7 @@ fun main(args: Array<String>) {
     exitProcess(0)
 }
 
+@OptIn(InternalAPI::class)
 suspend fun sendRequest(api: String, value: Int): Int {
     while (true) {
         try {
@@ -35,7 +37,7 @@ suspend fun sendRequest(api: String, value: Int): Int {
                         method = HttpMethod.Post
                         body = Json.encodeToString(Payload(value))
                     }
-            return response.receive<Int>()
+            return response.body<Int>()
         } catch (e: Exception) {}
     }
 }
