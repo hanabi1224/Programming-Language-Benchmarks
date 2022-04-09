@@ -21,9 +21,6 @@ problems:
   - name: fasta
     source:
       - 6.rb
-  - name: knucleotide
-    source:
-      - 1.rb
   - name: json-serde
     source:
       - 1.rb
@@ -71,3 +68,13 @@ environments:
     build: cp app.rb out
     out_dir: out
     run_cmd: ruby --yjit -W0 app.rb
+  - os: linux
+    compiler: truffleruby
+    version: latest
+    docker: ghcr.io/graalvm/truffleruby
+    docker_runtime_dir: /opt/truffleruby-*
+    docker_runtime_dir_rename_to: truffleruby
+    include:
+    build: cp app.rb out
+    out_dir: out
+    run_cmd: truffleruby/bin/ruby -W0 app.rb

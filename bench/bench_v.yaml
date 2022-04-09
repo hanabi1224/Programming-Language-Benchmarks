@@ -13,6 +13,9 @@ problems:
     source:
       - 1.v
       - 2.v
+  - name: edigits
+    source:
+      - 1.v
   - name: fasta
     source:
       - 1.v
@@ -48,7 +51,7 @@ runtime_version_regex:
 source_rename_to: app.v
 environments:
   - os: linux
-    compiler: v+gc+clang
+    compiler: v/clang+gc
     version: latest
     include:
     build: v -prod -gc boehm_full_opt -cc clang-14 -cflags "-march=broadwell" -stats -showcc -no-rsp app.v

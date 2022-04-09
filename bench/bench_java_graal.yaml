@@ -51,13 +51,14 @@ environments:
     version: latest
     # https://github.com/graalvm/container/pkgs/container/graalvm-ce
     docker: ghcr.io/graalvm/jdk
-    docker_runtime_dir: /usr/lib64/graalvm/graalvm22-ce-java17
+    docker_runtime_dir: /usr/lib64/graalvm/graalvm*
+    docker_runtime_dir_rename_to: graalvm
     include:
     compiler_version_command: javac -version
     runtime_version_parameter: -version
     build: javac app.java -d out
     out_dir: out
-    run_cmd: graalvm22-ce-java17/bin/java app
+    run_cmd: graalvm/bin/java app
   - os: linux
     compiler: graal/native
     version: latest

@@ -98,7 +98,11 @@ namespace BenchTool
 
         public string DockerRuntimeDir { get; set; }
 
+        public string DockerRuntimeDirRenameTo { get; set; }
+
         public string DockerRuntimeFile { get; set; }
+
+        public string DockerRuntimeFileRenameTo { get; set; }
 
         public string[] DockerVolumns { get; set; }
 

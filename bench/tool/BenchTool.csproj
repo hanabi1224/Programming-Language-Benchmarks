@@ -7,7 +7,7 @@
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MathNet.Numerics" Version="4.*" />
+    <PackageReference Include="MathNet.Numerics" Version="5.*" />
     <PackageReference Include="Newtonsoft.Json" Version="13.*" />
     <PackageReference Include="NLog" Version="4.*" />
     <PackageReference Include="NLog.Schema" Version="4.*" PrivateAssets="all" />

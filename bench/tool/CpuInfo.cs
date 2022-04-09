@@ -18,7 +18,7 @@ namespace BenchTool
 
         public override string ToString()
         {
-            return $"[{Architecture}][{NumOfCores} cores] {ModelName} (Mode {Model})";
+            return $"[{Architecture}][{NumOfCores} cores] {ModelName} (Model {Model})";
         }
 
         public static bool TryParse(string rawText, out CpuInfo cpuInfo)
