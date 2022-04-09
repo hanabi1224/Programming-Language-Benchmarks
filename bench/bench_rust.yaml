@@ -69,6 +69,7 @@ problems:
   - name: http-server
     source:
       - 1.rs
+      - 1-http2.rs
   - name: nsieve
     source:
       - 1.rs
