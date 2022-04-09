@@ -827,11 +827,20 @@ namespace BenchTool
             string cmd = $"{s_dockerCmd} run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.GetEntryPointArgument()} {langEnvConfig.Docker}";
             if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
             {
-                cmd = $"{cmd} cp -a {langEnvConfig.DockerRuntimeDir} .";
+                var runtimeDir = langEnvConfig.DockerRuntimeDir;
+                if (runtimeDir.Contains('*') || runtimeDir.Contains('?'))
+                {
+                    StringBuilder stdout = new();
+                    await ProcessUtils.RunCommandAsync($"{s_dockerCmd} run --rm {langEnvConfig.Docker} sh -c \"ls {runtimeDir} -d\"", stdOutBuilder: stdout);
+                    runtimeDir = stdout.ToString().Split('\n').FirstOrDefault();
+                }
+                var renameTo = string.IsNullOrWhiteSpace(langEnvConfig.DockerRuntimeDirRenameTo) ? "." : langEnvConfig.DockerRuntimeDirRenameTo;
+                cmd = $"{cmd} cp -a {runtimeDir} {renameTo}";
             }
             else
             {
-                cmd = $"{cmd} cp  {langEnvConfig.DockerRuntimeFile} .";
+                var renameTo = string.IsNullOrWhiteSpace(langEnvConfig.DockerRuntimeFileRenameTo) ? "." : langEnvConfig.DockerRuntimeFileRenameTo;
+                cmd = $"{cmd} cp  {langEnvConfig.DockerRuntimeFile} {renameTo}";
             }
             await ProcessUtils.RunCommandAsync(cmd).ConfigureAwait(false);
             dedupContext.Add(dir);
