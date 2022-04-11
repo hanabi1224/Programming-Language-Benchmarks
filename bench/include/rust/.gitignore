@@ -1,3 +1,4 @@
 !Cargo.toml
 !*.js
 !*.ts
+!self_signed_certs/
