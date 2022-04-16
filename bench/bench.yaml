@@ -164,7 +164,7 @@ problems:
       - input: 100 10000
         output: 100_10000_out
     tests:
-      - input: 100 1000000
+      - input: 100 500000
       - input: 1000 1000000
       - input: 1000 3000000
   - name: secp256k1
