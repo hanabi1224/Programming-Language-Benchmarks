@@ -43,7 +43,7 @@ problems:
   #   source:
   #     - 1.rs
 source_rename_to: main.rs
-compiler_version_command: rustc -V
+compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: --version
 runtime_version_regex:
@@ -53,9 +53,10 @@ environments:
     version: latest
     include: rust
     include_sub_dir: src
-    build: rustup target add wasm32-wasi && cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
-    after_build:
-      - sudo mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
+    before_build:
+      - rustup target add wasm32-wasi
+      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+    build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
     run_cmd: graalwasm _app.wasm
     runtime_included: false
