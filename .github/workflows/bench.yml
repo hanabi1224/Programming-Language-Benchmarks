@@ -38,6 +38,7 @@ jobs:
             lua,
             nim,
             ocaml,
+            odin,
             perl,
             php,
             pony,
@@ -130,6 +131,9 @@ jobs:
       - name: Install hhvm
         if: matrix.lang == 'hack'
         run: ./.github/hhvm.sh
+      - name: Install odin
+        if: matrix.lang == 'odin'
+        run: ./.github/odin.sh
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with:

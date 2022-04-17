@@ -13,6 +13,8 @@ problems:
     unittests:
       - input: 4
         output: 4_out
+      - input: 5
+        output: 5_out
     tests:
       - input: 10
       - input: 12
