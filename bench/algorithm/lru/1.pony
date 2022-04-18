@@ -20,7 +20,6 @@ class LRU
   let keys: Map[U32, ListNode[(U32, U32)]]
   let entries: List[(U32, U32)]
 
-  let pool: List[(U32, U32)] = List[(U32, U32)]()
   let empty_node: ListNode[(U32, U32)] = ListNode[(U32, U32)]((0, 0))
 
   new create(env': Env, size': U32) =>
@@ -53,28 +52,18 @@ class LRU
       end
       entries.append_node(node)
     else
-      var new_node: ListNode[(U32, U32)]
-      if pool.size() > 0 then
-        try
-          new_node = pool.remove(0)?
-          new_node.update((key, value))?
-        else
-          // env.out.print("new node 1")
-          new_node = ListNode[(U32, U32)]((key, value))
-        end
-      else
-        // env.out.print("new node 2")
-        new_node = ListNode[(U32, U32)]((key, value))
-      end
       if entries.size() >= size then
         try
           let head = entries.remove(0)?
-          pool.append_node(head)
-          let pair = head.apply()?
-          keys.remove(pair._1)?
+          keys.remove(head.apply()?._1)?
+          head.update((key, value))?
+          keys.insert(key, head)
+          entries.append_node(head)
+          return
         end
         // env.out.print("*k:" + key.string() + ", v:" + value.string() + ", keys:" + keys.size().string() + ", entries:" + entries.size().string())
       end
+      let new_node = ListNode[(U32, U32)]((key, value))
       entries.append_node(new_node)
       keys.insert(key, new_node)
     end

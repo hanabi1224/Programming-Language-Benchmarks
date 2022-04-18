@@ -72,21 +72,6 @@ class LinkedList(T)
         __remove(node);
         __add_node(node);
     }
-
-    LinkedListNode!(T) pop_head()
-    {
-        if (head !is null)
-        {
-            auto tmp = head;
-            head = tmp.next;
-            len -= 1;
-            return tmp;
-        }
-        else
-        {
-            return null;
-        }
-    }
 }
 
 class LRU(TK, TV)
@@ -122,8 +107,12 @@ class LRU(TK, TV)
         }
         else if (_entries.len == size)
         {
-            auto head = _entries.pop_head;
+            auto head = _entries.head;
             _key_lookup.remove(head.data[0]);
+            head.data = Tuple!(TK, TV)(key, value);
+            _key_lookup[key] = head;
+            _entries.move_to_end(head);
+            return;
         }
         _key_lookup[key] = _entries.add(Tuple!(TK, TV)(key, value));
     }

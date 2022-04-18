@@ -54,15 +54,8 @@ class LinkedList<T> {
 		__add_node(node);
 	}
 
-	public function pop_head():LinkedListNode<T> {
-		if (head != null) {
-			var tmp = head;
-			head = tmp.next;
-			len -= 1;
-			return tmp;
-		} else {
-			return null;
-		}
+	public function get_head():LinkedListNode<T> {
+		return head;
 	}
 }
 
@@ -113,8 +106,13 @@ class LRU {
 			_entries.move_to_end(node);
 			return;
 		} else if (_entries.len == size) {
-			var head = _entries.pop_head();
+			var head = _entries.get_head();
 			_key_lookup.remove(head.data.k);
+			head.data.k = key;
+			head.data.v = value;
+			_key_lookup.set(key, head);
+			_entries.move_to_end(head);
+			return;
 		}
 		_key_lookup.set(key, _entries.add({k: key, v: value}));
 	}

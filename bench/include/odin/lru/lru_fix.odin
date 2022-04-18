@@ -65,19 +65,22 @@ set :: proc(c: ^$C/Cache($Key, $Value), key: Key, value: Value) -> runtime.Alloc
 		return nil
 	}
 
-	e := new(Node(Key, Value), c.node_allocator) or_return
-	e.key = key
-	e.value = value
-
-	if c.count >= c.capacity {
-		_remove_node(c, c.tail)
+	e : ^Node(Key, Value) = nil
+	assert(c.count <= c.capacity)
+	if c.count == c.capacity {
+		e = c.tail
+		_remove_node(c, e)
 	}
 	else {
 		c.count += 1
+		e = new(Node(Key, Value), c.node_allocator) or_return
 	}
-	_push_front_node(c, e)
 
+	e.key = key
+	e.value = value
+	_push_front_node(c, e)
 	c.entries[key] = e
+
 	return nil
 }
 
@@ -127,6 +130,7 @@ remove :: proc(c: ^$C/Cache($Key, $Value), key: Key) -> bool {
 		return false
 	}
 	_remove_node(c, e)
+	free(node, c.node_allocator)
 	c.count -= 1
 	return true
 }
@@ -152,9 +156,6 @@ _remove_node :: proc(c: ^$C/Cache($Key, $Value), node: ^Node(Key, Value)) {
 	delete_key(&c.entries, node.key)
 
 	_call_on_remove(c, node)
-
-	free(node, c.node_allocator)
-
 }
 
 @(private)
