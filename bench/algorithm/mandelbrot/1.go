@@ -26,10 +26,11 @@ func main() {
 	pixels := make([]byte, size*chunk_size)
 	for chunk_id := 0; chunk_id < size; chunk_id++ {
 		ci := float64(chunk_id)*inv - 1.0
+		offset := chunk_id * chunk_size
 		for i := 0; i < chunk_size; i++ {
 			r := mbrot8(&xloc[i], ci)
 			if r > 0 {
-				pixels[chunk_id*chunk_size+i] = r
+				pixels[offset+i] = r
 			}
 		}
 	}

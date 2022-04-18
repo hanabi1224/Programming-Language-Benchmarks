@@ -9,6 +9,9 @@ problems:
   - name: nbody
     source:
       - 1.pony
+  - name: lru
+    source:
+      - 1.pony
 compiler_version_command: ponyc --version
 compiler_version_regex:
 runtime_version_parameter:
@@ -19,7 +22,9 @@ environments:
     compiler: ponyc
     version: latest
     docker: ponylang/ponyc:release
+    # docker: ponylang/ponyc:latest
     include: pony
     build: corral update && corral run -- ponyc --cpu=broadwell -s -o=out -b=app --verbose=3
     out_dir: out
     run_cmd: app
+    allow_failure: true
