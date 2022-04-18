@@ -1,6 +1,7 @@
 package main
 
-import "core:container/lru"
+import "lru"
+// import "core:container/lru"
 import "core:fmt"
 import "core:runtime"
 import "core:strconv"
@@ -27,20 +28,16 @@ main :: proc() {
     lru.init(cache, auto_cast size)
     hit := 0
     missed := 0
-    for _ in 0..<n {
+    for i in 0..<n {
         n0 := next_lcg(rng0) % mod
         lru.set(cache, n0, n0)
         n1 := next_lcg(rng1) % mod
         if _, ok := lru.get(cache, n1); ok {
             hit += 1
-            // BUG: below lines should not be needed if lru lib works properly
-            lru.remove(cache, n1)
-            lru.set(cache, n1, n1)
-        } 
+        }
         else {
             missed += 1
         }
-        // fmt.printf("hit: %d, missed: %d, n0: %d, n1: %d\n", hit, missed, n0, n1)
     }
     fmt.println(hit)
     fmt.println(missed)
