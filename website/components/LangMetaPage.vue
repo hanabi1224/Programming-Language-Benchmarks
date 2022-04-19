@@ -459,6 +459,12 @@ export default class LangMetaPage extends Vue {
       langsStrs = _.chain(this.langs)
         .map((i) => i.langDisplay)
         .uniq()
+        .unionWith(
+          _.chain(this.langs)
+            .map((i) => `${i.langDisplay} lang`)
+            .uniq()
+            .value()
+        )
         .value()
       langsStrs.push(this.problem)
     } else if (this.other) {
@@ -467,13 +473,16 @@ export default class LangMetaPage extends Vue {
         .uniq()
         .value()
       langsStrs.push(this.lang!.langDisplay)
+      langsStrs.push(`${this.lang!.langDisplay} lang`)
       langsStrs.push(this.other.langDisplay)
+      langsStrs.push(`${this.other.langDisplay} lang`)
     } else {
       langsStrs = _.chain(this.lang?.benchmarks)
         .map((i) => i.test)
         .uniq()
         .value()
       langsStrs.push(this.lang!.langDisplay)
+      langsStrs.push(`${this.lang!.langDisplay} lang`)
     }
 
     return {
