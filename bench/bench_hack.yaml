@@ -1,4 +1,4 @@
-lang: hack
+lang: hacklang
 problems:
   - name: helloworld
     source:

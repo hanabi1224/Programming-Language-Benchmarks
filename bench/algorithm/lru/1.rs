@@ -27,8 +27,7 @@ impl<T> LinkedListNode<T> {
 
 struct LinkedList<T> {
     head: Option<NodePtr<T>>,
-    // Using Option<NodeWeakPtr<T>> for tail makes the program slightly slower
-    tail: Option<NodePtr<T>>,
+    tail: Option<NodeWeakPtr<T>>,
     len: usize,
 }
 
@@ -50,23 +49,25 @@ impl<T> LinkedList<T> {
     }
 
     fn _add_node(&mut self, node: NodePtr<T>) {
+        let node_weak = Rc::downgrade(&node);
         {
-            let mut node_mut = node.borrow_mut();
+            node.borrow_mut().next = None;
             if self.head.is_none() {
-                node_mut.prev = None;
-                self.head = Some(node.clone());
+                node.borrow_mut().prev = None;
+                self.head = Some(node);
             } else if let Some(tail) = &self.tail {
-                node_mut.prev = Some(Rc::downgrade(tail));
-                let mut tail_mut = tail.borrow_mut();
-                tail_mut.next = Some(node.clone());
+                node.borrow_mut().prev = Some(tail.clone());
+                let tail_strong = tail.upgrade().unwrap();
+                let mut tail_mut = tail_strong.borrow_mut();
+                tail_mut.next = Some(node);
             }
-            node_mut.next = None;
         }
-        self.tail = Some(node);
+        self.tail = Some(node_weak);
     }
 
     fn _remove(&mut self, node: &NodePtr<T>) {
         let node_ptr = node.as_ptr();
+        let node_weak_ptr = Rc::downgrade(&node).as_ptr();
         let node_im = node.borrow();
         if let Some(head) = &self.head {
             if head.as_ptr() == node_ptr {
@@ -74,12 +75,8 @@ impl<T> LinkedList<T> {
             }
         }
         if let Some(tail) = &self.tail {
-            if tail.as_ptr() == node_ptr {
-                if let Some(prev) = &node_im.prev {
-                    self.tail = prev.upgrade();
-                } else {
-                    self.tail = None;
-                }
+            if tail.as_ptr() == node_weak_ptr {
+                self.tail = node_im.prev.clone();
             }
         }
         if let Some(prev) = &node_im.prev {
@@ -97,13 +94,10 @@ impl<T> LinkedList<T> {
         self._add_node(node);
     }
 
-    pub fn pop_head(&mut self) -> Option<NodePtr<T>> {
-        if let Some(head) = self.head.clone() {
-            self.head = head.borrow().next.clone();
-            self.len -= 1;
-            Some(head)
-        } else {
-            None
+    pub fn head_mut(&mut self) -> Option<&mut NodePtr<T>> {
+        match &mut self.head {
+            Some(head) => Some(head),
+            _ => None,
         }
     }
 }
@@ -173,8 +167,15 @@ where
             }
             return;
         } else if self.entries.len == self.size {
-            if let Some(head) = self.entries.pop_head() {
+            if let Some(head) = self.entries.head_mut() {
+                let head_clone = head.clone();
                 self.key_lookup.remove(&head.borrow().data.0);
+                {
+                    head.borrow_mut().data = (key.clone(), value);
+                }
+                self.key_lookup.insert(key, Rc::downgrade(head));
+                self.entries.move_to_end(head_clone);
+                return;
             }
         }
         let node = self.entries.add((key.clone(), value));

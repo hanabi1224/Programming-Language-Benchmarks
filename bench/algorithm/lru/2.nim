@@ -7,9 +7,7 @@ const M: uint32 = 1 shl 31
 # LruCache impl from https://github.com/jackhftang/lrucache.nim/blob/master/src/lrucache.nim
 # with some modifications
 type
-  Node[K, T] = object
-    key: K
-    val: T
+  Node[K, T] = tuple[key: K, val: T]
 
   LruCache*[K, T] = ref object
     capacity: int
@@ -28,23 +26,6 @@ proc len*[K, T](cache: LruCache[K, T]): int =
   ## Return number of key in cache
   cache.table.len
 
-proc resize[K, T](cache: LruCache[K, T]) =
-  while cache.len > cache.capacity:
-    let t = cache.list.tail
-    cache.table.del(t.value.key)
-    cache.list.remove t
-
-proc addNewNode[K, T](cache: LruCache[K, T], key: K, val: T) =
-  # create new node
-  let node = newDoublyLinkedNode[Node[K, T]](
-    Node[K, T](key: key, val: val)
-  )
-  # put on table and prepend new node
-  cache.table[key] = node
-  cache.list.prepend node
-  # remove old node if exceed capacity
-  cache.resize()
-
 proc `[]`*[K, T](cache: LruCache[K, T], key: K): Option[T] =
   var node = cache.table.getOrDefault(key, nil)
   if node.isNil:
@@ -61,7 +42,19 @@ proc `[]=`*[K, T](cache: LruCache[K, T], key: K, val: T) =
   # read current node
   var node = cache.table.getOrDefault(key, nil)
   if node.isNil:
-    cache.addNewNode(key, val)
+    if cache.len >= cache.capacity:
+      let node = cache.list.tail
+      cache.list.remove node
+      cache.table.del(node.value.key)
+      node.value = (key, val)
+      cache.table[key] = node
+      cache.list.prepend node
+    else:
+      let node = newDoublyLinkedNode[Node[K, T]](
+        (key, val)
+      )
+      cache.table[key] = node
+      cache.list.prepend node
   else:
     # set value
     node.value.val = val

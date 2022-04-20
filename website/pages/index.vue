@@ -183,7 +183,7 @@ export default class IndexPage extends Vue {
           name: 'description',
           content: `programming languages,benchmark,benchmarks,performance,${langsStrs.join(
             ','
-          )},${this.problems.join(',')}`,
+          )},${langsStrs.join(' lang,')} lang,${this.problems.join(',')}`,
         },
       ],
     }

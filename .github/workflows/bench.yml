@@ -27,7 +27,7 @@ jobs:
             elixir,
             fortran,
             go,
-            hack,
+            hacklang,
             haskell,
             haxe,
             java,
@@ -129,7 +129,7 @@ jobs:
         if: matrix.lang == 'crystal'
         run: ./.github/crystal.sh
       - name: Install hhvm
-        if: matrix.lang == 'hack'
+        if: matrix.lang == 'hacklang'
         run: ./.github/hhvm.sh
       - name: Install odin
         if: matrix.lang == 'odin'

@@ -5,6 +5,7 @@ import findVersions from 'find-versions'
 const lang2Display: { [key: string]: string } = {
   csharp: 'C#',
   cpp: 'C++',
+  hacklang: 'Hack',
 }
 
 export async function getLangBenchResults($content: contentFunc) {

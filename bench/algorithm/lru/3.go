@@ -56,7 +56,10 @@ func (c *LRU) Put(key, value uint32) {
 	} else if c.entries.Len() == c.Size {
 		ele := c.entries.Front()
 		delete(c.keys, ele.Value.(Pair).Key)
-		c.entries.Remove(ele)
+		c.entries.MoveToBack(ele)
+		c.keys[key] = ele
+		ele.Value = pair
+		return
 	}
 	c.keys[key] = c.entries.PushBack(pair)
 }
