@@ -35,6 +35,7 @@ k256 = "0"
 lasso = "0"
 lazy_static = "1"
 md5 = "0"
+mimalloc = { version = "0", default-features = false }
 num-bigint = "0"
 num-traits = "0"
 num_cpus = "1"
