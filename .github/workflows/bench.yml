@@ -36,6 +36,7 @@ jobs:
             kotlin,
             lisp,
             lua,
+            # nelua,
             nim,
             ocaml,
             odin,
@@ -85,7 +86,7 @@ jobs:
       #   if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
       #   run: ./.github/graalvm.sh
       - name: Install clang
-        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'nim' || matrix.lang == 'v'
+        if: matrix.lang == 'c' || matrix.lang == 'cpp'
         run: ./.github/clang.sh
       # - name: Install c deps
       #   if: matrix.lang == 'c'
@@ -131,6 +132,9 @@ jobs:
       - name: Install hhvm
         if: matrix.lang == 'hacklang'
         run: ./.github/hhvm.sh
+      - name: Install nelua
+        if: matrix.lang == 'nelua'
+        run: ./.github/nelua.sh
       - name: Install odin
         if: matrix.lang == 'odin'
         run: ./.github/odin.sh
