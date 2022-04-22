@@ -44,14 +44,6 @@ let move_to_end list node =
   _remove list node;
   _add_node list node
 
-let pop_head list =
-  match list.head with
-  | Some head ->
-      list.head <- head.next;
-      list.len <- list.len - 1;
-      Some head
-  | _ -> None
-
 type rng = { mutable seed : int }
 
 let next rng =
@@ -87,13 +79,18 @@ let put lru k v =
       node.data <- { k; v };
       move_to_end lru.entries node
   | _ ->
-      (if lru.entries.len == lru.size then
-       match pop_head lru.entries with
-       | Some head -> Hashtbl.remove lru.keys head.data.k
-       | _ -> ());
-      let new_node = add lru.entries { k; v } in
-      Hashtbl.add lru.keys k new_node
-
+      if lru.entries.len == lru.size then
+       (match lru.entries.head with
+       | Some head -> (
+         Hashtbl.remove lru.keys head.data.k;
+         head.data <- { k; v };
+         Hashtbl.add lru.keys k head;
+         move_to_end lru.entries head
+       )
+       | _ -> ())
+      else (let new_node = add lru.entries { k; v } in
+       Hashtbl.add lru.keys k new_node)
+      
 let () =
   let size = try int_of_string (Array.get Sys.argv 1) with _ -> 100 in
   let n = try int_of_string (Array.get Sys.argv 2) with _ -> 1000 in

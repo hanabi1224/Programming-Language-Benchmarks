@@ -44,15 +44,6 @@ class LinkedList(object):
         self.__remove(node)
         self.__add_node(node)
 
-    def pop_head(self):
-        if self.head:
-            head = self.head
-            self.head = head.next
-            self.len -= 1
-            return head
-        else:
-            return None
-
 
 class LRU:
     def __init__(self, size: int):
@@ -74,8 +65,12 @@ class LRU:
             self._entries.move_to_end(node)
             return
         elif self._entries.len == self._size:
-            head = self._entries.pop_head()
+            head = self._entries.head
             del self._key_lookup[head.data[0]]
+            head.data = (key, value)
+            self._entries.move_to_end(head)
+            self._key_lookup[key] = head
+            return
         self._key_lookup[key] = self._entries.add((key, value))
 
 

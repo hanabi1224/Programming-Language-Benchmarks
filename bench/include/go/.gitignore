@@ -1,0 +1,4 @@
+*
+!*.pem
+!.gitignore
+!go.mod

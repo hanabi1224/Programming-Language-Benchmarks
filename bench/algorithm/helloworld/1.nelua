@@ -1,0 +1,4 @@
+require 'arg'
+require 'io'
+
+io.writef('Hello world %s!\n', arg[1])

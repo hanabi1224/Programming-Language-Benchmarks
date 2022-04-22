@@ -1,0 +1,34 @@
+lang: odin
+problems:
+  - name: helloworld
+    source:
+      - 1.odin
+  - name: nsieve
+    source:
+      - 1.odin
+      - 2.odin
+  - name: lru
+    source:
+      - 1.odin
+  - name: nbody
+    source:
+      - 1.odin
+  - name: mandelbrot
+    source:
+      - 1.odin
+  - name: spectral-norm
+    source:
+      - 1.odin
+compiler_version_command: odin version
+runtime_version_parameter:
+source_rename_to: app.odin
+environments:
+  - os: linux
+    compiler: odin
+    version: latest
+    docker:
+    include: odin
+    build: odin build . -o:speed -disable-assert -no-bounds-check -microarch:broadwell -show-timings -out:out/app
+    out_dir: out
+    run_cmd: app
+    allow_failure: true

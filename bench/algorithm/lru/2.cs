@@ -71,9 +71,13 @@ public class LRU<TK, TV>
         }
         else if (_entries.Count == Size)
         {
-            var firstKey = _entries.First.Value.Item1;
+            var first = _entries.First;
+            _key_lookup.Remove(first.Value.Item1);
             _entries.RemoveFirst();
-            _key_lookup.Remove(firstKey);
+            first.Value = (key, value);
+            _entries.AddLast(first);
+            _key_lookup[key] = first;
+            return;
         }
         _entries.AddLast((key, value));
         _key_lookup[key] = _entries.Last;

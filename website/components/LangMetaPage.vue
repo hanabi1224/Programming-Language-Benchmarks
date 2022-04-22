@@ -12,11 +12,15 @@
           class="text-light-onSurfacePrimary"
         >
           <a
-            :href="
-              isLinkActive(i.lang, '') ? `javascript:void(0)` : `/${i.lang}`
-            "
+            v-if="!isLinkActive(i.lang, '')"
+            :href="`/${i.lang}`"
             :class="getLinkClass(i.lang, '')"
             >{{ i.langDisplay }}</a
+          >
+          <span
+            v-if="isLinkActive(i.lang, '')"
+            :class="getLinkClass(i.lang, '')"
+            >{{ i.langDisplay }}</span
           >
         </li>
       </ul>
@@ -212,11 +216,13 @@
             class="text-light-onSurfacePrimary"
           >
             <a
-              :href="i === problem ? `javascript:void(0)` : `/problem/${i}`"
+              v-if="i != problem"
+              :href="`/problem/${i}`"
               :class="getLinkClass(i, i)"
             >
               {{ i }}</a
             >
+            <span v-if="i == problem" :class="getLinkClass(i, i)">{{ i }}</span>
           </li>
         </ul>
       </div>
@@ -229,14 +235,16 @@
             class="text-light-onSurfacePrimary"
           >
             <a
-              :href="
-                isLinkActive(lang.lang, i.lang)
-                  ? `javascript:void(0)`
-                  : `/${lang.lang}-vs-${i.lang}`
-              "
+              v-if="!isLinkActive(lang.lang, i.lang)"
+              :href="`/${lang.lang}-vs-${i.lang}`"
               :class="getLinkClass(lang.lang, i.lang)"
             >
               {{ lang.langDisplay }} VS {{ i.langDisplay }}</a
+            >
+            <span
+              v-if="isLinkActive(lang.lang, i.lang)"
+              :class="getLinkClass(lang.lang, i.lang)"
+              >{{ lang.langDisplay }} VS {{ i.langDisplay }}</span
             >
           </li>
         </ul>
@@ -451,6 +459,12 @@ export default class LangMetaPage extends Vue {
       langsStrs = _.chain(this.langs)
         .map((i) => i.langDisplay)
         .uniq()
+        .unionWith(
+          _.chain(this.langs)
+            .map((i) => `${i.langDisplay} lang`)
+            .uniq()
+            .value()
+        )
         .value()
       langsStrs.push(this.problem)
     } else if (this.other) {
@@ -459,13 +473,16 @@ export default class LangMetaPage extends Vue {
         .uniq()
         .value()
       langsStrs.push(this.lang!.langDisplay)
+      langsStrs.push(`${this.lang!.langDisplay} lang`)
       langsStrs.push(this.other.langDisplay)
+      langsStrs.push(`${this.other.langDisplay} lang`)
     } else {
       langsStrs = _.chain(this.lang?.benchmarks)
         .map((i) => i.test)
         .uniq()
         .value()
       langsStrs.push(this.lang!.langDisplay)
+      langsStrs.push(`${this.lang!.langDisplay} lang`)
     }
 
     return {

@@ -27,7 +27,7 @@ jobs:
             elixir,
             fortran,
             go,
-            hack,
+            hacklang,
             haskell,
             haxe,
             java,
@@ -36,8 +36,10 @@ jobs:
             kotlin,
             lisp,
             lua,
+            # nelua,
             nim,
             ocaml,
+            odin,
             perl,
             php,
             pony,
@@ -84,7 +86,7 @@ jobs:
       #   if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
       #   run: ./.github/graalvm.sh
       - name: Install clang
-        if: matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'nim' || matrix.lang == 'v'
+        if: matrix.lang == 'c' || matrix.lang == 'cpp'
         run: ./.github/clang.sh
       # - name: Install c deps
       #   if: matrix.lang == 'c'
@@ -128,8 +130,14 @@ jobs:
         if: matrix.lang == 'crystal'
         run: ./.github/crystal.sh
       - name: Install hhvm
-        if: matrix.lang == 'hack'
+        if: matrix.lang == 'hacklang'
         run: ./.github/hhvm.sh
+      - name: Install nelua
+        if: matrix.lang == 'nelua'
+        run: ./.github/nelua.sh
+      - name: Install odin
+        if: matrix.lang == 'odin'
+        run: ./.github/odin.sh
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with:

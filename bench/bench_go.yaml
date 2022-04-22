@@ -49,6 +49,7 @@ problems:
   - name: http-server
     source:
       - 1.go
+      - 1-http2.go
       - 2.go
   - name: nsieve
     source:
@@ -74,15 +75,10 @@ environments:
     docker: golang
     env:
       GOAMD64: v3 # https://github.com/golang/go/wiki/MinimumRequirements#amd64
-    include:
-    build: go mod init tmp.org/tmp/v2 && go mod tidy && go build -o out/app
+    include: go
+    build: go mod tidy && go build -o out/app
+    after_build:
+      - cp key.pem out
+      - cp cert.pem out
     out_dir: out
     run_cmd: app
-  # - os: linux
-  #   compiler: go
-  #   version: rc
-  #   docker: golang:rc
-  #   include:
-  #   build: go mod init tmp.org/tmp/v2 && go build -o out/app
-  #   out_dir: out
-  #   run_cmd: app
