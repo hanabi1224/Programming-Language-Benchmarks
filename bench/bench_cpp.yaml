@@ -13,8 +13,8 @@ problems:
   - name: spectral-norm
     source:
       - 6-im.cpp
-      - 7.cpp
-      - 8.cpp
+      - 7-im.cpp
+      - 8-im.cpp
   - name: nsieve
     source:
       - 1.cpp
