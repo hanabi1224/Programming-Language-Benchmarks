@@ -120,16 +120,11 @@
 (in-package :vops)
 (deftype complex-double () '(complex double-float))
 (deftype uint8 () '(unsigned-byte 8))
-(eval-when (:load-toplevel :compile-toplevel :execute)
-  (defun vops::get-thread-count ()
-    (progn (define-alien-routine sysconf long (name int))
-           (sysconf 84))))
 
 (defconstant +zero+ (complex 0.0d0 0.0d0))
 (defconstant +four+ (complex 4.0d0 4.0d0))
-(defconstant +workers+ 1)
 
-(defmacro escapes? (n two-pixels  crv civ)
+(defmacro escapes? (n two-pixels crv civ)
   (let ((escaped (gensym "escaped"))
 	      (temp (gensym "temp"))
 	      (temp2 (gensym "temp2"))
@@ -201,15 +196,9 @@
 	        do (setf (aref crvs (ash i -1))
 		               (complex (- (* (+ i 1.0d0) inverse-w) 1.5d0)
 			                      (- (* i inverse-w) 1.5d0))))
-    (mapcar #'sb-thread:join-thread
-	          (loop for i from 0 below +workers+
-		              collecting (sb-thread:make-thread
-			                        (let ((thread-num i))
-				                        (lambda ()
-				                          (loop for y of-type fixnum
-					                              from thread-num below n by +workers+
-					                              do (calc-row y n bitmap bytes-per-row
-						                                         crvs inverse-h)))))))
+    (loop for y of-type fixnum below n
+		      do (calc-row y n bitmap bytes-per-row
+		      				     crvs inverse-h))
     (format t "P4~%~d ~d~%" n n)
     (format t "~(~{~2,'0X~}~)~%" (coerce (sb-md5:md5sum-sequence bitmap) 'list))))
 
