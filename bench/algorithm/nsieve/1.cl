@@ -6,11 +6,11 @@
 
 (defun nsieve (m)
   (declare (type fixnum m))
-  (let ((a (make-array m :initial-element t :element-type 'boolean)))
+  (let ((sieve (make-array m :initial-element t :element-type 'boolean)))
     (loop for i of-type fixnum from 2 below m
-          when (aref a i)
+          when (aref sieve i)
             do (loop for j of-type fixnum from (* 2 i) below m by i
-                     do (setf (aref a j) nil))
+                     do (setf (aref sieve j) nil))
             and count t)))
 
 (defun main (&optional n-supplied)
