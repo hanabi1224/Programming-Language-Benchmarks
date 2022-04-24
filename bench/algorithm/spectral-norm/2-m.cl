@@ -69,7 +69,7 @@
                              (sb-thread:make-thread
                               (lambda () (funcall function start end)))))))
 #-sb-thread
-(defun execute-parallel (start eynd function)
+(defun execute-parallel (start end function)
   (funcall function start end))
 
 (-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
