@@ -146,8 +146,6 @@ problems:
     tests:
       - input: 1000
       - input: 4000
-        exclude_langs:
-          - javascript
   - name: http-server
     unittests:
       - input: 10

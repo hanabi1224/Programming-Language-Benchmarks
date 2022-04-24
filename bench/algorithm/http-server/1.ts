@@ -50,7 +50,7 @@ async function sendAsync(api: string, value: number): Promise<number> {
 async function main() {
     const n = +Deno.args[0] || 10;
     const hostname = "localhost";
-    var port = 30000 + Math.floor(Math.random() * 10000);
+    var port = 20000 + Math.floor(Math.random() * 20000);
     const server = Deno.listen({ hostname: hostname, port: port });
     runServerAsync(server);
     const api = `http://${hostname}:${port}/`;
