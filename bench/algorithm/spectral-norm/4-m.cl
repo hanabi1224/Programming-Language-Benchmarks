@@ -24,6 +24,7 @@
 ;;      * Simplified eval-A-times-u code using serapeum with-boolean macro
 ;;        and using the -> macro for function type declarations
 ;;      * execute-parallel function refactorred - 2021-12-20
+;;      * f64.4-vdot removed (preparation for sb-simd integration into sbcl)
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -99,7 +100,11 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (f64/ (f64.2-vdot u v) (f64.2-vdot v v)))))
+    (loop for vu of-type f64 across u
+          for vi of-type f64 across v
+          summing (* vu vi) into uv of-type f64
+          summing (* vi vi) into vv of-type f64
+          finally (return (sqrt (/ uv vv))))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
