@@ -8,7 +8,6 @@
 
 (deftype uint () '(unsigned-byte 31))
 
-(declaim (type uint min-depth))
 (defconstant min-depth 4 "Minimal depth of the binary tree.")
 
 (declaim (inline make-node left (setf left) right (setf right)))
@@ -28,7 +27,7 @@
 (defun check-node (node)
   (declare (type node node))
   (with-accessors ((l left) (r right)) node 
-    (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
+    (cond (l (the uint (+ 1 (the uint (check-node l)) (the uint (check-node r))))) 
           (t 1))))
 
 (declaim (ftype (function (uint) null) loop-depths))
@@ -41,15 +40,15 @@
            (check-node (node)
              (declare (type node node))
              (with-accessors ((l left) (r right)) node 
-               (cond (l (the uint (+ 1 (check-node l) (check-node r)))) 
+               (cond (l (the uint (+ 1 (the uint (check-node l)) (the uint (check-node r))))) 
                      (t 1)))))
     (declare (inline build-tree check-node))
     (loop for depth of-type uint from min-depth by 2 upto max-depth do
-      (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
+      (loop with iterations of-type uint = (ash 1 (+ max-depth min-depth (- depth)))
             for i of-type uint from 1 upto iterations
-            sum (check-node (build-tree depth)) into result of-type uint
-            finally (return (format t "~D	 trees of depth ~D	 check: ~D~%"
-                                    iterations depth result))))))
+            summing (check-node (build-tree depth)) into result of-type uint
+            finally (format t "~D	 trees of depth ~D	 check: ~D~%"
+                            iterations depth result)))))
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
