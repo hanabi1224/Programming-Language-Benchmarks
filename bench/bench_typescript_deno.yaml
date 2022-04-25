@@ -24,12 +24,13 @@ problems:
   - name: json-serde
     source:
       - 1.ts
-  # - name: coro-prime-sieve
-  #   source:
-  #     - 1.ts
+  - name: coro-prime-sieve
+    source:
+      - 1.ts
   - name: http-server
     source:
       - 1.ts
+      - 2.ts
   - name: lru
     source:
       - 1.ts

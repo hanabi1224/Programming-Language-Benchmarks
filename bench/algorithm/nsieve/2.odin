@@ -1,6 +1,7 @@
 package main
 
-import "core:container/bit_array"
+import "bit_array"
+// import "core:container/bit_array"
 import "core:fmt"
 import "core:runtime"
 import "core:strconv"

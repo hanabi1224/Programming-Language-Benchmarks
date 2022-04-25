@@ -17,7 +17,7 @@ problems:
       - 1.lua
   - name: coro-prime-sieve
     source:
-      # - 1.lua
+      - 1.lua
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -v
@@ -25,10 +25,10 @@ runtime_version_regex:
 source_rename_to: app.lua
 environments:
   - os: linux
-    compiler: lua
+    compiler: luajit
     version: latest
     # include: lua
-    build: luac -s -o out/app.out app.lua
+    build: luajit -b app.lua out/app.out
     out_dir: out
-    run_cmd: lua app.out
+    run_cmd: luajit app.out
     runtime_included: false
