@@ -57,11 +57,11 @@ environments:
   - os: linux
     compiler: cpython
     version: 3
-    runtime_version_parameter: -V
+    runtime_version_parameter: --version
     include: python
     before_build:
       - pip3 install -r requirements.txt -t out
-    build: cp app.py out && python3 compile.py
+    build: cp app.py out && python3 -OO compile.py
     out_dir: out
     run_cmd: python3 -OO app.pyc
     runtime_included: false
@@ -70,12 +70,12 @@ environments:
     enabled: false
     compiler: pyjion
     version: 3
-    runtime_version_parameter: -V
+    runtime_version_parameter: --version
     include: python
     before_build:
       - pip3 install -r requirements.txt -t out
       - sh -c "cat pyjion.py > out/app.py"
-    build: sh -c "cat c.py >> out/app.py" && python3 compile.py
+    build: sh -c "cat c.py >> out/app.py" && python3 -OO compile.py
     out_dir: out
     run_cmd: python3 -OO app.pyc
     runtime_included: false
@@ -85,11 +85,23 @@ environments:
     version: 3
     docker: pypy:3-slim
     docker_runtime_dir: /opt/pypy/
-    runtime_version_parameter: -V
+    runtime_version_parameter: --version
     include: python
     before_build:
       - pip3 install -r requirements.txt -t out
-    build: cp app.py out && pypy3 compile.py
+    build: cp app.py out && pypy3 -OO compile.py
     out_dir: out
     run_cmd: pypy/bin/pypy3 -OO app.pyc
+    force_check_child_processes: true
+  - os: linux
+    compiler: pyston
+    version: latest
+    runtime_version_parameter: --version
+    include: python
+    before_build:
+      - pip3 install -r requirements.txt -t out
+    build: cp app.py out && pyston3 -OO compile.py
+    out_dir: out
+    run_cmd: pyston3 -OO app.pyc
+    runtime_included: false
     force_check_child_processes: true
