@@ -70,6 +70,8 @@ problems:
     source:
       - 1.rs
       - 1-http2.rs
+      - 2.rs
+      - 2-http2.rs
   - name: nsieve
     source:
       - 1.rs
@@ -97,6 +99,8 @@ environments:
     #   - /tmp/.cargo/registry:/usr/local/cargo/registry
     env:
       RUSTFLAGS: -Ctarget-cpu=broadwell
+      CC: clang
+      CXX: clang++
     include: rust
     include_sub_dir: src
     build: cargo +stable build --release --target-dir /tmp/rs/target -v

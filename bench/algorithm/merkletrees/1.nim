@@ -2,7 +2,7 @@ import os, strutils, options
 
 
 type
-  Node = ref object
+  Node {.acyclic.} = ref object
     hash: Option[int64]
     value: Option[int64]
     left: Node
@@ -39,11 +39,12 @@ var max_depth = if paramCount() > 0: parseInt(paramStr(1)) else: 6
 if MIN_DEPTH + 2 > max_depth:
   max_depth = MIN_DEPTH + 2
 
-let stretch_depth = max_depth + 1
-let stretch_tree = make(stretch_depth)
-stretch_tree.cal_hash
-echo "stretch tree of depth ", stretch_depth, "\t root hash: ",
-    stretch_tree.hash.get, " check: ", stretch_tree.check
+block:
+  let stretch_depth = max_depth + 1
+  let stretch_tree = make(stretch_depth)
+  stretch_tree.cal_hash
+  echo "stretch tree of depth ", stretch_depth, "\t root hash: ",
+      stretch_tree.hash.get, " check: ", stretch_tree.check
 let long_lived_tree = make(max_depth)
 var d = MIN_DEPTH
 while d <= max_depth:

@@ -13,6 +13,7 @@ generic-array = "0"
 lazy_static = "1"
 md5 = "0"
 num-traits = "0"
+num_cpus = "1"
 numeric-array = "0"
 rayon = "1"
 

@@ -28,6 +28,8 @@ environments:
     version: nightly
     env:
       RUSTFLAGS: -Ctarget-cpu=broadwell
+      CC: clang
+      CXX: clang++
     include: rust-nightly
     include_sub_dir: src
     build: cargo +nightly build --release --target-dir /tmp/rsn/target -v
