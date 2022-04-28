@@ -39,6 +39,7 @@ problems:
   - name: binarytrees
     source:
       - 1.nim
+      - 2.nim
   - name: merkletrees
     source:
       - 1.nim
