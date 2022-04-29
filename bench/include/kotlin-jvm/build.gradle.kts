@@ -31,7 +31,7 @@ dependencies {
     // implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    val ktor_version = "2.0.0"
+    val ktor_version = "2.0.1"
     implementation("io.ktor:ktor-server-core:$ktor_version")
     // implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("io.ktor:ktor-server-cio:$ktor_version")
