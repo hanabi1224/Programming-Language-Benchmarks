@@ -49,8 +49,6 @@ problems:
       - 2.go
   - name: lru
     source:
-      - 1.go
-      - 2.go
       - 3.go
 compiler_version_command: tinygo version
 compiler_version_regex:
