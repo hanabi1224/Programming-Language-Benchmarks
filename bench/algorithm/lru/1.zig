@@ -17,7 +17,6 @@ pub fn main() !void {
     var rng1 = LCG.init(1);
     var lru = try LRU(u32, u32).init(size, global_allocator);
     defer lru.deinit();
-    _ = lru;
     var missed: usize = 0;
     var hit: usize = 0;
     var i: u32 = 0;

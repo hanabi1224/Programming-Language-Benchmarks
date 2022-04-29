@@ -1,4 +1,4 @@
-import { serveTls } from "https://deno.land/std/http/server.ts";
+import { Server } from "https://deno.land/std/http/server.ts";
 
 async function readBody(body: ReadableStream<Uint8Array>): Promise<string> {
     const reader = body.getReader();
@@ -7,21 +7,21 @@ async function readBody(body: ReadableStream<Uint8Array>): Promise<string> {
 }
 
 async function runServerAsync(port: number) {
-    await serveTls(async (req: Request) => {
-        const content = req.body ? await readBody(req.body!) : '';
-        const obj = JSON.parse(content);
-        const body = `${obj.value}`;
-        return new Response(body, {
-            status: 200,
-        })
-    }, {
+    const server = new Server({
+        port,
         hostname: 'localhost',
-        port: port,
-        certFile: 'testcert.pem',
-        keyFile: 'testkey.pem',
         // h2 is not yet supported
         // alpnProtocols: ['h2'],
+        handler: async (req: Request) => {
+            const content = req.body ? await readBody(req.body!) : '';
+            const obj = JSON.parse(content);
+            const body = `${obj.value}`;
+            return new Response(body, {
+                status: 200,
+            })
+        },
     });
+    await server.listenAndServeTls('testcert.pem', 'testkey.pem');
 }
 
 async function sendAsync(api: string, value: number): Promise<number> {

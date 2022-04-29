@@ -57,8 +57,6 @@ problems:
       - 2.go
   - name: lru
     source:
-      - 1.go
-      - 2.go
       - 3.go
   - name: secp256k1
     source:
