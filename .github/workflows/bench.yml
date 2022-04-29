@@ -44,7 +44,7 @@ jobs:
             php,
             pony,
             python,
-            racket,
+            # racket,
             ruby,
             rust,
             swift,
@@ -259,7 +259,7 @@ jobs:
       - run: ./.github/fortran.sh
       - run: ./.github/loom.sh
       - run: ./.github/lua.sh
-      - run: ./.github/racket.sh
+      # - run: ./.github/racket.sh
       - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1

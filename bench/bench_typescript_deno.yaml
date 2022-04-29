@@ -31,6 +31,7 @@ problems:
     source:
       - 1.ts
       - 2.ts
+      - 2-tls.ts
   - name: lru
     source:
       - 1.ts
@@ -46,9 +47,12 @@ environments:
   - os: linux
     compiler: deno
     version: latest
-    include:
+    include: typescript
     include_sub_dir:
     # before_build:
-    build: deno bundle c.ts app.ts && deno compile --no-check --allow-net --allow-read --unstable -o out/app app.ts
+    build: deno bundle c.ts app.ts && deno compile --no-check --allow-all --unsafely-ignore-certificate-errors=localhost --unstable -o out/app app.ts
+    after_build:
+      - cp testcert.pem out
+      - cp testkey.pem out
     out_dir: out
     run_cmd: app
