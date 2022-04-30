@@ -30,6 +30,7 @@ problems:
   - name: http-server
     source:
       - 1.ts
+      - 1-http2.ts
       - 2.ts
       - 2-tls.ts
   - name: lru
@@ -50,7 +51,7 @@ environments:
     include: typescript
     include_sub_dir:
     # before_build:
-    build: deno bundle c.ts app.ts && deno compile --no-check --allow-all --unsafely-ignore-certificate-errors=localhost --unstable -o out/app app.ts
+    build: deno bundle --unstable c.ts app.ts && deno compile --no-check --allow-all --unsafely-ignore-certificate-errors=localhost --unstable -o out/app app.ts
     after_build:
       - cp testcert.pem out
       - cp testkey.pem out
