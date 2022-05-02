@@ -7,8 +7,8 @@
   (defpackage :v8
     (:use #:common-lisp :sb-simd-avx2)
     (:export #:make-f64v8 #:f64v8+ #:f64v8- #:f64v8* #:f64v8 #:f64 #:f64vec
-             #:u32 #:u8 #:u8vec #:u8-aref
-             #:f64-aref #:f64.4-aref #:f64- #:f64*))
+             #:u32 #:u8 #:u8vec #:u8-aref #:f64-aref #:f64.4-aref #:f64- #:f64*
+             #:vzeroupper))
 
   (defpackage :mandelbrot
     (:nicknames :mb)
@@ -73,10 +73,9 @@
                         (loop-finish)
                    finally (if terminate (return-from mbrot8 0))))
     (loop with accu of-type u8 = 0
-          for i below +VLEN+
-          do (setf accu (logior accu (if (<= (aref absz i) 4d0)
-                                         (ash #x80 (- i)) 0)))
-          finally (return-from mbrot8 accu))))
+          for i of-type u8 below +VLEN+
+          do (setf accu (logior accu (if (<= (aref absz i) 4d0) (ash #x80 (- i)) 0)))
+          finally (return accu))))
 
 (declaim (ftype (function (u32) null) main))
 (defun main (n-input)
@@ -90,15 +89,18 @@
     (loop for i below size
           do (setf (aref xloc i) (- (* i inv) 1.5d0)))
     (flet ((array-slice (array row slice)
-               (let ((row*8 (* row +VLEN+)))
-                 (setf (f64.4-aref slice 0) (f64.4-aref array row*8)
-                       (f64.4-aref slice 4) (f64.4-aref array (+ row*8 4))) slice)))
+             (declare (type f64vec array)
+                      (type u32 row)
+                      (type f64v8 slice))
+             (setf (f64.4-aref slice 0) (f64.4-aref array row)
+                   (f64.4-aref slice 4) (f64.4-aref array (+ row 4)))
+             slice))
       (declare (inline array-slice))
       (loop with slice of-type f64v8 = (make-f64v8)
             for chunk-id of-type u32 below size
             for ci of-type f64v8 = (make-f64v8 :initial-element (- (* chunk-id inv) 1d0))
             do (loop for i below chunk-size
-                     for r of-type u8 = (mbrot8 (array-slice xloc i slice) ci)
+                     for r of-type u8 = (mbrot8 (array-slice xloc (* i +VLEN+) slice) ci)
                      unless (zerop r)
                        do (setf (u8-aref bitmap (+ (* chunk-id chunk-size) i)) r))))
     (format t "P4~%~d ~d~%" size size)
@@ -107,5 +109,5 @@
 (in-package :cl-user)
 (defun main (&optional n-supplied)
   (let* ((args sb-ext:*posix-argv*)
-         (n-input (or n-supplied (parse-integer (or (car (last args)) "8000")))))
+         (n-input (or n-supplied (parse-integer (or (cadr args) "8000")))))
     (mb::main n-input)))
