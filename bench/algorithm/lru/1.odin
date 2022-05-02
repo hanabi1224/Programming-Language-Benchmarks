@@ -1,7 +1,6 @@
 package main
 
-import "lru"
-// import "core:container/lru"
+import "core:container/lru"
 import "core:fmt"
 import "core:runtime"
 import "core:strconv"
