@@ -40,7 +40,7 @@ dependencies {
     // implementation("io.ktor:ktor-client-java:$ktor_version")
     // implementation("io.ktor:ktor-client-jetty:$ktor_version")
     // implementation("io.ktor:ktor-client-okhttp:$ktor_version")
-    val jooby_version = "2.14.0"
+    val jooby_version = "2.14.1"
     implementation("io.jooby:jooby-jackson:$jooby_version")
     implementation("io.jooby:jooby-netty:$jooby_version")
 }
