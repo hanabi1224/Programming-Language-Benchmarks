@@ -1,0 +1,1 @@
+-pipe -Wall -O3 -std=c11 -Ic -fomit-frame-pointer -march=broadwell -pthread -o app c/app.c -lm -lhl

@@ -5,3 +5,4 @@ sudo apt-get update
 sudo apt-get install haxe -y
 mkdir ~/haxelib && haxelib setup ~/haxelib
 haxelib install hxcpp
+haxelib git hashlink https://github.com/HaxeFoundation/hashlink.git master other/haxelib/
