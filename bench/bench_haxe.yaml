@@ -47,7 +47,7 @@ environments:
     # docker: haxe
     include: haxe
     include_sub_dir:
-    build: haxe -m App --hl app.c && clang @app.rsp && mv app out
+    build: haxe -m App --hl c/app.c && clang @app.rsp && mv app out
     out_dir: out
     run_cmd: app
   - os: linux
