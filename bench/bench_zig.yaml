@@ -32,6 +32,9 @@ problems:
       - 1.zig
       - 2.zig
       - 2-m.zig
+  - name: fasta
+    source:
+      - 1.zig
   - name: nsieve
     source:
       - 1.zig

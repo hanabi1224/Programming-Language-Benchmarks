@@ -63,6 +63,17 @@
                 >Github action</a
               >
             </li>
+            <li class="pt-5">
+              It focuses more on new programming languages, classic programming
+              languages that are covered by
+              <a
+                href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html"
+                class="underline text-blue-500"
+                target="_blank"
+                >CLBG</a
+              >
+              receive limited or no maintainence, based on their popularity.
+            </li>
           </ul>
         </div>
         <div class="italic text-base leading-8">

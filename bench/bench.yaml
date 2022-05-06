@@ -52,6 +52,7 @@ problems:
       # - input: 101
       #   output: 101_out
     tests:
+      - input: 2000
       - input: 4000
       - input: 8000
   - name: pidigits
