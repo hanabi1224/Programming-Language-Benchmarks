@@ -180,21 +180,20 @@ fn LRU(
         }
 
         pub fn put(self: *Self, key: K, value: V) !void {
-            const pair = .{ .k = key, .v = value };
             var node = self.keys.get(key);
             if (node != null) {
-                node.?.data = pair;
+                node.?.data.v = value;
                 self.entries.move_to_end(node.?);
-                return;
             } else if (self.entries.len == self.size) {
                 var head = self.entries.head.?;
                 _ = self.keys.remove(head.data.k);
-                head.data = pair;
+                head.data.k = key;
+                head.data.v = value;
                 self.entries.move_to_end(head);
                 try self.keys.put(key, head);
-                return;
+            } else {
+                try self.keys.put(key, try self.entries.add(.{ .k = key, .v = value }));
             }
-            try self.keys.put(key, try self.entries.add(pair));
         }
     };
 }

@@ -161,11 +161,10 @@ where
             if let Some(node) = node.upgrade() {
                 {
                     let mut node_mut = node.borrow_mut();
-                    node_mut.data = (key, value);
+                    node_mut.data.1 = value;
                 }
                 self.entries.move_to_end(node);
             }
-            return;
         } else if self.entries.len == self.size {
             if let Some(head) = self.entries.head_mut() {
                 let head_clone = head.clone();
@@ -175,11 +174,11 @@ where
                 }
                 self.key_lookup.insert(key, Rc::downgrade(head));
                 self.entries.move_to_end(head_clone);
-                return;
             }
+        } else {
+            let node = self.entries.add((key.clone(), value));
+            self.key_lookup.insert(key, node);
         }
-        let node = self.entries.add((key.clone(), value));
-        self.key_lookup.insert(key, node);
     }
 }
 
