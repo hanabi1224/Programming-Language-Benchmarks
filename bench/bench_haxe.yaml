@@ -31,7 +31,7 @@ runtime_version_regex:
 source_rename_to: App.hx
 environments:
   - os: linux
-    compiler: haxe/hashlink
+    compiler: haxe/hl/jit
     version: latest
     # docker: haxe
     include: haxe
@@ -40,12 +40,25 @@ environments:
     out_dir: out
     run_cmd: hl app.hl
     runtime_version_parameter: --version
+    runtime_included: false
   - os: linux
+    compiler: haxe/hl/c
+    version: latest
+    # docker: haxe
+    include: haxe
+    include_sub_dir:
+    build: haxe -m App --hl c/app.c && clang @app.rsp && ldd app && mv app out
+    out_dir: out
+    run_cmd: app
+  - os: linux
+    env:
+      CC: clang
+      CXX: clang++
     compiler: haxe/cpp
     version: latest
     # docker: haxe
     include: haxe
     include_sub_dir:
-    build: haxe -m App --cpp cpp && mv cpp/App cppout/app
-    out_dir: cppout
+    build: haxe -m App --cpp cpp && mv cpp/App out/app
+    out_dir: out
     run_cmd: app

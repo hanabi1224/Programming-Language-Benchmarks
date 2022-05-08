@@ -25,16 +25,16 @@ jobs:
             d,
             dart,
             elixir,
-            fortran,
+            # fortran,
             go,
             hacklang,
-            haskell,
+            # haskell,
             haxe,
             java,
             javascript,
             julia,
             kotlin,
-            lisp,
+            # lisp,
             lua,
             # nelua,
             nim,
@@ -57,7 +57,7 @@ jobs:
     steps:
       - run: lscpu
       - run: dotnet --info
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.x"
       - name: Install
@@ -65,7 +65,7 @@ jobs:
           echo '# placeholder' > $PROFILE
           dotnet --info
           sudo apt-get update -y
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
       - name: Install rust stable
@@ -122,7 +122,9 @@ jobs:
       #   run: ./.github/graalvm-node.sh
       - name: Install haxe
         if: matrix.lang == 'haxe'
-        run: ./.github/haxe.sh
+        run: |
+          ./.github/haxe.sh
+          ./.github/hashlink.sh
       - name: Install zig
         if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp' || matrix.lang == 'v'
         run: ./.github/zig.sh
@@ -167,7 +169,7 @@ jobs:
           php-version: "8.1"
       - name: Install python
         if: matrix.lang == 'python'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: "3.x"
       - name: Install python ext
@@ -207,7 +209,7 @@ jobs:
           pushd bench
           dotnet run -c Release --project tool -- --task test --langs ${{ matrix.lang }} 
           popd
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
           name: build
@@ -232,7 +234,7 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - run: lscpu
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.x"
       - name: Install
@@ -240,14 +242,14 @@ jobs:
           dotnet --info
           echo '# placeholder' > $PROFILE
           sudo apt-get update -y
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Check CPU Model
         run: |
           source $PROFILE
           pushd bench
           dotnet run -c Release --project tool -- --task checkcpu
           popd
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build
           path: bench/build/
@@ -260,6 +262,7 @@ jobs:
       - run: ./.github/loom.sh
       - run: ./.github/lua.sh
       # - run: ./.github/racket.sh
+      - run: ./.github/hashlink.sh
       - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
@@ -270,7 +273,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: "3.x"
       - run: ./.github/python.sh
@@ -285,7 +288,7 @@ jobs:
           dotnet run -c Release --project tool -- --task test --ignore-missing
           dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: log
           path: bench/build/_results/**/*
@@ -298,11 +301,11 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14.x
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           # Artifact name
           name: log

@@ -23,6 +23,8 @@ _Once a change is merged into main branch, the CI job will re-generate and publi
 - Compare performance differences between different compilers or runtimes of the same language with the same source code.
 - Facilitate benchmarking on real server environments as nowadays more and more applications are deployed with docker/k8s. It's likely to get a very different result from what you get on your dev machine.
 - A reference for CI setup / Dev environment setup / package management setup for different languages. Refer to [Github action](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml)
+- It focuses more on new programming languages, classic
+  programming languages that are covered by [CLBG](https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html) receive limited or no maintainence, based on their popularity.
 
 # [Website](https://programming-language-benchmarks.vercel.app/)
 
