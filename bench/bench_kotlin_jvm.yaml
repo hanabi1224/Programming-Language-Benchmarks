@@ -29,6 +29,7 @@ problems:
   - name: lru
     source:
       - 1.kt
+      - 2.kt
   - name: secp256k1
     source:
       - 1.kt

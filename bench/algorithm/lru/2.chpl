@@ -1,4 +1,4 @@
-config const n = 100;         // the maximum tree depth
+config const n = 100;
 config const size = 100;
 
 proc main() {

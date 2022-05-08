@@ -33,6 +33,7 @@ problems:
   - name: lru
     source:
       - 1.js
+      - 2.js
   - name: secp256k1
     source:
       - 1.js

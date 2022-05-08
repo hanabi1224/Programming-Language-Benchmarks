@@ -36,6 +36,7 @@ problems:
   - name: lru
     source:
       - 1.ts
+      - 2.ts
   - name: secp256k1
     source:
       - 1.ts
