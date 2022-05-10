@@ -5,12 +5,7 @@
 (declaim (optimize (speed 3) (safety 0) (space 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  #+sb-thread
-  (defun get-thread-count ()
-    (progn (define-alien-routine sysconf long (name int))
-           (sysconf 84)))
   (defconstant min-depth 4 "Minimal depth of the binary tree.")
-  (defconstant num-workers (get-thread-count) "Number of concurrent workers.")
   (deftype uint () '(unsigned-byte 31))
   (deftype index () 'sb-int:index))
 
@@ -20,7 +15,7 @@
   (left  nil :type (or node null))
   (right nil :type (or node null)))
 
-(declaim (maybe-inline build-tree check-node))
+;(proclaim '(inline build-tree check-node))
 (defun build-tree (depth)
   (declare (type uint depth))
   (cond ((zerop depth) (make-node nil nil))
@@ -35,7 +30,7 @@
 (defun loop-depths (max-depth)
   (declare (type uint max-depth))
   (labels ((build-tree (depth)
-             (declare (type uint max-depth))
+             (declare (type uint depth))
              (cond ((zerop depth) (make-node nil nil))
                    (t (make-node (build-tree (- depth 1)) (build-tree (- depth 1))))))
            (check-node (node)
@@ -43,12 +38,12 @@
              (cond ((left node) (+ 1 (check-node (left node)) (check-node (right node))))
                    (t 1))))
     (declare (inline build-tree check-node))
-    (loop for depth of-type index from min-depth by 2 upto max-depth
-          do (let ((iterations (ash 1 (+ max-depth min-depth (- depth)))) (check 0))
-               (loop for i of-type uint from 1 upto iterations
-                     do (incf check (check-node (build-tree depth))))
-               (format t "~D	 trees of depth ~D	 check: ~D~%" iterations
-                       depth check)))))
+    (loop for depth of-type uint from min-depth by 2 upto max-depth do
+         (loop with iterations of-type uint = (the uint (ash 1 (+ max-depth min-depth (- depth))))
+          for i of-type uint from 1 upto iterations
+          summing (check-node (build-tree depth)) into result of-type uint
+          finally (format t "~D	 trees of depth ~D	 check: ~D~%"
+                          iterations depth result)))))
 
 (declaim (ftype (function (uint) null) binary-trees-upto-size))
 (defun binary-trees-upto-size (n)
