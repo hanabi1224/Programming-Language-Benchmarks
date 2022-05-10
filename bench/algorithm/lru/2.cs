@@ -32,26 +32,33 @@ public class Program
     }
 }
 
+public class Pair<TK, TV>
+{
+    public TK Key;
+
+    public TV Value;
+}
+
 public class LRU<TK, TV>
 {
     public int Size { get; private set; }
 
-    private readonly Dictionary<TK, LinkedListNode<(TK, TV)>> _key_lookup;
+    private readonly Dictionary<TK, LinkedListNode<Pair<TK, TV>>> _key_lookup;
 
-    private readonly LinkedList<(TK, TV)> _entries;
+    private readonly LinkedList<Pair<TK, TV>> _entries;
 
     public LRU(int size)
     {
         Size = size;
-        _key_lookup = new Dictionary<TK, LinkedListNode<(TK, TV)>>(size);
-        _entries = new LinkedList<(TK, TV)>();
+        _key_lookup = new Dictionary<TK, LinkedListNode<Pair<TK, TV>>>(size);
+        _entries = new LinkedList<Pair<TK, TV>>();
     }
 
     public bool TryGet(TK key, out TV value)
     {
         if (_key_lookup.TryGetValue(key, out var node))
         {
-            value = node.Value.Item2;
+            value = node.Value.Value;
             _entries.Remove(node);
             _entries.AddLast(node);
             return true;
@@ -64,23 +71,25 @@ public class LRU<TK, TV>
     {
         if (_key_lookup.TryGetValue(key, out var node))
         {
-            node.Value = (key, value);
+            node.Value.Value = value;
             _entries.Remove(node);
             _entries.AddLast(node);
-            return;
         }
         else if (_entries.Count == Size)
         {
             var first = _entries.First;
-            _key_lookup.Remove(first.Value.Item1);
+            _key_lookup.Remove(first.Value.Key);
             _entries.RemoveFirst();
-            first.Value = (key, value);
+            first.Value.Key = key;
+            first.Value.Value = value;
             _entries.AddLast(first);
             _key_lookup[key] = first;
-            return;
         }
-        _entries.AddLast((key, value));
-        _key_lookup[key] = _entries.Last;
+        else
+        {
+            _entries.AddLast(new Pair<TK, TV> { Key = key, Value = value });
+            _key_lookup[key] = _entries.Last;
+        }
     }
 }
 

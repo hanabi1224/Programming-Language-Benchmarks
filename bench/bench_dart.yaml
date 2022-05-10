@@ -42,6 +42,7 @@ problems:
   - name: lru
     source:
       - 1.dart
+      - 2.dart
 compiler_version_command: dart --version
 compiler_version_regex:
 runtime_version_parameter:

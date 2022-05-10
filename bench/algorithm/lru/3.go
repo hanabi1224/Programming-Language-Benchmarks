@@ -40,28 +40,29 @@ func (c *LRU) Get(key uint32) (uint32, bool) {
 	ele, ok := c.keys[key]
 	if ok {
 		c.entries.MoveToBack(ele)
-		return ele.Value.(Pair).Value, true
+		return ele.Value.(*Pair).Value, true
 	} else {
 		return 0, false
 	}
 }
 
 func (c *LRU) Put(key, value uint32) {
-	pair := Pair{key, value}
 	ele, ok := c.keys[key]
 	if ok {
-		ele.Value = pair
+		ele.Value.(*Pair).Value = value
 		c.entries.MoveToBack(ele)
 		return
 	} else if c.entries.Len() == c.Size {
 		ele := c.entries.Front()
-		delete(c.keys, ele.Value.(Pair).Key)
+		delete(c.keys, ele.Value.(*Pair).Key)
 		c.entries.MoveToBack(ele)
 		c.keys[key] = ele
-		ele.Value = pair
+		ele.Value.(*Pair).Key = key
+		ele.Value.(*Pair).Value = value
 		return
+	} else {
+		c.keys[key] = c.entries.PushBack(&Pair{key, value})
 	}
-	c.keys[key] = c.entries.PushBack(pair)
 }
 
 func main() {
