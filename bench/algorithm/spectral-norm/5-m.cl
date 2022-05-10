@@ -36,8 +36,8 @@
 (define-inline eval-A (i j)
   (let* ((i+1   (f32.8+ i 1))
          (evala (sb-simd-fma:f32.8-fmadd213 (f32.8+ i j) (f32.8* (f32.8+ i+1 j) 0.5) i+1)))
-    (values (f64.4-from-f32.4 (f32.8-extract128 evala 0))
-            (f64.4-from-f32.4 (f32.8-extract128 evala 1)))))
+    (values (f64.4-from-f32.4 (f32.4-from-f32.8 evala 0))
+            (f64.4-from-f32.4 (f32.4-from-f32.8 evala 1)))))
 
 (-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
 (defun eval-A-times-u (transpose src dst begin end length)
