@@ -99,7 +99,7 @@ static class Program
             options.Limits.MaxRequestBodySize = null;
             options.ListenLocalhost(port, listenOptions =>
             {
-                listenOptions.Protocols = HttpProtocols.Http1AndHttp2AndHttp3;
+                listenOptions.Protocols = HttpProtocols.Http3;
                 listenOptions.UseHttps();
             });
         });
