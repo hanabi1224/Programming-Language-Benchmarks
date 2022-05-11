@@ -46,7 +46,7 @@ environments:
     version: latest
     docker: gcc
     include: c
-    build: apt-get update -y && apt-get install -y libapr1 libapr1-dev && gcc @app.rsp
+    build: gcc @app.rsp
     after_build:
       - mv app out
     out_dir: out
