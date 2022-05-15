@@ -30,7 +30,7 @@ dependencies {
     // implementation(kotlin("stdlib"))
     // implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     val ktor_version = "2.0.1"
     implementation("io.ktor:ktor-server-core:$ktor_version")
     // implementation("io.ktor:ktor-server-netty:$ktor_version")
@@ -40,7 +40,7 @@ dependencies {
     // implementation("io.ktor:ktor-client-java:$ktor_version")
     // implementation("io.ktor:ktor-client-jetty:$ktor_version")
     // implementation("io.ktor:ktor-client-okhttp:$ktor_version")
-    val jooby_version = "2.14.1"
+    val jooby_version = "2.14.2"
     implementation("io.jooby:jooby-jackson:$jooby_version")
     implementation("io.jooby:jooby-netty:$jooby_version")
 }
