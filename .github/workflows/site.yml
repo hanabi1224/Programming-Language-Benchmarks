@@ -1,8 +1,8 @@
 name: site
 
 on:
-  #   push:
-  #     branches: [main]
+  # push:
+  #   branches: [main]
   pull_request:
     branches: [main]
 jobs:
@@ -16,9 +16,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.x
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm --version
+      - run: vercel --version
       - name: Build
         run: |
-          pushd website
-          yarn
-          yarn build
-          popd
+          cd website
+          pnpm i
+          pnpm build
