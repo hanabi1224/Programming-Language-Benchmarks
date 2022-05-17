@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "nuxt generate --force-build",
-    "vercel-build": "tar -xvf content.tar.gz && yarn build",
-    "vercel-publish": "yarn archive-content && vc --prod",
+    "vercel-build": "tar -xvf content.tar.gz && pnpm build",
+    "vercel-publish": "pnpm archive-content && vc --prod",
     "dev": "nuxt dev -s -t server -o",
     "start": "nuxt start -H 0.0.0.0",
     "generate": "nuxt generate --force-build",
@@ -17,12 +17,12 @@
     "nuxt-generate-help": "nuxt generate -h",
     "lint:js": "eslint --ext \".js,.ts,.vue\" --fix --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --fix --ignore-path .gitignore",
-    "lint": "yarn lint:js && yarn lint:style",
+    "lint": "pnpm lint:js && pnpm lint:style",
     "test": "jest",
     "content:rm": "rm -r content",
     "content:cp": "cp -a ./../bench/build/_results content",
     "archive-content": "tar -czvf content.tar.gz content/**",
-    "content": "yarn content:rm && yarn content:cp && yarn archive-content",
+    "content": "pnpm content:rm && pnpm content:cp && pnpm archive-content",
     "update-db": "npx browserslist@latest --update-db"
   },
   "lint-staged": {
@@ -36,7 +36,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/sitemap": "^2.4.0",
     "@tailwindcss/forms": "^0.5.1",
-    "core-js": "^3.22.4",
+    "core-js": "^3.22.5",
     "find-versions": "^5.0.0",
     "humanizer.node": "^1.0.4",
     "lodash": "^4.17.21",
@@ -60,7 +60,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^28.1.0",
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-nuxt": "^3.2.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -76,7 +76,7 @@
     "stylelint-config-recommended-vue": "^1.4.0",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-scss": "^4.2.0",
-    "ts-jest": "^28.0.1",
+    "ts-jest": "^28.0.2",
     "vue-jest": "^3.0.7"
   }
 }
