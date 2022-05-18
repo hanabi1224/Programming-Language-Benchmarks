@@ -305,6 +305,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14.x
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - uses: actions/download-artifact@v3
         with:
           # Artifact name
@@ -317,13 +320,10 @@ jobs:
       - name: Site Update Content
         run: |
           pushd website
-          yarn
-          yarn content
+          pnpm i
+          pnpm content
       - name: Site Publish
         if: github.ref == 'refs/heads/main'
         env:
           VERCEL_PUBLISH_TOKEN: ${{ secrets.VERCEL_PUBLISH_TOKEN }}
-        run: |
-          yarn global add vercel
-          export PATH="$(yarn global bin):$PATH"
-          vercel website --prod -c -C -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'
+        run: vercel website --prod -c -C -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'
