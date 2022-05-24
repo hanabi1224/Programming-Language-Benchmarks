@@ -1,7 +1,12 @@
 import java.io.*;
 import java.security.*;
+import java.util.Arrays;
 import java.util.stream.*;
 
+/**
+ * Variantion of 1.java but with 10x less memory needs due to
+ * reuse of the arrays instead of reallocation them over and over
+ */
 public final class app {
 	public static void main(String[] args) throws Exception {
 		int N = 100;
@@ -36,15 +41,21 @@ public final class app {
 		System.out.println(hash);
 	}
 
+	static double[] ci = new double[8];
+	static double[] zr = new double[8];
+	static double[] zi = new double[8];
+	static double[] tr = new double[8];
+	static double[] ti = new double[8];
+	static double[] absz = new double[8];
+	static double[] tmp = new double[8];
+	
 	static final byte mbrot8(final double[] cr, final double civ) {
-		var ci = new double[] { civ, civ, civ, civ, civ, civ, civ, civ, };
-		var zr = new double[8];
-		var zi = new double[8];
-		var tr = new double[8];
-		var ti = new double[8];
-		var absz = new double[8];
-		var tmp = new double[8];
-
+		// don't allocate new memory, just zero or init it
+		for ( int i = 0; i < 8; i++) {
+			ci[i] = civ;
+			zr[i] = zi[i] = tr[i] = ti[i] = absz[i] = tmp[i] = 0.0;			
+		}
+		
 		for (var _i = 0; _i < 10; _i++) {
 			for (var _j = 0; _j < 5; _j++) {
 				add(zr, zr, tmp);
