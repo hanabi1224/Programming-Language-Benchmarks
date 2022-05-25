@@ -62,7 +62,7 @@ public class MandelBrot
         var inv = 2.0 / size;
 
         var xloc = new F64x8[chunkSize];
-        foreach (var i in Enumerable.Range(0, chunkSize))
+        for (var i = 0; i < chunkSize; i++)
         {
             var array = new F64x8();
             var offset = i * 8;
@@ -77,10 +77,10 @@ public class MandelBrot
 
         var data = new byte[size * chunkSize];
 
-        foreach (var y in Enumerable.Range(0, size))
+        for (var y = 0; y < size; y++)
         {
             var ci = y * inv - 1.0;
-            foreach (var x in Enumerable.Range(0, chunkSize))
+            for (var x = 0; x < chunkSize; x++)
             {
                 var r = mbrot8(xloc[x], ci);
                 if (r > 0)
@@ -104,9 +104,9 @@ public class MandelBrot
         F64x8 ti;
         F64x8 absz;
         F64x8 tmp;
-        foreach (var _i in Enumerable.Range(0, 10))
+        for (var _i = 0; _i < 10; _i++)
         {
-            foreach (var _j in Enumerable.Range(0, 5))
+            for (var _j = 0; _j < 5; _j++)
             {
                 F64x8.Add(zr.buffer, zr.buffer, tmp.buffer);
                 F64x8.Mul(tmp.buffer, zi.buffer, tmp.buffer);
