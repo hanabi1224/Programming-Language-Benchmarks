@@ -33,6 +33,8 @@ problems:
   - name: mandelbrot
     source:
       - 1.java
+      - 1a.java
+      - 1b.java
   - name: spectral-norm
     source:
       - 2.java
