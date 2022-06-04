@@ -86,16 +86,12 @@ public final class app {
     }
 
     byte[] data = new byte[N * chunkSize];
-    IntStream.range(0, N)
-        .forEach(
-            y -> {
-              var ci = y * inv - 1.0;
-              IntStream.range(0, chunkSize)
-                  .forEach(
-                      x -> {
-                        data[y * chunkSize + x] = mbrot8(xloc[x], ci);
-                      });
-            });
+    for (var y = 0; y < N; y++) {
+      final var ci = y * inv - 1.0;
+      for (var x = 0; x < chunkSize; x++) {
+        data[y * chunkSize + x] = mbrot8(xloc[x], ci);
+      }
+    }
     System.out.println("P4\n" + N + " " + N);
     // System.out.println(toHexString(data));
     MessageDigest hasher = MessageDigest.getInstance("md5");
@@ -105,7 +101,7 @@ public final class app {
   }
 
   static final byte mbrot8(final F64x8 cr, final double civ) {
-    var ci = new F64x8(civ);
+    final var ci = new F64x8(civ);
     var zr = new F64x8(0.0);
     var zi = new F64x8(0.0);
     var tr = new F64x8(0.0);

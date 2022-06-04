@@ -1,12 +1,12 @@
 #!/usr/bin/sh
 
-VERSION=dev-2022-05
-FILE_NAME=ubuntu_amd64_$VERSION.zip
+VERSION=dev-2022-06
+FILE_NAME=odin-ubuntu-amd64-$VERSION.zip
 
 mkdir /tmp/odin
 cd /tmp/odin
 wget https://github.com/odin-lang/Odin/releases/download/$VERSION/$FILE_NAME
 unzip -o $FILE_NAME
-sudo chmod +x odin
-sudo ln -sf $PWD/odin /usr/bin/odin
+sudo chmod +x ubuntu_artifacts/odin
+sudo ln -sf $PWD/ubuntu_artifacts/odin /usr/bin/odin
 odin version

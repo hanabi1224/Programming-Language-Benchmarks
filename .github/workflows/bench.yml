@@ -42,7 +42,7 @@ jobs:
             odin,
             perl,
             php,
-            pony,
+            # pony,
             python,
             # racket,
             ruby,
