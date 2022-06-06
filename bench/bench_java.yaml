@@ -34,6 +34,8 @@ problems:
   - name: mandelbrot
     source:
       - 1.java
+      - 1a.java
+      - 1b.java
       - 2.java
   - name: spectral-norm
     source:
@@ -48,37 +50,10 @@ runtime_version_parameter: -version
 runtime_version_regex:
 source_rename_to: app.java
 environments:
-  # - os: linux
-  #   compiler: adoptopenjdk
-  #   version: 8
-  #   docker: adoptopenjdk/openjdk8:slim
-  #   docker_runtime_dir: /opt/java/openjdk
-  #   include:
-  #   build: javac app.java -d out
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: adoptopenjdk
-  #   version: 11
-  #   docker: adoptopenjdk/openjdk11:slim
-  #   docker_runtime_dir: /opt/java/openjdk
-  #   include:
-  #   build: javac app.java -d out
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
-  # - os: linux
-  #   compiler: openj9
-  #   version: 16
-  #   docker: adoptopenjdk/openjdk16-openj9
-  #   docker_runtime_dir: /opt/java/openjdk
-  #   include:
-  #   build: javac app.java -d out
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app
   - os: linux
     compiler: openjdk
-    version: 17
-    docker: openjdk:17-slim
+    version: 18
+    docker: openjdk:18-slim
     docker_runtime_dir: /usr/local/openjdk-*
     docker_runtime_dir_rename_to: openjdk
     include:
@@ -87,8 +62,8 @@ environments:
     run_cmd: openjdk/bin/java --add-modules jdk.incubator.vector app
   - os: linux
     compiler: openjdk/zgc
-    version: 17
-    docker: openjdk:17-slim
+    version: 18
+    docker: openjdk:18-slim
     docker_runtime_dir: /usr/local/openjdk-*
     docker_runtime_dir_rename_to: openjdk
     include:
@@ -97,8 +72,8 @@ environments:
     run_cmd: openjdk/bin/java -XX:+UseZGC -Xlog:all=off --add-modules jdk.incubator.vector app
   # - os: linux
   #   compiler: openjdk/parallelgc
-  #   version: 17
-  #   docker: openjdk:17-slim
+  #   version: 18
+  #   docker: openjdk:18-slim
   #   docker_runtime_dir: /usr/local/openjdk-*
   #   docker_runtime_dir_rename_to: openjdk
   #   include:
@@ -116,11 +91,3 @@ environments:
     out_dir: out
     run_cmd: openjdk/bin/java --add-modules jdk.incubator.vector app
     allow_failure: true
-  # - os: linux
-  #   compiler: zuluopenjdk
-  #   version: 16
-  #   docker: azul/zulu-openjdk:16
-  #   include:
-  #   build: javac app.java -d out && cp -r /usr/lib/jvm/zulu16-ca-amd64 ./out/openjdk
-  #   out_dir: out
-  #   run_cmd: openjdk/bin/java app

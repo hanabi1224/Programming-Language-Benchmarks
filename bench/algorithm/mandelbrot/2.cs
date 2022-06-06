@@ -17,7 +17,7 @@ public class MandelBrot
 
         var xloc = new (Vector<double>, Vector<double>)[chunkSize];
         Span<double> array = stackalloc double[8];
-        foreach (var i in Enumerable.Range(0, chunkSize))
+        for (var i = 0; i < chunkSize; i++)
         {
             var offset = i * 8;
             for (var j = 0; j < 8; j++)
@@ -29,10 +29,10 @@ public class MandelBrot
 
         var data = new byte[size * chunkSize];
 
-        foreach (var y in Enumerable.Range(0, size))
+        for (var y = 0; y < size; y++)
         {
             var ci = y * inv - 1.0;
-            foreach (var x in Enumerable.Range(0, chunkSize))
+            for (var x = 0; x < chunkSize; x++)
             {
                 var r = mbrot8(xloc[x], ci);
                 if (r > 0)
@@ -60,9 +60,9 @@ public class MandelBrot
         var ti1 = new Vector<double>(0);
         var absz0 = new Vector<double>(0);
         var absz1 = new Vector<double>(0);
-        foreach (var _i in Enumerable.Range(0, 10))
+        for (var _i = 0; _i < 10; _i++)
         {
-            foreach (var _j in Enumerable.Range(0, 5))
+            for (var _j = 0; _j < 5; _j++)
             {
                 var tmp = (zr0 + zr0) * zi0;
                 zi0 = tmp + ci;

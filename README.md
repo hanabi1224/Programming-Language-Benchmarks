@@ -42,9 +42,9 @@ The website is hosted on [Vercel](https://vercel.com/)
 git clone https://github.com/hanabi1224/Programming-Language-Benchmarks.git
 
 cd website
-yarn
-yarn generate
-yarn dev
+pnpm i
+pnpm build
+pnpm dev
 ```
 
 # Benchmarks
@@ -61,7 +61,7 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 [nodejs 14](https://nodejs.org/)
 
-[yarn](https://classic.yarnpkg.com/en/docs/install)
+[pnpm](https://pnpm.io/installation)
 
 [podman](https://podman.io/getting-started/installation) (or [docker](https://www.docker.com/) by changing `docker_cmd: podman` to `docker_cmd: docker` in `bench/bench.yaml`)
 
@@ -138,9 +138,9 @@ _Lastly you can re-generate website with latest benchmark numbers_
 
 ```
 cd website
-yarn
-yarn content
-yarn generate
+pnpm i
+pnpm content
+pnpm build
 serve dist
 ```
 
