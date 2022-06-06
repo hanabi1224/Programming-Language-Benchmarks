@@ -75,10 +75,10 @@
 (-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
 (defun eval-AtA-times-u (src dst tmp start end n)
       (progn
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u t src tmp start end n)))
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u nil tmp dst start end n)))))
+	      (execute-parallel start end (lambda (start end)
+				                              (eval-A-times-u t src tmp start end n)))
+	      (execute-parallel start end (lambda (start end)
+				                              (eval-A-times-u nil tmp dst start end n)))))
 
 (-> spectralnorm (u32) f64)
 (defun spectralnorm (n)

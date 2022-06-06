@@ -28,14 +28,14 @@
 ;;      * f64.4-vdot removed (preparation for sb-simd integration into sbcl)
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
-(eval-when (:compile-toplevel :load-toplevel :execute)  
-  (ql:quickload '(:sb-simd :serapeum) :silent t)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (ql:quickload '(:serapeum :sb-simd) :silent t)
   (use-package  '(:sb-simd-fma :serapeum)))
 
 (-> eval-A (f32.8 f32.8) (values f64.4 f64.4))
 (define-inline eval-A (i j)
   (let* ((i+1   (f32.8+ i 1))
-         (evala (sb-simd-fma:f32.8-fmadd213 (f32.8+ i j) (f32.8* (f32.8+ i+1 j) 0.5) i+1)))
+         (evala (f32.8-fmadd (f32.8+ i j) (f32.8* (f32.8+ i+1 j) 0.5) i+1)))
     (values (f64.4-from-f32.4 (f32.4-from-f32.8 evala 0))
             (f64.4-from-f32.4 (f32.4-from-f32.8 evala 1)))))
 
