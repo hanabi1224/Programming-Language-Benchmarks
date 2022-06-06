@@ -117,10 +117,10 @@
     (flet ((position-deltas ()
 	     ;; Calculate the position_Deltas between the bodies for each
 	     ;; interaction.
-	     (loop with i of-type fixnum = 0 for (a . rest) on system 
-		   do (dolist (b rest)
+	           (loop with i of-type fixnum = 0 for (a . rest) on system
+		               do (dolist (b rest)
 			;; (declare (type position_deltas pdx pdy pdz))
-			(setf (aref position_Deltas-x i) (f64- (x a) (x b))
+			      (setf (aref position_Deltas-x i) (f64- (x a) (x b))
 			      (aref position_Deltas-y i) (f64- (y a) (y b))
 			      (aref position_Deltas-z i) (f64- (z a) (z b)))
 			(incf i))))
@@ -130,16 +130,16 @@
 	     ;; which is why ROUNDED_INTERACTIONS_COUNT/2 iterations are done.
 	     (loop for i of-type fixnum below +ROUNDED_INTERACTIONS_COUNT+ by 4
 		   do (let* ((pdx (f64.4-aref position_Deltas-x i))
-			     (pdy (f64.4-aref position_Deltas-y i))
-			     (pdz (f64.4-aref position_Deltas-z i))
-			     (distance_Squared (f64.4+ (f64.4* pdx pdx)
-                                                       (f64.4* pdy pdy)
-						       (f64.4* pdz pdz)))
-                             (distance_Reciprocal (f64.4-sqrt distance_Squared))
-			     (magnitude (f64.4/ (f64.4* distance_Reciprocal
-						        distance_Squared))))
-			(setf (f64.4-aref magnitudes i) magnitude)))
-             (vzeroupper))
+			           (pdy (f64.4-aref position_Deltas-y i))
+			           (pdz (f64.4-aref position_Deltas-z i))
+			           (distance_Squared (f64.4+ (f64.4* pdx pdx)
+                                           (f64.4* pdy pdy)
+						                               (f64.4* pdz pdz)))
+                 (distance_Reciprocal (f64.4-sqrt distance_Squared))
+			           (magnitude (f64.4/ (f64.4* distance_Reciprocal
+						                                distance_Squared))))
+			      (setf (f64.4-aref magnitudes i) magnitude)))
+       (vzeroupper))
 	   (velocities ()
 	     ;; Use the calculated magnitudes of force to update the velocities
 	     ;; for all of the bodies.
@@ -151,14 +151,14 @@
 			       (mag-i (aref magnitudes i))
 			       ;; Precompute products of mass and magnitude
 			       ;; to be reused a couple of times
-			       (mass*mag-a (f64* (mass a) mag-i))  
+			       (mass*mag-a (f64* (mass a) mag-i))
 			       (mass*mag-b (f64* (mass b) mag-i)))
-			  (decf (vx a) (f64* pdx-i mass*mag-b)) 
+			  (decf (vx a) (f64* pdx-i mass*mag-b))
 			  (decf (vy a) (f64* pdy-i mass*mag-b))
 			  (decf (vz a) (f64* pdz-i mass*mag-b))
 			  (incf (vx b) (f64* pdx-i mass*mag-a))
-			  (incf (vy b) (f64* pdy-i mass*mag-a)) 
-			  (incf (vz b) (f64* pdz-i mass*mag-a)))	               
+			  (incf (vy b) (f64* pdy-i mass*mag-a))
+			  (incf (vz b) (f64* pdz-i mass*mag-a)))
 			(incf i))))
 	   (positions ()
 	     ;; Use the updated velocities to update the positions for all

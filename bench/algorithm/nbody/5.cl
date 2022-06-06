@@ -84,7 +84,7 @@
 (declaim (ftype (function (f64.4 f64.4) f64) dot)
          (inline dot length-sq length_))
 (defun dot (a b)
-  (f64.4-hsum (f64.4* a b)))
+  (f64.4-horizontal+ (f64.4* a b)))
 
 (declaim (ftype (function (f64.4) f64) length-sq  length_))
 (defun length-sq (a)
@@ -153,7 +153,7 @@
 (declaim (ftype (function (u32) null) nbody))
 (defun nbody (n-times)
   (let ((system *system*))
-    (offset-momentum system)         
+    (offset-momentum system)
     (energy system)                     ;; Output initial energy of the system
     (scale-bodies system +DT+)          ;; Scale bodies to use unity time step
     (advance system n-times)            ;; Advance system n times

@@ -84,7 +84,7 @@
 (declaim (ftype (function (f64.4 f64.4) f64) dot)
          (inline dot length-sq length_))
 (defun dot (a b)
-  (f64.4-hsum (f64.4* a b)))
+  (f64.4-horizontal+ (f64.4* a b)))
 
 (declaim (ftype (function (f64.4) f64) length-sq  length_))
 (defun length-sq (a)
@@ -101,7 +101,7 @@
   (loop for bi in system
         with pos = (f64.4 0)
         with sun = (car system) do
-          (setf pos (f64.4-fmadd213 (vel bi) (mass bi) pos)
+          (setf pos (f64.4-fmadd (vel bi) (mass bi) pos)
                 (vel sun) (f64.4* pos (/ (- +SOLAR-MASS+))))))
 
 ;; Advances with timestem dt = 1.0d0
@@ -119,8 +119,8 @@
                (dst (f64.4-sqrt dsq))
                (mag (f64.4/ (f64.4* dsq dst)))
                (pd-mag (f64.4* pd mag)))
-          (setf (vel bi) (f64.4-fnmadd213 pd-mag (mass bj) (vel bi))
-                (vel bj) (f64.4-fmadd213  pd-mag (mass bi) (vel bj))))))
+          (setf (vel bi) (f64.4-fnmadd pd-mag (mass bj) (vel bi))
+                (vel bj) (f64.4-fmadd  pd-mag (mass bi) (vel bj))))))
     (loop for b in system do
       (f64.4-incf (pos b) (vel b)))))
 
@@ -128,7 +128,7 @@
 (declaim (ftype (function (list) null) energy))
 (defun energy (system)
   (loop for (bi . rest) on system
-	with e of-type f64 = 0d0 do
+	      with e of-type f64 = 0d0 do
           ;; Add the kinetic energy for each body.
           (f64-incf e (f64* 0.5d0 (mass bi) (length-sq (vel bi))))
           (dolist (bj rest)
@@ -153,7 +153,7 @@
 (declaim (ftype (function (u32) null) nbody))
 (defun nbody (n-times)
   (let ((system *system*))
-    (offset-momentum system)         
+    (offset-momentum system)
     (energy system)                     ;; Output initial energy of the system
     (scale-bodies system +DT+)          ;; Scale bodies to use unity time step
     (advance system n-times)            ;; Advance system n times
