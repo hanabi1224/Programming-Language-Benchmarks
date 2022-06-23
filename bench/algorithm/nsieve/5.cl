@@ -261,9 +261,10 @@
 
 (declaim (ftype (function (fixnum) (values sieve-state &optional)) create-sieve))
 (defun create-sieve (maxints)
-  (make-sieve-state maxints (make-array (/ maxints 2) :element-type 'bit :initial-element 0)))
+  (make-sieve-state maxints
+                    (make-array (/ maxints 2) :element-type 'bit :initial-element 0)))
 
-(declaim (ftype (function (sieve-state (simple-array fixnum (*)))
+(declaim (ftype (function (sieve-state (simple-array fixnum 1))
                           (values sieve-state &optional)) run-sieve))
 (defun run-sieve (sieve-state steps)
   (do* ((maxints  (maxints sieve-state))

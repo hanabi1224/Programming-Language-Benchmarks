@@ -112,7 +112,7 @@
   (let ((position_Deltas-x (make-array +ROUNDED_INTERACTIONS_COUNT+
 			 :element-type 'double-float :initial-element 1.0d0))
 	(position_Deltas-y (make-array +ROUNDED_INTERACTIONS_COUNT+
-			 :element-type 'double-float :initial-element 1.0d0))
+			                           :element-type 'double-float :initial-element 1.0d0))
 	(position_Deltas-z (make-array +ROUNDED_INTERACTIONS_COUNT+
 			 :element-type 'double-float :initial-element 1.0d0))
         (magnitudes (make-array +ROUNDED_INTERACTIONS_COUNT+
@@ -136,8 +136,8 @@
 			     (pdy (f64.4-aref position_Deltas-y i))
 			     (pdz (f64.4-aref position_Deltas-z i))
 			     (distance_Squared (f64.4+ (f64.4* pdx pdx)
-                                                       (f64.4* pdy pdy)
-						       (f64.4* pdz pdz)))
+                                     (f64.4* pdy pdy)
+						                         (f64.4* pdz pdz)))
 			     (magnitude (f64.4/ (f64.4* (f64.4-sqrt distance_Squared)
 						        distance_Squared))))
 			(setf (f64.4-aref magnitudes i) magnitude)))

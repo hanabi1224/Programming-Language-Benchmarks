@@ -34,7 +34,7 @@ jobs:
             javascript,
             julia,
             kotlin,
-            # lisp,
+            lisp,
             lua,
             # nelua,
             nim,

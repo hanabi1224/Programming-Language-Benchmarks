@@ -5,7 +5,8 @@
        (sb-ext:save-lisp-and-die 
         "app"
         ;; http://www.sbcl.org/manual/#Function-sb_002dext-save_002dlisp_002dand_002ddie
-        :purify t
+        ;; :purify t ;; it does nothing on x86_64
+        :save-runtime-options t
         ;; :compression t
         ;; this is the main function:
         :toplevel #'main

@@ -6,18 +6,18 @@
 
 (defun nsieve (m)
   (declare (type fixnum m))
-  (let ((a (make-array m :initial-element t :element-type 'boolean)))
+  (let ((sieve (make-array m :initial-element t :element-type 'boolean)))
     (loop for i of-type fixnum from 2 below m
-       when (aref a i) do
-	 (loop for j of-type fixnum from (* 2 i) below m by i do
-	      (setf (aref a j) nil))
-       and count t)))
+          when (aref sieve i)
+            do (loop for j of-type fixnum from (* 2 i) below m by i
+                     do (setf (aref sieve j) nil))
+            and count t)))
 
 (defun main (&optional n-supplied)
   (let* ((args #+sbcl sb-ext:*posix-argv*
                #+cmu  extensions:*command-line-strings*
-	       #+gcl  si::*command-args*)
-	 (n (or n-supplied (parse-integer (car (last args))))))
-  (loop for k from n downto (- n 2) 
-     for m = (* 10000 (expt 2 k)) do
-       (format t "Primes up to~T~8<~d~>~T~8<~d~>~%" m (nsieve m)))))
+	             #+gcl  si::*command-args*)
+	       (n (or n-supplied (parse-integer (car (last args))))))
+    (loop for k from n downto (- n 2) 
+          for m = (* 10000 (expt 2 k))
+          do (format t "Primes up to~T~8<~d~>~T~8<~d~>~%" m (nsieve m)))))

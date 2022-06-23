@@ -14,9 +14,9 @@
 ;;      * Distribute work across multiple cores on SBCL
 ;;    Modified by Witali Kusnezow 2008-12-02
 ;;      * use right shift instead of truncate for division in eval-A
-;;      * redefine eval-A as a macro
+;;      * redefine eval-A as a macroc
 ;;    Modified by Bela Pecsek
-;;      * Substantially rewritten using AVX calculations
+;;      * Using SSE calculation on two lanes
 ;;      * Improvement in type declarations
 ;;      * Changed code to be compatible with sb-simd
 ;;      * Eliminated mixing VEX and non-VEX instructions as far as possible
@@ -24,34 +24,44 @@
 ;;      * Simplified eval-A-times-u code using serapeum with-boolean macro
 ;;        and using the -> macro for function type declarations
 ;;      * execute-parallel function refactorred - 2021-12-20
+;;      * f64.4-vdot removed (preparation for sb-simd integration into sbcl)
 (declaim (optimize (speed 3) (safety 0) (debug 0)))
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload '(:sb-simd :serapeum) :silent t)
   (use-package  '(:sb-simd-avx2 :serapeum)))
 
-(-> eval-A (f64.4 f64.4) f64.4)
+(-> eval-A (f64.2 f64.2) f64.2)
 (define-inline eval-A (i j)
-  (let ((i+1   (f64.4+ i 1)))
-    (f64.4+ (f64.4* (f64.4+ i j) (f64.4+ i+1 j) 0.5) i+1)))
+  (let ((i+1   (f64.2+ i 1)))
+    (f64.2+ (f64.2* (f64.2+ i j) (f64.2+ i+1 j) 0.5) i+1)))
 
 (-> eval-A-times-u (boolean f64vec f64vec u32 u32 u32) null)
 (defun eval-A-times-u (transpose src dst begin end length)
   (with-boolean (transpose)
     (loop with src-0 of-type f64 = (f64-aref src 0)
-          for i of-type index from begin below end by 4
-          do (let* ((ti  (if transpose (f64.4+ i (make-f64.4 1 2 3 4))
-                                       (f64.4+ i (make-f64.4 0 1 2 3))))
-                    (eA  (if transpose (eval-A (f64.4 0) (f64.4- ti 1))
-                                       (eval-A ti (f64.4 0))))
-		    (sum (f64.4/ src-0 eA)))
-	       (loop for j of-type index from 1 below length
-		     do (let ((src-j (f64-aref src j))
-                              (idx (f64.4+ eA ti j)))
-			  (setf eA idx)
-			  (f64.4-incf sum (f64.4/ src-j idx))))
-	       (setf (f64.4-aref dst i) sum)))))
+	        for i of-type index from begin below end by 4
+          do (let* ((ti0   (if transpose (make-f64.2 (+ i 1) (+ i 2))
+                                         (make-f64.2 (+ i 0) (+ i 1))))
+		                (ti1   (if transpose (make-f64.2 (+ i 3) (+ i 4))
+                                         (make-f64.2 (+ i 2) (+ i 3))))
+		                (eA0   (if transpose (eval-A (f64.2 0) (f64.2- ti0 1))
+                                         (eval-A ti0 (f64.2 0))))
+		                (eA1   (if transpose (eval-A (f64.2 0) (f64.2- ti1 1))
+                                         (eval-A ti1 (f64.2 0))))
+		                (sum0  (f64.2/ src-0 eA0))
+		                (sum1  (f64.2/ src-0 eA1)))
+	             (loop for j of-type index from 1 below length
+		                 do (let ((src-j (f64-aref src j))
+                              (idx0 (f64.2+ eA0 ti0 j))
+			                        (idx1 (f64.2+ eA1 ti1 j)))
+			                    (setf eA0 idx0 eA1 idx1)
+			                    (f64.2-incf sum0 (f64.2/ src-j idx0))
+			                    (f64.2-incf sum1 (f64.2/ src-j idx1))))
+               (setf (f64.2-aref dst i) sum0)
+               (setf (f64.2-aref dst (+ i 2)) sum1)))))
 
+(declaim (ftype (function () (integer 1 256)) get-thread-count))
 #+sb-thread
 (defun get-thread-count ()
   (progn (define-alien-routine sysconf long (name int))
@@ -62,23 +72,24 @@
 (defun execute-parallel (start end function)
   (declare (optimize (speed 0)))
   (mapc #'sb-thread:join-thread
-          (loop with step = (truncate (- end start) (get-thread-count))
-                for index from start below end by step
-                collecting (let ((start index)
-                                 (end (min end (+ index step))))
-                             (sb-thread:make-thread
-                              (lambda () (funcall function start end)))))))
+        (loop with step = (truncate (- end start) (get-thread-count))
+              for index from start below end by step
+              collecting (let ((start index)
+                               (end (min end (+ index step))))
+                           (sb-thread:make-thread
+                            (lambda () (funcall function start end)))))))
+
 #-sb-thread
 (defun execute-parallel (start end function)
   (funcall function start end))
 
 (-> eval-AtA-times-u (f64vec f64vec f64vec u32 u32 u32) null)
-(defun eval-AtA-times-u (src dst tmp start end n)
-      (progn
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u t src tmp start end n)))
-	(execute-parallel start end (lambda (start end)
-				      (eval-A-times-u nil tmp dst start end n)))))
+(defun eval-AtA-times-u (src dst tmp start end N)
+  (progn
+	  (execute-parallel start end (lambda (start end)
+				                          (eval-A-times-u t src tmp start end N)))
+	  (execute-parallel start end (lambda (start end)
+				                          (eval-A-times-u nil tmp dst start end N)))))
 
 (-> spectralnorm (u32) f64)
 (defun spectralnorm (n)
@@ -89,7 +100,11 @@
     (loop repeat 10 do
       (eval-AtA-times-u u v tmp 0 n n)
       (eval-AtA-times-u v u tmp 0 n n))
-    (sqrt (f64/ (f64.4-vdot u v) (f64.4-vdot v v)))))
+    (loop for vu of-type f64 across u
+          for vi of-type f64 across v
+          summing (* vu vi) into uv of-type f64
+          summing (* vi vi) into vv of-type f64
+          finally (return (sqrt (/ uv vv))))))
 
 (defun main (&optional n-supplied)
   (let ((n (or n-supplied (parse-integer (or (car (last sb-ext:*posix-argv*))
