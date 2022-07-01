@@ -69,7 +69,7 @@ fn mbrot8(cr [8]f64, civ f64) byte {
 	}
 	mut accu := u8(0)
 	for i in 0 .. 8 {
-		accu |= if absz[i] <= 4.0 { 0x80 >> i } else { 0 }
+		accu |= u8(if absz[i] <= 4.0 { 0x80 >> i } else { 0 })
 	}
 	return accu
 }

@@ -29,7 +29,7 @@ fn main() {
 fn send(url string, v int, ch chan int) {
 	for true {
 		response := http.post_json(url, json.encode(Payload{ value: v })) or { continue }
-		ch <- strconv.atoi(response.text) or { 0 }
+		ch <- strconv.atoi(response.body) or { 0 }
 		return
 	}
 }

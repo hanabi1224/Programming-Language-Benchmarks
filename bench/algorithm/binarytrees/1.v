@@ -2,24 +2,29 @@ import strconv
 import os
 
 struct Node {
-	left  &Node = 0
-	right &Node = 0
+	left  &Node
+	right &Node
 }
 
 fn check(node &Node) int {
 	mut ret := 1
-	if node.left != 0 {
-		ret += check(node.left)
-	}
-	if node.right != 0 {
-		ret += check(node.right)
+	unsafe {
+		if node.left != 0 {
+			ret += check(node.left)
+		}
+		if node.right != 0 {
+			ret += check(node.right)
+		}
 	}
 	return ret
 }
 
 fn create(n int) &Node {
 	if n == 0 {
-		return &Node{}
+		return &Node{
+			left: 0
+			right: 0
+		}
 	}
 	return &Node{
 		left: create(n - 1)

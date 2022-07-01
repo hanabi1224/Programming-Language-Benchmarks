@@ -19,21 +19,21 @@ pub fn main() !void {
     var k = binary_search(n);
     var pair = try sum_terms(0, k - 1);
     defer pair.deinit();
-    var p = pair.p.toConst();
-    var q = pair.q.toConst();
+    var p = pair.p;
+    var q = pair.q;
 
     var answer = try bigint.Managed.init(global_allocator);
     defer answer.deinit();
-    try bigint.Managed.add(&answer, p, q);
+    try bigint.Managed.add(&answer, &p, &q);
     var a = try bigint.Managed.init(global_allocator);
     defer a.deinit();
     var ten = try bigint.Managed.initSet(global_allocator, 10);
     defer ten.deinit();
-    try bigint.Managed.pow(&a, ten.toConst(), @bitCast(u32, n - 1));
+    try bigint.Managed.pow(&a, &ten, @bitCast(u32, n - 1));
     var tmp = try bigint.Managed.init(global_allocator);
     defer tmp.deinit();
-    try bigint.Managed.mul(&tmp, answer.toConst(), a.toConst());
-    try bigint.Managed.divFloor(&answer, &a, tmp.toConst(), q);
+    try bigint.Managed.mul(&tmp, &answer, &a);
+    try bigint.Managed.divFloor(&answer, &a, &tmp, &q);
     var str = try answer.toString(global_allocator, 10, std.fmt.Case.lower);
     var i: usize = 0;
     var n_usize = @as(usize, @bitCast(u32, n));
@@ -68,10 +68,10 @@ fn sum_terms(a: i32, b: i32) anyerror!Pair {
     var pair_right: Pair = try sum_terms(mid, b);
     defer pair_right.deinit();
     var left = try bigint.Managed.init(global_allocator);
-    try bigint.Managed.mul(&left, pair_left.p.toConst(), pair_right.q.toConst());
-    try bigint.Managed.add(&left, left.toConst(), pair_right.p.toConst());
+    try bigint.Managed.mul(&left, &pair_left.p, &pair_right.q);
+    try bigint.Managed.add(&left, &left, &pair_right.p);
     var right = try bigint.Managed.init(global_allocator);
-    try bigint.Managed.mul(&right, pair_left.q.toConst(), pair_right.q.toConst());
+    try bigint.Managed.mul(&right, &pair_left.q, &pair_right.q);
     return Pair{
         .p = left,
         .q = right,

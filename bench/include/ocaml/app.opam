@@ -12,7 +12,7 @@ depends: [
   # "dune" {build}
   # "re" {>= "1.10.3"}
   "res" {>= "5.0.1"}
-  "yojson" {>= "1.7.0"}
+  "yojson" {>= "2.0.0"}
   # "opam-lock" {dev}
   # "ocaml" {>= "4.11.1"}
   # "zarith" {>= "1.12"}
