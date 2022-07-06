@@ -1,8 +1,8 @@
 import sys
-import math
+from itertools import combinations
 
 
-class Body(object):
+class Body:
     def __init__(self, p, v, m):
         (self.x, self.y, self.z) = p
         (self.vx, self.vy, self.vz) = v
@@ -52,44 +52,40 @@ N_BODIES = len(SYSTEM)
 
 
 def advance(dt, bodies=SYSTEM):
-    for i in range(N_BODIES):
-        b1 = bodies[i]
-        for j in range(i+1, N_BODIES):
-            b2 = bodies[j]
-            dx = b1.x - b2.x
-            dy = b1.y - b2.y
-            dz = b1.z - b2.z
+    for b1, b2 in combinations(bodies, r=2):
+        dx = b1.x - b2.x
+        dy = b1.y - b2.y
+        dz = b1.z - b2.z
 
-            d_squared = dx*dx + dy*dy + dz*dz
-            distance = math.sqrt(d_squared)
+        d_squared = dx * dx + dy * dy + dz * dz
 
-            mag = dt / (d_squared * distance)
+        mag = dt / d_squared**1.5
 
-            m2_multi_mag = b2.m * mag
-            b1.vx -= dx * m2_multi_mag
-            b1.vy -= dy * m2_multi_mag
-            b1.vz -= dz * m2_multi_mag
+        m2_multi_mag = b2.m * mag
+        b1.vx -= dx * m2_multi_mag
+        b1.vy -= dy * m2_multi_mag
+        b1.vz -= dz * m2_multi_mag
 
-            m1_multi_mag = b1.m * mag
-            b2.vx += dx * m1_multi_mag
-            b2.vy += dy * m1_multi_mag
-            b2.vz += dz * m1_multi_mag
-        b1.x += dt * b1.vx
-        b1.y += dt * b1.vy
-        b1.z += dt * b1.vz
+        m1_multi_mag = b1.m * mag
+        b2.vx += dx * m1_multi_mag
+        b2.vy += dy * m1_multi_mag
+        b2.vz += dz * m1_multi_mag
+
+    for b in bodies:
+        b.x += dt * b.vx
+        b.y += dt * b.vy
+        b.z += dt * b.vz
 
 
 def report_energy(bodies=SYSTEM, e=0.0):
-    for i in range(N_BODIES):
-        b1 = bodies[i]
-        e += 0.5 * b1.m * (b1.vx * b1.vx + b1.vy * b1.vy + b1.vz * b1.vz)
-        for j in range(i + 1, N_BODIES):
-            b2 = bodies[j]
-            dx = b1.x - b2.x
-            dy = b1.y - b2.y
-            dz = b1.z - b2.z
-            distance = math.sqrt(dx*dx + dy*dy + dz*dz)
-            e -= b1.m * b2.m / distance
+    for b1, b2 in combinations(bodies, r=2):
+        dx = b1.x - b2.x
+        dy = b1.y - b2.y
+        dz = b1.z - b2.z
+        distance = (dx * dx + dy * dy + dz * dz) ** 0.5
+        e -= b1.m * b2.m / distance
+    for b in bodies:
+        e += 0.5 * b.m * (b.vx * b.vx + b.vy * b.vy + b.vz * b.vz)
     print("%.9f" % e)
 
 
