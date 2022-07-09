@@ -1,0 +1,53 @@
+lang: javascript
+problems:
+  - name: helloworld
+    source:
+      - 1.js
+  - name: binarytrees
+    source:
+      - 1.js
+  - name: merkletrees
+    source:
+      - 1.js
+  - name: nbody
+    source:
+      - 6.js
+  # - name: spectral-norm
+  #   source:
+  #     - 6.js
+  # - name: pidigits
+  #   source:
+  #     - 3.js
+  # - name: edigits
+  #   source:
+  #     - 1.js
+  - name: json-serde
+    source:
+      - 1.js
+  - name: coro-prime-sieve
+    source:
+      - 1.js
+  # - name: http-server
+  #   source:
+  #     - 1.js
+  - name: lru
+    source:
+      - 1.js
+      - 2.js
+  - name: secp256k1
+    source:
+      - 1.js
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter: --version
+runtime_version_regex:
+source_rename_to: c.js
+environments:
+  - os: linux
+    compiler: bun
+    version: latest
+    include:
+    build: cp c.js out
+    out_dir: out
+    run_cmd: bun run c.js
+    runtime_included: false

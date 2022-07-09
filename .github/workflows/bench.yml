@@ -120,6 +120,9 @@ jobs:
       # - name: Install graalnode
       #   if: matrix.lang == 'javascript'
       #   run: ./.github/graalvm-node.sh
+      - name: Install bun
+        if: matrix.lang == 'javascript'
+        run: ./.github/bun.sh
       - name: Install haxe
         if: matrix.lang == 'haxe'
         run: |
@@ -256,6 +259,7 @@ jobs:
       - run: ./.github/dotnet.sh
       # - run: ./.github/graalvm.sh
       # - run: ./.github/graalvm-node.sh
+      - run: ./.github/bun.sh
       # - run: ./.github/truffleruby.sh
       - run: ./.github/wasm.sh
       - run: ./.github/fortran.sh

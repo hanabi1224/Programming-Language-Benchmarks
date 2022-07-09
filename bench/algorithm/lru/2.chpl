@@ -1,3 +1,5 @@
+use Map;
+
 config const n = 100;
 config const size = 100;
 
@@ -5,16 +7,21 @@ proc main() {
   const mod = (size * 10) : uint;
   var rng0 = new LCG(0);
   var rng1 = new LCG(1);
-  for i in 0..n {
+  var lru = new LRU(size);
+  var hit = 0;
+  var missed = 0;
+  for i in 0..<n {
     var n0 = rng0.next() % mod;
+    lru.put(n0, n0);
     var n1 = rng1.next() % mod;
     writeln(n0, ", ", n1);
+    if lru.get(n1)[0] {
+      hit += 1;
+    } else {
+      missed += 1;
+    }
   }
-  var lln = new LinkedListNode(uint, 3);
-  var ll = new LinkedList(uint);
-  ll.add(1);
-  var head = ll.pop_head();
-  ll.move_to_end(head!);
+  writeln(hit, "\n", missed);
 }
 
 class LCG {
@@ -30,25 +37,23 @@ class LCG {
 }
 
 class LinkedListNode {
-  type t;
-  var data: t;
-  var prev: shared LinkedListNode(t)?;
-  var next: shared LinkedListNode(t)?;
+  var data: (uint, uint);
+  var prev: shared LinkedListNode?;
+  var next: shared LinkedListNode?;
 }
 
 class LinkedList {
-  type t;
   var len = 0;
-  var head, tail: shared LinkedListNode(t)?;
+  var head, tail: shared LinkedListNode?;
 
-  proc add(data:t) : LinkedListNode(t) {
-    var node = new shared LinkedListNode(t, data);
+  proc add(data: (uint, uint)) : shared LinkedListNode {
+    var node = new shared LinkedListNode(data);
     __add_node(node);
     len += 1;
     return node;
   }
 
-  proc __add_node(node: LinkedListNode(t)) {
+  proc __add_node(node: shared LinkedListNode) {
     if head == nil {
       head = node;
       node.prev = nil;
@@ -61,7 +66,7 @@ class LinkedList {
     node.next = nil;
   }
 
-  proc __remove(node: LinkedListNode(t)) {
+  proc __remove(node: shared LinkedListNode) {
     if head == node {
       head = node.next;
     }
@@ -76,18 +81,44 @@ class LinkedList {
     }
   }
 
-  proc move_to_end(node: LinkedListNode(t)) {
+  proc move_to_end(node: shared LinkedListNode) {
     __remove(node);
     __add_node(node);
   }
+}
 
-  proc pop_head() : LinkedListNode(t)? {
-    if head == nil {
-      return nil;
+class LRU {
+  var size: int;
+  var keys: map(uint, shared LinkedListNode);
+  var entries: shared LinkedList;
+
+  proc init(size: int) {
+    this.size = size;
+    this.keys = new map(uint, shared LinkedListNode, initialCapacity=size);
+    this.entries = new LinkedList();
+  }
+
+  proc get(key: uint): (bool,uint) {
+    if this.keys.contains(key) {
+      var node = this.keys.getValue(key);
+      this.entries.move_to_end(node);
+      return (true, node.data[1]);
+    } else {
+      return (false, 0 : uint);
     }
-    var tmp = head!;
-    head = head!.next;
-    len -= 1;
-    return tmp;
+  }
+
+  proc put(key: uint, value: uint) {
+    if this.keys.contains(key) {
+      var node = this.keys.getValue(key);
+      node.data = (key, value);
+      this.entries.move_to_end(node);
+    } else if this.entries.len == this.size {
+      var head = this.entries.head : LinkedListNode;
+      head.data = (key, value);
+      this.entries.move_to_end(head);
+    } else {
+      this.keys.set(key, this.entries.add((key, value)));
+    }
   }
 }
