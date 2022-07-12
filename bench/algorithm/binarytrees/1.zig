@@ -11,7 +11,7 @@ pub fn main() !void {
     defer arena.deinit();
     var alloc = arena.allocator();
 
-    const n = try get_n();
+    const n = try getN();
     const max_depth = math.max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
@@ -39,7 +39,7 @@ pub fn main() !void {
     try print("long lived tree of depth {d}\t check: {d}\n", .{ max_depth, long_lived_tree.check() });
 }
 
-fn get_n() !usize {
+fn getN() !usize {
     var arg_it = std.process.args();
     _ = arg_it.skip();
     const arg = arg_it.next() orelse return 10;
