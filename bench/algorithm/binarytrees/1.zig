@@ -3,8 +3,11 @@ const print = std.io.getStdOut().writer().print;
 const builtin = @import("builtin");
 const math = std.math;
 const Allocator = std.mem.Allocator;
+const Thread = std.Thread;
 
 const MIN_DEPTH = 4;
+
+const CheckPass = struct { iterations: usize, depth: usize, sum: usize };
 
 pub fn main() !void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
@@ -23,20 +26,50 @@ pub fn main() !void {
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
+
+    var threads = std.ArrayList(std.Thread).init(alloc);
+    defer threads.deinit();
+
+    var sums = std.ArrayList(CheckPass).init(alloc);
+    defer sums.deinit();
+    var i: usize = 0;
+
     while (depth <= max_depth) : (depth += 2) {
         const iterations = @intCast(usize, 1) << @intCast(u6, max_depth - depth + MIN_DEPTH);
-        var sum: usize = 0;
-        var i: usize = 0;
+        try sums.append(CheckPass{
+            .iterations = iterations,
+            .depth = depth,
+            .sum = 0,
+        });
 
-        while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, alloc).?;
-            defer tree.deinit();
-            sum += tree.check();
-        }
-        try print("{d}\t trees of depth {d}\t check: {d}\n", .{ iterations, depth, sum });
+        const thread = try Thread.spawn(.{}, calc, .{&sums.items[i]});
+        try threads.append(thread);
+        i += 1;
+    }
+
+    i = 0;
+    for (threads.items) |thread| {
+        thread.join();
+        const c = sums.items[i];
+        try print("{d}\t trees of depth {d}\t check: {d}\n", .{ c.iterations, c.depth, c.sum });
+        i += 1;
     }
 
     try print("long lived tree of depth {d}\t check: {d}\n", .{ max_depth, long_lived_tree.check() });
+}
+
+fn calc(check: *CheckPass) !void {
+    // each thread needs its own allocator
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    var alloc = arena.allocator();
+
+    var i: usize = 0;
+    while (i < check.iterations) : (i += 1) {
+        const tree = Node.make(check.depth, alloc).?;
+        defer tree.deinit();
+        check.sum += tree.check();
+    }
 }
 
 fn getN() !usize {
