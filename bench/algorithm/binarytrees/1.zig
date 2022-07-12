@@ -1,23 +1,25 @@
 const std = @import("std");
+const print = std.io.getStdOut().writer().print;
 const builtin = @import("builtin");
 const math = std.math;
 const Allocator = std.mem.Allocator;
+
 const MIN_DEPTH = 4;
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = gpa.allocator();
-
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    var alloc = arena.allocator();
+
     const n = try get_n();
     const max_depth = math.max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = Node.make(stretch_depth, global_allocator).?;
+        const stretch_tree = Node.make(stretch_depth, alloc).?;
         defer stretch_tree.deinit();
-        try stdout.print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
+        try print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
     }
-    const long_lived_tree = Node.make(max_depth, global_allocator).?;
+    const long_lived_tree = Node.make(max_depth, alloc).?;
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -25,15 +27,16 @@ pub fn main() !void {
         const iterations = @intCast(usize, 1) << @intCast(u6, max_depth - depth + MIN_DEPTH);
         var sum: usize = 0;
         var i: usize = 0;
+
         while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, global_allocator).?;
+            const tree = Node.make(depth, alloc).?;
             defer tree.deinit();
             sum += tree.check();
         }
-        try stdout.print("{d}\t trees of depth {d}\t check: {d}\n", .{ iterations, depth, sum });
+        try print("{d}\t trees of depth {d}\t check: {d}\n", .{ iterations, depth, sum });
     }
 
-    try stdout.print("long lived tree of depth {d}\t check: {d}\n", .{ max_depth, long_lived_tree.check() });
+    try print("long lived tree of depth {d}\t check: {d}\n", .{ max_depth, long_lived_tree.check() });
 }
 
 fn get_n() !usize {
@@ -53,6 +56,9 @@ const Node = struct {
 
     pub fn init(allocator: Allocator) !*Self {
         var node = try allocator.create(Self);
+        // need to init the values of the node, because malloc
+        node.left = null;
+        node.right = null;
         node.allocator = allocator;
         return node;
     }
@@ -68,7 +74,7 @@ const Node = struct {
     }
 
     pub fn make(depth: usize, allocator: Allocator) ?*Self {
-        var node = Self.init(allocator) catch return null;
+        var node = Self.init(allocator) catch unreachable;
         if (depth > 0) {
             const d = depth - 1;
             node.left = Self.make(d, allocator);
