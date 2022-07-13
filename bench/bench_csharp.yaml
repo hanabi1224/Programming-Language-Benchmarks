@@ -52,6 +52,7 @@ problems:
       - 1.cs
       - 2.cs
       - 2-http2.cs
+      - 2-http3.cs
   - name: nsieve
     source:
       - 1.cs
