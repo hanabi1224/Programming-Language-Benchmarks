@@ -1,7 +1,6 @@
 const std = @import("std");
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = gpa.allocator();
+const global_allocator = std.heap.c_allocator;
 
 fn nsieve(n: usize) !void {
     var count: usize = 0;

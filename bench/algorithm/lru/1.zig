@@ -4,8 +4,7 @@ const Allocator = std.mem.Allocator;
 const HashMap = std.HashMap;
 const AutoContext = std.hash_map.AutoContext;
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = gpa.allocator();
+const global_allocator = std.heap.c_allocator;
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
