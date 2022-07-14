@@ -2,8 +2,7 @@
 
 const std = @import("std");
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = gpa.allocator();
+const global_allocator = std.heap.c_allocator;
 
 var buffer: [1024]u8 = undefined;
 var fixed_allocator = std.heap.FixedBufferAllocator.init(buffer[0..]);

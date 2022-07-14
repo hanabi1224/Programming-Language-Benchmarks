@@ -71,8 +71,7 @@ pub fn main() !void {
     const n = try get_n();
     const len = n / @typeInfo(vec4).Vector.len;
 
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = gpa.allocator();
+    const allocator = std.heap.c_allocator;
     var u = try allocator.alloc(vec4, len);
     defer allocator.free(u);
     var v = try allocator.alloc(vec4, len);

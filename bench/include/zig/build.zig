@@ -13,6 +13,7 @@ pub fn build(b: *Builder) void {
     const mode = std.builtin.Mode.ReleaseFast;
 
     const exe = b.addExecutable("app", "app.zig");
+    exe.linkLibC();
     exe.setTarget(target);
     exe.setBuildMode(mode);
     // exe.setOutputDir("out");

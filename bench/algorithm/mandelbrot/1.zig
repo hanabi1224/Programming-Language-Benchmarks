@@ -5,8 +5,7 @@ const md5 = std.crypto.hash.Md5;
 const VEC_SIZE = 8;
 const Vec = std.meta.Vector(VEC_SIZE, f64);
 
-var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-var global_allocator = gpa.allocator();
+const global_allocator = std.heap.c_allocator;
 
 pub fn main() !void {
     const n = try get_n();
