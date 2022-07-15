@@ -48,6 +48,9 @@ problems:
   - name: json-serde
     source:
       - 1.zig
+  - name: coro-prime-sieve
+    source:
+      - 1.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:
