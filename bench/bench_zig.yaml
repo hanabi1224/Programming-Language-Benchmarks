@@ -45,6 +45,9 @@ problems:
   - name: lru
     source:
       - 1.zig
+  - name: json-serde
+    source:
+      - 1.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:
