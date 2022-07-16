@@ -11,13 +11,11 @@ const Code = struct {
     }
 
     pub inline fn makeMask(frame: usize) u64 {
-        return (@as(u64, 1) << (2 * @intCast(u6, frame))) - 1;
+        return (@as(u64, 1) << @intCast(u6, (2 * frame))) - 1;
     }
 
     pub inline fn push(self: *Code, c: u8, mask: u64) void {
-        self.data <<= 2;
-        self.data |= c;
-        self.data &= mask;
+        self.data = ((self.data << 2) | c) & mask;
     }
 
     pub fn fromStr(s: []const u8) Code {
@@ -30,7 +28,7 @@ const Code = struct {
     }
 
     pub fn toString(self: Code, frame: usize) ![]const u8 {
-        var res = std.ArrayList(u8).init(global_allocator);
+        var result = std.ArrayList(u8).init(global_allocator);
         var code = self.data;
         var i: usize = 0;
         while (i < frame) : (i += 1) {
@@ -41,11 +39,11 @@ const Code = struct {
                 Code.encodeByte('C') => 'C',
                 else => unreachable,
             };
-            try res.append(c);
+            try result.append(c);
             code >>= 2;
         }
-        std.mem.reverse(u8, res.items);
-        return res.toOwnedSlice();
+        std.mem.reverse(u8, result.items);
+        return result.toOwnedSlice();
     }
 };
 
@@ -54,34 +52,39 @@ pub fn readInput() ![]const u8 {
     defer std.process.argsFree(global_allocator, args);
     const file_name = if (args.len > 1) args[1] else "25000_in";
     const file = try std.fs.cwd().openFile(file_name, .{});
-    const key = ">THREE";
-
     const reader = std.io.bufferedReader(file.reader()).reader();
-    var linebuf: [64]u8 = undefined;
-    while (try reader.readUntilDelimiterOrEof(&linebuf, '\n')) |line| {
-        if (line.len == 0 or std.mem.startsWith(u8, line, key)) break;
-    }
-    var result = try std.ArrayList(u8).initCapacity(global_allocator, 65536);
-    while (try reader.readUntilDelimiterOrEof(&linebuf, '\n')) |line| {
-        for (line) |c, i| {
-            line[i] = Code.encodeByte(c);
+    { // skip past first lines starting with '>'
+        var i: u8 = 0;
+        while (i < 3) : (i += 1) {
+            while (true) {
+                const c = try reader.readByte();
+                if (c == '>') break;
+            }
         }
-        try result.appendSlice(try global_allocator.dupe(u8, line));
+        while (true) {
+            const c = try reader.readByte();
+            if (c == '\n') break;
+        }
     }
-    return result.toOwnedSlice();
+
+    var buf = try reader.readAllAlloc(global_allocator, std.math.maxInt(u32));
+    // In place, remove all newlines from buf and encode nucleotides
+    // using only the last 2 bits in each byte.
+    {
+        var i: usize = 0;
+        for (buf) |c| {
+            if (c != '\n') {
+                // Gives a -> 0x00, c -> 0x01, g -> 0x03, t -> 0x02
+                buf[i] = (c >> 1) & 0x03;
+                i += 1;
+            }
+        }
+        buf.len = i;
+    }
+    return buf;
 }
 
-const HMContext = struct {
-    const K = Code;
-    pub inline fn hash(_: HMContext, key: K) u64 {
-        return key.data;
-    }
-    pub inline fn eql(_: HMContext, a: K, b: K) bool {
-        return a.data == b.data;
-    }
-};
-
-const Map = std.HashMapUnmanaged(Code, u32, HMContext, std.hash_map.default_max_load_percentage);
+const Map = std.AutoHashMapUnmanaged(Code, u32);
 const Iter = struct {
     i: usize = 0,
     input: []const u8,
@@ -89,10 +92,13 @@ const Iter = struct {
     mask: u64,
 
     pub fn init(input: []const u8, frame: usize) Iter {
+        const mask = Code.makeMask(frame);
+        var code = Code{ .data = 0 };
+        for (input[0 .. frame - 1]) |c| code.push(c, mask);
         return .{
-            .input = input,
-            .code = Code{ .data = 0 },
-            .mask = Code.makeMask(frame),
+            .input = input[frame - 1 ..],
+            .code = code,
+            .mask = mask,
         };
     }
     pub fn next(self: *Iter) ?Code {
@@ -104,9 +110,9 @@ const Iter = struct {
     }
 };
 
-fn genMap(input: []const u8, frame: usize, map: *Map) !void {
+fn genMap(seq: []const u8, n: usize, map: *Map) !void {
     map.clearRetainingCapacity();
-    var iter = Iter.init(input, frame);
+    var iter = Iter.init(seq, n);
     while (iter.next()) |code| {
         const gop = try map.getOrPut(global_allocator, code);
         if (!gop.found_existing) gop.value_ptr.* = 0;
@@ -119,7 +125,7 @@ const CountCode = struct {
     code: Code,
     pub fn asc(_: void, a: CountCode, b: CountCode) bool {
         const order = std.math.order(a.count, b.count);
-        return order == .lt or (order == .eq and a.code.data < b.code.data);
+        return order == .lt or (order == .eq and b.code.data < a.code.data);
     }
 };
 
@@ -140,7 +146,7 @@ fn printMap(self: usize, map: Map) !void {
         const cc = v.items[i];
         try stdout.print("{s} {d:.3}\n", .{
             cc.code.toString(self),
-            (@intToFloat(f32, cc.count) * 100.0) / @intToFloat(f32, total),
+            @intToFloat(f32, cc.count) / @intToFloat(f32, total) * 100.0,
         });
         if (i == 0) break;
     }
