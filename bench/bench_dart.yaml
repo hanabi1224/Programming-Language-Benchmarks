@@ -39,6 +39,7 @@ problems:
   - name: http-server
     source:
       - 1.dart
+      - 2.dart
   - name: lru
     source:
       - 1.dart
