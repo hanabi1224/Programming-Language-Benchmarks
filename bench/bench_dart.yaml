@@ -35,7 +35,7 @@ problems:
       - 1.dart
   - name: coro-prime-sieve
     source:
-      - 1.dart
+      - 3.dart
   - name: http-server
     source:
       - 1.dart
