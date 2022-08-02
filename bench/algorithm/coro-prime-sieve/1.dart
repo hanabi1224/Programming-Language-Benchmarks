@@ -13,7 +13,7 @@ Future main(List<String> arguments) async {
 
 Stream<int> generate() async* {
   for (var i = 2;; i++) {
-    yield i;
+    yield await Future.microtask(() => i);
   }
 }
 
@@ -21,7 +21,7 @@ Stream<int> filter(StreamIterator<int> input, int prime) async* {
   while (await input.moveNext()) {
     final i = input.current;
     if (i % prime != 0) {
-      yield i;
+      yield await Future.microtask(() => i);
     }
   }
 }
