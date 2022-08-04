@@ -144,7 +144,7 @@ fn printMap(self: usize, map: Map) !void {
     var i = v.items.len - 1;
     while (true) : (i -= 1) {
         const cc = v.items[i];
-        try stdout.print("{s} {d:.3}\n", .{
+        try stdout.print("{!s} {d:.3}\n", .{
             cc.code.toString(self),
             @intToFloat(f32, cc.count) / @intToFloat(f32, total) * 100.0,
         });

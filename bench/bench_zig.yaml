@@ -32,6 +32,7 @@ problems:
       - 1.zig
       - 2.zig
       - 2-m.zig
+      - 3-i.zig
   - name: fasta
     source:
       - 1.zig

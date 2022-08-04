@@ -15,7 +15,7 @@ pub fn main() !void {
         const stretch_tree = Node.make(stretch_depth, global_allocator).?;
         defer stretch_tree.deinit();
         stretch_tree.cal_hash();
-        try stdout.print("stretch tree of depth {d}\t root hash: {d} check: {d}\n", .{ stretch_depth, stretch_tree.get_hash(), stretch_tree.check() });
+        try stdout.print("stretch tree of depth {d}\t root hash: {d} check: {!}\n", .{ stretch_depth, stretch_tree.get_hash(), stretch_tree.check() });
     }
     const long_lived_tree = Node.make(max_depth, global_allocator).?;
     defer long_lived_tree.deinit();
@@ -34,7 +34,7 @@ pub fn main() !void {
         try stdout.print("{d}\t trees of depth {d}\t root hash sum: {d}\n", .{ iterations, depth, sum });
     }
     long_lived_tree.cal_hash();
-    try stdout.print("long lived tree of depth {d}\t root hash: {d} check: {d}\n", .{ max_depth, long_lived_tree.get_hash(), long_lived_tree.check() });
+    try stdout.print("long lived tree of depth {d}\t root hash: {d} check: {!}\n", .{ max_depth, long_lived_tree.get_hash(), long_lived_tree.check() });
 }
 
 fn get_n() !usize {
