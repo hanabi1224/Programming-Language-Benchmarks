@@ -32,6 +32,9 @@ problems:
   - name: lru
     source:
       - 1.d
+  - name: fasta
+    source:
+      - 1.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
