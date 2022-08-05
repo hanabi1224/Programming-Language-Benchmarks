@@ -1,4 +1,8 @@
 
-let arguments = CommandLine.arguments
-let name = arguments.count > 1 ? arguments[1] : ""
-print("Hello world \(name)!")
+let arguments = CommandLine.arguments.dropFirst()
+
+if let name = arguments.first {
+    print("Hello world \(name)!")
+} else {
+    print("Hello world!")
+}
