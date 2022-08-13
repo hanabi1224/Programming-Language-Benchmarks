@@ -43,6 +43,9 @@ problems:
   - name: merkletrees
     source:
       - 1.nim
+  - name: regex-redux
+    source:
+      - 1.nim
 compiler_version_command: nim --version
 compiler_version_regex:
 runtime_version_parameter:

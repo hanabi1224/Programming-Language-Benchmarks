@@ -8,3 +8,4 @@ out/
 .project
 .classpath
 .settings/
+*_in

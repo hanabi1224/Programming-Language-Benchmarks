@@ -27,6 +27,9 @@ problems:
     source:
       - 1.kt
       - 2.kt
+  - name: regex-redux
+    source:
+      - 1n.kt
 compiler_version_command: sh -c "./gradlew version"
 compiler_version_regex:
 runtime_version_parameter:

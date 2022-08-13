@@ -49,6 +49,9 @@ problems:
   - name: mandelbrot
     source:
       - 1.cr
+  - name: regex-redux
+    source:
+      - 1.cr
 compiler_version_command: crystal version
 compiler_version_regex:
 runtime_version_parameter:
