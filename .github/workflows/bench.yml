@@ -123,6 +123,8 @@ jobs:
       - name: Install bun
         if: matrix.lang == 'javascript'
         run: ./.github/bun.sh
+      - uses: julia-actions/setup-julia@v1
+        if: matrix.lang == 'julia'
       - name: Install haxe
         if: matrix.lang == 'haxe'
         run: |
@@ -262,7 +264,8 @@ jobs:
       - run: ./.github/bun.sh
       # - run: ./.github/truffleruby.sh
       - run: ./.github/wasm.sh
-      - run: ./.github/fortran.sh
+      # - run: ./.github/fortran.sh
+      - uses: julia-actions/setup-julia@v1
       - run: ./.github/loom.sh
       - run: ./.github/lua.sh
       # - run: ./.github/racket.sh
