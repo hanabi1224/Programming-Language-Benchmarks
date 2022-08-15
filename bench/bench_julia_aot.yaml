@@ -1,0 +1,27 @@
+lang: julia
+problems:
+  - name: helloworld
+    source:
+      - 1.jl
+  - name: nbody
+    source:
+      - 7.jl
+  - name: nsieve
+    source:
+      - 1.jl
+compiler_version_command: julia -v
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: c.jl
+environments:
+  - os: linux
+    compiler: julia/aot
+    version: latest
+    include: julia
+    before_build:
+      - cp c.jl out/App/src
+    # the build process follows instructions on https://julialang.github.io/PackageCompiler.jl/dev/apps.html#Creating-an-app
+    build: julia compile.jl
+    out_dir: compiled
+    run_cmd: bin/App
