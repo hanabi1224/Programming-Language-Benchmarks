@@ -162,6 +162,6 @@ _This is inspired by [The Computer Language Benchmarks Game](https://benchmarksg
 
 # LICENSES
 
-Code of problem implementation from [The Computer Language Benchmarks Game](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/) is under their [Revised BSD](https://benchmarksgame-team.pages.debian.net/benchmarksgame/license.html)
+Code of problem implementations from [The Computer Language Benchmarks Game](https://salsa.debian.org/benchmarksgame-team/benchmarksgame/) is under their [Revised BSD](https://benchmarksgame-team.pages.debian.net/benchmarksgame/license.html). Here the code may be modifed and/or run with different input.
 
 Other code in this repo is under MIT.
