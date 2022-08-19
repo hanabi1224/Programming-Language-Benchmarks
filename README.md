@@ -19,7 +19,7 @@ _Once a change is merged into main branch, the CI job will re-generate and publi
 
 ## Main Goals
 
-- Compare performance differences between different languages. Note that implementations might be using different optimizations, e.g. with or w/o multithreading, please do read the source code to check if it's a fair comparision or not.
+- Compare performance differences between different languages. Note that implementations might be using different optimizations, but not multithreading, please do read the source code to check if it's a fair comparision or not.
 - Compare performance differences between different compilers or runtimes of the same language with the same source code.
 - Facilitate benchmarking on real server environments as nowadays more and more applications are deployed with docker/k8s. It's likely to get a very different result from what you get on your dev machine.
 - A reference for CI setup / Dev environment setup / package management setup for different languages. Refer to [Github action](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml)
