@@ -52,7 +52,8 @@ pub fn readInput() ![]const u8 {
     defer std.process.argsFree(global_allocator, args);
     const file_name = if (args.len > 1) args[1] else "25000_in";
     const file = try std.fs.cwd().openFile(file_name, .{});
-    const reader = std.io.bufferedReader(file.reader()).reader();
+    var buffered_reader = std.io.bufferedReader(file.reader());
+    const reader = buffered_reader.reader();
     { // skip past first lines starting with '>'
         var i: u8 = 0;
         while (i < 3) : (i += 1) {

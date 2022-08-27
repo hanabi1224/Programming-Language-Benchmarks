@@ -36,7 +36,7 @@ fn offset_momentum(bodies: []Body) void {
     var pos = vec3{ 0, 0, 0 };
     for (bodies) |b| pos += scale(b.vel, b.mass);
     var sun = &bodies[0];
-    sun.vel = -scale(pos, 1 / solar_mass);
+    sun.vel = -scale(pos, 1.0 / solar_mass);
 }
 
 fn advance(bodies: []Body, dt: f64) void {
