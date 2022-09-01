@@ -27,7 +27,8 @@ Stream<int> filter(StreamIterator<int> input, int prime) async* {
   while (await input.moveNext()) {
     final i = input.current;
     if (i % prime != 0) {
-      yield i;
+      // User of `await` to avoid Stack Overflow
+      yield await Future.value(i);
     }
   }
 }
