@@ -5,15 +5,11 @@ Future main(List<String> arguments) async {
 
   var stream = StreamIterator(generate());
 
-  for (var i = 0; i < n; i++) {
-    if (await stream.moveNext()) {
-      var prime = stream.current;
-      print(prime);
+  for (var i = 0; i < n && await stream.moveNext(); i++) {
+    var prime = stream.current;
+    print(prime);
 
-      stream = StreamIterator(filter(stream, prime));
-    } else {
-      break;
-    }
+    stream = StreamIterator(filter(stream, prime));
   }
 }
 
