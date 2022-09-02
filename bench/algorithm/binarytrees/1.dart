@@ -3,22 +3,27 @@ const int minDepth = 4;
 class Node {
   final Node? left;
   final Node? right;
-  Node(Node? this.left, Node? this.right);
+  Node._(Node? this.left, Node? this.right);
 
-  static Node create(int depth) {
+  factory Node.create(int depth) {
     return depth > 0
-        ? Node(create(depth - 1), create(depth - 1))
-        : Node(null, null);
+        ? Node._(Node.create(depth - 1), Node.create(depth - 1))
+        : Node._(null, null);
   }
 
   int check() {
     var r = 1;
+
+    final left = this.left;
     if (left != null) {
-      r += left!.check();
+      r += left.check();
     }
+
+    final right = this.right;
     if (right != null) {
-      r += right!.check();
+      r += right.check();
     }
+
     return r;
   }
 }
