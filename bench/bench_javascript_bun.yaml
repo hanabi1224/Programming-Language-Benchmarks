@@ -29,7 +29,7 @@ problems:
       - 1.js
   # - name: http-server
   #   source:
-  #     - 1.js
+  #     - 1.bun.js
   - name: lru
     source:
       - 1.js

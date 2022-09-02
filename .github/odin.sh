@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-VERSION=dev-2022-08
+VERSION=dev-2022-09
 FILE_NAME=odin-ubuntu-amd64-$VERSION.zip
 
 mkdir /tmp/odin
