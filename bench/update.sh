@@ -11,3 +11,11 @@ popd
 pushd include/kotlin-native
 ./gradlew du
 popd
+
+pushd include/rust
+cargo update
+popd
+
+pushd include/rust-nightly
+cargo +nightly update
+popd

@@ -18,7 +18,7 @@ problems:
       - 8.rs
       - 8-m.rs
 source_rename_to: main.rs
-compiler_version_command: rustc +nightly -V
+compiler_version_command: rustc -V
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
@@ -32,7 +32,7 @@ environments:
       CXX: clang++
     include: rust-nightly
     include_sub_dir: src
-    build: cargo +nightly build --release --target-dir /tmp/rsn/target -v
+    build: cargo build --release --target-dir /tmp/rsn/target -v
     after_build:
       - sudo mv /tmp/rsn/target/release/_app out
     out_dir: out

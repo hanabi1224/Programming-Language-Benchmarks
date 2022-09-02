@@ -85,7 +85,7 @@ problems:
       - 0.rs
       - 1.rs
 source_rename_to: main.rs
-compiler_version_command: rustc +stable -V
+compiler_version_command: rustc -V
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
@@ -103,7 +103,7 @@ environments:
       CXX: clang++
     include: rust
     include_sub_dir: src
-    build: cargo +stable build --release --target-dir /tmp/rs/target -v
+    build: cargo build --release --target-dir /tmp/rs/target -v
     after_build:
       - sudo mv /tmp/rs/target/release/_app out
     out_dir: out

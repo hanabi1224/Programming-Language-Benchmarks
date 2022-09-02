@@ -63,7 +63,6 @@ environments:
     include: rust
     include_sub_dir: src
     before_build:
-      - rustup target add wasm32-wasi
       - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
     build: wasmer create-exe --llvm --enable-all -o out/app /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm
     out_dir: out
@@ -78,7 +77,6 @@ environments:
     include: rust
     include_sub_dir: src
     before_build:
-      - rustup target add wasm32-wasi
       - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
     build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
@@ -92,7 +90,6 @@ environments:
     include: rust
     include_sub_dir: src
     before_build:
-      - rustup target add wasm32-wasi
       - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
     build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out && cp wrapper.js out
     out_dir: out
@@ -109,7 +106,6 @@ environments:
     include: rust
     include_sub_dir: src
     before_build:
-      - rustup target add wasm32-wasi
       - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
       - deno bundle --unstable wrapper.ts app.ts
     build: deno compile --no-check --unstable --allow-env --allow-read -o out/app app.ts

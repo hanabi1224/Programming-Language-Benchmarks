@@ -14,7 +14,7 @@
 
 use rayon::prelude::*;
 use std::ops::*;
-use std::simd::Simd;
+use std::simd::{Simd, SimdFloat};
 
 const LANES: usize = 4;
 type IntType = i32;
@@ -22,9 +22,9 @@ const LANES_INT: IntType = LANES as IntType;
 type F64Vec = Simd<f64, LANES>;
 type IntVec = Simd<IntType, LANES>;
 
-const ONE: IntVec = IntVec::splat(1);
-const TWO: IntVec = IntVec::splat(2);
-const LANES_VEC: IntVec = IntVec::splat(LANES_INT);
+const ONE: IntVec = IntVec::from_array([1, 1, 1, 1]);
+const TWO: IntVec = IntVec::from_array([2, 2, 2, 2]);
+const LANES_VEC: IntVec = IntVec::from_array([LANES_INT, LANES_INT, LANES_INT, LANES_INT]);
 const J_ARRAY: IntVec = IntVec::from_array([0, 1, 2, 3]);
 
 fn main() {

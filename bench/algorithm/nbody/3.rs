@@ -8,7 +8,7 @@
 #![feature(portable_simd)]
 
 use std::f64::consts::PI;
-use std::simd::f64x4;
+use std::simd::{f64x4, SimdFloat};
 
 const SOLAR_MASS: f64 = 4.0 * PI * PI;
 const YEAR: f64 = 365.24;
@@ -20,7 +20,7 @@ macro_rules! planet {
         Planet {
             position: f64x4::from_array([$x, $y, $z, 0.0]),
             velocity: f64x4::from_array([$vx, $vy, $vz, 0.0]),
-            mass_ratio: f64x4::splat($mass_ratio),
+            mass_ratio: f64x4::from_array([$mass_ratio, $mass_ratio, $mass_ratio, $mass_ratio]),
             mass: $mass_ratio * SOLAR_MASS,
             mass_half: $mass_ratio * SOLAR_MASS * 0.5,
         }
