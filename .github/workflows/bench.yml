@@ -111,9 +111,9 @@ jobs:
       - name: Install dotnet
         if: matrix.lang == 'csharp'
         run: ./.github/dotnet.sh
-      - name: Install loom
-        if: matrix.lang == 'java'
-        run: ./.github/loom.sh
+      # - name: Install loom
+      #   if: matrix.lang == 'java'
+      #   run: ./.github/loom.sh
       # - name: Install graalvm native-image
       #   if: matrix.lang == 'java'
       #   run: ./.github/graalvm-native-image.sh
@@ -266,7 +266,7 @@ jobs:
       - run: ./.github/wasm.sh
       # - run: ./.github/fortran.sh
       - uses: julia-actions/setup-julia@v1
-      - run: ./.github/loom.sh
+      # - run: ./.github/loom.sh
       - run: ./.github/lua.sh
       # - run: ./.github/racket.sh
       - run: ./.github/hashlink.sh

@@ -1,5 +1,5 @@
 lang: java
-# enabled: false
+enabled: false
 problems:
   - name: coro-prime-sieve
     source:
