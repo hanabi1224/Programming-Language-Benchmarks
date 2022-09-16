@@ -23,7 +23,7 @@ void main(string[] args)
 {
     auto n = args.length > 1 ? args[1].to!int : 1;
     foreach(_; 0..n)
-        point = point.multiply(PRIVATE_KEY);
+        point = point * PRIVATE_KEY;
     writefln("%s,%s",replace(toLower(point.x.toHex()),"_",""), replace(toLower(point.y.toHex()),"_",""));
 }
 
@@ -182,7 +182,7 @@ struct Point {
         return JacobianPoint(this.x, this.y, ONE);
     }
 
-    Point multiply(BigInt scalar) {
+    Point opBinary(string op="*")(BigInt scalar) {
         JacobianPoint tmp;
         return tmp.fromAffine(this).multiplyUnsafe(scalar).toAffine();
     }
