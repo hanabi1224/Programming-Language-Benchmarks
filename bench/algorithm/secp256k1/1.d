@@ -23,18 +23,15 @@ void main(string[] args)
     static point = Point(BigInt("55066263022277343669578718895168534326250603453777594175500187360389116729240"),
                          BigInt("32670510020758816978083085130507043184471273380659243275938904335757337482424"));
     foreach(_; 0..n)
-        //point = point.multiply(PRIVATE_KEY);
-        point = point * PRIVATE_KEY;
+        point = point.multiply(PRIVATE_KEY);
     writefln("%s,%s",replace(toLower(point.x.toHex()),"_",""), replace(toLower(point.y.toHex()),"_",""));
 }
 
-pure
 BigInt mod(BigInt a, BigInt b = P) {
     auto r = a % b;
     return r < ZERO ? r + b : r;
 }
 
-pure
 BigInt invert(BigInt number, BigInt modulo = P) {
     BigInt a = mod(number, modulo);
     BigInt b = modulo;
@@ -57,12 +54,10 @@ BigInt invert(BigInt number, BigInt modulo = P) {
     return mod(x, modulo);
 }
 
-pure
 BigInt divNearest(BigInt a, BigInt b) {
     return (a + b / TWO) / b;
 }
 
-pure
 auto splitScalarEndo (BigInt k) {
     auto b2 = A1;
     auto c1 = divNearest(b2 * k, N);
@@ -182,15 +177,14 @@ struct Point {
         return JacobianPoint(this.x, this.y, ONE);
     }
 
-    //Point multiply(BigInt scalar) {
-    //    JacobianPoint tmp;
-    //    return tmp.fromAffine(this).multiplyUnsafe(scalar).toAffine();
-    //}
+    Point multiply(BigInt scalar) {
+        JacobianPoint tmp;
+        return tmp.fromAffine(this).multiplyUnsafe(scalar).toAffine();
+    }
 
     Point opBinary(string op : "*")(BigInt scalar)
     {
-        JacobianPoint tmp;
-        return tmp.fromAffine(this).multiplyUnsafe(scalar).toAffine();
+        return JacobianPoint.fromAffine(this).multiplyUnsafe(scalar).toAffine();
     }
 }
 
