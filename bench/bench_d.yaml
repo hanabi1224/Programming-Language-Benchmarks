@@ -38,6 +38,9 @@ problems:
   - name: secp256k1
     source:
       - 1.d
+  - name: mandelbrot
+    source:
+      - 1.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
