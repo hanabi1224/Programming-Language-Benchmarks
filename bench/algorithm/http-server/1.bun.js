@@ -6,7 +6,7 @@ async function send(api, value) {
 		body: JSON.stringify({ value: value }),
 	});
 	let text = await r.text();
-	console.log(`response: ${text}`);
+	// console.log(`response: ${text}`);
 	return parseInt(text);
 }
 
@@ -37,7 +37,7 @@ function runServer(port) {
 		async fetch(req) {
 			if (req.method === "POST") {
 				const payload = await req.json();
-				console.log(`request: ${payload.value}`);
+				// console.log(`request: ${payload.value}`);
 				return new Response(payload.value.toString());
 			} else {
 				return new Response(`${req.method} not supported`);
@@ -55,9 +55,11 @@ async function main() {
 	const args = process.argv.slice(2);
 	const n = +args[0] || 10;
 	const port = 20000 + Math.floor(Math.random() * 30000);
-	const server = runServer(port);
+	// const server = runServer(port);
+	runServer(port);
 	await calculateSum(port, n);
-	server.stop();
+	process.exit(0);
+	// server.stop();
 }
 
 main();
