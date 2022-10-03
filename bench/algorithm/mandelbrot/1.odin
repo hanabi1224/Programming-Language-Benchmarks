@@ -33,11 +33,11 @@ main :: proc() {
     }
 
     hash := md5.hash_bytes(pixels)
-    sb := strings.make_builder()
-    strings.init_builder_len_cap(&sb, 0, 32)
-    defer strings.destroy_builder(&sb)
+    sb := strings.builder_make()
+    strings.builder_init(&sb, 0, 32)
+    defer strings.builder_destroy(&sb)
     for b, _ in hash {
-        strings.write_string_builder(&sb, fmt.tprintf("%2x", b))
+        strings.write_string(&sb, fmt.tprintf("%2x", b))
     }
 	fmt.printf("%s\n", strings.to_string(sb))
 }
