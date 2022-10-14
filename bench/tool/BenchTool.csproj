@@ -9,10 +9,10 @@
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="5.*" />
     <PackageReference Include="Newtonsoft.Json" Version="13.*" />
-    <PackageReference Include="NLog" Version="4.*" />
-    <PackageReference Include="NLog.Schema" Version="4.*" PrivateAssets="all" />
+    <PackageReference Include="NLog" Version="5.*" />
+    <PackageReference Include="NLog.Schema" Version="5.*" PrivateAssets="all" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.*" />
-    <PackageReference Include="YamlDotNet" Version="11.*" />
+    <PackageReference Include="YamlDotNet" Version="12.*" />
   </ItemGroup>
   <ItemGroup>
     <None Update="nlog.config">

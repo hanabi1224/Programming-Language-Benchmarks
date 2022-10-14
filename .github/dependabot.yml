@@ -1,0 +1,50 @@
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "cargo"
+    directory: "/bench/include/rust"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "cargo"
+    directory: "/bench/include/rust-nightly"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "/bench/include/kotlin-jvm"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gradle"
+    directory: "/bench/include/kotlin-native"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pub"
+    directory: "/bench/include/dart"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/bench/tool"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/bench/include/dotnet"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/bench/include/dotnet_preview"
+    open-pull-requests-limit: 0
+    schedule:
+      interval: "weekly"

@@ -59,10 +59,10 @@ environments:
   - os: linux
     compiler: tinygo
     version: latest
-    docker: tinygo/tinygo
+    docker: tinygo/tinygo:0.25.0
     env:
       GOAMD64: v3
-    include:
-    build: go mod init tmp.org/tmp/v2 && go mod tidy && tinygo build -o out/app app.go
+    include: go
+    build: go mod tidy && tinygo build -o out/app app.go
     out_dir: out
     run_cmd: app
