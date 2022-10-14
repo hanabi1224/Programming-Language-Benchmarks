@@ -57,7 +57,7 @@ jobs:
     steps:
       - run: lscpu
       - run: dotnet --info
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.x"
       - name: Install
@@ -174,7 +174,7 @@ jobs:
           php-version: "8.1"
       - name: Install python
         if: matrix.lang == 'python'
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
       - name: Install python ext
@@ -239,7 +239,7 @@ jobs:
         os: [ubuntu-20.04]
     steps:
       - run: lscpu
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.x"
       - name: Install
@@ -280,7 +280,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
       - run: ./.github/python.sh
