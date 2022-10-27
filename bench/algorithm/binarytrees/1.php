@@ -4,61 +4,41 @@
 
    contributed by Peter Baltruschat
    modified by Levi Cameron
+   modified by Stéphane Demonchaux
    *reset*
+   
+   must run with
+   
+   opcache.jit=1255
+   opcache.enable_cli=1
+   opcache.jit_buffer_size=100M
+   memory_limit=400M
 */
 
-class Node
-{
-    public $l;
-    public $r;
+function checksum(array|null $node):int {
+    return $node === null ? 1 : 1 + checksum($node[0]) + checksum($node[1]);
 }
 
-function bottomUpTree($depth)
-{
-    $node = new Node();
-    if (!$depth) return $node;
-    $depth--;
-    $node->l = bottomUpTree($depth);
-    $node->r = bottomUpTree($depth);
-    return $node;
+function createTree(int $depth): array|null {
+    return $depth-- > 0 ? [createTree($depth), createTree($depth)] : null;
 }
 
-function itemCheck($treeNode)
-{
-    return 1
-        + ($treeNode->l->l === null ? 1 : itemCheck($treeNode->l))
-        + ($treeNode->r->l === null ? 1 : itemCheck($treeNode->r));
-}
-
-$minDepth = 4;
-
-$n = ($argc == 2) ? $argv[1] : 1;
-$maxDepth = max($minDepth + 2, $n);
+$maxDepth = max(6, ($argc == 2) ? $argv[1] : 1);
 $stretchDepth = $maxDepth + 1;
+$stretchTree = createTree($stretchDepth);
 
-$stretchTree = bottomUpTree($stretchDepth);
-printf("stretch tree of depth %d\t check: %d\n", $stretchDepth, itemCheck($stretchTree));
-unset($stretchTree);
+echo sprintf("stretch tree of depth %s\t check: %s\n", $stretchDepth,  checksum($stretchTree));
 
-$longLivedTree = bottomUpTree($maxDepth);
+$longLivedTree = createTree($maxDepth);
 
-$iterations = 1 << ($maxDepth);
-do {
-    $check = 0;
-    for ($i = 1; $i <= $iterations; ++$i) {
-        $t = bottomUpTree($minDepth);
-        $check += itemCheck($t);
-        unset($t);
+for ($depth = 4; $depth <= $maxDepth; $depth += 2) {
+    $iterations = 1 << $maxDepth - $depth + 4;
+    $sum = 0;
+    for ($i = 0; $i < $iterations; $i++) {
+        $sum += checksum(createTree($depth));
     }
 
-    printf("%d\t trees of depth %d\t check: %d\n", $iterations, $minDepth, $check);
+    echo sprintf("%s\t trees of depth %s\t check: %s\n", $i, $depth, $sum);
+}
 
-    $minDepth += 2;
-    $iterations >>= 2;
-} while ($minDepth <= $maxDepth);
-
-printf(
-    "long lived tree of depth %d\t check: %d\n",
-    $maxDepth,
-    itemCheck($longLivedTree)
-);
+echo sprintf("long lived tree of depth %s\t check: %s\n", $maxDepth, checksum($longLivedTree));
