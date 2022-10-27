@@ -1,10 +1,10 @@
-import { createHash } from "https://deno.land/std/hash/mod.ts";
+import { Hash, encode } from "https://deno.land/x/checksum/mod.ts";
 
 function printHash(data: any) {
     const str = JSON.stringify(data);
-    const hasher = createHash('md5');
-    hasher.update(str);
-    console.log(hasher.toString());
+    const hasher = new Hash('md5');
+    const hash = hasher.digestString(str).hex();
+    console.log(hash);
 }
 
 async function main() {
