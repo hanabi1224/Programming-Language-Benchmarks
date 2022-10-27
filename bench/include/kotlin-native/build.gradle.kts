@@ -6,7 +6,7 @@ plugins {
   val kotlinVersion = "1.7.20"
   kotlin("multiplatform").version(kotlinVersion)
   kotlin("plugin.serialization").version(kotlinVersion)
-  id("com.github.ben-manes.versions").version("0.42.0")
+  id("com.github.ben-manes.versions").version("0.43.0")
 }
 
 repositories {
@@ -25,7 +25,7 @@ kotlin {
         implementation(libs.kbignum)
         // implementation("com.ionspin.kotlin:bignum:0.3.1")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
       }
     }
   }
