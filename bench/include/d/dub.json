@@ -9,5 +9,5 @@
 	"name": "app",
 	"targetPath": "out",
 	"dflags-dmd": ["-mcpu=avx2"],
-	"dflags-ldc2": ["--march=broadwell"]
+	"dflags-ldc": ["-mattr=+avx2", "-mcpu=broadwell"]
 }
