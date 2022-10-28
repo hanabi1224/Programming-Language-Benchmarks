@@ -1,6 +1,20 @@
-const A = 1103515245n;
-const C = 12345n;
-const M = 1n << 31n;
+const A = 1103515245;
+const C = 12345;
+const M = 2 ** 31;
+
+const K = 1 << 16;
+const LF = ~~(A / K);
+const RT = A % K;
+
+function *createLCG(seed) {
+    while (true) {
+        const lf = (seed * LF) % M;
+        const rt = seed * RT;
+        seed = (lf * K + rt + C) % M;
+        yield seed;
+    }
+}
+
 class LinkedListNode {
     data;
     prev = undefined;
@@ -50,19 +64,6 @@ class LinkedList {
         this.__add_node(node);
     }
 }
-class LCG {
-    seed;
-    constructor(seed) {
-        this.seed = seed;
-    }
-    next() {
-        this._lcg();
-        return this.seed;
-    }
-    _lcg() {
-        this.seed = (A * this.seed + C) % M;
-    }
-}
 class Pair {
     key;
     value;
@@ -110,16 +111,16 @@ class LRU {
 function main() {
     const size = +process.argv[2] || 100
     const n = +process.argv[3] || 100
-    const mod = BigInt(size * 10);
-    const rng0 = new LCG(0n);
-    const rng1 = new LCG(1n);
+    const mod = size * 10;
+    const rng0 = createLCG(0);
+    const rng1 = createLCG(1);
     const lru = new LRU(size);
     let hit = 0;
     let missed = 0;
-    for (var i = 0; i < n; i++) {
-        const n0 = rng0.next() % mod;
+    for (let i = 0; i < n; i++) {
+        const n0 = rng0.next().value % mod;
         lru.put(n0, n0);
-        const n1 = rng1.next() % mod;
+        const n1 = rng1.next().value % mod;
         if (lru.get(n1) == undefined) {
             missed += 1;
         }
