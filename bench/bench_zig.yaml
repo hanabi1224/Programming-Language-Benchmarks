@@ -38,7 +38,7 @@ problems:
       - 1.zig
   - name: nsieve
     source:
-      # - 1.zig
+      - 1.zig
       - 2.zig
   - name: mandelbrot
     source:

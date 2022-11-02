@@ -5,6 +5,7 @@ const global_allocator = std.heap.c_allocator;
 fn nsieve(n: usize) !void {
     var count: usize = 0;
     var flags = try global_allocator.alloc(bool, n);
+    std.mem.set(bool, flags, false);
     defer global_allocator.free(flags);
     var i: usize = 2;
     while (i < n) : (i += 1) {

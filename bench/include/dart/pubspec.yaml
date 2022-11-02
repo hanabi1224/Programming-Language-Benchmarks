@@ -6,4 +6,4 @@ environment:
 dependencies:
   crypto: ^3.0.2
   shelf: ^1.4.0
-  tuple: ^2.0.0
+  tuple: ^2.0.1
