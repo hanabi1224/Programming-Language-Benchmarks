@@ -1,112 +1,90 @@
 // port from 2-i.rs
-// pshufb - check if working and report about lack of documentation
 @safe:
 
 import std;
-import core.simd;
+import inteli.emmintrin, inteli.tmmintrin, inteli.smmintrin;
 
-version(LDC) {
-    import ldc.simd;
-   
-}
-
-immutable vSize = 16;
+immutable size_t vSize = 16;
 alias vItem = ubyte;
-alias Vec = vItem[vSize];
+alias V = vItem[vSize];
 
 enum NEXT_PERM_MASKS = nextPermMasks();
 enum REVERSE_MASKS = reverseMasks();
 
-Vec shuffle(Vec a, Vec mask) {
-    Vec r;
+V shuffle(V a, V mask) {
+    V r;
     foreach (i; 0 .. vSize)
         r[i] = a[mask[i]]; // mb need cast
     return r;
 }
 
-version(LDC) {
-    ubyte16 simd_shuffle_rev(ubyte16 a, int idx) {
-        mixin("enum mask = AliasSeq!(" ~ format("%(%s,%)", REVERSE_MASKS[idx]) ~ ");");
-        return shufflevector!(int4, mask)(a, a);
+__m128i simd_shuffle(__m128i a, __m128i mask) {
+    return _mm_shuffle_epi8(a, mask);
+}
+
+V reverseMask(vItem n) {
+    V v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    foreach(i; 0 .. n)
+        v[i] = cast(vItem)(n - i - 1);
+    return v;
+}
+
+V rotateMask(vItem n) {
+    V v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    foreach(i; 0 .. n)
+        v[i] = cast(vItem)((i + 1) % n);
+    return v;
+}
+
+V[vSize] reverseMasks() {
+    V[vSize] v;
+    foreach(i; 0 .. vSize)
+        v[i] = reverseMask(cast(vItem) i);
+    return v;
+}
+
+V nextPermMask(vItem n) {
+    V v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    foreach(i; 2 .. n + 1)
+        v = shuffle(v, rotateMask(cast(vItem)i));
+    return v;
+}
+
+V[vSize] nextPermMasks() {
+    V[vSize] v;
+    size_t i = 0;
+    while (i < vSize) {
+        v[i] = nextPermMask(cast(vItem) i);
+        i++;
     }
-
-    ubyte16 simd_shuffle_perm(ubyte16 a, int idx) {
-        mixin("enum mask = AliasSeq!(" ~ format("%(%s,%)", NEXT_PERM_MASKS[idx]) ~ ");");
-        return shufflevector!(int4, mask)(a, a);
-    }
-}
-
-
-Vec reverseMask(ubyte n) {
-    Vec v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    foreach(ubyte i; 0u .. n)
-        v.array[i] = cast(ubyte) (n - i - 1u);
     return v;
 }
 
-Vec rotateMask(ubyte n) {
-    Vec v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    foreach(ubyte i; 0u .. n)
-        v.array[i] = (i + 1u) % n;
-    return v;
-}
-
-Vec[vSize] reverseMasks() {
-    Vec[vSize] v;
-    foreach(ubyte i; 0u .. vSize)
-        v[i] = reverseMask(i);
-    return v;
-}
-
-Vec nextPermMask(ubyte n) {
-    Vec v = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    foreach(ubyte i; 2u .. n + 1u)
-        v = shuffle(v, rotateMask(i));
-    return v;
-}
-
-Vec[vSize] nextPermMasks() {
-    Vec[vSize] v;
-    foreach(ubyte i; 0u .. vSize)
-        v[i] = nextPermMask(i);
-    return v;
-}
-
-version(LDC) {
-    uint pfannkuchen(ubyte16 perm) {
-        uint flipCount = 0u;
-        auto a = perm;
-        while (true) {
-            const k = extractelement!(ubyte16, 0)(a);
-            if (k == 0)
-                return flipCount;
-            a = simd_shuffle_rev(a, k+1);
-            flipCount += 1;
-        }
-    }
-}
-else {
-    uint pfannkuchen(ubyte16 perm) {
-        uint flipCount = 0u;
-        auto a = perm.array;
-        while (true) {
-            const k = a[0];
-            if (k == 0u)
-                return flipCount;
-            a = shuffle(a, REVERSE_MASKS[k+1]);
-            flipCount += 1u;
-        }
+uint pfannkuchen(__m128i perm) { // try fat pointer
+    uint flipCount = 0u;
+    auto a = perm;
+    while (true) {
+        const k = _mm_extract_epi8(a, 0);
+        if (k == 0)
+            return flipCount;
+        auto mask = REVERSE_MASKS[cast(size_t) k + 1];
+        a = simd_shuffle(a, toMask(mask));
+        flipCount += 1;
     }
 }
 
-void main(string[] args) {
-    import core.simd: ubyte16;
+__m128i toMask(V v) {
+    return _mm_setr_epi8(
+            v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11], v[12], v[13],
+            v[14], v[15]
+        );
+}
 
-    const n = args[1].to!ubyte;
+Tuple!(int, uint) calculate(size_t n) {
     uint maxFlipCount = 0u;
     int checksum = 0;
-    ubyte16 perm = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    Vec count = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+    auto perm = _mm_setr_epi8(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+    V count = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
     bool parity = 0;
     while (true) {
         auto flipCount = pfannkuchen(perm);
@@ -124,21 +102,22 @@ void main(string[] args) {
         }
         if (end)
             break;
-        version(LDC) {
-            perm = simd_shuffle_perm(perm, r + 1);
-        }
-        else {
-            perm = cast(ubyte16) shuffle(perm.array, nextPermMask(cast(ubyte) (r + 1u)));
-        }
+        auto mask = nextPermMask(cast(ubyte) (r + 1));
+        perm = simd_shuffle(perm, toMask(mask));
         
         count[r] -= 1;
         ubyte i = 1;
         while (i < r) {
-            count[i] = cast(ubyte) (i + 1u); // in 2.zig i + 2
+            count[i] = cast(ubyte) (i + 1); // in 2.zig i + 2
             i++;
         }
         parity ^= 1;
     }
-    writefln("%d\nPfannkuchen(%d) = %d\n", checksum, n, maxFlipCount);
+    return tuple(checksum, maxFlipCount);
 }
 
+void main(string[] args) {
+    const n = args[1].to!ubyte;
+    Tuple!(int, "checksum", uint, "maxFlipCount") ans = calculate(n);
+    writefln("%d\nPfannkuchen(%d) = %d\n", ans.checksum, n, ans.maxFlipCount);
+}
