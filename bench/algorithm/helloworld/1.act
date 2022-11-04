@@ -1,0 +1,7 @@
+
+actor main(env):
+    if len(env.argv) > 1:
+        print("Hello world %s!" % env.argv[1])
+    else:
+        print("Hello world !")
+    await async env.exit(0)
