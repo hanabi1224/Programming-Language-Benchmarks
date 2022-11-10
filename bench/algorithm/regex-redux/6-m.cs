@@ -19,50 +19,50 @@ public static partial class regexredux
         Regex.CacheSize = 1024;
     }
 
-    [RegexGenerator(@">.*\n|\n", opt)]
+    [GeneratedRegex(@">.*\n|\n", opt)]
     public static partial Regex ReplaceRegex();
 
-    [RegexGenerator(@"tHa[Nt]", opt)]
+    [GeneratedRegex(@"tHa[Nt]", opt)]
     public static partial Regex MagicRe1();
 
-    [RegexGenerator(@"aND|caN|Ha[DS]|WaS", opt)]
+    [GeneratedRegex(@"aND|caN|Ha[DS]|WaS", opt)]
     public static partial Regex MagicRe2();
 
-    [RegexGenerator(@"a[NSt]|BY", opt)]
+    [GeneratedRegex(@"a[NSt]|BY", opt)]
     public static partial Regex MagicRe3();
 
-    [RegexGenerator(@"<[^>]*>", opt)]
+    [GeneratedRegex(@"<[^>]*>", opt)]
     public static partial Regex MagicRe4();
 
-    [RegexGenerator(@"\|[^|][^|]*\|", opt)]
+    [GeneratedRegex(@"\|[^|][^|]*\|", opt)]
     public static partial Regex MagicRe5();
 
     // var variant2 = Task.Run(() => regexCount(sequences, "[cgt]gggtaaa|tttaccc[acg]"));
-    [RegexGenerator(@"[cgt]gggtaaa|tttaccc[acg]", opt)]
+    [GeneratedRegex(@"[cgt]gggtaaa|tttaccc[acg]", opt)]
     public static partial Regex Re2();
     // var variant3 = Task.Run(() => regexCount(sequences, "a[act]ggtaaa|tttacc[agt]t"));
-    [RegexGenerator(@"a[act]ggtaaa|tttacc[agt]t", opt)]
+    [GeneratedRegex(@"a[act]ggtaaa|tttacc[agt]t", opt)]
     public static partial Regex Re3();
     // var variant7 = Task.Run(() => regexCount(sequences, "agggt[cgt]aa|tt[acg]accct"));
-    [RegexGenerator(@"agggt[cgt]aa|tt[acg]accct", opt)]
+    [GeneratedRegex(@"agggt[cgt]aa|tt[acg]accct", opt)]
     public static partial Regex Re7();
     // var variant6 = Task.Run(() => regexCount(sequences, "aggg[acg]aaa|ttt[cgt]ccct"));
-    [RegexGenerator(@"aggg[acg]aaa|ttt[cgt]ccct", opt)]
+    [GeneratedRegex(@"aggg[acg]aaa|ttt[cgt]ccct", opt)]
     public static partial Regex Re6();
     // var variant4 = Task.Run(() => regexCount(sequences, "ag[act]gtaaa|tttac[agt]ct"));
-    [RegexGenerator(@"ag[act]gtaaa|tttac[agt]ct", opt)]
+    [GeneratedRegex(@"ag[act]gtaaa|tttac[agt]ct", opt)]
     public static partial Regex Re4();
     // var variant5 = Task.Run(() => regexCount(sequences, "agg[act]taaa|ttta[agt]cct"));
-    [RegexGenerator(@"agg[act]taaa|ttta[agt]cct", opt)]
+    [GeneratedRegex(@"agg[act]taaa|ttta[agt]cct", opt)]
     public static partial Regex Re5();
     // var variant1 = Task.Run(() => regexCount(sequences, "agggtaaa|tttaccct"));
-    [RegexGenerator(@"agggtaaa|tttaccct", opt)]
+    [GeneratedRegex(@"agggtaaa|tttaccct", opt)]
     public static partial Regex Re1();
     // var variant9 = Task.Run(() => regexCount(sequences, "agggtaa[cgt]|[acg]ttaccct"));
-    [RegexGenerator(@"agggtaa[cgt]|[acg]ttaccct", opt)]
+    [GeneratedRegex(@"agggtaa[cgt]|[acg]ttaccct", opt)]
     public static partial Regex Re9();
     // var variant8 = Task.Run(() => regexCount(sequences, "agggta[cgt]a|t[acg]taccct"));
-    [RegexGenerator(@"agggta[cgt]a|t[acg]taccct", opt)]
+    [GeneratedRegex(@"agggta[cgt]a|t[acg]taccct", opt)]
     public static partial Regex Re8();
 
     static string regexCount(string s, Regex r)
@@ -80,7 +80,7 @@ public static partial class regexredux
         var initialLength = sequences.Length;
         sequences = ReplaceRegex().Replace(sequences, "");
 
-        var magicTask = () =>
+        var magicTask = Task.Run(() =>
         {
             var newseq = MagicRe1().Replace(sequences, "<4>");
             newseq = MagicRe2().Replace(newseq, "<3>");
@@ -88,28 +88,28 @@ public static partial class regexredux
             newseq = MagicRe4().Replace(newseq, "|");
             newseq = MagicRe5().Replace(newseq, "-");
             return newseq.Length;
-        };
+        });
 
-        var variant2 = () => regexCount(sequences, Re2());
-        var variant3 = () => regexCount(sequences, Re3());
-        var variant7 = () => regexCount(sequences, Re7());
-        var variant6 = () => regexCount(sequences, Re6());
-        var variant4 = () => regexCount(sequences, Re4());
-        var variant5 = () => regexCount(sequences, Re5());
-        var variant1 = () => regexCount(sequences, Re1());
-        var variant9 = () => regexCount(sequences, Re9());
-        var variant8 = () => regexCount(sequences, Re8());
+        var variant2 = Task.Run(() => regexCount(sequences, Re2()));
+        var variant3 = Task.Run(() => regexCount(sequences, Re3()));
+        var variant7 = Task.Run(() => regexCount(sequences, Re7()));
+        var variant6 = Task.Run(() => regexCount(sequences, Re6()));
+        var variant4 = Task.Run(() => regexCount(sequences, Re4()));
+        var variant5 = Task.Run(() => regexCount(sequences, Re5()));
+        var variant1 = Task.Run(() => regexCount(sequences, Re1()));
+        var variant9 = Task.Run(() => regexCount(sequences, Re9()));
+        var variant8 = Task.Run(() => regexCount(sequences, Re8()));
 
-        Console.WriteLine(variant1());
-        Console.WriteLine(variant2());
-        Console.WriteLine(variant3());
-        Console.WriteLine(variant4());
-        Console.WriteLine(variant5());
-        Console.WriteLine(variant6());
-        Console.WriteLine(variant7());
-        Console.WriteLine(variant8());
-        Console.WriteLine(variant9());
-        Console.WriteLine($"\n{initialLength}\n{sequences.Length}");
-        Console.WriteLine(magicTask().ToString());
+        await Console.Out.WriteLineAsync(await variant1.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant2.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant3.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant4.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant5.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant6.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant7.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant8.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync(await variant9.ConfigureAwait(false)).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync("\n" + initialLength + "\n" + sequences.Length).ConfigureAwait(false);
+        await Console.Out.WriteLineAsync((await magicTask.ConfigureAwait(false)).ToString()).ConfigureAwait(false);
     }
 }
