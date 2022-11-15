@@ -30,7 +30,7 @@ internal static class Program
     {
         using MD5 hasher = MD5.Create();
         byte[] hash = hasher.ComputeHash(bytes);
-        Console.WriteLine(Convert.ToHexString(hash));
+        Console.WriteLine(Convert.ToHexString(hash).ToLower());
     }
 }
 internal sealed class GeoData
