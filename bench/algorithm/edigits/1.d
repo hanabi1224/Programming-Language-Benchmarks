@@ -78,7 +78,8 @@ bool test_k(int n, int k)
     {
         return false;
     }
-    auto ln_k_factorial = k * (log(k) - 1) + 0.5 * log(PI * 2);
+    auto ln_k_factorial = k * (std.math.exponential.log(k) - 1) + 0.5 * std
+        .math.exponential.log(PI * 2);
     auto log_10_k_factorial = ln_k_factorial / LN10;
     return log_10_k_factorial >= n + 50;
 }
