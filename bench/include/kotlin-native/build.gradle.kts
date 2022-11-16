@@ -6,7 +6,7 @@ plugins {
   val kotlinVersion = "1.7.21"
   kotlin("multiplatform").version(kotlinVersion)
   kotlin("plugin.serialization").version(kotlinVersion)
-  id("com.github.ben-manes.versions").version("0.43.0")
+  id("com.github.ben-manes.versions").version("0.44.0")
 }
 
 repositories {
