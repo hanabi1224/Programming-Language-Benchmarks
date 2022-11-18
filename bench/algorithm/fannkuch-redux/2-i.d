@@ -1,15 +1,15 @@
 // port from 2-i.rs
-@safe:
 
 import std;
 import inteli.emmintrin, inteli.tmmintrin, inteli.smmintrin;
+
 
 immutable size_t vSize = 16;
 alias vItem = ubyte;
 alias V = vItem[vSize];
 
-enum NEXT_PERM_MASKS = nextPermMasks();
-enum REVERSE_MASKS = reverseMasks();
+static immutable NEXT_PERM_MASKS = nextPermMasks();
+static immutable REVERSE_MASKS = reverseMasks();
 
 V shuffle(V a, V mask) {
     V r;
@@ -67,8 +67,7 @@ uint pfannkuchen(__m128i perm) { // try fat pointer
         const k = _mm_extract_epi8(a, 0);
         if (k == 0)
             return flipCount;
-        auto mask = REVERSE_MASKS[cast(size_t) k + 1];
-        a = simd_shuffle(a, toMask(mask));
+        a = simd_shuffle(a, toMask(REVERSE_MASKS[cast(size_t) k + 1]));
         flipCount += 1;
     }
 }
@@ -102,8 +101,7 @@ Tuple!(int, uint) calculate(size_t n) {
         }
         if (end)
             break;
-        auto mask = nextPermMask(cast(ubyte) (r + 1));
-        perm = simd_shuffle(perm, toMask(mask));
+        perm = simd_shuffle(perm, toMask(NEXT_PERM_MASKS[r + 1]));
         
         count[r] -= 1;
         ubyte i = 1;

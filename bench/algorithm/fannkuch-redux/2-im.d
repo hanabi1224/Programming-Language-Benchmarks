@@ -1,5 +1,5 @@
 // port from 2-im.rs
-//@safe:
+//@safe: taskPool.map is not safe
 
 import std;
 import inteli.emmintrin, inteli.tmmintrin, inteli.smmintrin;
@@ -9,8 +9,8 @@ immutable size_t vSize = 16;
 alias vItem = byte;
 alias V = vItem[vSize];
 
-enum NEXT_PERM_MASKS = nextPermMasks();
-enum REVERSE_MASKS = reverseMasks();
+static immutable NEXT_PERM_MASKS = nextPermMasks();
+static immutable REVERSE_MASKS = reverseMasks();
 
 V shuffle(V a, V mask) {
     V r;
@@ -162,6 +162,7 @@ static int adder(int a, Tuple!(int, uint) b)
 {
     return a + b[0];
 }
+
 static uint maxer(uint a, Tuple!(int, uint) b)
 {
     return max(a, b[1]);
@@ -177,6 +178,6 @@ void main(string[] args) {
         auto last = (first + lenPerTask).min(permsCount);
         taskParams ~= tuple(first, last, n);
     }
-    auto ans = fold!(adder, maxer)(taskPool.map!(calculatePart)(taskParams), 0, 0);
+    auto ans = fold!(adder, maxer)(taskPool.amap!(calculatePart)(taskParams), 0, 0);
     writefln("%d\nPfannkuchen(%d) = %d\n", ans[0], n, ans[1]);
 }
