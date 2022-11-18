@@ -3,14 +3,14 @@ import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
-    val kotlinVersion = "1.7.20"
+    val kotlinVersion = "1.7.21"
     kotlin("jvm").version(kotlinVersion)
     kotlin("plugin.serialization").version(kotlinVersion)
     // kotlin("plugin.spring").version(kotlinVersion)
     // id("org.springframework.boot").version("2.5.6")
     // id("io.spring.dependency-management").version("1.0.11.RELEASE")
     id("com.github.johnrengelman.shadow").version("7.1.2")
-    id("com.github.ben-manes.versions").version("0.43.0")
+    id("com.github.ben-manes.versions").version("0.44.0")
     java
     application
 }

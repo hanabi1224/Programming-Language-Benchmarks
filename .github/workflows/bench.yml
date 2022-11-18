@@ -17,6 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
         lang: [
+            acton,
             c,
             chapel,
             cpp,
@@ -59,7 +60,7 @@ jobs:
       - run: dotnet --info
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.x"
+          dotnet-version: "7.x"
       - name: Install
         run: |
           echo '# placeholder' > $PROFILE
@@ -68,6 +69,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Install acton
+        if: matrix.lang == 'acton'
+        run: ./.github/acton.sh
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -242,7 +246,7 @@ jobs:
       - run: lscpu
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.x"
+          dotnet-version: "7.x"
       - name: Install
         run: |
           dotnet --info
@@ -259,6 +263,7 @@ jobs:
         with:
           name: build
           path: bench/build/
+      - run: ./.github/acton.sh
       - run: ./.github/dotnet.sh
       # - run: ./.github/graalvm.sh
       # - run: ./.github/graalvm-node.sh

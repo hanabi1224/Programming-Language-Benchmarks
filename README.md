@@ -57,7 +57,7 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 ## Prerequisites
 
-[net6](https://dotnet.microsoft.com/)
+[net7](https://dotnet.microsoft.com/)
 
 [nodejs 14](https://nodejs.org/)
 

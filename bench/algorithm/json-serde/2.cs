@@ -16,37 +16,24 @@ internal static class Program
         {
             n = 10;
         }
-
-        string jsonStr = await File.ReadAllTextAsync($"{fileName}.json").ConfigureAwait(false);
-        GeoData data = JsonSerializer.Deserialize<GeoData>(jsonStr);
-        PrintHash(JsonSerializer.SerializeToUtf8Bytes(data));
-        List<GeoData> array = new List<GeoData>(n);
+        string jsonStr = (await File.ReadAllTextAsync($"{fileName}.json").ConfigureAwait(false))!;
+        GeoData data = (JsonSerializer.Deserialize(jsonStr, MyJsonContext.Default.GeoData))!;
+        PrintHash(JsonSerializer.SerializeToUtf8Bytes(data, MyJsonContext.Default.GeoData));
+        GeoData[] array= new GeoData[n];
         for (int i = 0; i < n; i++)
         {
-            array.Add(JsonSerializer.Deserialize<GeoData>(jsonStr));
+            array[i] = JsonSerializer.Deserialize(jsonStr, MyJsonContext.Default.GeoData);
         }
         PrintHash(JsonSerializer.SerializeToUtf8Bytes(array));
     }
-
     private static void PrintHash(byte[] bytes)
     {
         using MD5 hasher = MD5.Create();
         byte[] hash = hasher.ComputeHash(bytes);
-        Console.WriteLine(ToHexString(hash));
-    }
-
-    private static string ToHexString(byte[] ba)
-    {
-        StringBuilder hex = new StringBuilder(ba.Length * 2);
-        foreach (byte b in ba)
-        {
-            hex.AppendFormat("{0:x2}", b);
-        }
-        return hex.ToString();
+        Console.WriteLine(Convert.ToHexString(hash).ToLower());
     }
 }
-
-internal class GeoData
+internal sealed class GeoData
 {
     [JsonPropertyName("type")]
     public string Type { get; set; }
@@ -55,7 +42,7 @@ internal class GeoData
     public Feature[] Features { get; set; }
 }
 
-internal class Feature
+internal sealed class Feature
 {
     [JsonPropertyName("type")]
     public string Type { get; set; }
@@ -67,13 +54,13 @@ internal class Feature
     public Geometry Geometry { get; set; }
 }
 
-internal class Properties
+internal sealed class Properties
 {
     [JsonPropertyName("name")]
     public string Name { get; set; }
 }
 
-internal class Geometry
+internal sealed class Geometry
 {
     [JsonPropertyName("type")]
     public string Type { get; set; }
@@ -81,3 +68,6 @@ internal class Geometry
     [JsonPropertyName("coordinates")]
     public double[][][] Coordinates { get; set; }
 }
+
+[JsonSerializable(typeof(GeoData))]
+internal sealed partial class MyJsonContext : JsonSerializerContext { }
