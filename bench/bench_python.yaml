@@ -45,6 +45,7 @@ problems:
   - name: nsieve
     source:
       - 1.py
+      - 2.py
   - name: lru
     source:
       - 1.py
