@@ -43,9 +43,9 @@ problems:
       - 1.d
   - name: fannkuch-redux 
     source:
-      #- 1.d
-      #- 1-i.d
-      #- 2-i.d
+      - 1.d
+      - 1-i.d
+      - 2-i.d
       - 2-im.d
 compiler_version_command:
 compiler_version_regex:

@@ -107,7 +107,7 @@ __m128i permWithCount(vItem n, V count) {
     return toMask(perm);
 }
 
-Tuple!(__m128i,bool) nextPermutation(__m128i perm, vItem[] count, size_t size) {
+Tuple!(__m128i,bool) nextPermutation(__m128i perm, ref V count, size_t size) {
     auto r = 0;
     bool none = true;
     foreach(i; 0 .. size) {
@@ -122,7 +122,7 @@ Tuple!(__m128i,bool) nextPermutation(__m128i perm, vItem[] count, size_t size) {
     auto nextPerm = simd_shuffle(perm, toMask(NEXT_PERM_MASKS[r + 1]));
     count[r] -= 1;
     foreach(i; 0 .. r)
-        count[r] = cast(vItem) (i + 1);
+        count[i] = cast(vItem) (i + 1);
     return tuple(nextPerm, true);
 }
 
@@ -177,7 +177,6 @@ void main(string[] args) {
         auto last = (first + lenPerTask).min(permsCount);
         taskParams ~= tuple(first, last, n);
     }
-    writeln(taskParams);
     auto ans = fold!(adder, maxer)(taskPool.map!(calculatePart)(taskParams), 0, 0);
     writefln("%d\nPfannkuchen(%d) = %d\n", ans[0], n, ans[1]);
 }
