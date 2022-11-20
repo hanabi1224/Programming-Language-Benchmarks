@@ -16,11 +16,11 @@
 */
 
 function checksum(array|null $node):int {
-    return $node === null ? 1 : 1 + checksum($node[0]) + checksum($node[1]);
+    return $node[0] === null ? 1 : 1 + checksum($node[0]) + checksum($node[1]);
 }
 
 function createTree(int $depth): array|null {
-    return $depth-- > 0 ? [createTree($depth), createTree($depth)] : null;
+    return $depth-- > 0 ? [createTree($depth), createTree($depth)] : [null, null];
 }
 
 $maxDepth = max(6, ($argc == 2) ? $argv[1] : 1);
