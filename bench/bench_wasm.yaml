@@ -55,15 +55,16 @@ runtime_version_parameter:
 environments:
   - os: linux
     compiler: wasmer/llvm
+    enabled: false
     version: latest
     compiler_version_command: wasmer --version
     runtime_version_parameter:
     env:
       RUSTFLAGS: -C target-feature=+simd128
-    include: rust
+    include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
     build: wasmer create-exe --llvm --enable-all -o out/app /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm
     out_dir: out
     run_cmd: app
@@ -74,10 +75,10 @@ environments:
     runtime_version_parameter: --version
     env:
       RUSTFLAGS: -C target-feature=+simd128
-    include: rust
+    include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
     build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
     run_cmd: wasmtime run --wasm-features all _app.wasm
@@ -87,10 +88,10 @@ environments:
     version: latest
     compiler_version_command:
     runtime_version_parameter: --version
-    include: rust
+    include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
     build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out && cp wrapper.js out
     out_dir: out
     run_cmd: node --experimental-wasi-unstable-preview1 --experimental-wasm-modules wrapper.js
@@ -103,10 +104,10 @@ environments:
     runtime_version_parameter:
     env:
       RUSTFLAGS: -C target-feature=+simd128
-    include: rust
+    include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
       - deno bundle --unstable wrapper.ts app.ts
     build: deno compile --no-check --unstable --allow-env --allow-read -o out/app app.ts
     after_build:
