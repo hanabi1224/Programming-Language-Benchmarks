@@ -3,7 +3,7 @@ import random
 import json
 import concurrent.futures
 import urllib.request
-from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from io import BytesIO
 
