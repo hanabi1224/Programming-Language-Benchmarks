@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
         lang: [
             acton,
             c,
@@ -25,10 +25,10 @@ jobs:
             crystal,
             d,
             dart,
-            elixir,
+            # elixir,
             # fortran,
             go,
-            hacklang,
+            # hacklang,
             # haskell,
             haxe,
             java,
@@ -89,9 +89,9 @@ jobs:
       # - name: Install graal
       #   if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
       #   run: ./.github/graalvm.sh
-      # - name: Install clang
-      #   if: matrix.lang == 'c' || matrix.lang == 'cpp'
-      #   run: ./.github/clang.sh
+      - name: Install clang deps
+        if: matrix.lang == 'c' || matrix.lang == 'cpp'
+        run: ./.github/clang.sh
       # - name: Install c deps
       #   if: matrix.lang == 'c'
       #   run: ./.github/c.sh
@@ -231,7 +231,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - run: echo 'dummy step as PR gate'
   bench:
@@ -241,7 +241,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - run: lscpu
       - uses: actions/setup-dotnet@v3
@@ -313,7 +313,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
