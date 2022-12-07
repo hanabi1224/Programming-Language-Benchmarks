@@ -259,11 +259,9 @@ jobs:
           pushd bench
           dotnet run -c Release --project tool -- --task checkcpu
           popd
-      - uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: bench/build/
       - run: ./.github/acton.sh
+      - run: ./.github/clang.sh
+      - run: ./.github/crystal.sh
       - run: ./.github/dotnet.sh
       # - run: ./.github/graalvm.sh
       # - run: ./.github/graalvm-node.sh
@@ -276,7 +274,7 @@ jobs:
       - run: ./.github/lua.sh
       # - run: ./.github/racket.sh
       - run: ./.github/hashlink.sh
-      - run: ./.github/hhvm.sh
+      # - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
         with:
@@ -295,6 +293,10 @@ jobs:
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: bench/build/
       - name: Bench
         run: |
           source $PROFILE
