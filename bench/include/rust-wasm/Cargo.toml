@@ -1,0 +1,49 @@
+[package]
+edition = "2021"
+name = "_app"
+version = "0.1.0"
+
+[features]
+default = [
+  "wasm",
+]
+
+wasm = [
+  "tokio/rt",
+  "tokio/sync",
+  "tokio/macros",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+anyhow = "1"
+bitvec = "1"
+elliptic-curve = "0"
+generic-array = "0"
+hashbrown = "0"
+hashlink = "0"
+hex = "0"
+ibig = "0"
+k256 = "0"
+lasso = "0"
+lazy_static = "1"
+md5 = "0"
+num-bigint = "0"
+num-traits = "0"
+num_cpus = "1"
+numeric-array = "0"
+rand = "0"
+rayon = "1"
+regex = "1"
+serde = {version = "1", features = ["derive"]}
+serde_json = {version = "1", features = ["float_roundtrip", "preserve_order"]}
+static-rc = "0"
+
+tokio = {version = "~1.20", optional = true}
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+overflow-checks = false
+strip = true
