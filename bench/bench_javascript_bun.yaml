@@ -18,9 +18,9 @@ problems:
   # - name: pidigits
   #   source:
   #     - 3.js
-  # - name: edigits
-  #   source:
-  #     - 1.js
+  - name: edigits
+    source:
+     - 1.js
   - name: json-serde
     source:
       - 1.js
