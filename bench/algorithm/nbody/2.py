@@ -90,7 +90,7 @@ def report_energy(bodies=SYSTEM, e=0.0):
             dz = b1.z - b2.z
             distance = math.sqrt(dx*dx + dy*dy + dz*dz)
             e -= b1.m * b2.m / distance
-    print("%.9f" % e)
+    print(f"{e:.9f}")
 
 
 def offset_momentum(ref, bodies=SYSTEM, px=0.0, py=0.0, pz=0.0):
