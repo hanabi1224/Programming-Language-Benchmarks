@@ -20,6 +20,7 @@ jobs:
             acton,
             c,
             chapel,
+            codon,
             cpp,
             csharp,
             crystal,
@@ -72,6 +73,9 @@ jobs:
       - name: Install acton
         if: matrix.lang == 'acton'
         run: ./.github/acton.sh
+      - name: Install codon
+        if: matrix.lang == 'codon'
+        run: ./.github/codon.sh
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -260,6 +264,7 @@ jobs:
           dotnet run -c Release --project tool -- --task checkcpu
           popd
       - run: ./.github/acton.sh
+      - run: ./.github/codon.sh
       - run: ./.github/clang.sh
       - run: ./.github/crystal.sh
       - run: ./.github/dotnet.sh
