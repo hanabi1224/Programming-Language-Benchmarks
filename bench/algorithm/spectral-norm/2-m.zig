@@ -12,7 +12,7 @@ fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: any
         const last = first + len_per_task;
         task.* = try std.Thread.spawn(.{}, f, .{ first, last } ++ args);
     }
-    @call(.{}, f, .{ tasks.len * len_per_task, len } ++ args);
+    @call(.auto, f, .{ tasks.len * len_per_task, len } ++ args);
     for (tasks) |*task| task.join();
 }
 
