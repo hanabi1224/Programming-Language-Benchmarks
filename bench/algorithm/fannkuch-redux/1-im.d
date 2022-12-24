@@ -1,10 +1,7 @@
 // Based on 1-im.cpp implementation
 //@safe:
 
-import std.stdio : writeln;
-import std.stdint : int_fast8_t, int_fast64_t;
-import std.algorithm.mutation : bringToFront;
-import std.conv : to;
+import std;
 import inteli.emmintrin, inteli.tmmintrin, inteli.smmintrin;
 
 alias smallInt = int_fast8_t;
@@ -127,12 +124,16 @@ void main(string[] args)
     immutable smallInt n = args[1].to!smallInt;
     auto factorials = computeFactorials(n);
     auto blockSize = getBlocksAndSize(n, factorials)[1];
+    
+    smallInt maxres = 0;
+    bigInt checkres = 0;
 
-    smallInt maxFlips = 0;
-    bigInt checksum = 0;
 
-    for (bigInt blockStart = 0; blockStart < factorials[n]; blockStart += blockSize)
+    //for (bigInt blockStart = 0; blockStart < factorials[n]; blockStart += blockSize)
+    foreach(bigInt blockStart; parallel(iota(cast(bigInt) 0, factorials[n], blockSize)))
     {
+        smallInt maxFlips = 0;
+        bigInt checksum = 0;
         Masks masks = new Masks();
         bigInt[maxN] count = createCount(n, blockStart, factorials);
 
@@ -169,6 +170,8 @@ void main(string[] args)
             first = cast(smallInt) _mm_extract_epi8(current, 0);
             ++crtIdx;
         }
+        maxres = max(maxFlips,maxres);
+        checkres += checksum;
     }
-    writeln(cast(int) checksum, "\nPfannkuchen(", n, ") = ", cast(int) maxFlips);
+    writeln(cast(int) checkres, "\nPfannkuchen(", n, ") = ", cast(int) maxres);
 }

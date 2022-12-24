@@ -179,5 +179,5 @@ void main(string[] args) {
         taskParams ~= tuple(first, last, n);
     }
     auto ans = fold!(adder, maxer)(taskPool.amap!(calculatePart)(taskParams), 0, 0);
-    writefln("%d\nPfannkuchen(%d) = %d\n", ans[0], n, ans[1]);
+    writefln("%d\nPfannkuchen(%d) = %d", ans[0], n, ans[1]);
 }
