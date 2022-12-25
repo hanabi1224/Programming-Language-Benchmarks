@@ -117,5 +117,5 @@ Tuple!(int, uint) calculate(size_t n) {
 void main(string[] args) {
     const n = args[1].to!ubyte;
     Tuple!(int, "checksum", uint, "maxFlipCount") ans = calculate(n);
-    writefln("%d\nPfannkuchen(%d) = %d\n", ans.checksum, n, ans.maxFlipCount);
+    writefln("%d\nPfannkuchen(%d) = %d", ans.checksum, n, ans.maxFlipCount);
 }

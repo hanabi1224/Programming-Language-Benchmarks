@@ -125,11 +125,9 @@ void main(string[] args)
     auto factorials = computeFactorials(n);
     auto blockSize = getBlocksAndSize(n, factorials)[1];
     
-    smallInt maxres = 0;
-    bigInt checkres = 0;
+    shared smallInt maxres = 0;
+    shared bigInt checkres = 0;
 
-
-    //for (bigInt blockStart = 0; blockStart < factorials[n]; blockStart += blockSize)
     foreach(bigInt blockStart; parallel(iota(cast(bigInt) 0, factorials[n], blockSize)))
     {
         smallInt maxFlips = 0;
@@ -170,8 +168,10 @@ void main(string[] args)
             first = cast(smallInt) _mm_extract_epi8(current, 0);
             ++crtIdx;
         }
-        maxres = max(maxFlips,maxres);
-        checkres += checksum;
+        synchronized {
+            maxres = max(maxFlips,maxres);
+            checkres = checkres + checksum;
+        }
     }
     writeln(cast(int) checkres, "\nPfannkuchen(", n, ") = ", cast(int) maxres);
 }
