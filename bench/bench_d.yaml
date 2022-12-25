@@ -41,6 +41,9 @@ problems:
   - name: mandelbrot
     source:
       - 1.d
+  - name: regex-redux
+    source:
+      - 3.d
   - name: fannkuch-redux 
     source:
       - 1.d
