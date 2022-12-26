@@ -5,6 +5,9 @@ def nsieve(n):
     count = 0
     flags = [True] * n
     for i in range(2, n):
+        if i * i >= n:
+            count += len([True for b in flags[i:] if b])
+            break
         if flags[i]:
             count += 1
             for j in range(i << 1, n, i):
