@@ -171,7 +171,11 @@
                   v-show="other || problem"
                   :class="['text-left', 'pl-4', mdHide]"
                 >
-                  <a :href="`/${i.lang}`">{{ i.lang }}</a>
+                  <a
+                    :href="`/${i.lang}`"
+                    class="underline text-blue-500"
+                    >{{ i.lang }}</a
+                  >
                 </td>
                 <td class="text-right">
                   <a
