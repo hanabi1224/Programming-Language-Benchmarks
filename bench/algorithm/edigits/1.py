@@ -1,5 +1,6 @@
 from sys import argv
 import math
+from datetime import datetime
 
 LN_TAU = math.log(math.tau)
 LN_10 = math.log(float(10))
@@ -53,4 +54,7 @@ def test_k(n, k):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     main()

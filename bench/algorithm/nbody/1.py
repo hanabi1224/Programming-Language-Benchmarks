@@ -7,6 +7,7 @@
 # 2to3
 
 import sys
+from datetime import datetime
 
 
 def combinations(l):
@@ -118,4 +119,6 @@ def main(n, ref='sun'):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main(int(sys.argv[1]))

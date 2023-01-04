@@ -1,5 +1,6 @@
 import sys
 import asyncio
+from datetime import datetime
 
 
 async def main():
@@ -24,5 +25,8 @@ async def filter(ch, prime):
             yield i
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     sys.setrecursionlimit(5000)
     asyncio.run(main())

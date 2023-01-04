@@ -3,9 +3,10 @@ import random
 import json
 import concurrent.futures
 import urllib.request
-from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
+from http.server import HTTPServer, BaseHTTPRequestHandler
 from threading import Thread
 from io import BytesIO
+from datetime import datetime
 
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
@@ -48,4 +49,7 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     main()

@@ -10,6 +10,7 @@
 
 import sys
 from re import sub, findall
+from datetime import datetime
 
 
 seq = None
@@ -59,4 +60,6 @@ def main():
 
 
 if __name__ == "__main__":
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main()

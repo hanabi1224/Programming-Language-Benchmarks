@@ -1,5 +1,5 @@
 import sys
-
+from datetime import datetime
 
 def main():
     n = 100 if len(sys.argv) < 2 else int(sys.argv[1])
@@ -24,5 +24,8 @@ def filter(ch, prime):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     sys.setrecursionlimit(5000)
     main()

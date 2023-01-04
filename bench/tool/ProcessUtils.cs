@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using MathNet.Numerics.Statistics;
+using System.IO;
 using NLog;
 using static Interop;
 
@@ -37,6 +38,8 @@ namespace BenchTool
             {
                 Elapsed = TimeSpan.FromMilliseconds(array.Average(i => i.Elapsed.TotalMilliseconds)),
                 ElapsedStdDevMS = Statistics.StandardDeviation(array.Select(i => i.Elapsed.TotalMilliseconds)),
+                VMStart = TimeSpan.FromMilliseconds(array.Average(i => i.VMStart.TotalMilliseconds)),
+                VMStartStdDevMS = Statistics.StandardDeviation(array.Select(i => i.VMStart.TotalMilliseconds)),
                 CpuTimeKernel = avgCpuTimeKernel,
                 CpuTimeUser = avgCpuTimeUser,
                 PeakMemoryBytes = (long)Math.Round(maxPeakMemoryBytes),
@@ -50,6 +53,10 @@ namespace BenchTool
 
         public double ElapsedStdDevMS { get; set; }
 
+        public TimeSpan VMStart { get; set; }
+
+        public double VMStartStdDevMS { get; set; }
+
         public TimeSpan CpuTime => CpuTimeUser + CpuTimeKernel;
 
         public TimeSpan CpuTimeUser { get; set; }
@@ -60,7 +67,7 @@ namespace BenchTool
 
         public override string ToString()
         {
-            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, stddev: {ElapsedStdDevMS}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, cpu-time-user: {CpuTimeUser.TotalMilliseconds}ms, cpu-time-kernel: {CpuTimeKernel.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
+            return $"[{Environment.ProcessorCount} cores]time: {Elapsed.TotalMilliseconds}ms, stddev: {ElapsedStdDevMS}ms, vm-start: {VMStart.TotalMilliseconds}ms, vm-start-stddev: {VMStartStdDevMS}ms, cpu-time: {CpuTime.TotalMilliseconds}ms, cpu-time-user: {CpuTimeUser.TotalMilliseconds}ms, cpu-time-kernel: {CpuTimeKernel.TotalMilliseconds}ms, peak-mem: {PeakMemoryBytes / 1024}KB";
         }
     }
 
@@ -337,6 +344,15 @@ namespace BenchTool
                 }
             }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
+            string ready_file = Path.Combine(startInfo.WorkingDirectory, "ready");
+            // cleanup files from previous runs
+            if (File.Exists(ready_file))
+            {
+                File.Delete(ready_file);
+            }
+
+            DateTimeOffset process_start = DateTimeOffset.UtcNow;
+
             Stopwatch sw = Stopwatch.StartNew();
             int ret = await RunProcessAsync(
                 p,
@@ -350,6 +366,23 @@ namespace BenchTool
             sw.Stop();
             cts.Cancel();
             m.Elapsed = sw.Elapsed;
+            m.VMStart = TimeSpan.FromMilliseconds(0);
+            if (File.Exists(ready_file))
+            {
+                try
+                {
+                    String ready_file_content = await File.ReadAllTextAsync(ready_file).ConfigureAwait(false);
+                    long ready_utc = Convert.ToInt64(ready_file_content);
+                    m.VMStart = DateTimeOffset.FromUnixTimeMilliseconds(ready_utc) - process_start;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
+
+                // ensure that next run will not use the same file
+                File.Delete(ready_file);
+            }
             await t.ConfigureAwait(false);
             return ret < 0 ? null : m;
         }

@@ -16,6 +16,8 @@ type BenchResult = {
   code: string
   timeMS: number
   timeStdDevMS: number
+  vmStartMS: number | null
+  vmStartStdDevMS: number | null
   memBytes: number
   cpuTimeMS: number
   cpuTimeUserMS: number

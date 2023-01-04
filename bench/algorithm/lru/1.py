@@ -1,6 +1,6 @@
 import sys
 from collections import OrderedDict
-
+from datetime import datetime
 
 class LRU:
     def __init__(self, size: int):
@@ -55,4 +55,6 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main()

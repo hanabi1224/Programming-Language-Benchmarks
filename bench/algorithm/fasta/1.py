@@ -8,6 +8,7 @@
 
 import sys
 import bisect
+from datetime import datetime
 
 alu = (
     'GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGG'
@@ -88,4 +89,8 @@ def main():
     randomFasta(homosapiens, n*5)
 
 
-main()
+if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
+    main()

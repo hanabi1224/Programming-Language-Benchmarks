@@ -1,6 +1,6 @@
 import sys
 import math
-
+from datetime import datetime
 
 class Body(object):
     def __init__(self, p, v, m):
@@ -112,4 +112,6 @@ def main(n, ref='sun'):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main(int(sys.argv[1]))

@@ -10,6 +10,10 @@ from multiprocessing import Lock, RawValue, Process
 from os import cpu_count
 from re import sub
 from sys import argv, stdout
+from datetime import datetime
+
+with open("ready", "w") as f:
+    f.write(str(round(datetime.utcnow().timestamp() * 1000)))
 
 write = stdout.buffer.write
 
@@ -221,4 +225,7 @@ CCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA
 
 
 if __name__ == "__main__":
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     fasta(int(argv[1]))

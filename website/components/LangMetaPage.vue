@@ -98,25 +98,53 @@
       <div class="mt-5 text-xs">
         <div class="form-check form-check-inline">
           <input
-            v-model="show_st"
+            v-model="showSingleThread"
             class="form-check-input inline-block"
             type="checkbox"
             style="vertical-align: bottom"
           />
-          <label class="form-check-label inline-block text-gray-500"
-            >show numbers without parallelization</label
-          >
+          <label class="form-check-label inline-block text-gray-500">
+            show numbers without parallelization
+          </label>
         </div>
         <div class="mt-2 form-check form-check-inline">
           <input
-            v-model="show_mt"
+            v-model="showMultipleThread"
             class="form-check-input inline-block"
             type="checkbox"
             style="vertical-align: bottom"
           />
-          <label class="form-check-label inline-block text-gray-500"
-            >show numbers with parallelization</label
-          >
+          <label class="form-check-label inline-block text-gray-500">
+            show numbers with parallelization
+          </label>
+        </div>
+        <div
+          v-if="containsVMStart"
+          class="mt-2 form-check form-check-inline"
+        >
+          <input
+            v-model="showVMStart"
+            class="form-check-input inline-block"
+            type="checkbox"
+            style="vertical-align: bottom"
+          />
+          <label class="form-check-label inline-block text-gray-500">
+            show VM start column
+          </label>
+        </div>
+        <div
+          v-if="containsVMStart"
+          class="mt-2 form-check form-check-inline"
+        >
+          <input
+            v-model="substractVMStart"
+            class="form-check-input inline-block"
+            type="checkbox"
+            style="vertical-align: bottom"
+          />
+          <label class="form-check-label inline-block text-gray-500">
+            substract VM start from total time
+          </label>
         </div>
       </div>
 
@@ -136,12 +164,27 @@
               </th>
               <th class="text-right">code</th>
               <!-- <th class="text-right">N</th> -->
-              <th class="text-right" title="total time">time</th>
+              <th class="text-right" title="total time">total time</th>
               <th
+                v-if="!substractVMStart"
                 :class="['text-right', mdHide]"
                 title="total time standard deviation"
               >
-                stddev
+                total stddev
+              </th>
+              <th
+                v-if="containsVMStart && showVMStart"
+                class="text-right"
+                title="virtual machine start time"
+              >
+                VM start time
+              </th>
+              <th
+                v-if="containsVMStart && showVMStart && !substractVMStart"
+                :class="['text-right', mdHide]"
+                title="virtual machine standard deviation"
+              >
+                VM start stddev
               </th>
               <th class="text-right">
                 <span class="md-hide">peak-mem</span>
@@ -181,12 +224,26 @@
                     >{{ getNormalizedCode(i) }}</a
                   >
                 </td>
-                <!-- <td class="text-right">{{ i.input }}</td> -->
                 <td class="text-right">
-                  {{ msToText(i.timeMS) }}
+                  {{ timeToText(i.timeMS) }}
                 </td>
-                <td :class="['text-right', mdHide]">
-                  {{ msToFixed(i.timeStdDevMS) }}ms
+                <td
+                  v-if="!substractVMStart"
+                  :class="['text-right', mdHide]"
+                >
+                  {{ timeToText(i.timeStdDevMS) }}
+                </td>
+                <td
+                  v-if="containsVMStart && showVMStart"
+                  class="text-right"
+                >
+                  {{ vmStartToText(i.vmStartMS) }}
+                </td>
+                <td
+                  v-if="containsVMStart && showVMStart && !substractVMStart"
+                  :class="['text-right', mdHide]"
+                >
+                  {{ substractVMStart ? '-' : vmStartToText(i.vmStartStdDevMS) }}
                 </td>
                 <td class="text-right">
                   {{ (i.memBytes / (1024 * 1024)).toFixed(1) }}MB
@@ -279,8 +336,10 @@ Component.registerHooks(['head'])
 })
 export default class LangMetaPage extends Vue {
   isMenuOn = false
-  show_st = true
-  show_mt = true
+  showSingleThread = true
+  showMultipleThread = true
+  showVMStart = true
+  substractVMStart = false
   meta?: LangPageMeta
   problem?: string
   allProblems?: string[] = problems
@@ -306,8 +365,15 @@ export default class LangMetaPage extends Vue {
     this.isMenuOn = !this.isMenuOn
   }
 
-  msToText(ms: number): string {
+  timeToText(ms: number): string {
     return ms <= 0 ? 'timeout' : `${this.msToFixed(ms)}ms`
+  }
+
+  vmStartToText(ms: number | null): string {
+    if (ms == null) {
+      return '-'
+    }
+    return `${this.msToFixed(ms)}ms`
   }
 
   msToFixed(ms: number): string {
@@ -392,15 +458,11 @@ export default class LangMetaPage extends Vue {
       (i) => i.test === test && i.os === this.osSelected && i.input === input
     )
 
-    if (this.other?.benchmarks && this.other?.benchmarks?.length > 0) {
-      exp = exp.unionWith(
-        _.chain(this.other?.benchmarks)
-          .filter(
-            (i) =>
-              i.test === test && i.os === this.osSelected && i.input === input
-          )
-          .value()
-      )
+    if (this.substractVMStart) {
+      exp = exp.map(function(i) {
+        let newTimeMS = i.timeMS - (i.vmStartMS || 0)
+        return {...i, timeMS: newTimeMS}
+      })
     }
 
     if (!this.problem) {
@@ -410,20 +472,33 @@ export default class LangMetaPage extends Vue {
           'input',
           'timeout',
           'timeMS',
+          'vmStartMS',
           'os',
           'lang',
           'compiler',
           'compilerVersion',
         ],
-        ['asc', 'asc', 'asc', 'asc', 'asc', 'asc', 'asc']
+        ['asc', 'asc', 'asc', 'asc', 'asc', 'asc', 'asc', 'asc']
       )
     }
 
     exp = exp.filter(
-      (i) => (!i.par && this.show_st) || (!!i.par && this.show_mt)
+      (i) => (!i.par && this.showSingleThread) || (!!i.par && this.showMultipleThread)
     )
 
     return exp.value()
+  }
+
+  get containsVMStart() {
+    let sum_vm_time =
+      _.sum(
+        _.chain(this.activeBenchmarks)
+        .filter((i) => i.os === this.osSelected)
+        .map((i) => i.vmStartMS ?? 0)
+        .value()
+      )
+
+    return sum_vm_time > 0
   }
 
   getNormalizedCode(i: BenchResult) {
@@ -507,11 +582,21 @@ export default class LangMetaPage extends Vue {
       this.other = _.chain(langs).find({ lang: this.meta.other }).value()
     }
 
-    this.activeBenchmarks =
-      this.lang?.benchmarks ??
+    let allBenchmarks =
       _.chain(this.langs)
         .flatMap((i) => i.benchmarks)
-        .filter((i) => i.test === this.problem)
+        .orderBy(['input', 'timeout', 'timeMS'], ['asc', 'asc', 'asc'])
+
+    if (this.problem) {
+      allBenchmarks = allBenchmarks.filter((i) => i.test === this.problem)
+    }
+
+    if (this.meta?.lang || this.meta?.other) {
+      allBenchmarks = allBenchmarks.filter((i) => i.lang === this.meta?.lang || i.lang === this.meta?.other)
+    }
+
+    this.activeBenchmarks =
+      allBenchmarks
         .orderBy(['input', 'timeout', 'timeMS'], ['asc', 'asc', 'asc'])
         .value()
 

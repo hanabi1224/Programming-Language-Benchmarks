@@ -4,9 +4,10 @@ import json
 import concurrent.futures
 import urllib.request
 import uvicorn
-from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler
 from threading import Thread
 from io import BytesIO
+from datetime import datetime
 
 
 async def read_body(receive):
@@ -76,5 +77,8 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     main()
     # uvicorn.run("app:app", host="localhost", port=5000, log_level="info")

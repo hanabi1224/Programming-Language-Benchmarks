@@ -5,7 +5,7 @@
 # Transliterated from GMP to built-in by Isaac Gouy
 
 from sys import argv
-
+from datetime import datetime
 
 def extract_Digit(nth):
     global tmp1, tmp2, acc, den, num
@@ -67,4 +67,7 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     main()

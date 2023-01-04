@@ -754,6 +754,8 @@ namespace BenchTool
                         input = test.Input,
                         timeMS = statsMeasurement.Elapsed.TotalMilliseconds,
                         timeStdDevMS = statsMeasurement.ElapsedStdDevMS,
+                        vmStartMS = statsMeasurement.VMStart.TotalMilliseconds,
+                        vmStartStdDevMS = statsMeasurement.VMStartStdDevMS,
                         memBytes = statsMeasurement.PeakMemoryBytes,
                         cpuTimeMS = statsMeasurement.CpuTime.TotalMilliseconds,
                         cpuTimeUserMS = statsMeasurement.CpuTimeUser.TotalMilliseconds,

@@ -1,5 +1,5 @@
 import sys
-
+from datetime import datetime
 
 class LinkedListNode(object):
     def __init__(self, data):
@@ -105,4 +105,6 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main()

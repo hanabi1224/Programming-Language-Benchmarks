@@ -8,6 +8,7 @@ from os import cpu_count
 from collections import defaultdict
 from itertools import starmap, chain
 from multiprocessing import Pool
+from datetime import datetime
 
 lean_buffer = {}
 
@@ -185,5 +186,8 @@ def main():
     display(results, display_list(di_nucleotides), relative=True, sort=True)
     display(results, display_list(k_nucleotides), end='')
 
-if __name__=='__main__' :
+if __name__=='__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     main()

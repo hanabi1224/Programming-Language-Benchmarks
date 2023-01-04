@@ -15,6 +15,7 @@ from itertools import repeat
 from math import sqrt
 from multiprocessing import Pool
 from sys import argv
+from datetime import datetime
 
 
 def eval_A(i, j):
@@ -62,5 +63,8 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     with Pool(processes=4) as pool:
         main()

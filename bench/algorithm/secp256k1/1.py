@@ -1,6 +1,7 @@
 # ported from 1.ts
 
 import sys
+from datetime import datetime
 
 P = 2 ** 256 - 2 ** 32 - 977
 N = 2 ** 256 - 432420386565659656852420866394968145599
@@ -173,4 +174,6 @@ def main():
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     main()

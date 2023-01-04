@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 
 def nsieve(n):
@@ -13,6 +14,8 @@ def nsieve(n):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     for i in range(0, 3):
         nsieve(10000 << (n-i))

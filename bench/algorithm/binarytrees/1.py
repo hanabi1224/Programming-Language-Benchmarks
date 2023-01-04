@@ -7,6 +7,7 @@
 # remove parallelization
 
 import sys
+from datetime import datetime
 
 
 def make_tree(d):
@@ -50,5 +51,8 @@ def main(n, min_depth=4):
 
 
 if __name__ == '__main__':
+    with open("ready", "w") as f:
+        f.write(str(round(datetime.utcnow().timestamp() * 1000)))
+
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 6
     main(n)
