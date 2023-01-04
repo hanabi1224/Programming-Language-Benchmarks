@@ -26,7 +26,7 @@ namespace BenchTool
 
         public YamlBenchmarkProblemTestConfig[] Tests { get; set; }
 
-        public bool Trival { get; set; } = false;
+        public bool Trivial { get; set; } = false;
     }
 
     public class YamlBenchmarkProblemUnittestConfig
