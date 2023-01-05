@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-  val kotlinVersion = "1.7.22"
+  val kotlinVersion = "1.8.0"
   kotlin("multiplatform").version(kotlinVersion)
   kotlin("plugin.serialization").version(kotlinVersion)
   id("com.github.ben-manes.versions").version("0.44.0")
