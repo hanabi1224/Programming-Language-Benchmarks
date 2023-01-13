@@ -179,7 +179,8 @@ jobs:
         if: matrix.lang == 'php'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
+          coverage: none
       - name: Install python
         if: matrix.lang == 'python'
         uses: actions/setup-python@v4
@@ -288,7 +289,8 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
+          coverage: none
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
