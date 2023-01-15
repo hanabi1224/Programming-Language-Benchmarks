@@ -12,6 +12,8 @@ import sys
 from re import sub, findall
 
 
+seq = None
+
 def init(arg):
     global seq
     seq = arg

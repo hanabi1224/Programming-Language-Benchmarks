@@ -15,20 +15,21 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
         lang: [
             acton,
             c,
             chapel,
+            codon,
             cpp,
             csharp,
             crystal,
             d,
             dart,
-            elixir,
+            # elixir,
             # fortran,
             go,
-            hacklang,
+            # hacklang,
             # haskell,
             haxe,
             java,
@@ -72,6 +73,9 @@ jobs:
       - name: Install acton
         if: matrix.lang == 'acton'
         run: ./.github/acton.sh
+      - name: Install codon
+        if: matrix.lang == 'codon'
+        run: ./.github/codon.sh
       - name: Install rust stable
         uses: actions-rs/toolchain@v1
         if: matrix.lang == 'rust' || matrix.lang == 'wasm'
@@ -89,9 +93,9 @@ jobs:
       # - name: Install graal
       #   if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
       #   run: ./.github/graalvm.sh
-      # - name: Install clang
-      #   if: matrix.lang == 'c' || matrix.lang == 'cpp'
-      #   run: ./.github/clang.sh
+      - name: Install clang deps
+        if: matrix.lang == 'c' || matrix.lang == 'cpp'
+        run: ./.github/clang.sh
       # - name: Install c deps
       #   if: matrix.lang == 'c'
       #   run: ./.github/c.sh
@@ -175,7 +179,8 @@ jobs:
         if: matrix.lang == 'php'
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
+          coverage: none
       - name: Install python
         if: matrix.lang == 'python'
         uses: actions/setup-python@v4
@@ -231,7 +236,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - run: echo 'dummy step as PR gate'
   bench:
@@ -241,7 +246,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - run: lscpu
       - uses: actions/setup-dotnet@v3
@@ -259,11 +264,10 @@ jobs:
           pushd bench
           dotnet run -c Release --project tool -- --task checkcpu
           popd
-      - uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: bench/build/
       - run: ./.github/acton.sh
+      - run: ./.github/codon.sh
+      - run: ./.github/clang.sh
+      - run: ./.github/crystal.sh
       - run: ./.github/dotnet.sh
       # - run: ./.github/graalvm.sh
       # - run: ./.github/graalvm-node.sh
@@ -276,7 +280,7 @@ jobs:
       - run: ./.github/lua.sh
       # - run: ./.github/racket.sh
       - run: ./.github/hashlink.sh
-      - run: ./.github/hhvm.sh
+      # - run: ./.github/hhvm.sh
       # - run: sudo ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
         with:
@@ -285,7 +289,8 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
+          coverage: none
       - uses: actions/setup-python@v4
         with:
           python-version: "3.x"
@@ -295,6 +300,10 @@ jobs:
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: bench/build/
       - name: Bench
         run: |
           source $PROFILE
@@ -313,7 +322,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-22.04]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

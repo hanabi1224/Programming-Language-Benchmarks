@@ -16,9 +16,9 @@ problems:
   - name: spectral-norm
     source:
       - 6.js
-  # - name: pidigits
-  #   source:
-  #     - 3.js
+  - name: pidigits
+    source:
+      - 3.js
   - name: json-serde
     source:
       - 1.js

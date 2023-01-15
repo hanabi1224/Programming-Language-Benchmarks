@@ -1,6 +1,6 @@
 problems:
   - name: helloworld
-    trival: true
+    trivial: true
     unittests:
       - input: T_T
         output: T_T_out

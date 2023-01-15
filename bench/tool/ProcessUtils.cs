@@ -162,7 +162,7 @@ namespace BenchTool
             }
 
             ProcessMeasurement m = new ProcessMeasurement();
-            // TODO: Find better way to redirect stdout to /dev/null 
+            // TODO: Find better way to redirect stdout to /dev/null
             if (redirectStdoutToDevNull && s_isLinux)
             {
                 startInfo = new ProcessStartInfo
@@ -347,11 +347,20 @@ namespace BenchTool
                 env: env,
                 cts.Token,
                 onStart: () => manualResetEvent.Set()).ConfigureAwait(false);
+
             sw.Stop();
             cts.Cancel();
-            m.Elapsed = sw.Elapsed;
+
+            m.Elapsed = TimeSpan.FromMilliseconds(0);
+
+            // report run time only for successful runs
+            if (ret >= 0)
+            {
+                m.Elapsed = sw.Elapsed;
+            }
+
             await t.ConfigureAwait(false);
-            return ret < 0 ? null : m;
+            return m;
         }
 
         public static async Task RunCommandsAsync(
@@ -571,7 +580,7 @@ namespace BenchTool
                 {
                     // Avoid deadlock in sync mode
                     // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.standardoutput?view=net-5.0
-                    // To avoid deadlocks, use an asynchronous read operation on at least one of the streams.  
+                    // To avoid deadlocks, use an asynchronous read operation on at least one of the streams.
                     if (p.StartInfo.RedirectStandardError)
                     {
                         p.BeginErrorReadLine();

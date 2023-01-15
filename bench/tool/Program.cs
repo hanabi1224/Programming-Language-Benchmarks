@@ -691,21 +691,13 @@ namespace BenchTool
                         {
                             ProcessMeasurement measurement = await ProcessUtils.MeasureAsync(
                                 runPsi,
-                                redirectStdoutToDevNull: !problemTestConfig.Trival,
+                                redirectStdoutToDevNull: !problemTestConfig.Trivial,
                                 forceCheckChildProcesses: langEnvConfig.ForceCheckChildProcesses,
                                 timeoutSeconds: test.TimeoutSeconds,
                                 env: langEnvConfig.RunCmdEnv).ConfigureAwait(false);
 
-                            if (measurement != null && measurement.Elapsed.TotalMilliseconds > 0)
-                            {
-                                Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
-                                measurements.Add(measurement);
-                            }
-                            else
-                            {
-                                measurements.Clear();
-                                break;
-                            }
+                            Logger.Debug($"({buildId}){langConfig.Lang}:{problem.Name}:{test.Input} {measurement}");
+                            measurements.Add(measurement);
                         }
                         catch (Exception e)
                         {

@@ -60,10 +60,10 @@ environments:
     version: latest
     env:
       RUSTFLAGS: -C target-feature=+simd128
-    include: rust
+    include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --no-default-features --features wasm --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
     build: wasmedgec --enable-all --generic-binary /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out/app.so
     out_dir: out
     run_cmd: wasmedge --enable-all app.so

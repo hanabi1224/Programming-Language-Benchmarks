@@ -23,7 +23,7 @@ namespace BenchTool
 
         public static bool TryParse(string rawText, out CpuInfo cpuInfo)
         {
-            Match match = Regex.Match(rawText, @"^Architecture:(?<arch>.+?)\s*$[^.$]*?^CPU\(s\):\s*(?<core>\d+)\s*$[^.$]*?^Model:\s*(?<model>\d+)\s*$\s*^Model name:\s*(?<name>.+?)$", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            Match match = Regex.Match(rawText, @"^Architecture:\s*(?<arch>.+?)\s*$[^.$]*?^CPU\(s\):\s*(?<core>\d+)\s*$[^.$]*?^Model name:\s*(?<name>.+?)$[^.$]*?^Model:\s*(?<model>\d+)\s*$", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase);
             if (match.Success)
             {
                 cpuInfo = new CpuInfo

@@ -18,18 +18,18 @@ problems:
   # - name: pidigits
   #   source:
   #     - 3.js
-  # - name: edigits
-  #   source:
-  #     - 1.js
+  - name: edigits
+    source:
+     - 1.js
   - name: json-serde
     source:
       - 1.js
   - name: coro-prime-sieve
     source:
       - 1.js
-  # - name: http-server
-  #   source:
-  #     - 1.bun.js
+  - name: http-server
+    source:
+      - 1.bun.js
   - name: lru
     source:
       - 1.js
