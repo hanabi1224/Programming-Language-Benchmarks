@@ -3,11 +3,11 @@
 		"root"
 	],
 	"copyright": "Copyright © 2021, root",
-	"dependencies": {},
+	"dependencies": {"intel-intrinsics": "~>1.10.8"},
 	"description": "A minimal D application.",
 	"license": "MIT",
 	"name": "app",
 	"targetPath": "out",
 	"dflags-dmd": ["-mcpu=avx2"],
-	"dflags-ldc": ["-mattr=+avx2", "-mcpu=broadwell"]
+	"dflags-ldc": ["-mattr=+avx2,+ssse3,+sse4.1", "-mcpu=broadwell"]
 }
