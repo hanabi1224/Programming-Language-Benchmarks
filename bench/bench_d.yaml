@@ -51,6 +51,9 @@ problems:
       - 1-im.d
       - 2-i.d
       - 2-im.d
+  - name: knucleotide
+    source:
+      - 1-m.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
