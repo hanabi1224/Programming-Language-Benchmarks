@@ -1,11 +1,12 @@
 use axum::routing::post;
+use hyper::{client::HttpConnector, StatusCode};
 use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, Sender};
 
 static HOST: &str = "127.0.0.1";
 lazy_static::lazy_static! {
-    static ref HTTP_CLIENT: reqwest::Client = reqwest::Client::new();
+    static ref H1_CLIENT: hyper::Client<HttpConnector> = h1_client();
 }
 
 fn main() -> anyhow::Result<()> {
@@ -46,11 +47,7 @@ async fn run_server(port: usize) -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn send_with_retry(
-    api: String,
-    value: usize,
-    sender: Sender<usize>,
-) -> anyhow::Result<()> {
+async fn send_with_retry(api: String, value: usize, sender: Sender<usize>) -> anyhow::Result<()> {
     loop {
         if let Ok(r) = send_once(&api, value).await {
             sender.send(r).await?;
@@ -62,13 +59,33 @@ async fn send_with_retry(
 
 async fn send_once(api: &str, value: usize) -> anyhow::Result<usize> {
     let payload = Payload { value };
-    let resp = HTTP_CLIENT.post(api).json(&payload).send().await?;
-    let resp_text = resp.text().await?;
-    Ok(resp_text.parse::<usize>()?)
+    let resp = H1_CLIENT
+        .request(hyper::Request::post(api).body(serde_json::to_string(&payload)?.into())?)
+        .await?;
+    if resp.status().is_success() {
+        let bytes = hyper::body::to_bytes(resp.into_body()).await?;
+        let text = String::from_utf8_lossy(&bytes[..]);
+        Ok(text.parse::<usize>()?)
+    } else {
+        anyhow::bail!("{}", resp.status())
+    }
 }
 
-async fn handler(payload: axum::Json<Payload>) -> String {
-    format!("{}", payload.value)
+async fn handler(body: axum::extract::RawBody) -> (StatusCode, String) {
+    match handler_inner(body).await {
+        Ok(b) => (StatusCode::OK, b),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()),
+    }
+}
+
+async fn handler_inner(body: axum::extract::RawBody) -> anyhow::Result<String> {
+    let bytes = hyper::body::to_bytes(body.0).await?;
+    let json: Payload = serde_json::from_slice(&bytes[..])?;
+    Ok(format!("{}", json.value))
+}
+
+fn h1_client() -> hyper::Client<HttpConnector> {
+    hyper::Client::builder().build_http()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

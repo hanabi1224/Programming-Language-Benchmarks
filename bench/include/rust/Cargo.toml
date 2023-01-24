@@ -13,7 +13,9 @@ default = [
   "futures-lite",
   "axum",
   "axum-server",
-  "reqwest",
+  "hyper",
+  "hyper-rustls",
+  "rustls",
   "warp",
 ]
 
@@ -49,7 +51,9 @@ axum = {version = "0.6", optional = true, features = ["http1", "http2"]}
 axum-server = {version = "0.4", optional = true, features = ["tls-rustls"]}
 flume = {version = "0", optional = true}
 futures-lite = {version = "1", optional = true}
-reqwest = {version = "0.11", optional = true, default-features = false, features = ["json", "rustls-tls"]}
+hyper = {version = "0.14", optional = true, default-features = false, features = ["client", "http1", "http2"]}
+hyper-rustls = {version = "0.23", optional = true, default-features = false, features = ["native-tokio", "http2"]}
+rustls = {version = "0.20", optional = true}
 tokio = {version = "1.22", optional = true}
 warp = {version = "0.3", optional = true, features = ["tls"]}
 

@@ -1,12 +1,11 @@
+use hyper::client::HttpConnector;
 use rand::prelude::*;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{self, Sender};
 use warp::Filter;
 
 lazy_static::lazy_static! {
-    static ref HTTP_CLIENT: reqwest::Client = reqwest::Client::builder()
-        .build()
-        .unwrap();
+    static ref H1_CLIENT: hyper::Client<HttpConnector> = h1_client();
 }
 
 fn main() -> anyhow::Result<()> {
@@ -62,9 +61,20 @@ async fn send_with_retry(api: String, value: usize, sender: Sender<usize>) -> an
 
 async fn send_once(api: &str, value: usize) -> anyhow::Result<usize> {
     let payload = Payload { value };
-    let resp = HTTP_CLIENT.post(api).json(&payload).send().await?;
-    let resp_text = resp.text().await?;
-    Ok(resp_text.parse::<usize>()?)
+    let resp = H1_CLIENT
+        .request(hyper::Request::post(api).body(serde_json::to_string(&payload)?.into())?)
+        .await?;
+    if resp.status().is_success() {
+        let bytes = hyper::body::to_bytes(resp.into_body()).await?;
+        let text = String::from_utf8_lossy(&bytes[..]);
+        Ok(text.parse::<usize>()?)
+    } else {
+        anyhow::bail!("{}", resp.status())
+    }
+}
+
+fn h1_client() -> hyper::Client<HttpConnector> {
+    hyper::Client::builder().build_http()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
