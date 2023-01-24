@@ -1,21 +1,18 @@
 const int minDepth = 4;
 
 class Node {
-  int? hash = null;
+  int? hash;
   final int? value;
   final Node? left;
   final Node? right;
-  Node(int? this.value, Node? this.left, Node? this.right);
 
-  static Node create(int depth) {
-    return depth > 0
-        ? Node(null, create(depth - 1), create(depth - 1))
-        : Node(1, null, null);
-  }
+  Node(this.value, this.left, this.right);
 
-  int getHash() {
-    return hash == null ? -1 : hash!;
-  }
+  static Node create(int depth) => depth > 0
+      ? Node(null, create(depth - 1), create(depth - 1))
+      : Node(1, null, null);
+
+  int getHash() => hash == null ? -1 : hash!;
 
   void calHash() {
     if (hash == null) {
@@ -42,14 +39,16 @@ class Node {
 }
 
 void main(List<String> args) {
-  final n = args.length > 0 ? int.parse(args[0]) : 6;
+  final n = args.isNotEmpty ? int.parse(args[0]) : 6;
 
   final maxDepth = (minDepth + 2 > n) ? minDepth + 2 : n;
   final stretchDepth = maxDepth + 1;
   final stretchTree = Node.create(stretchDepth);
   stretchTree.calHash();
   print(
-      "stretch tree of depth $stretchDepth\t root hash: ${stretchTree.getHash()} check: ${stretchTree.check()}");
+    'stretch tree of depth $stretchDepth\t root hash: ${stretchTree.getHash()} '
+    'check: ${stretchTree.check()}',
+  );
 
   final longLivedTree = Node.create(maxDepth);
 
@@ -61,10 +60,10 @@ void main(List<String> args) {
       tree.calHash();
       sum += tree.getHash();
     }
-    print("${iterations}\t trees of depth $depth\t root hash sum: $sum");
+    print('$iterations\t trees of depth $depth\t root hash sum: $sum');
   }
 
   longLivedTree.calHash();
   print(
-      "long lived tree of depth $maxDepth\t root hash: ${longLivedTree.getHash()} check: ${longLivedTree.check()}");
+      'long lived tree of depth $maxDepth\t root hash: ${longLivedTree.getHash()} check: ${longLivedTree.check()}');
 }

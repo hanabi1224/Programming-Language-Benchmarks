@@ -6,30 +6,30 @@ import 'dart:math';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
-final HttpClient _client = new HttpClient();
+final HttpClient _client = HttpClient();
 
 Future main(List<String> arguments) async {
-  final n = arguments.length > 0 ? int.parse(arguments[0]) : 500;
+  final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 500;
   final port = 20000 + Random().nextInt(30000);
   // print(port);
 
   final serverReceivePort = ReceivePort();
   late final SendPort serverSendPort;
 
-  serverReceivePort.first.then((message) {
-    serverSendPort = message;
+  await serverReceivePort.first.then((message) {
+    serverSendPort = message as SendPort;
     serverSendPort.send(port);
   });
 
   await Isolate.spawn(_startServer, serverReceivePort.sendPort);
 
   var sum = 0;
-  final api = Uri.parse("http://localhost:$port/");
-  final tasks = [];
+  final api = Uri.parse('http://localhost:$port/');
+  final tasks = <Future<int>>[];
   for (var i = 1; i <= n; i++) {
     tasks.add(_sendAsync(api, i));
   }
-  for (Future<int> task in tasks) {
+  for (var task in tasks) {
     sum += await task;
   }
   print(sum);
@@ -55,12 +55,12 @@ void _startServer(SendPort sendPort) {
 Future<Response> _handlePostAsync(Request request) async {
   final jsonStr = await request.readAsString();
   final payload = jsonDecode(jsonStr);
-  final value = payload["value"];
-  return Response.ok("$value");
+  final value = payload['value'];
+  return Response.ok('$value');
 }
 
 Future<int> _sendAsync(Uri api, int value) async {
-  final payload = "{\"value\":$value}";
+  final payload = '{"value":$value}';
   while (true) {
     try {
       final request = await _client.postUrl(api);
