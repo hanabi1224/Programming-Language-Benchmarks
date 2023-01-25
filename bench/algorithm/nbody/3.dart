@@ -7,22 +7,20 @@
    migrated
 */
 
-import 'dart:math' as Math;
-import 'dart:typed_data';
+import 'dart:math' as math;
 
-void main(args) {
-  int n = args.length > 0 ? int.parse(args[0]) : 1000;
+void main(List<String> args) {
+  final n = args.isNotEmpty ? int.parse(args[0]) : 1000;
 
-  NBodySystem system = NBodySystem();
+  final system = NBodySystem();
   print(system.energy().toStringAsFixed(9));
-  for (int i = 0; i < n; i++) {
+  for (var i = 0; i < n; i++) {
     system.advance(0.01);
   }
   print(system.energy().toStringAsFixed(9));
 }
 
 class Body {
-  final Float64List _data = Float64List(7);
   double x;
   double y;
   double z;
@@ -38,18 +36,17 @@ class Body {
       required this.vx,
       required this.vy,
       required this.vz,
-      required this.mass}) {}
+      required this.mass});
 }
 
 class NBodySystem {
-  var bodies;
+  final bodies = <Body>[];
 
-  static const solarmass = 4 * Math.pi * Math.pi;
+  static const solarmass = 4 * math.pi * math.pi;
   static const daysPeryear = 365.24;
   static const N = 5;
 
   NBodySystem() {
-    bodies = <Body>[];
     bodies.addAll([
       // Sun
 
@@ -96,15 +93,14 @@ class NBodySystem {
           mass: 5.15138902046611451e-05 * solarmass)
     ]);
 
-    double px = 0.0, py = 0.0, pz = 0.0;
+    var px = 0.0, py = 0.0, pz = 0.0;
     for (var b in bodies) {
       px += b.vx * b.mass;
       py += b.vy * b.mass;
       pz += b.vz * b.mass;
     }
-    ;
 
-    var sol = bodies[0];
+    final sol = bodies[0];
     sol.vx = -px / solarmass;
     sol.vy = -py / solarmass;
     sol.vz = -pz / solarmass;
@@ -118,17 +114,17 @@ class NBodySystem {
 
         final dx = a.x - b.x, dy = a.y - b.y, dz = a.z - b.z;
         final d2 = dx * dx + dy * dy + dz * dz;
-        final mag = dt / (d2 * Math.sqrt(d2));
+        final mag = dt / (d2 * math.sqrt(d2));
 
-        final bm_mag = b.mass * mag;
-        a.vx -= dx * bm_mag;
-        a.vy -= dy * bm_mag;
-        a.vz -= dz * bm_mag;
+        final bmMag = b.mass * mag;
+        a.vx -= dx * bmMag;
+        a.vy -= dy * bmMag;
+        a.vz -= dz * bmMag;
 
-        final am_mag = a.mass * mag;
-        b.vx += dx * am_mag;
-        b.vy += dy * am_mag;
-        b.vz += dz * am_mag;
+        final amMag = a.mass * mag;
+        b.vx += dx * amMag;
+        b.vy += dy * amMag;
+        b.vz += dz * amMag;
       }
       a.x += dt * a.vx;
       a.y += dt * a.vy;
@@ -137,14 +133,14 @@ class NBodySystem {
   }
 
   double energy() {
-    double e = 0.0;
-    for (int i = 0; i < bodies.length; i++) {
-      var bi = bodies[i];
+    var e = 0.0;
+    for (var i = 0; i < bodies.length; i++) {
+      final bi = bodies[i];
       e += 0.5 * bi.mass * (bi.vx * bi.vx + bi.vy * bi.vy + bi.vz * bi.vz);
-      for (int j = i + 1; j < bodies.length; j++) {
-        var bj = bodies[j];
-        double dx = bi.x - bj.x, dy = bi.y - bj.y, dz = bi.z - bj.z;
-        e -= (bi.mass * bj.mass) / Math.sqrt(dx * dx + dy * dy + dz * dz);
+      for (var j = i + 1; j < bodies.length; j++) {
+        final bj = bodies[j];
+        final dx = bi.x - bj.x, dy = bi.y - bj.y, dz = bi.z - bj.z;
+        e -= (bi.mass * bj.mass) / math.sqrt(dx * dx + dy * dy + dz * dz);
       }
     }
     return e;
