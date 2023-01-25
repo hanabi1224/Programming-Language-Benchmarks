@@ -16,12 +16,13 @@ Future main(List<String> arguments) async {
   final serverReceivePort = ReceivePort();
   late final SendPort serverSendPort;
 
-  await serverReceivePort.first.then((message) {
+  final task = serverReceivePort.first.then((message) {
     serverSendPort = message as SendPort;
     serverSendPort.send(port);
   });
 
   await Isolate.spawn(_startServer, serverReceivePort.sendPort);
+  await task;
 
   var sum = 0;
   final api = Uri.parse('http://localhost:$port/');
