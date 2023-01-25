@@ -65,5 +65,7 @@ void main(List<String> args) {
 
   longLivedTree.calHash();
   print(
-      'long lived tree of depth $maxDepth\t root hash: ${longLivedTree.getHash()} check: ${longLivedTree.check()}');
+    'long lived tree of depth $maxDepth\t '
+    'root hash: ${longLivedTree.getHash()} check: ${longLivedTree.check()}',
+  );
 }

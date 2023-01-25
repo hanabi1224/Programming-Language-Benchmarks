@@ -154,7 +154,9 @@ Future<void> main(List<String> args) async {
   }
 
   print(
-      'long lived tree of depth $maxDepth\t check: ${TreeNode.itemCheck(longLivedTree)}');
+    'long lived tree of depth $maxDepth\t '
+    'check: ${TreeNode.itemCheck(longLivedTree)}',
+  );
 
   // It takes time to clean up the workers, so just exit instead
   exit(0);

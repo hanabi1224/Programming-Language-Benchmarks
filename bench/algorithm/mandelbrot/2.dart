@@ -11,7 +11,7 @@ void main(List<String> args) {
   n = (n + 7) ~/ 8 * 8;
 
   final threads = Platform.numberOfProcessors;
-  final segmentFutures = <Future>[];
+  final segmentFutures = <Future<dynamic>>[];
 
   final segmentSize = List.filled(threads, n ~/ threads);
   segmentSize[0] += n % threads;
@@ -81,7 +81,8 @@ Uint8List calculateLine(int n, int y) {
 void calculateSegment(SendPort initialReplyTo) {
   final port = ReceivePort();
   initialReplyTo.send(port.sendPort);
-  port.listen((msg) {
+  port.listen((data) {
+    final msg = data as Map;
     final n = msg['n'] as int;
     final from = msg['from'] as int;
     final len = msg['len'] as int;

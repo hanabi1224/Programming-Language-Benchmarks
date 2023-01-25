@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart' as crypto;
 
-Future main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   final fileName = arguments.isNotEmpty ? arguments[0] : 'sample';
   final n = arguments.length > 1 ? int.parse(arguments[1]) : 3;
   final jsonStr = await File('$fileName.json').readAsString();

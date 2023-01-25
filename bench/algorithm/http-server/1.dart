@@ -6,7 +6,7 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 
 final HttpClient _client = HttpClient();
 
-Future main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 10;
   final port = 20000 + Random().nextInt(30000);
   final handler = const Pipeline().addHandler(_handlePostAsync);
@@ -27,7 +27,7 @@ Future main(List<String> arguments) async {
 
 Future<Response> _handlePostAsync(Request request) async {
   final jsonStr = await request.readAsString();
-  final payload = jsonDecode(jsonStr);
+  final payload = jsonDecode(jsonStr) as Map;
   final value = payload['value'];
   return Response.ok('$value');
 }

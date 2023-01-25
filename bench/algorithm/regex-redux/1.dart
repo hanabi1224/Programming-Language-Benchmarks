@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:tuple/tuple.dart';
 
-Future main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   final fileName = arguments.isNotEmpty ? arguments[0] : '25000_in';
   var content = await File(fileName).readAsString();
   final ilen = content.length;
