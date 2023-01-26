@@ -1,31 +1,31 @@
 import 'dart:isolate';
 
-Future main(List<String> arguments) async {
-  final n = arguments.length > 0 ? int.parse(arguments[0]) : 5;
+Future<void> main(List<String> arguments) async {
+  final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 5;
   await lastFilter(n);
 }
 
-Future lastFilter(int n) async {
-  var rx = ReceivePort();
-  Isolate.spawn(filter, FilterContext(rx.sendPort, n - 1));
+Future<void> lastFilter(int n) async {
+  final rx = ReceivePort();
+  await Isolate.spawn(filter, FilterContext(rx.sendPort, n - 1));
   await for (int p in rx.cast()) {
     print(p);
     break;
   }
 }
 
-Future filter(FilterContext ctx) async {
-  var rx = ReceivePort();
+Future<void> filter(FilterContext ctx) async {
+  final rx = ReceivePort();
   if (ctx.n > 1) {
-    Isolate.spawn(filter, FilterContext(rx.sendPort, ctx.n - 1));
+    await Isolate.spawn(filter, FilterContext(rx.sendPort, ctx.n - 1));
   } else {
-    Isolate.spawn(generate, rx.sendPort);
+    await Isolate.spawn(generate, rx.sendPort);
   }
-  int prime = -1;
+  var prime = -1;
   await for (int n in rx.cast()) {
     if (prime < 0) {
       prime = n;
-      print("$prime");
+      print('$prime');
     } else if (n % prime != 0) {
       ctx.outPort.send(n);
     }
@@ -41,5 +41,5 @@ void generate(SendPort sender) {
 class FilterContext {
   SendPort outPort;
   int n;
-  FilterContext(SendPort this.outPort, int this.n) {}
+  FilterContext(this.outPort, this.n);
 }

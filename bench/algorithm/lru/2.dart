@@ -1,17 +1,17 @@
 class LinkedListNode<T> {
   T data;
-  LinkedListNode<T>? prev = null;
-  LinkedListNode<T>? next = null;
+  LinkedListNode<T>? prev;
+  LinkedListNode<T>? next;
   LinkedListNode(this.data);
 }
 
 class LinkedList<T> {
-  LinkedListNode<T>? head = null;
-  LinkedListNode<T>? tail = null;
+  LinkedListNode<T>? head;
+  LinkedListNode<T>? tail;
   int len = 0;
 
   LinkedListNode<T> add(T data) {
-    final node = new LinkedListNode(data);
+    final node = LinkedListNode(data);
     __add_node(node);
     len += 1;
     return node;
@@ -58,7 +58,7 @@ class Pair<K, V> {
 
 class LCG {
   int seed;
-  LCG(int this.seed);
+  LCG(this.seed);
   int next() {
     _lcg();
     return seed;
@@ -75,9 +75,9 @@ class LCG {
 class LRU<K, V> {
   final int size;
   final Map<K, LinkedListNode<Pair<K, V>>> keys =
-      Map<K, LinkedListNode<Pair<K, V>>>();
-  final LinkedList<Pair<K, V>> entries = new LinkedList<Pair<K, V>>();
-  LRU(int this.size);
+      <K, LinkedListNode<Pair<K, V>>>{};
+  final LinkedList<Pair<K, V>> entries = LinkedList<Pair<K, V>>();
+  LRU(this.size);
 
   V? get(K key) {
     final node = keys[key];
@@ -107,8 +107,8 @@ class LRU<K, V> {
 }
 
 void main(List<String> arguments) {
-  final size = arguments.length > 0 ? int.parse(arguments[0]) : 100;
-  final n = arguments.length > 0 ? int.parse(arguments[1]) : 1000;
+  final size = arguments.isNotEmpty ? int.parse(arguments[0]) : 100;
+  final n = arguments.isNotEmpty ? int.parse(arguments[1]) : 1000;
   final mod = size * 10;
   var hit = 0;
   var missed = 0;
@@ -125,5 +125,5 @@ void main(List<String> arguments) {
       hit += 1;
     }
   }
-  print("$hit\n$missed");
+  print('$hit\n$missed');
 }

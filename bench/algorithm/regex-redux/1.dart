@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:tuple/tuple.dart';
 
-Future main(List<String> arguments) async {
-  final fileName = arguments.length > 0 ? arguments[0] : "25000_in";
+Future<void> main(List<String> arguments) async {
+  final fileName = arguments.isNotEmpty ? arguments[0] : '25000_in';
   var content = await File(fileName).readAsString();
   final ilen = content.length;
-  content = content.replaceAll(RegExp(">.*\n|\n"), "");
+  content = content.replaceAll(RegExp('>.*\n|\n'), '');
   final clen = content.length;
   for (final p in [
     'agggtaaa|tttaccct',
@@ -21,16 +21,16 @@ Future main(List<String> arguments) async {
     'agggtaa[cgt]|[acg]ttaccct'
   ]) {
     final count = RegExp(p).allMatches(content).length;
-    print("$p $count");
+    print('$p $count');
   }
   for (final t in [
-    Tuple2('tHa[Nt]', '<4>'),
-    Tuple2('aND|caN|Ha[DS]|WaS', '<3>'),
-    Tuple2('a[NSt]|BY', '<2>'),
-    Tuple2('<[^>]*>', '|'),
-    Tuple2('\\|[^|][^|]*\\|', '-'),
+    const Tuple2('tHa[Nt]', '<4>'),
+    const Tuple2('aND|caN|Ha[DS]|WaS', '<3>'),
+    const Tuple2('a[NSt]|BY', '<2>'),
+    const Tuple2('<[^>]*>', '|'),
+    const Tuple2(r'\|[^|][^|]*\|', '-'),
   ]) {
     content = content.replaceAll(RegExp(t.item1), t.item2);
   }
-  print("\n$ilen\n$clen\n${content.length}");
+  print('\n$ilen\n$clen\n${content.length}');
 }

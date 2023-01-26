@@ -1,19 +1,21 @@
-use std::net::{IpAddr, Ipv4Addr, SocketAddr};
-
 use axum::routing::post;
-use axum_server::tls_rustls::RustlsConfig;
+use axum_server::{tls_rustls::RustlsConfig, AddrIncomingConfig, HttpConfig};
+use hyper::{client::HttpConnector, StatusCode};
+use hyper_rustls::{HttpsConnector, HttpsConnectorBuilder};
 use rand::prelude::*;
+use rustls::client::ServerCertVerifier;
 use serde::{Deserialize, Serialize};
+use std::{
+    net::{IpAddr, Ipv4Addr, SocketAddr},
+    sync::Arc,
+    time::Duration,
+};
 use tokio::sync::mpsc::{self, Sender};
 
 static CERT: &[u8] = include_bytes!("../self_signed_certs/cert.pem");
 static KEY: &[u8] = include_bytes!("../self_signed_certs/key.pem");
 lazy_static::lazy_static! {
-    static ref HTTP_CLIENT: reqwest::Client = reqwest::Client::builder()
-        .danger_accept_invalid_certs(true)
-        .use_rustls_tls()
-        .build()
-        .unwrap();
+    static ref H2_CLIENT: hyper::Client<HttpsConnector<HttpConnector>> = h2_client();
 }
 
 fn main() -> anyhow::Result<()> {
@@ -51,6 +53,13 @@ async fn run_server(port: usize) -> anyhow::Result<()> {
     let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), port as u16);
     let rustls_config = RustlsConfig::from_pem(CERT.into(), KEY.into()).await?;
     axum_server::bind_rustls(addr, rustls_config)
+        .http_config(
+            HttpConfig::default()
+                .http2_keep_alive_interval(Some(Duration::from_secs(10)))
+                .http2_only(true)
+                .build(),
+        )
+        .addr_incoming_config(AddrIncomingConfig::default().tcp_nodelay(true).build())
         .serve(app.into_make_service())
         .await?;
     Ok(())
@@ -58,9 +67,14 @@ async fn run_server(port: usize) -> anyhow::Result<()> {
 
 async fn send_with_retry(api: String, value: usize, sender: Sender<usize>) -> anyhow::Result<()> {
     loop {
-        if let Ok(r) = send_once(&api, value).await {
-            sender.send(r).await?;
-            break;
+        match send_once(&api, value).await {
+            Ok(r) => {
+                sender.send(r).await?;
+                break;
+            }
+            Err(_e) => {
+                // eprintln!("{_e}");
+            }
         }
     }
     Ok(())
@@ -68,18 +82,60 @@ async fn send_with_retry(api: String, value: usize, sender: Sender<usize>) -> an
 
 async fn send_once(api: &str, value: usize) -> anyhow::Result<usize> {
     let payload = Payload { value };
-    let resp = HTTP_CLIENT
-        .post(api)
-        .json(&payload)
-        .version(reqwest::Version::HTTP_2)
-        .send()
+    let resp = H2_CLIENT
+        .request(hyper::Request::post(api).body(serde_json::to_string(&payload)?.into())?)
         .await?;
-    let resp_text = resp.text().await?;
-    Ok(resp_text.parse::<usize>()?)
+    if resp.status().is_success() {
+        let bytes = hyper::body::to_bytes(resp.into_body()).await?;
+        let text = String::from_utf8_lossy(&bytes[..]);
+        Ok(text.parse::<usize>()?)
+    } else {
+        anyhow::bail!("{}", resp.status())
+    }
 }
 
-async fn handler(payload: axum::Json<Payload>) -> String {
-    format!("{}", payload.value)
+async fn handler(body: axum::extract::RawBody) -> (StatusCode, String) {
+    match handler_inner(body).await {
+        Ok(b) => (StatusCode::OK, b),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()),
+    }
+}
+
+async fn handler_inner(body: axum::extract::RawBody) -> anyhow::Result<String> {
+    let bytes = hyper::body::to_bytes(body.0).await?;
+    let json: Payload = serde_json::from_slice(&bytes[..])?;
+    Ok(format!("{}", json.value))
+}
+
+struct CustomTlsVerifier;
+
+impl ServerCertVerifier for CustomTlsVerifier {
+    fn verify_server_cert(
+        &self,
+        _end_entity: &rustls::Certificate,
+        _intermediates: &[rustls::Certificate],
+        _server_name: &rustls::ServerName,
+        _scts: &mut dyn Iterator<Item = &[u8]>,
+        _ocsp_response: &[u8],
+        _now: std::time::SystemTime,
+    ) -> Result<rustls::client::ServerCertVerified, rustls::Error> {
+        Ok(rustls::client::ServerCertVerified::assertion())
+    }
+}
+
+fn h2_client() -> hyper::Client<HttpsConnector<HttpConnector>> {
+    hyper::Client::builder().build(
+        HttpsConnectorBuilder::new()
+            .with_tls_config(
+                rustls::ClientConfig::builder()
+                    .with_safe_defaults()
+                    .with_custom_certificate_verifier(Arc::new(CustomTlsVerifier))
+                    .with_no_client_auth(),
+            )
+            .https_only()
+            .enable_http2()
+            .build(),
+    )
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

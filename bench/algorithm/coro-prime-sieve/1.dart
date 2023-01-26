@@ -1,11 +1,11 @@
 import 'dart:async';
 
-Future main(List<String> arguments) async {
-  final n = arguments.length > 0 ? int.parse(arguments[0]) : 5;
+Future<void> main(List<String> arguments) async {
+  final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 5;
   var stream = StreamIterator(generate());
   for (var i = 0; i < n; i++) {
     await stream.moveNext();
-    var prime = stream.current;
+    final prime = stream.current;
     print(prime);
     stream = StreamIterator(filter(stream, prime));
   }

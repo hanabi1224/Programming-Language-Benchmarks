@@ -46,45 +46,45 @@ class CodeList {
 
   void flush() {
     codeLen = (length * 32) + (32 - codeBufferLen);
-    while (codeBuffer != 0) add(0);
+    while (codeBuffer != 0) {
+      add(0);
+    }
   }
 }
 
 String codeToString(int code, int len) {
   final b = Uint8List(len);
-  for (int i = len - 1; i >= 0; i--) {
-    const int $A = 0x41;
-    const int $T = 0x54;
-    const int $C = 0x43;
-    const int $G = 0x47;
+  for (var i = len - 1; i >= 0; i--) {
+    const $A = 0x41;
+    const $T = 0x54;
+    const $C = 0x43;
+    const $G = 0x47;
     b[i] = const [$A, $C, $T, $G][code & 3];
     code >>= 2;
   }
   return String.fromCharCodes(b);
 }
 
-Future<String> readInput() {
-  return stdin
-      .transform(ascii.decoder)
-      .transform(LineSplitter())
-      .skipWhile((line) => !line.startsWith(">THREE"))
-      .skip(1)
-      .takeWhile((line) => !line.startsWith(">"))
-      .map((s) => s.toUpperCase())
-      .join();
-}
+Future<String> readInput() => stdin
+    .transform(ascii.decoder)
+    .transform(const LineSplitter())
+    .skipWhile((line) => !line.startsWith('>THREE'))
+    .skip(1)
+    .takeWhile((line) => !line.startsWith('>'))
+    .map((s) => s.toUpperCase())
+    .join();
 
 Future<CodeList> readCodes(String fileName) async {
   final file = File(fileName);
   final codeList = CodeList(1024 * 1024 * 4);
   final lines = await file.readAsLines();
   lines
-      .skipWhile((line) => !line.startsWith(">THREE"))
+      .skipWhile((line) => !line.startsWith('>THREE'))
       .skip(1)
-      .takeWhile((line) => !line.startsWith(">"))
+      .takeWhile((line) => !line.startsWith('>'))
       .forEach((line) {
     final units = line.codeUnits;
-    for (int i = 0; i < units.length; i++) {
+    for (var i = 0; i < units.length; i++) {
       codeList.add((units[i] >> 1) & 3);
     }
   });
@@ -94,12 +94,12 @@ Future<CodeList> readCodes(String fileName) async {
 
 Map<String, int> frequency(CodeList codes, int length) {
   final freq = HashMap<int, int>();
-  final int shift = 64 - (length * 2);
-  int window = codes.buffer[0];
-  int next = codes.buffer[1];
-  int count = codes.codeLen - length + 1;
-  int cd = 32;
-  int i = 2;
+  final shift = 64 - (length * 2);
+  var window = codes.buffer[0];
+  var next = codes.buffer[1];
+  var count = codes.codeLen - length + 1;
+  var cd = 32;
+  var i = 2;
   while (count > 0) {
     freq[window >> shift] = (freq[window >> shift] ?? 0) + 1;
 
@@ -120,28 +120,28 @@ Map<String, int> frequency(CodeList codes, int length) {
 void sort(CodeList codes, int length) {
   final freq = frequency(codes, length);
   final keys = freq.keys.toList();
-  int n = codes.codeLen - length + 1;
+  final n = codes.codeLen - length + 1;
 
-  keys.sort((a, b) {
-    int _a = freq[a] ?? 0;
-    int _b = freq[b] ?? 0;
-    return _b - _a;
+  keys.sort((ak, bk) {
+    final a = freq[ak] ?? 0;
+    final b = freq[bk] ?? 0;
+    return b - a;
   });
 
   for (final key in keys) {
-    String count = ((freq[key] ?? 0) * 100 / n).toStringAsFixed(3);
+    final count = ((freq[key] ?? 0) * 100 / n).toStringAsFixed(3);
     print('$key $count');
   }
   print('');
 }
 
 String find(CodeList codes, String string) {
-  Map<String, int> freq = frequency(codes, string.length);
-  return '${(freq[string])}\t$string';
+  final freq = frequency(codes, string.length);
+  return '${freq[string]}\t$string';
 }
 
 void main(List<String> arguments) async {
-  final fileName = arguments.length > 0 ? arguments[0] : "25000_in";
+  final fileName = arguments.isNotEmpty ? arguments[0] : '25000_in';
   final sequence = await readCodes(fileName);
   final a = par(sequence, ['GGT', 'GGTA', 'GGTATT']);
   final b = par(sequence, ['GGTATTTTAATT']);
@@ -163,13 +163,11 @@ void findMultiple(List<dynamic> data) {
 
 Future<List<String>> par(CodeList codes, List<String> s) {
   final completer = Completer<List<String>>.sync();
-  final recv = RawReceivePort((data) {
-    completer.complete(data);
-  });
+  final recv = RawReceivePort(completer.complete);
 
   Isolate.spawn(findMultiple, [recv.sendPort, codes, s]);
 
-  completer.future.whenComplete(() => recv.close());
+  completer.future.whenComplete(recv.close);
 
   return completer.future;
 }
