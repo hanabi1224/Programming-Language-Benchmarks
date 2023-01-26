@@ -3,10 +3,10 @@
 		"root"
 	],
 	"copyright": "Copyright © 2021, root",
-	"dependencies": {
-        "intel-intrinsics": "~>1.11.1",
+    "dependencies": {
         "asdf": "~>0.7.15",
-        "mir-core": "~>1.3.15"
+        "intel-intrinsics": "1.11.1",
+        "mir-algorithm": {"version": "c428a26125976c781905b3afb0fe17c43613ae8a", "repository": "git+https://github.com/cyrusmsk/mir-algorithm.git", "default": true},
     },
 	"description": "A minimal D application.",
 	"license": "MIT",
