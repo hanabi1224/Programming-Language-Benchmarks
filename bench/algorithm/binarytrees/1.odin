@@ -52,8 +52,8 @@ makeTree::proc(depth:int)->^Node {
   return node
 }
 delete_tree::proc(t:^Node){
-  free(t.left)
-  free(t.right)
+  if t.left != nil {delete_tree(t.left)}
+  if t.right != nil {delete_tree(t.right)}
   free(t)
 }
 check::proc(tree:^Node)->int {
