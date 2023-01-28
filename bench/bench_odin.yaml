@@ -16,6 +16,7 @@ problems:
   - name: nbody
     source:
       - 1.odin
+      - 1-i.odin
   - name: mandelbrot
     source:
       - 1.odin
