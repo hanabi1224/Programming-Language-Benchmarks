@@ -154,7 +154,7 @@ ubyte[] readInput(string[] args)
     char key = '>';
     ubyte[] res;
     auto app = appender(&res);
-    app.reserve(65_536);
+    app.reserve(2_500_120);
     auto file = File(args[1]);
     byte x = 3;
     foreach (line; file.byLine())

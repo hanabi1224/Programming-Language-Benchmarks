@@ -54,6 +54,9 @@ problems:
   - name: knucleotide
     source:
       - 1-m.d
+  - name: json-serde
+    source:
+      - 2.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -68,7 +71,7 @@ environments:
     include: d
     include_sub_dir: source
     # build: dmd -O -release -of=out/app app.d
-    build: dub build --build=release --compiler=dmd -v
+    build: dub build -b release-nobounds -a x86_64 --combined --compiler=dmd -v
     out_dir: out
     run_cmd: app
   - os: linux
@@ -79,6 +82,6 @@ environments:
     include: d
     include_sub_dir: source
     # build: ldc2 -O -release -of=out/app app.d
-    build: dub build --build=release --compiler=ldc2 -v
+    build: dub build -b release-nobounds -a x86_64 --combined --compiler=ldc2 -v
     out_dir: out
     run_cmd: app
