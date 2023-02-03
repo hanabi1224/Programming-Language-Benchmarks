@@ -9,12 +9,7 @@ build: [
    [ "dune" "build" ]
 ]
 depends: [
-  # "dune" {build}
-  # "re" {>= "1.10.3"}
+  "domainslib" {>= "0.5.0"}
   "res" {>= "5.0.1"}
   "yojson" {>= "2.0.2"}
-  # "opam-lock" {dev}
-  # "ocaml" {>= "4.11.1"}
-  # "zarith" {>= "1.12"}
-  # "gmp" {>= "6.2.1"}
 ]

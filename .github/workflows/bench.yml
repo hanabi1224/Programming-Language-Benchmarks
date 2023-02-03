@@ -5,6 +5,8 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "0 0 1 * *"
 env:
   PROFILE: /tmp/.tmpprofile
   # https://doc.rust-lang.org/cargo/reference/profiles.html#incremental

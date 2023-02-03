@@ -7,15 +7,18 @@ pub fn build(b: *Builder) void {
     // means any target is allowed, and the default is native. Other options
     // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
-    // Standard release options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
-    // const mode = b.standardReleaseOptions();
-    const mode = std.builtin.Mode.ReleaseFast;
+    // Standard optimization options allow the person running `zig build` to select
+    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
+    // set a preferred release mode, allowing the user to decide how to optimize.
+    // const optimize = b.standardOptimizeOption(.{});
 
-    const exe = b.addExecutable("app", "app.zig");
+    const exe = b.addExecutable(.{
+        .name = "app",
+        .root_source_file = .{ .path = "app.zig" },
+        .target = target,
+        .optimize = std.builtin.Mode.ReleaseFast,
+    });
     exe.linkLibC();
-    exe.setTarget(target);
-    exe.setBuildMode(mode);
     // exe.setOutputDir("out");
     exe.install();
 
