@@ -201,9 +201,9 @@ jobs:
       # - name: Install truffleruby
       #   if: matrix.lang == 'ruby'
       #   run: ./.github/truffleruby.sh
-      # - name: Install dart
-      #   if: matrix.lang == 'dart'
-      #   run: sudo ./.github/dart.sh
+      - name: Install dart
+        if: matrix.lang == 'dart'
+        run: sudo ./.github/dart.sh
       - name: Install v
         if: matrix.lang == 'v'
         run: ./.github/v.sh

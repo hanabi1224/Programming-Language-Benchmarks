@@ -47,7 +47,7 @@ problems:
   - name: regex-redux
     source:
       - 1.dart
-compiler_version_command: dart --version
+compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
 runtime_version_regex:
@@ -55,32 +55,45 @@ source_rename_to: app.dart
 environments:
   - os: linux
     compiler: dart/exe
+    compiler_version_command: dart --version
     version: latest
-    docker: dart
+    docker:
     include: dart
     build: dart pub get && dart compile exe app.dart -o out/app
     out_dir: out
     run_cmd: app
+  # - os: linux
+  #   compiler: dart/exe
+  #   compiler_version_command: dart --version
+  #   version: beta
+  #   enabled: false
+  #   docker: dart:beta
+  #   include: dart
+  #   include_sub_dir:
+  #   build: dart pub get && dart compile exe app.dart -o out/app
+  #   out_dir: out
+  #   run_cmd: app
+  #   allow_failure: true
+  # - os: linux
+  #   compiler: dart/aot
+  #   compiler_version_command: dart --version
+  #   version: latest
+  #   enabled: false
+  #   docker: dart
+  #   docker_runtime_dir: /usr/lib/dart
+  #   include: dart
+  #   include_sub_dir:
+  #   build: dart pub get && dart compile aot-snapshot app.dart -o out/app.aot
+  #   out_dir: out
+  #   run_cmd: dart/bin/dartaotruntime app.aot
+  #   runtime_version_parameter: --version
   - os: linux
     compiler: dart/exe
-    version: beta
-    enabled: false
-    docker: dart:beta
+    compiler_version_command: dart3 --version
+    version: 3
+    docker:
     include: dart
-    include_sub_dir:
-    build: dart pub get && dart compile exe app.dart -o out/app
+    build: dart3 pub get && dart3 compile exe app.dart -o out/app
     out_dir: out
     run_cmd: app
     allow_failure: true
-  - os: linux
-    compiler: dart/aot
-    version: latest
-    enabled: false
-    docker: dart
-    docker_runtime_dir: /usr/lib/dart
-    include: dart
-    include_sub_dir:
-    build: dart pub get && dart compile aot-snapshot app.dart -o out/app.aot
-    out_dir: out
-    run_cmd: dart/bin/dartaotruntime app.aot
-    runtime_version_parameter: --version

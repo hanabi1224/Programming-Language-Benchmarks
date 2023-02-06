@@ -1,7 +1,20 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
 
-wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list >/etc/apt/sources.list.d/dart_stable.list
-apt-get update -y
-apt-get install dart -y
-echo 'export PATH="$PATH:/usr/lib/dart/bin"' >>$PROFILE
+pushd /tmp
+mkdir dartsdk
+pushd dartsdk
+wget https://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-linux-x64-release.zip -O dartsdk.zip
+unzip -o dartsdk.zip
+ln -sf $PWD/dart-sdk/bin/dart /usr/local/bin/dart
+popd
+
+# dart3
+mkdir dart3sdk
+pushd dart3sdk
+wget https://storage.googleapis.com/dart-archive/channels/dev/release/latest/sdk/dartsdk-linux-x64-release.zip -O dartsdk.zip
+unzip -o dartsdk.zip
+ln -sf $PWD/dart-sdk/bin/dart /usr/local/bin/dart3
+popd
+popd
+dart --version
+dart3 --version
