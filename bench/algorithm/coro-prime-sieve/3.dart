@@ -30,9 +30,7 @@ void main(List<String> args) {
   
   for (int i = 0; i < n; i++) {
     it.moveNext();
-    var prime = it.current;
-    print(prime);
-
-    it = filter(it, prime).iterator;
+    print(it.current);
+    it = filter(it, it.current).iterator;
   }
 }
