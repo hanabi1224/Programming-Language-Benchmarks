@@ -13,8 +13,7 @@ Iterable<int> generate() sync*  {
 
 Iterable<int> filter(Iterator<int> it, int prime) sync* {
   while (true){
-    final ok = it.moveNext();
-    if (ok==false){
+    if (it.moveNext()==false){
       print(it.current);
       return;
     }
