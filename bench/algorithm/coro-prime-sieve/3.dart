@@ -2,7 +2,7 @@
 // https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
 //
 // contributed by Christian Kleineidam
-// based on the lua version by hanabi1224's lua implementation
+// based on the lua version by hanabi1224
 
 Iterable<int> generate() sync*  {
   int i = 2;
