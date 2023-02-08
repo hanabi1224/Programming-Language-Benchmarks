@@ -203,7 +203,7 @@ jobs:
       #   run: ./.github/truffleruby.sh
       - name: Install dart
         if: matrix.lang == 'dart'
-        run: sudo ./.github/dart.sh
+        run: ./.github/dart.sh
       - name: Install v
         if: matrix.lang == 'v'
         run: ./.github/v.sh
@@ -283,7 +283,7 @@ jobs:
       # - run: ./.github/racket.sh
       - run: ./.github/hashlink.sh
       # - run: ./.github/hhvm.sh
-      # - run: sudo ./.github/dart.sh
+      # - run: ./.github/dart.sh
       - uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: "5"

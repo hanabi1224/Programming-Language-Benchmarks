@@ -17,7 +17,7 @@ problems:
       - 1.lua
   - name: coro-prime-sieve
     source:
-      - 1.lua
+      # - 1.lua
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter: -v
