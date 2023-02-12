@@ -1,12 +1,10 @@
 import Dispatch
 import Foundation
 
-let n: UInt32
+let n = UInt32(10)
 
 if CommandLine.argc > 1 {
     n = UInt32(CommandLine.arguments[1]) ?? UInt32(10)
-} else {
-    n = 10
 }
 
 let minDepth = UInt32(4)
