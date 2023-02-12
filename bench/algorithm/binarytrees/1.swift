@@ -29,8 +29,8 @@ await withTaskGroup(of: (UInt32, String).self) { group in
     for await msg in group {
         messages.append(msg)
     }
-    
 }
+
 for msg in messages.sorted(by: { $0.0 < $1.0 }) {
     print(msg.1)
 }
