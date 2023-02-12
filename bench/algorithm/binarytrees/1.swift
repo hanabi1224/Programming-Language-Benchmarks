@@ -1,7 +1,6 @@
-import Dispatch
 import Foundation
 
-let n = UInt32(10)
+var n = UInt32(10)
 
 if CommandLine.argc > 1 {
     n = UInt32(CommandLine.arguments[1]) ?? UInt32(10)
@@ -26,22 +25,21 @@ await withTaskGroup(of: (UInt32, String).self) { group in
             return (d, "\(iterations)\t trees of depth \(d)\t check: \(chk)")
         }
     }
-
+    
     for await msg in group {
         messages.append(msg)
     }
-
+    
 }
 for msg in messages.sorted(by: { $0.0 < $1.0 }) {
     print(msg.1)
 }
 print("long lived tree of depth \(maxDepth)\t check: \(longLivingTree.check)")
 
-
 indirect enum Tree {
     case Empty
     case Node(left: Tree, right: Tree)
-
+    
     init(depth: UInt32) {
         if depth > 0 {
             self = .Node(left: Tree(depth: depth - 1), right: Tree(depth: depth - 1))
@@ -49,7 +47,7 @@ indirect enum Tree {
             self = .Node(left: .Empty, right: .Empty)
         }
     }
-
+    
     var check: UInt32 {
         switch self {
         case .Node(let left, let right):
