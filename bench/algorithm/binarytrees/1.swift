@@ -12,7 +12,7 @@ if CommandLine.argc > 1 {
 let minDepth = UInt32(4)
 let maxDepth = (n > minDepth + 2) ? n : minDepth + 2
 let depth = maxDepth + 1
-let check = Tree(depth: depth).check()
+let check = Tree(depth: depth).check
 print("stretch tree of depth \(maxDepth+1)\t check: \(check)")
 
 var messages = [(UInt32, String)]()
@@ -23,7 +23,7 @@ await withTaskGroup(of: (UInt32, String).self) { group in
             let iterations = UInt32(1 << (maxDepth - d + minDepth))
             var chk: UInt32 = 0
             for _ in 1...iterations {
-                chk += Tree(depth: d).check()
+                chk += Tree(depth: d).check
             }
             return (d, "\(iterations)\t trees of depth \(d)\t check: \(chk)")
         }
@@ -37,7 +37,7 @@ await withTaskGroup(of: (UInt32, String).self) { group in
 for msg in messages.sorted(by: { $0.0 < $1.0 }) {
     print(msg.1)
 }
-print("long lived tree of depth \(maxDepth)\t check: \(longLivingTree.check())")
+print("long lived tree of depth \(maxDepth)\t check: \(longLivingTree.check)")
 
 
 indirect enum Tree {
@@ -52,14 +52,14 @@ indirect enum Tree {
         }
     }
 
-    func check() -> UInt32 {
+    var check: UInt32 {
         switch self {
         case .Node(let left, let right):
             switch (left, right) {
             case (.Empty, .Empty):
                 return 1
             default:
-                return 1 + left.check() + right.check()
+                return 1 + left.check + right.check
             }
         case .Empty:
             return 1
