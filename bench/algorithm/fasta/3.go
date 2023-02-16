@@ -157,7 +157,7 @@ func main() {
 	defer out.Flush()
 
 	flag.Parse()
-	n := 0
+	n := 1000
 	if flag.NArg() > 0 {
 		n, _ = strconv.Atoi(flag.Arg(0))
 	}
