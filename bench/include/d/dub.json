@@ -7,7 +7,9 @@
         "asdf": "~>0.7.15",
         "intel-intrinsics": "1.11.1",
         "mir-algorithm": {"version": "468377999b43fe370c2f59a40257183475f04c55", "repository": "git+https://github.com/cyrusmsk/mir-algorithm.git", "default": true},
+        "arsd-official:cgi": "~>10.9.8"
     },
+    "subConfigurations": {"arsd-official:cgi": "embedded_httpd_hybrid"},
 	"description": "A minimal D application.",
 	"license": "MIT",
 	"name": "app",

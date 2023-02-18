@@ -57,6 +57,9 @@ problems:
   - name: json-serde
     source:
       - 2.d
+  - name: http-server
+    source:
+      - 1.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
