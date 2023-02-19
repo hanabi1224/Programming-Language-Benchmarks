@@ -85,8 +85,8 @@ environments:
   #   run_cmd: openjdk/bin/java -XX:+UseParallelGC -Xlog:all=off app
   - os: linux
     compiler: openjdk
-    version: 20
-    docker: openjdk:20-slim
+    version: 21
+    docker: openjdk:21-slim
     docker_runtime_dir: /usr/local/openjdk-*
     docker_runtime_dir_rename_to: openjdk
     include:
