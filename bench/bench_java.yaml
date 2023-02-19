@@ -90,7 +90,7 @@ environments:
     docker_runtime_dir: /usr/local/openjdk-*
     docker_runtime_dir_rename_to: openjdk
     include:
-    build: javac --enable-preview --release 20 --add-modules jdk.incubator.vector app.java -d out
+    build: javac --enable-preview --release 21 --add-modules jdk.incubator.vector app.java -d out
     out_dir: out
     run_cmd: openjdk/bin/java --enable-preview --add-modules jdk.incubator.vector app
     allow_failure: true
