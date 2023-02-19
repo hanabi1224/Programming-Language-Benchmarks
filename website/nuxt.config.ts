@@ -153,16 +153,4 @@ if (process.env.APP_HOST_NAME) {
   }
 }
 
-// ga
-// https://google-analytics.nuxtjs.org/
-if (process.env.GOOGLE_ANALYTICS_ID) {
-  // eslint-disable-next-line no-console
-  console.log(`Turning on google analytics`)
-  config.buildModules?.push('@nuxtjs/google-analytics')
-  config.googleAnalytics = {
-    id: process.env.GOOGLE_ANALYTICS_ID,
-    checkDuplicatedScript: true,
-  }
-}
-
 export default config
