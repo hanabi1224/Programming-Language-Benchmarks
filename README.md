@@ -30,7 +30,7 @@ _Once a change is merged into main branch, the CI job will re-generate and publi
 
 ### Build
 
-To achieve better SEO, the published site is static and prerenderd, powered by [nuxt.js](https://nuxtjs.org/).
+To achieve better SEO, the published site is static and prerendered, powered by [nuxt.js](https://nuxtjs.org/).
 
 ### Host
 
