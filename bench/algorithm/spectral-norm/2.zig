@@ -17,7 +17,7 @@ fn multAvGeneric(comptime transpose: bool, dst: []vec4, src: []const vec4) void 
     for (dst) |*res| {
         var idx = if (transpose) baseIdx(ti - vec1to4(1)) else baseIdx(ti) + ti;
         var sum = vec1to4(0);
-        for (srcVals) |u, j| {
+        for (srcVals, 0..) |u, j| {
             sum += vec1to4(u) / idx;
             idx += ti + vec1to4(@intToFloat(f64, j + 1));
         }
@@ -44,7 +44,7 @@ fn aggregateResults(u: []const vec4, v: []const vec4) f64 {
     @setFloatMode(.Optimized);
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
-    for (v) |f, i| {
+    for (v, 0..) |f, i| {
         vbv += u[i] * f;
         vv += f * f;
     }
