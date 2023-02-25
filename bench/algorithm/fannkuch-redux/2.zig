@@ -4,21 +4,21 @@ const Vec = std.meta.Vector(16, u8);
 
 fn reverse_mask(n: u8) Vec {
     // global constant is not used to workaround a compiler bug
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     var i: u8 = 0;
     while (i < n) : (i += 1) v[i] = n - i - 1;
     return v;
 }
 
 fn rotate_mask(n: u8) Vec {
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     var i: u8 = 0;
     while (i < n) : (i += 1) v[i] = (i + 1) % n;
     return v;
 }
 
 fn next_perm_mask(n: u8) Vec {
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
     var i: u8 = 2;
     while (i <= n) : (i += 1) v = apply_mask(v, i, rotate_mask);
     return v;
@@ -47,19 +47,19 @@ pub fn main() !void {
 
     var max_flip_count: u32 = 0;
     var checksum: i32 = 0;
-    var perm = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-    var count = [_]u8 { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+    var perm = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+    var count = [_]u8{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
     var parity: u1 = 0;
     while (true) : (parity +%= 1) {
         const flip_count = pfannkuchen(perm);
         max_flip_count = std.math.max(max_flip_count, flip_count);
-        checksum += @intCast(i32, flip_count) * (1 - @intCast(i32, parity)*2);
-        const r = for (count[0..n]) |v, i| {
+        checksum += @intCast(i32, flip_count) * (1 - @intCast(i32, parity) * 2);
+        const r = for (count[0..n], 0..) |v, i| {
             if (v != 1) break @intCast(u8, i);
         } else break;
         perm = apply_mask(perm, r + 1, next_perm_mask);
         count[r] -= 1;
-        for (count[1..r]) |*v, i| v.* = @intCast(u8, i + 2);
+        for (count[1..r], 0..) |*v, i| v.* = @intCast(u8, i + 2);
     }
 
     const stdout = std.io.getStdOut().writer();

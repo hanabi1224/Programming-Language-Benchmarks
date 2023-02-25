@@ -5,32 +5,32 @@ const Vec = std.meta.Vector(max_n, u8);
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
     const len_per_task = @divTrunc(len, tasks.len + 1);
-    for (tasks) |*task, i| {
-        const first = len_per_task*i;
+    for (tasks, 0..) |*task, i| {
+        const first = len_per_task * i;
         const last = first + len_per_task;
-        task.* = try std.Thread.spawn(.{}, f, .{first, last} ++ args);
+        task.* = try std.Thread.spawn(.{}, f, .{ first, last } ++ args);
     }
-    @call(.auto, f, .{tasks.len*len_per_task, len} ++ args);
+    @call(.auto, f, .{ tasks.len * len_per_task, len } ++ args);
     for (tasks) |*task| task.join();
 }
 
 fn reverse_mask(n: u8) Vec {
     // global constant is not used to workaround a compiler bug
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     var i: u8 = 0;
     while (i < n) : (i += 1) v[i] = n - i - 1;
     return v;
 }
 
 fn rotate_mask(n: u8) Vec {
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     var i: u8 = 0;
     while (i < n) : (i += 1) v[i] = (i + 1) % n;
     return v;
 }
 
 fn nextPermMask(n: u8) Vec {
-    var v = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    var v = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     var i: u8 = 2;
     while (i <= n) : (i += 1) v = applyMask(v, i, rotate_mask);
     return v;
@@ -80,7 +80,7 @@ fn countAtPos(n: u8, start: usize) [max_n]u8 {
 }
 
 fn permWithCount(n: u8, count: [max_n]u8) Vec {
-    var perm = Vec { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    var perm = Vec{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     const permVals = std.mem.asBytes(&perm);
     var i = n;
     while (i > 0) : (i -= 1) std.mem.rotate(u8, permVals[0..i], i - count[i - 1]);
@@ -93,23 +93,23 @@ const Stats = struct {
 };
 
 fn nextPermutation(perm: Vec, count: []u8) ?Vec {
-    const r = for (count) |v, i| {
+    const r = for (count, 0..) |v, i| {
         if (v != 1) break @intCast(u8, i);
     } else return null;
     const next_perm = applyMask(perm, r + 1, nextPermMask);
     count[r] -= 1;
-    for (count[0..r]) |*v, i| v.* = @intCast(u8, i + 1);
+    for (count[0..r], 0..) |*v, i| v.* = @intCast(u8, i + 1);
     return next_perm;
 }
 
 fn pfannkuchenStats(first: usize, last: usize, n: u8, res: *Stats) void {
     var count = countAtPos(n, first);
     var perm = permWithCount(n, count);
-    var stats = Stats {};
+    var stats = Stats{};
     var i = first;
     while (i < last) : (i += 1) {
         const flips = pfannkuchen(perm);
-        const parity = 1 - @intCast(i32, i % 2)*2;
+        const parity = 1 - @intCast(i32, i % 2) * 2;
         stats.max_flips = std.math.max(stats.max_flips, flips);
         stats.checksum += @intCast(i32, flips) * parity;
         perm = nextPermutation(perm, count[0..n]) orelse break;
@@ -124,9 +124,9 @@ pub fn main() !void {
     var tasks_buf: [64]std.Thread = undefined;
     const task_count = try std.Thread.getCpuCount();
     const tasks = tasks_buf[0 .. task_count - 1];
-    var stats = Stats {};
+    var stats = Stats{};
     const perms_count = factorialComptime(n);
-    try runInParallel(tasks, perms_count, pfannkuchenStats, .{n, &stats});
+    try runInParallel(tasks, perms_count, pfannkuchenStats, .{ n, &stats });
 
     const stdout = std.io.getStdOut().writer();
     try stdout.print("{d}\nPfannkuchen({d}) = {d}\n", .{ stats.checksum, n, stats.max_flips });
