@@ -22,7 +22,7 @@ const Planet = struct {
 fn advance(bodies: []Planet, dt: f64, steps: usize) void {
     var i: usize = 0;
     while (i < steps) : (i += 1) {
-        for (bodies) |*bi, j| {
+        for (bodies, 0..) |*bi, j| {
             var vx = bi.vx;
             var vy = bi.vy;
             var vz = bi.vz;
@@ -59,7 +59,7 @@ fn advance(bodies: []Planet, dt: f64, steps: usize) void {
 fn energy(bodies: []const Planet) f64 {
     var e: f64 = 0.0;
 
-    for (bodies) |bi, i| {
+    for (bodies, 0..) |bi, i| {
         e += 0.5 * (bi.vx * bi.vx + bi.vy * bi.vy + bi.vz * bi.vz) * bi.mass;
 
         for (bodies[i + 1 ..]) |bj| {

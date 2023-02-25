@@ -87,10 +87,10 @@ const Geometry = struct {
             \\","coordinates":[
         ;
         _ = try out_stream.write(coordsstr);
-        for (value.coordinates) |row, rowi| {
+        for (value.coordinates, 0..) |row, rowi| {
             if (rowi != 0) _ = try out_stream.write(",");
             _ = try out_stream.write("[");
-            for (row) |col, coli| {
+            for (row, 0..) |col, coli| {
                 if (coli != 0) _ = try out_stream.write(",");
                 try out_stream.print("[{d},{d}]", .{ col[0], col[1] });
             }

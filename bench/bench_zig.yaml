@@ -24,9 +24,6 @@ problems:
   - name: edigits
     source:
       - 1.zig
-  # - name: fasta
-  #   source:
-  #     - 1.zig
   - name: fannkuch-redux
     source:
       - 1.zig
