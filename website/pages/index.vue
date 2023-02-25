@@ -135,8 +135,10 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
+import { MetaInfo } from 'vue-meta'
 import MenuButton from './../components/MenuButton.vue'
 import { mergeLangBenchResults } from '~/contentUtils'
+import { importGoogleTagIfNeeded } from '~/gtmUtils'
 
 function requireAll(requireContext: any) {
   const r = requireContext.keys().map(requireContext)
@@ -185,7 +187,8 @@ export default class IndexPage extends Vue {
       .map((i) => i.langDisplay)
       .uniq()
       .value()
-    return {
+
+    const metaInfo: MetaInfo = {
       title:
         'Benchmarks for programming languages and compilers, Which programming language or compiler is faster',
       meta: [
@@ -198,6 +201,8 @@ export default class IndexPage extends Vue {
         },
       ],
     }
+    importGoogleTagIfNeeded(metaInfo)
+    return metaInfo
   }
 
   getLinkClass() {

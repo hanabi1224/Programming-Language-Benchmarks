@@ -357,7 +357,7 @@ namespace BenchTool
                 if (useDocker)
                 {
                     const string DockerTmpCodeDir = "/tmp/code";
-                    compilerVersionCommand = $"{s_dockerCmd} run --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {compilerVersionCommand}";
+                    compilerVersionCommand = $"{s_dockerCmd} run --user root --rm -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {compilerVersionCommand}";
                 }
                 else
                 {
@@ -422,7 +422,7 @@ namespace BenchTool
                         additionalDockerEnv = string.Join(" ", langEnvConfig.Env.Select(p => $"--env {p.Key.Trim()}=\"{p.Value.Trim()}\""));
                     }
 
-                    buildCommand = $"{s_dockerCmd} run --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {buildCommand.WrapCommandWithShIfNeeded()}";
+                    buildCommand = $"{s_dockerCmd} run --user root --rm {additonalDockerVolumn} {additionalDockerEnv} -v {tmpDir.FullPath}:{DockerTmpCodeDir} -w {DockerTmpCodeDir} {langEnvConfig.GetEntryPointArgument()} {docker} {buildCommand.WrapCommandWithShIfNeeded()}";
                     await ProcessUtils.RunCommandAsync(
                         buildCommand,
                         workingDir: tmpDir.FullPath,
@@ -816,7 +816,7 @@ namespace BenchTool
                 Directory.CreateDirectory(dir);
             }
             const string DockerTmpDir = "/tmp/runtime";
-            string cmd = $"{s_dockerCmd} run --rm -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.GetEntryPointArgument()} {langEnvConfig.Docker}";
+            string cmd = $"{s_dockerCmd} run --rm --user root -v {dir}:{DockerTmpDir} -w {DockerTmpDir} {langEnvConfig.GetEntryPointArgument()} {langEnvConfig.Docker}";
             if (!string.IsNullOrEmpty(langEnvConfig.DockerRuntimeDir))
             {
                 var runtimeDir = langEnvConfig.DockerRuntimeDir;

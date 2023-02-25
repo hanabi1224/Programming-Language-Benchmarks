@@ -20,7 +20,7 @@ pub fn main() !void {
     var perm_count: usize = 0;
     var checksum: isize = 0;
 
-    for (perm1) |*e, i| {
+    for (perm1, 0..) |*e, i| {
         e.* = i;
     }
 
@@ -31,7 +31,7 @@ pub fn main() !void {
                 count[r - 1] = r;
             }
 
-            for (perm) |_, i| {
+            for (perm, 0..) |_, i| {
                 perm[i] = perm1[i];
             }
 

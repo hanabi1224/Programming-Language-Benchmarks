@@ -41,7 +41,7 @@ fn offset_momentum(bodies: []Body) void {
 
 fn advance(bodies: []Body, dt: f64) void {
     @setFloatMode(.Optimized);
-    for (bodies[0..]) |*bi, i| {
+    for (bodies[0..], 0..) |*bi, i| {
         var vel = bi.vel;
         var mi = bi.mass;
         for (bodies[i + 1 ..]) |*bj| {
@@ -62,7 +62,7 @@ fn advance(bodies: []Body, dt: f64) void {
 fn energy(bodies: []const Body) f64 {
     @setFloatMode(.Optimized);
     var e: f64 = 0.0;
-    for (bodies) |bi, i| {
+    for (bodies, 0..) |bi, i| {
         e += 0.5 * length_sq(bi.vel) * bi.mass;
         for (bodies[i + 1 ..]) |bj| {
             e -= bi.mass * bj.mass / length(bi.pos - bj.pos);

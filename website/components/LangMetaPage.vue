@@ -59,11 +59,11 @@
       </div>
 
       <!-- <div class="mt-5">
-        <span>OS</span>
-        <select v-model="osSelected" class="px-2 py-2 rounded bg-purple-200">
-          <option v-for="i in osOptions" :key="i" :value="i">{{ i }}</option>
-        </select>
-      </div> -->
+                            <span>OS</span>
+                            <select v-model="osSelected" class="px-2 py-2 rounded bg-purple-200">
+                              <option v-for="i in osOptions" :key="i" :value="i">{{ i }}</option>
+                            </select>
+                          </div> -->
 
       <div v-if="cpuInfo" class="mt-5 text-xs">
         <label class="font-bold">CPU INFO:</label
@@ -171,11 +171,9 @@
                   v-show="other || problem"
                   :class="['text-left', 'pl-4', mdHide]"
                 >
-                  <a
-                    :href="`/${i.lang}`"
-                    class="underline text-blue-500"
-                    >{{ i.lang }}</a
-                  >
+                  <a :href="`/${i.lang}`" class="underline text-blue-500">{{
+                    i.lang
+                  }}</a>
                 </td>
                 <td class="text-right">
                   <a
@@ -259,8 +257,10 @@
 <script lang="ts">
 import { Component, Watch, Vue } from 'nuxt-property-decorator'
 import _ from 'lodash'
+import { MetaInfo } from 'vue-meta'
 import MenuButton from './MenuButton.vue'
 import { getFullCompilerVersion, mergeLangBenchResults } from '~/contentUtils'
+import { importGoogleTagIfNeeded } from '~/gtmUtils'
 
 function requireAll(requireContext: any) {
   const r = requireContext.keys().map(requireContext)
@@ -489,7 +489,7 @@ export default class LangMetaPage extends Vue {
       langsStrs.push(`${this.lang!.langDisplay} lang`)
     }
 
-    return {
+    const metaInfo: MetaInfo = {
       title,
       meta: [
         {
@@ -499,6 +499,8 @@ export default class LangMetaPage extends Vue {
         },
       ],
     }
+    importGoogleTagIfNeeded(metaInfo)
+    return metaInfo
   }
 
   created() {

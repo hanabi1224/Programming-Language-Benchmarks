@@ -59,7 +59,7 @@ environments:
   - os: linux
     compiler: tinygo
     version: latest
-    docker: tinygo/tinygo:0.25.0
+    docker: tinygo/tinygo
     env:
       GOAMD64: v3
     include: go

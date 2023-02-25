@@ -20,7 +20,7 @@ const AminoAcid = struct {
 
 fn repeatAndWrap(out: anytype, comptime sequence: []const u8, count: usize) void {
     var padded_sequence: [sequence.len + max_line_length]u8 = undefined;
-    for (padded_sequence) |*e, i| {
+    for (&padded_sequence, 0..) |*e, i| {
         e.* = sequence[i % sequence.len];
     }
 
@@ -44,7 +44,7 @@ fn repeatAndWrap(out: anytype, comptime sequence: []const u8, count: usize) void
 fn generateAndWrap(out: anytype, comptime nucleotides: []const AminoAcid, count: usize) void {
     var cum_prob: f64 = 0;
     var cum_prob_total: [nucleotides.len]f64 = undefined;
-    for (nucleotides) |n, i| {
+    for (nucleotides, 0..) |n, i| {
         cum_prob += n.p;
         cum_prob_total[i] = cum_prob * im;
     }
