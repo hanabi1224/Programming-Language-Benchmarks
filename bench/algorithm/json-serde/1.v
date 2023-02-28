@@ -11,10 +11,10 @@ fn main() {
 	if os.args.len > 2 {
 		n = strconv.atoi(os.args[2]) or { 3 }
 	}
-	json_str := os.read_file('${file_name}.json')?
-	data := json.decode(GeoData, json_str)?
+	json_str := os.read_file('${file_name}.json')!
+	data := json.decode(GeoData, json_str)!
 	println(md5.hexhash(json.encode(data)))
-	array := []GeoData{len: n, cap: n, init: json.decode(GeoData, json_str)?}
+	array := []GeoData{len: n, cap: n, init: json.decode(GeoData, json_str)!}
 	println(md5.hexhash(json.encode(array)))
 }
 
