@@ -3,15 +3,21 @@
 		"root"
 	],
 	"copyright": "Copyright © 2021, root",
-    "dependencies": {
-        "asdf": "~>0.7.15",
-        "intel-intrinsics": "1.11.1",
-        "mir-algorithm": {"version": "468377999b43fe370c2f59a40257183475f04c55", "repository": "git+https://github.com/cyrusmsk/mir-algorithm.git", "default": true},
-    },
+	"dependencies": {
+		"intel-intrinsics": {
+			"version": "5691bf9de94b1c08244c45e6c3659fb0c150e82c",
+			"repository": "git+https://github.com/AuburnSounds/intel-intrinsics.git"
+		}
+	},
 	"description": "A minimal D application.",
 	"license": "MIT",
 	"name": "app",
 	"targetPath": "out",
-	"dflags-dmd": ["-mcpu=avx2"],
-	"dflags-ldc": ["-mattr=+avx2,+sse3,+ssse3,+sse4.1,+sse4.2", "-mcpu=broadwell"]
+	"dflags-dmd": [
+		"-mcpu=avx2"
+	],
+	"dflags-ldc": [
+		"-mattr=+avx2,+sse3,+ssse3,+sse4.1,+sse4.2",
+		"-mcpu=broadwell"
+	]
 }
