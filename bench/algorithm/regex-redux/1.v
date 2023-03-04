@@ -5,9 +5,9 @@ import regex
 
 fn main() {
 	file_name := os.args[1] or { '25000_in' }
-	mut content := os.read_file(file_name)?
+	mut content := os.read_file(file_name)!
 	ilen := content.len
-	mut replace_re := regex.regex_opt('(>.*\n)|(\n)')?
+	mut replace_re := regex.regex_opt('(>.*\n)|(\n)')!
 	content = replace_re.replace(content, '')
 	clen := content.len
 	for p in [
@@ -30,14 +30,14 @@ fn main() {
 		'<[^>]*>':                    '|'
 		'\\|[^|][^|]*\\|':            '-'
 	} {
-		mut re := regex.regex_opt(p)?
+		mut re := regex.regex_opt(p)!
 		content = re.replace(content, r)
 	}
 	println('\n${ilen}\n${clen}\n${content.len}')
 }
 
-fn var_find(content string, pattern string) ?int {
-	mut re := regex.regex_opt(normalize_pattern(pattern))?
+fn var_find(content string, pattern string) !int {
+	mut re := regex.regex_opt(normalize_pattern(pattern))!
 	matches := re.find_all(content)
 	return matches.len / 2
 }
