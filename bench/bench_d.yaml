@@ -61,7 +61,6 @@ problems:
     source:
       - 1.d
       - 2.d
-      - 3.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
