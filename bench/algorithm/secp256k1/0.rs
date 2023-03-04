@@ -18,7 +18,7 @@ fn main() {
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
         .unwrap_or(10);
-    let privkey: k256::Scalar = elliptic_curve::ScalarCore::from_be_slice(&PRIVATE_KEY)
+    let privkey: k256::Scalar = elliptic_curve::ScalarPrimitive::from_slice(&PRIVATE_KEY)
         .unwrap()
         .into();
     let mut point = k256::AffinePoint::generator();

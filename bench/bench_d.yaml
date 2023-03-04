@@ -44,7 +44,7 @@ problems:
   - name: regex-redux
     source:
       - 3.d
-  - name: fannkuch-redux 
+  - name: fannkuch-redux
     source:
       - 1.d
       - 1-i.d
@@ -56,7 +56,7 @@ problems:
       - 1-m.d
   - name: json-serde
     source:
-      - 2.d
+      # - 2.d
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
