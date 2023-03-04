@@ -19,28 +19,28 @@ fn (mut lcg LCG) next() u32 {
 	return lcg.seed
 }
 
-struct LinkedListNode<T> {
+struct LinkedListNode[T] {
 mut:
-	prev &LinkedListNode<T>
-	next &LinkedListNode<T>
+	prev &LinkedListNode[T]
+	next &LinkedListNode[T]
 	data T
 }
 
-struct LinkedList<T> {
+struct LinkedList[T] {
 mut:
 	len  int
-	head &LinkedListNode<T> = 0
-	tail &LinkedListNode<T> = 0
+	head &LinkedListNode[T] = 0
+	tail &LinkedListNode[T] = 0
 }
 
-fn (mut ll LinkedList<T>) add<T>(data T) &LinkedListNode<T> {
+fn (mut ll LinkedList[T]) add[T](data T) &LinkedListNode[T] {
 	node = &LinkedListNode{data}
 	ll.__add_node(node)
 	ll.len += 1
 	return node
 }
 
-fn (mut ll LinkedList<T>) __add_node<T>(node &LinkedListNode<T>) {
+fn (mut ll LinkedList[T]) __add_node[T](node &LinkedListNode[T]) {
 	if ll.head == 0 {
 		ll.head = node
 		node.prev = 0
@@ -52,7 +52,7 @@ fn (mut ll LinkedList<T>) __add_node<T>(node &LinkedListNode<T>) {
 	node.next = 0
 }
 
-fn (mut ll LinkedList<T>) __remove<T>(node &LinkedListNode<T>) {
+fn (mut ll LinkedList[T]) __remove[T](node &LinkedListNode[T]) {
 	if ll.head == node {
 		ll.head = node.next
 	}
@@ -67,12 +67,12 @@ fn (mut ll LinkedList<T>) __remove<T>(node &LinkedListNode<T>) {
 	}
 }
 
-fn (mut ll LinkedList<T>) move_to_end(node &LinkedListNode<T>) {
+fn (mut ll LinkedList[T]) move_to_end(node &LinkedListNode[T]) {
 	ll.__remove(node)
 	ll.__add_node(node)
 }
 
-fn (mut ll LinkedList<T>) pop_head() &LinkedListNode<T> {
+fn (mut ll LinkedList[T]) pop_head() &LinkedListNode[T] {
 	if self.head != 0 {
 		head := self.head
 		self.head = head.next
@@ -82,16 +82,16 @@ fn (mut ll LinkedList<T>) pop_head() &LinkedListNode<T> {
 	return 0
 }
 
-struct Pair<K, V> {
+struct Pair[K, V] {
 	key   K
 	value V
 }
 
-struct LRU<K, V> {
+struct LRU[K, V] {
 	size int
 mut:
-	_key_lookup map[K]&LinkedListNode<Pair<K, V>> = {}
-	_entries    LinkedList<Pair<K, V>> = {}
+	_key_lookup map[K]&LinkedListNode[Pair[K, V]] = {}
+	_entries    LinkedList[Pair[K, V]] = {}
 }
 
 fn (mut lru LRU) get(key u32) ?u32 {
@@ -130,7 +130,7 @@ fn main() {
 	mut rng1 := LCG{
 		seed: 1
 	}
-	mut lru := LRU<u32, u32>{
+	mut lru := LRU[u32, u32]{
 		size: size
 	}
 
@@ -148,5 +148,5 @@ fn main() {
 		}
 	}
 
-	println('$hit\n$missed')
+	println('${hit}\n${missed}')
 }

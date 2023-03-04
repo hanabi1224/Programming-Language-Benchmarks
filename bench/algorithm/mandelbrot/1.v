@@ -17,7 +17,7 @@ fn main() {
 	for i in 0 .. n {
 		xloc[i / 8][i % 8] = f64(i) * inv - 1.5
 	}
-	println('P4\n$n $n')
+	println('P4\n${n} ${n}')
 
 	mut rows := []byte{len: n * chunk_size, cap: n * chunk_size, init: 0}
 	for chunk_id := 0; chunk_id < n; chunk_id++ {

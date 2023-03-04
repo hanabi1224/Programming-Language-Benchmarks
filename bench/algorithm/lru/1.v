@@ -80,5 +80,5 @@ fn main() {
 		}
 	}
 
-	println('$hit\n$missed')
+	println('${hit}\n${missed}')
 }

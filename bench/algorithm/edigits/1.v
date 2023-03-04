@@ -28,9 +28,9 @@ fn main() {
 		} else {
 			mut line := s[i..n]
 			for _ in 0 .. (10 - n % 10) {
-				line = '$line '
+				line = '${line} '
 			}
-			print('$line\t:$n')
+			print('${line}\t:${n}')
 		}
 	}
 }

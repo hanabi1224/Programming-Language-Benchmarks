@@ -13,11 +13,11 @@ fn main() {
 		n = strconv.atoi(os.args[1]) or { 10 }
 	}
 	port := int(rand.u32_in_range(20000, 50000) or { 23333 })
-	go vweb.run(&App{}, port)
-	url := 'http://localhost:$port/api'
+	spawn vweb.run(&App{}, port)
+	url := 'http://localhost:${port}/api'
 	mut ch := chan int{cap: n}
 	for i in 1 .. (n + 1) {
-		go send(url, i, ch)
+		spawn send(url, i, ch)
 	}
 	mut sum := 0
 	for _ in 0 .. n {
@@ -45,7 +45,7 @@ pub fn (mut app App) api() vweb.Result {
 			value: 0
 		}
 	}
-	return app.text('$data.value')
+	return app.text('${data.value}')
 }
 
 struct Payload {

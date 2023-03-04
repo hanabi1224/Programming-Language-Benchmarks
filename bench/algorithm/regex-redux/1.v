@@ -21,7 +21,7 @@ fn main() {
 		'agggta[cgt]a|t[acg]taccct',
 		'agggtaa[cgt]|[acg]ttaccct',
 	] {
-		println('$p ${var_find(content, p)?}')
+		println('${p} ${var_find(content, p)?}')
 	}
 	for p, r in {
 		'tHa[Nt]':                    '<4>'
@@ -33,7 +33,7 @@ fn main() {
 		mut re := regex.regex_opt(p)?
 		content = re.replace(content, r)
 	}
-	println('\n$ilen\n$clen\n$content.len')
+	println('\n${ilen}\n${clen}\n${content.len}')
 }
 
 fn var_find(content string, pattern string) ?int {
@@ -44,6 +44,6 @@ fn var_find(content string, pattern string) ?int {
 
 fn normalize_pattern(pattern string) string {
 	return pattern.split('|').map(fn (s string) string {
-		return '($s)'
+		return '(${s})'
 	}).join('|')
 }
