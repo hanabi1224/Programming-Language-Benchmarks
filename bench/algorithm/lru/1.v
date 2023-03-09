@@ -25,7 +25,7 @@ mut:
 	m map[u32]u32
 }
 
-fn (mut lru LRU) get(key u32) ?u32 {
+fn (mut lru LRU) get(key u32) !u32 {
 	v := lru.m[key] or { return error('not found') }
 	lru.m.delete(key)
 	lru.m[key] = v
@@ -80,5 +80,5 @@ fn main() {
 		}
 	}
 
-	println('$hit\n$missed')
+	println('${hit}\n${missed}')
 }

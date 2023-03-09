@@ -11,7 +11,7 @@ fn main() {
 
 	sum, flips := fannkuchredux(n)
 
-	println('$sum\nPfannkuchen($n) = $flips')
+	println('${sum}\nPfannkuchen(${n}) = ${flips}')
 }
 
 [direct_array_access]

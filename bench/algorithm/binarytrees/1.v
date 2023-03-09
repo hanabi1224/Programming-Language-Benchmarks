@@ -42,7 +42,7 @@ fn main() {
 
 	stretch_depth := max_depth + 1
 	stretch_tree := create(stretch_depth)
-	println('stretch tree of depth $stretch_depth\t check: ${check(stretch_tree)}')
+	println('stretch tree of depth ${stretch_depth}\t check: ${check(stretch_tree)}')
 
 	long_lived_tree := create(max_depth)
 
@@ -58,8 +58,8 @@ fn main() {
 			check_result += check(node)
 		}
 
-		println('$n\t trees of depth $depth\t check: $check_result')
+		println('${n}\t trees of depth ${depth}\t check: ${check_result}')
 	}
 
-	println('long lived tree of depth $max_depth\t check: ${check(long_lived_tree)}')
+	println('long lived tree of depth ${max_depth}\t check: ${check(long_lived_tree)}')
 }

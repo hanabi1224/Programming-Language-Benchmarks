@@ -14,6 +14,11 @@
 	"license": "MIT",
 	"name": "app",
 	"targetPath": "out",
-	"dflags-dmd": ["-mcpu=avx2"],
-	"dflags-ldc": ["-mattr=+avx2,+sse3,+ssse3,+sse4.1,+sse4.2", "-mcpu=broadwell"]
+	"dflags-dmd": [
+		"-mcpu=avx2"
+	],
+	"dflags-ldc": [
+		"-mattr=+avx2,+sse3,+ssse3,+sse4.1,+sse4.2",
+		"-mcpu=broadwell"
+	]
 }

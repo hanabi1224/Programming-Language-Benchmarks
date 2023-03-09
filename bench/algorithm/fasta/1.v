@@ -55,7 +55,7 @@ fn main() {
 }
 
 fn make_repeat_fasta(id string, desc string, src []byte, n int) {
-	println('>$id $desc')
+	println('>${id} ${desc}')
 	mut char_print_idx := 0
 	mut sb := strings.new_builder(line_width)
 	unsafe {
@@ -83,7 +83,7 @@ fn make_repeat_fasta(id string, desc string, src []byte, n int) {
 }
 
 fn make_random_fasta(mut rand_gen RandGen, id string, desc string, mut table map[byte]f64, n int) {
-	println('>$id $desc')
+	println('>${id} ${desc}')
 	mut prob := 0.0
 	for k, p in table {
 		prob += p

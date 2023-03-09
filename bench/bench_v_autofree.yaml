@@ -12,10 +12,10 @@ problems:
   - name: pidigits
     source:
       - 1.v
-      - 2.v
+      # - 2.v
   - name: edigits
     source:
-      - 1.v
+      # - 1.v
   - name: fasta
     source:
       - 1.v
@@ -43,7 +43,7 @@ problems:
       - 1.v
   - name: http-server
     source:
-      - 1.v
+      # - 1.v
   # - name: regex-redux
   #   source:
   #     - 1.v

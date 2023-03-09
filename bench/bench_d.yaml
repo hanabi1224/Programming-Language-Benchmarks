@@ -44,7 +44,7 @@ problems:
   - name: regex-redux
     source:
       - 3.d
-  - name: fannkuch-redux 
+  - name: fannkuch-redux
     source:
       - 1.d
       - 1-i.d

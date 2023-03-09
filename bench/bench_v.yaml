@@ -62,7 +62,7 @@ environments:
       - mv app out
     out_dir: out
     run_cmd: app
-    allow_failure: true
+    # allow_failure: true
   # - os: linux
   #   compiler: v+gc+zig
   #   version: latest

@@ -18,13 +18,11 @@ wasm = [
 [dependencies]
 anyhow = "1"
 bitvec = "1"
-elliptic-curve = "0"
 generic-array = "0"
 hashbrown = "0"
 hashlink = "0"
 hex = "0"
 ibig = "0"
-k256 = "0"
 lasso = "0"
 lazy_static = "1"
 md5 = "0"
