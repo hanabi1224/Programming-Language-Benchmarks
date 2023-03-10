@@ -1,6 +1,8 @@
 @safe:
 import std;
 
+extern(C) __gshared string[] rt_options = [ "gcopt=minPoolSize:300" ];
+
 const MIN_DEPTH = 4;
 
 class Node {
