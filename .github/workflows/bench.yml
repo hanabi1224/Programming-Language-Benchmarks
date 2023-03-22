@@ -159,7 +159,8 @@ jobs:
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with:
-          compiler: ldc-latest
+          # compiler: ldc-latest
+          compiler: ldc-1.31.0
       - name: Install nim
         if: matrix.lang == 'nim'
         run: ./.github/nim.sh
