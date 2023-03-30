@@ -11,11 +11,11 @@ pub fn main() !void {
     const max_depth = math.max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = try Tree.init(stretch_depth, global_allocator);
+        var stretch_tree = try Tree.init(stretch_depth, global_allocator);
         defer stretch_tree.deinit();
         try stdout.print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
     }
-    const long_lived_tree = try Tree.init(max_depth, global_allocator);
+    var long_lived_tree = try Tree.init(max_depth, global_allocator);
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -24,7 +24,7 @@ pub fn main() !void {
         var sum: usize = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {
-            const tree = try Tree.init(depth, global_allocator);
+            var tree = try Tree.init(depth, global_allocator);
             defer tree.deinit();
             sum += tree.check();
         }
@@ -57,12 +57,13 @@ const Tree = struct {
         return Tree{ .node_pool = node_pool, .root_node = root_node };
     }
 
-    pub fn check(self: Tree) usize {
+    pub fn check(self: *Tree) usize {
         return self.root_node.check();
     }
 
-    pub fn deinit(self: Tree) void {
-        @constCast(&self.node_pool).deinit();
+    pub fn deinit(self: *Tree) void {
+        self.node_pool.deinit();
+        self.* = undefined;
     }
 };
 
