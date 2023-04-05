@@ -17,7 +17,6 @@ pub fn main() !void {
     if (args.len > 2) {
         n = try std.fmt.parseInt(usize, args[2], 10);
     }
-    const stdout = std.io.getStdOut().writer();
 
     const json_str = try file.readToEndAlloc(global_allocator, std.math.maxInt(u32));
     defer global_allocator.free(json_str);
@@ -25,11 +24,12 @@ pub fn main() !void {
         var tokens = json.TokenStream.init(json_str);
         const data = try json.parse(GeoData, &tokens, .{ .allocator = global_allocator });
         defer json.parseFree(GeoData, data, .{ .allocator = global_allocator });
-        var json_str_des = std.ArrayList(u8).init(global_allocator);
-        defer json_str_des.deinit();
-        try json.stringify(data, .{}, json_str_des.writer());
-        try printHash(json_str_des.items, stdout);
+
+        var md5 = StreamingMd5.init();
+        try json.stringify(data, .{}, md5.writer());
+        md5.printHash();
     }
+
     {
         var array = std.ArrayList(GeoData).init(global_allocator);
         defer {
@@ -43,19 +43,38 @@ pub fn main() !void {
             const data = try json.parse(GeoData, &tokens, .{ .allocator = global_allocator });
             try array.append(data);
         }
-        var json_str_des = std.ArrayList(u8).init(global_allocator);
-        defer json_str_des.deinit();
-        try json.stringify(array.items, .{}, json_str_des.writer());
-        try printHash(json_str_des.items, stdout);
+
+        var md5 = StreamingMd5.init();
+        try json.stringify(array.items, .{}, md5.writer());
+        md5.printHash();
     }
 }
 
-fn printHash(bytes: []const u8, stdout: anytype) !void {
-    const Md5 = std.crypto.hash.Md5;
-    var hash: [Md5.digest_length]u8 = undefined;
-    Md5.hash(bytes, &hash, .{});
-    try stdout.print("{s}\n", .{std.fmt.fmtSliceHexLower(&hash)});
-}
+const Md5 = std.crypto.hash.Md5;
+
+const StreamingMd5 = struct {
+    md: Md5,
+
+    pub fn init() StreamingMd5 {
+        return .{ .md = Md5.init(.{}) };
+    }
+
+    pub fn writer(self: *StreamingMd5) std.io.Writer(*StreamingMd5, error{}, StreamingMd5.update) {
+        return .{ .context = self };
+    }
+
+    fn update(self: *StreamingMd5, buf: []const u8) error{}!usize {
+        self.md.update(buf);
+        return buf.len;
+    }
+
+    pub fn printHash(self: *StreamingMd5) void {
+        var out: [Md5.digest_length]u8 = undefined;
+        self.md.final(&out);
+        const stdout = std.io.getStdOut().writer();
+        stdout.print("{s}\n", .{std.fmt.fmtSliceHexLower(&out)}) catch {};
+    }
+};
 
 const GeoData = struct {
     type: []const u8,
