@@ -5,9 +5,6 @@
 sudo apt-get install -y libgc-dev
 git clone https://github.com/vlang/v /tmp/vlang
 cd /tmp/vlang
-pushd vlib/vweb
-cat vweb.v | sed "s/\bprintln('\[Vweb\] Running/eprintln('[Vweb] Running/" > temp.v && mv temp.v vweb.v
-popd
 make && ./v -version
 ./v symlink
 v --version
