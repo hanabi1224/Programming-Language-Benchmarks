@@ -3,6 +3,7 @@ problems:
   - name: json-serde
     source:
       - 2-ffi.go
+      - 4-ffi-streaming.go
 compiler_version_command: go version
 compiler_version_regex:
 runtime_version_parameter:
