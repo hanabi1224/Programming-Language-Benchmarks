@@ -19,7 +19,7 @@ jobs:
           node-version: 14.x
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 7
       - run: pnpm --version
       - run: vercel --version
       - name: Build

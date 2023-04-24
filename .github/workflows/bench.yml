@@ -329,7 +329,7 @@ jobs:
           node-version: 14.x
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 7
       - uses: actions/download-artifact@v3
         with:
           # Artifact name
