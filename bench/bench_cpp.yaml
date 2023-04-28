@@ -39,7 +39,7 @@ environments:
     compiler: g++
     compiler_version_command: g++ --version
     version: latest
-    docker: gcc
+    docker: gcc:12
     include: cpp
     build: g++ @app.rsp
     after_build:
