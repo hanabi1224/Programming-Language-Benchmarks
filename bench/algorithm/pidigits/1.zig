@@ -38,7 +38,7 @@ pub fn main() !void {
 
             if (digits_printed >= n) {
                 if (rem != 9) {
-                    std.mem.set(u8, sb[rem + 1 ..], ' ');
+                    @memset(sb[rem + 1 ..], ' ');
                     try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
                 }
                 break;
