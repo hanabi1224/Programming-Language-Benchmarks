@@ -1,0 +1,48 @@
+#!/usr/bin/env runacton
+
+class Node(object):
+    left: ?Node
+    right: ?Node
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+def make(depth: int) -> Node:
+    if depth == 0:
+        return Node(None, None)
+    else:
+        d = depth - 1
+        return Node(make(d), make(d))
+
+def check(node: Node) -> int:
+    l = node.left
+    r = node.right
+    sum = 1
+    if l is not None:
+        sum += check(l)
+    if r is not None:
+        sum += check(r)
+    return sum
+
+def binary_tree(n: int):
+    min_depth = 4
+    max_depth = max([min_depth + 2, n], 0)
+    stretch_depth = max_depth + 1
+    print("stretch tree of depth %d\t check: %d" % (stretch_depth, check(make(stretch_depth))))
+
+    long_lived_tree = make(max_depth)
+
+    mmd = max_depth + min_depth
+    for d in range(min_depth, stretch_depth, 2):
+        i = 2 ** (mmd - d)
+        cs = 0
+        for _ in range(0, i, 1):
+            cs += check(make(d))
+        print("%d\t trees of depth %d\t check: %d" % (i, d, cs))
+
+    print("long lived tree of depth %d\t check: %d" % (max_depth, check(long_lived_tree)))
+
+actor main(env):
+    n = int(env.argv[1]) if len(env.argv) > 1 else 6
+    binary_tree(n)
+    await async env.exit(0)

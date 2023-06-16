@@ -1,4 +1,7 @@
+#!/usr/bin/env runacton
+
 # port of 1.py
+
 import math
 
 ln_tau = math.log(6.283185307179586)

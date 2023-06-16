@@ -1,9 +1,12 @@
 lang: acton
 problems:
-  - name: helloworld
+  - name: binarytrees
     source:
       - 1.act
   - name: edigits
+    source:
+      - 1.act
+  - name: helloworld
     source:
       - 1.act
   - name: nsieve
