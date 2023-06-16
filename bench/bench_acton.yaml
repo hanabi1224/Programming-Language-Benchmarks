@@ -15,7 +15,7 @@ environments:
     compiler: actonc
     compiler_version_command: actonc --version
     version: latest
-    build: actonc app.act
+    build: actonc --target native app.act
     after_build:
       - mv app out
     out_dir: out
