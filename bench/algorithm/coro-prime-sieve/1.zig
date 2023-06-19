@@ -58,8 +58,8 @@ pub fn main() !void {
         try stdout.print("{}\n", .{prime});
         if (i >= n - 1) break;
         const ch1 = try global_allocator.create(Channel);
-        const frame = try global_allocator.create(@Frame(filter));
-        frame.* = async filter(ch1, ch, prime);
+        ch1.frame = try global_allocator.create(@Frame(filter));
+        ch1.frame.* = async filter(ch1, ch, prime);
         ch = ch1;
     }
 }
