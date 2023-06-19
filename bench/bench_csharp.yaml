@@ -35,7 +35,9 @@ problems:
   - name: regex-redux
     source:
       - 5.cs
+      - 5-m.cs
       - 6.cs
+      - 6-m.cs
   - name: mandelbrot
     source:
       - 1.cs

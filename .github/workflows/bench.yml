@@ -25,6 +25,8 @@ jobs:
             codon,
             cpp,
             csharp,
+            csharp_preview,
+            csharp_native_aot,
             crystal,
             d,
             dart,

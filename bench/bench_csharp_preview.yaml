@@ -1,68 +1,72 @@
-lang: csharp
-enabled: false
+lang: csharp_preview
 problems:
-  # - name: helloworld
-  #   source:
-  #     - 1.cs
-  # - name: binarytrees
-  #   source:
-  #     - 1.cs
-  # - name: merkletrees
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
-  # - name: nbody
-  #   source:
-  #     - 8.cs
-  #     - 9.cs
-  # - name: spectral-norm
-  #   source:
-  #     - 3.cs
-  # - name: pidigits
-  #   source:
-  #     - 1.cs
-  # - name: edigits
-  #   source:
-  #     - 1.cs
-  # - name: fannkuch-redux
-  #   source:
-  #     # - 9.cs
-  # - name: fasta
-  #   source:
-  #     - 5.cs
-  # - name: knucleotide
-  #   source:
-  #     - 6.cs
+  - name: helloworld
+    source:
+      - 1.cs
+  - name: binarytrees
+    source:
+      - 1.cs
+  - name: merkletrees
+    source:
+      - 1.cs
+      - 2.cs
+  - name: nbody
+    source:
+      - 8.cs
+      - 9.cs
+  - name: spectral-norm
+    source:
+      - 3.cs
+  - name: pidigits
+    source:
+      - 1.cs
+  - name: edigits
+    source:
+      - 1.cs
+  - name: fannkuch-redux
+    source:
+      # - 9.cs
+  - name: fasta
+    source:
+      - 5.cs
+  - name: knucleotide
+    source:
+      - 6.cs
   - name: regex-redux
     source:
       - 5.cs
-      # - 5p.cs
-  # - name: mandelbrot
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
-  #     - 3.cs
-  # - name: json-serde
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
-  # - name: coro-prime-sieve
-  #   source:
-  #     - 1.cs
+      - 5-m.cs
+      - 6.cs
+      - 6-m.cs
+  - name: mandelbrot
+    source:
+      - 1.cs
+      - 2.cs
+      - 3.cs
+  - name: json-serde
+    source:
+      - 1.cs
+      - 2.cs
+  - name: coro-prime-sieve
+    source:
+      - 1.cs
   - name: http-server
     source:
+      - 1.cs
+      - 2.cs
+      - 2-http2.cs
       - 2-http3.cs
-  # - name: nsieve
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
-  # - name: lru
-  #   source:
-  #     - 1.cs
-  #     - 2.cs
-  # - name: secp256k1
-  #   source:
-  #     - 1.cs
+  - name: nsieve
+    source:
+      - 1.cs
+      - 2.cs
+  - name: lru
+    source:
+      - 1.cs
+      - 2.cs
+  - name: secp256k1
+    source:
+      - 1.cs
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
@@ -73,10 +77,10 @@ environments:
     compiler: dotnet
     version: 7
     compiler_version_command: dotnet --version
-    docker: mcr.microsoft.com/dotnet/sdk:7.0
+    docker: mcr.microsoft.com/dotnet/sdk:8.0-preview
     # docker_volumns:
     #   - /tmp/.nuget/packages:/root/.nuget/packages
     include: dotnet_preview
-    build: dotnet publish -c Release -r linux-x64 -f net7 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f net8 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: app
