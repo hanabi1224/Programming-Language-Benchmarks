@@ -7,12 +7,12 @@ inline fn vec1to4(f: f64) vec4 {
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
     const len_per_task = @divTrunc(len, tasks.len + 1);
-    for (tasks, 0..) |*task, i| {
+    for (tasks) |*task, i| {
         const first = len_per_task * i;
         const last = first + len_per_task;
         task.* = try std.Thread.spawn(.{}, f, .{ first, last } ++ args);
     }
-    @call(.auto, f, .{ tasks.len * len_per_task, len } ++ args);
+    @call(.{}, f, .{ tasks.len * len_per_task, len } ++ args);
     for (tasks) |*task| task.join();
 }
 
@@ -28,7 +28,7 @@ fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []con
     for (dst) |*res| {
         var idx = if (transpose) baseIdx(ti - vec1to4(1)) else baseIdx(ti) + ti;
         var sum = vec4{0,0,0,0};
-        for (srcVals, 0..) |u, j| {
+        for (srcVals) |u, j| {
             sum += vec4{u,u,u,u} / idx;
             idx += ti + vec1to4(@intToFloat(f64, j + 1));
         }
@@ -59,7 +59,7 @@ fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4,
     @setFloatMode(.Optimized);
     var vbv = vec4{0,0,0,0};
     var vv = vec4{0,0,0,0};
-    for (v[first..last], 0..) |f, i| {
+    for (v[first..last]) |f, i| {
         vbv += u[first + i] * f;
         vv += f * f;
     }
