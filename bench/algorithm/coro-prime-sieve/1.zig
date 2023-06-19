@@ -20,9 +20,9 @@ fn generate(channel: *Channel) void {
 }
 
 fn filter(out_channel: *Channel, in_channel: *Channel, prime: u32) void {
-    suspend {
-        out_channel.frame = @frame();
-    }
+    //suspend {
+    //    out_channel.frame = @frame();
+    //}
     while (true) {
         //resume in_channel.frame;
         if (in_channel.value % prime != 0) {
