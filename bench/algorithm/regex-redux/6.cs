@@ -70,15 +70,15 @@ public static partial class RegexRedux
         var variant9 = "agggtaa[cgt]|[acg]ttaccct " + Re9().Count(_sequences);
         var variant8 = "agggta[cgt]a|t[acg]taccct " + Re8().Count(_sequences);
 
-        Console.WriteLine(variant1());
-        Console.WriteLine(variant2());
-        Console.WriteLine(variant3());
-        Console.WriteLine(variant4());
-        Console.WriteLine(variant5());
-        Console.WriteLine(variant6());
-        Console.WriteLine(variant7());
-        Console.WriteLine(variant8());
-        Console.WriteLine(variant9());
+        Console.WriteLine(variant1);
+        Console.WriteLine(variant2);
+        Console.WriteLine(variant3);
+        Console.WriteLine(variant4);
+        Console.WriteLine(variant5);
+        Console.WriteLine(variant6);
+        Console.WriteLine(variant7);
+        Console.WriteLine(variant8);
+        Console.WriteLine(variant9);
         Console.WriteLine($"\n{initialLength}\n{sequences.Length}");
         Console.WriteLine(magicTask().ToString());
     }
