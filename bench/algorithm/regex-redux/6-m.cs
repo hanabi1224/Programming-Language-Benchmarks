@@ -60,15 +60,15 @@ public static partial class RegexRedux
             return newseq.Length;
         });
 
-        var variant2 = Task.Run(() => "[cgt]gggtaaa|tttaccc[acg] " + Re2().Count(_sequences));
-        var variant3 = Task.Run(() => "a[act]ggtaaa|tttacc[agt]t " + Re3().Count(_sequences));
-        var variant7 = Task.Run(() => "agggt[cgt]aa|tt[acg]accct " + Re7().Count(_sequences));
-        var variant6 = Task.Run(() => "aggg[acg]aaa|ttt[cgt]ccct " + Re6().Count(_sequences));
-        var variant4 = Task.Run(() => "ag[act]gtaaa|tttac[agt]ct " + Re4().Count(_sequences));
-        var variant5 = Task.Run(() => "agg[act]taaa|ttta[agt]cct " + Re5().Count(_sequences));
-        var variant1 = Task.Run(() => "agggtaaa|tttaccct " + Re1().Count(_sequences));
-        var variant9 = Task.Run(() => "agggtaa[cgt]|[acg]ttaccct " + Re9().Count(_sequences));
-        var variant8 = Task.Run(() => "agggta[cgt]a|t[acg]taccct " + Re8().Count(_sequences));
+        var variant2 = Task.Run(() => "[cgt]gggtaaa|tttaccc[acg] " + Re2().Count(sequences));
+        var variant3 = Task.Run(() => "a[act]ggtaaa|tttacc[agt]t " + Re3().Count(sequences));
+        var variant7 = Task.Run(() => "agggt[cgt]aa|tt[acg]accct " + Re7().Count(sequences));
+        var variant6 = Task.Run(() => "aggg[acg]aaa|ttt[cgt]ccct " + Re6().Count(sequences));
+        var variant4 = Task.Run(() => "ag[act]gtaaa|tttac[agt]ct " + Re4().Count(sequences));
+        var variant5 = Task.Run(() => "agg[act]taaa|ttta[agt]cct " + Re5().Count(sequences));
+        var variant1 = Task.Run(() => "agggtaaa|tttaccct " + Re1().Count(sequences));
+        var variant9 = Task.Run(() => "agggtaa[cgt]|[acg]ttaccct " + Re9().Count(sequences));
+        var variant8 = Task.Run(() => "agggta[cgt]a|t[acg]taccct " + Re8().Count(sequences));
 
         await Console.Out.WriteLineAsync(await variant1.ConfigureAwait(false)).ConfigureAwait(false);
         await Console.Out.WriteLineAsync(await variant2.ConfigureAwait(false)).ConfigureAwait(false);

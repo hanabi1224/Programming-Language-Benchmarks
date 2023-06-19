@@ -60,15 +60,15 @@ public static partial class RegexRedux
             return newseq.Length;
         };
 
-        var variant2 = "[cgt]gggtaaa|tttaccc[acg] " + Re2().Count(_sequences);
-        var variant3 = "a[act]ggtaaa|tttacc[agt]t " + Re3().Count(_sequences);
-        var variant7 = "agggt[cgt]aa|tt[acg]accct " + Re7().Count(_sequences);
-        var variant6 = "aggg[acg]aaa|ttt[cgt]ccct " + Re6().Count(_sequences);
-        var variant4 = "ag[act]gtaaa|tttac[agt]ct " + Re4().Count(_sequences);
-        var variant5 = "agg[act]taaa|ttta[agt]cct " + Re5().Count(_sequences);
-        var variant1 = "agggtaaa|tttaccct " + Re1().Count(_sequences);
-        var variant9 = "agggtaa[cgt]|[acg]ttaccct " + Re9().Count(_sequences);
-        var variant8 = "agggta[cgt]a|t[acg]taccct " + Re8().Count(_sequences);
+        var variant2 = "[cgt]gggtaaa|tttaccc[acg] " + Re2().Count(sequences);
+        var variant3 = "a[act]ggtaaa|tttacc[agt]t " + Re3().Count(sequences);
+        var variant7 = "agggt[cgt]aa|tt[acg]accct " + Re7().Count(sequences);
+        var variant6 = "aggg[acg]aaa|ttt[cgt]ccct " + Re6().Count(sequences);
+        var variant4 = "ag[act]gtaaa|tttac[agt]ct " + Re4().Count(sequences);
+        var variant5 = "agg[act]taaa|ttta[agt]cct " + Re5().Count(sequences);
+        var variant1 = "agggtaaa|tttaccct " + Re1().Count(sequences);
+        var variant9 = "agggtaa[cgt]|[acg]ttaccct " + Re9().Count(sequences);
+        var variant8 = "agggta[cgt]a|t[acg]taccct " + Re8().Count(sequences);
 
         Console.WriteLine(variant1);
         Console.WriteLine(variant2);
