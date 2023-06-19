@@ -16,7 +16,7 @@ fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: any
     for (tasks) |*task| task.join();
 }
 
-fn baseIdx(i: vec4) vec4 {
+inline fn baseIdx(i: vec4) vec4 {
     @setFloatMode(.Optimized);
     return i * (i + vec1to4(1)) * vec1to4(0.5) + vec1to4(1);
 }
