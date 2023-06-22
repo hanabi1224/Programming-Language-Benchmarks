@@ -1,34 +1,34 @@
 const std = @import("std");
 
 const vec4 = std.meta.Vector(4, f64);
-fn vec1to4(f: f64) vec4 {
-    return @splat(4, f);
+inline fn vec1to4(f: f64) vec4 {
+    return vec4{f, f, f, f};
 }
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
     const len_per_task = @divTrunc(len, tasks.len + 1);
-    for (tasks, 0..) |*task, i| {
+    for (tasks) |*task, i| {
         const first = len_per_task * i;
         const last = first + len_per_task;
         task.* = try std.Thread.spawn(.{}, f, .{ first, last } ++ args);
     }
-    @call(.auto, f, .{ tasks.len * len_per_task, len } ++ args);
+    @call(.{}, f, .{ tasks.len * len_per_task, len } ++ args);
     for (tasks) |*task| task.join();
 }
 
-fn baseIdx(i: vec4) vec4 {
+inline fn baseIdx(i: vec4) vec4 {
     @setFloatMode(.Optimized);
     return i * (i + vec1to4(1)) * vec1to4(0.5) + vec1to4(1);
 }
 
-fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
+inline fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
     @setFloatMode(.Optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
     var ti = vec1to4(@intToFloat(f64, first * 4)) + if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
     for (dst) |*res| {
         var idx = if (transpose) baseIdx(ti - vec1to4(1)) else baseIdx(ti) + ti;
         var sum = vec1to4(0);
-        for (srcVals, 0..) |u, j| {
+        for (srcVals) |u, j| {
             sum += vec1to4(u) / idx;
             idx += ti + vec1to4(@intToFloat(f64, j + 1));
         }
@@ -37,21 +37,21 @@ fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []con
     }
 }
 
-fn multAv(first: usize, last: usize, dst: []vec4, src: []const vec4) void {
+inline fn multAv(first: usize, last: usize, dst: []vec4, src: []const vec4) void {
     return multAvGeneric(false, first, dst[first..last], src);
 }
 
-fn multAtv(first: usize, last: usize, dst: []vec4, src: []const vec4) void {
+inline fn multAtv(first: usize, last: usize, dst: []vec4, src: []const vec4) void {
     return multAvGeneric(true, first, dst[first..last], src);
 }
 
-fn multAtAv(tasks: []std.Thread, dest: []vec4, src: []const vec4, temp: []vec4) !void {
-    std.debug.assert(dest.len == src.len and src.len == temp.len);
+inline fn multAtAv(tasks: []std.Thread, dest: []vec4, src: []const vec4, temp: []vec4) !void {
+    //std.debug.assert(dest.len == src.len and src.len == temp.len);
     try runInParallel(tasks, dest.len, multAv, .{ temp, src });
     try runInParallel(tasks, dest.len, multAtv, .{ dest, temp });
 }
 
-fn setOnes(first: usize, last: usize, dst: []vec4) void {
+inline fn setOnes(first: usize, last: usize, dst: []vec4) void {
     for (dst[first..last]) |*v| v.* = vec1to4(1);
 }
 
@@ -59,7 +59,7 @@ fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4,
     @setFloatMode(.Optimized);
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
-    for (v[first..last], 0..) |f, i| {
+    for (v[first..last]) |f, i| {
         vbv += u[first + i] * f;
         vv += f * f;
     }
