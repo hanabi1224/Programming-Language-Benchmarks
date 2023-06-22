@@ -14,7 +14,7 @@ pub fn main() !void {
     const mod = size * 10;
     var rng0 = LCG.init(0);
     var rng1 = LCG.init(1);
-    var lru = try LRU(u32, u32).init(size, global_allocator);
+    var lru = try LRU(u32, u32).init(size);
     defer lru.deinit();
     var missed: usize = 0;
     var hit: usize = 0;
@@ -49,7 +49,7 @@ const LCG = struct {
         return LCG{ .seed = seed };
     }
 
-    pub fn next(self: *LCG) u32 {
+    pub inline fn next(self: *LCG) u32 {
         const A: u32 = comptime 1103515245;
         const C: u32 = comptime 12345;
         const M: u32 = comptime 1 << 31;
@@ -66,16 +66,15 @@ fn LinkedList(comptime T: type) type {
             data: T,
         };
 
-        allocator: Allocator,
         head: ?*Node = null,
         tail: ?*Node = null,
         len: usize = 0,
 
         const Self = @This();
 
-        pub fn init(allocator: Allocator) !*Self {
-            var list = try allocator.create(Self);
-            list.* = .{ .allocator = allocator };
+        pub fn init() !*Self {
+            var list = try global_allocator.create(Self);
+            list.* = .{ };
             return list;
         }
 
@@ -84,20 +83,20 @@ fn LinkedList(comptime T: type) type {
             while (ptr != null) {
                 var tmp = ptr.?;
                 ptr = tmp.next;
-                self.allocator.destroy(tmp);
+                global_allocator.destroy(tmp);
             }
-            self.allocator.destroy(self);
+            global_allocator.destroy(self);
         }
 
-        pub fn add(self: *Self, data: T) !*Node {
-            var node = try self.allocator.create(Node);
+        pub inline fn add(self: *Self, data: T) !*Node {
+            var node = try global_allocator.create(Node);
             node.* = .{ .data = data };
             self.__add_node(node);
             self.len += 1;
             return node;
         }
 
-        fn __add_node(self: *Self, node: *Node) void {
+        inline fn __add_node(self: *Self, node: *Node) void {
             if (self.head == null) {
                 self.head = node;
                 node.prev = null;
@@ -109,7 +108,7 @@ fn LinkedList(comptime T: type) type {
             node.next = null;
         }
 
-        fn __remove(self: *Self, node: *Node) void {
+        inline fn __remove(self: *Self, node: *Node) void {
             if (self.head == node) {
                 self.head = node.next;
             }
@@ -124,7 +123,7 @@ fn LinkedList(comptime T: type) type {
             }
         }
 
-        pub fn move_to_end(self: *Self, node: *Node) void {
+        pub inline fn move_to_end(self: *Self, node: *Node) void {
             self.__remove(node);
             self.__add_node(node);
         }
@@ -146,20 +145,18 @@ fn LRU(
     const ListType = LinkedList(PairType);
     const MapType = HashMap(K, *ListType.Node, AutoContext(K), 1.0);
     return struct {
-        allocator: Allocator,
         size: u32,
         keys: MapType,
         entries: *ListType,
 
         const Self = @This();
 
-        pub fn init(size: u32, allocator: Allocator) !*Self {
-            var lru = try allocator.create(Self);
+        pub fn init(size: u32) !*Self {
+            var lru = try global_allocator.create(Self);
             lru.* = .{
-                .allocator = allocator,
                 .size = size,
-                .keys = MapType.init(allocator),
-                .entries = try ListType.init(allocator),
+                .keys = MapType.init(global_allocator),
+                .entries = try ListType.init(),
             };
             try lru.keys.ensureTotalCapacity(size);
             return lru;
@@ -168,10 +165,10 @@ fn LRU(
         pub fn deinit(self: *Self) void {
             self.keys.deinit();
             self.entries.deinit();
-            self.allocator.destroy(self);
+            global_allocator.destroy(self);
         }
 
-        pub fn get(self: *Self, key: K) ?V {
+        pub inline fn get(self: *Self, key: K) ?V {
             var node = self.keys.get(key);
             if (node == null) {
                 return null;
@@ -180,7 +177,7 @@ fn LRU(
             return node.?.data.v;
         }
 
-        pub fn put(self: *Self, key: K, value: V) !void {
+        pub inline fn put(self: *Self, key: K, value: V) !void {
             var node = self.keys.get(key);
             if (node != null) {
                 node.?.data.v = value;
