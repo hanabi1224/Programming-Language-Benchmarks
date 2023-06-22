@@ -39,9 +39,10 @@ pub fn main() !void {
     try stdout.print("{}\nPfannkuchen({}) = {}\n", .{ x[0], n, x[1] });
 }
 
+const builtin = @import("builtin");
 inline fn shuffle_epi8(x: u8x16, mask: u8x16) u8x16 {
     // make sure arch is x86_64 and we have sse2 feature set for vpshufb
-    const builtin = @import("builtin");
+    //const builtin = @import("builtin");
     const has_sse2 = comptime std.Target.x86.featureSetHas(builtin.cpu.features, .sse2);
     if (builtin.cpu.arch != .x86_64 or !has_sse2)
         @compileError("missing cpu feature set: x86_64+sse2. please provide -mcpu=x86_64+sse2");
@@ -113,7 +114,7 @@ inline fn advance_array(_array: u128, count: *[16]u8) u128 {
 }
 
 fn fannkuchRedux(n: u4) [2]i32 {
-    var _current: u128 = 0x0F_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01_00;
+    //var _current: u128 = 0x0F_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01_00;
     var _count = [1]u8{0} ** 16;
     var max_rev: i32 = 0;
 
@@ -123,29 +124,29 @@ fn fannkuchRedux(n: u4) [2]i32 {
     if (n == 2) return [2]i32{ -1, 1 };
 
     var arrays = [1]u128{0} ** 16;
-    arrays[0] = _current;
+    arrays[0] = 0x0F_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01_00;
     {
         var i: u4 = 1;
         while (i < n) : (i += 1) {
-            _current = rotate_array(_current, n - 1);
-            arrays[i] = _current;
+            arrays[i] = rotate_array(arrays[i-1], n - 1);
+            // arrays[i] = _current;
         }
     }
     var rotate_count: u4 = 0;
     var checksum: i32 = 0;
     while (rotate_count < n) : (rotate_count += 1) {
-        var current = arrays[rotate_count];
+        //var current = arrays[rotate_count];
         var count = _count;
         count[n - 1] = rotate_count;
 
         // Calculating checksum and max_rev
         var arrays2 = [1]u128{0} ** 16;
-        arrays2[0] = current;
+        arrays2[0] = arrays[rotate_count];
         {
             var i: u4 = 1;
             while (i < n - 1) : (i += 1) {
-                current = rotate_array(current, n - 2);
-                arrays2[i] = current;
+                arrays2[i] = rotate_array(arrays2[i-1], n - 2);
+                //arrays2[i] = current;
             }
         }
         var rotate_count2: u4 = 0;
