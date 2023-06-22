@@ -52,6 +52,7 @@ pub fn main() !void {
 }
 
 fn mbrot8(cr: Vec, civ: f64) u8 {
+    @setFloatMode(.Optimized);
     const ci = @splat(VEC_SIZE, civ);
     const zero: f64 = 0.0;
     var zr = @splat(VEC_SIZE, zero);
@@ -93,7 +94,7 @@ fn mbrot8(cr: Vec, civ: f64) u8 {
     return accu;
 }
 
-fn init_xloc(i: usize, inv: f64) f64 {
+inline fn init_xloc(i: usize, inv: f64) f64 {
     return @intToFloat(f64, i) * inv - 1.5;
 }
 
