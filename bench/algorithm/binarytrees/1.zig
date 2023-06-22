@@ -12,11 +12,11 @@ pub fn main() !void {
     const max_depth = math.max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = Node.make(stretch_depth, global_allocator).?;
+        const stretch_tree = Node.make(stretch_depth).?;
         defer stretch_tree.deinit();
         try stdout.print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
     }
-    const long_lived_tree = Node.make(max_depth, global_allocator).?;
+    const long_lived_tree = Node.make(max_depth).?;
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -25,7 +25,7 @@ pub fn main() !void {
         var sum: usize = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, global_allocator).?;
+            const tree = Node.make(depth).?;
             defer tree.deinit();
             sum += tree.check();
         }
@@ -43,16 +43,13 @@ fn get_n() !usize {
 }
 
 const Node = struct {
-    const Self = @This();
-
-    allocator: Allocator,
-
+    const Self = Node;
     left: ?*Self = null,
     right: ?*Self = null,
 
-    pub fn init(allocator: Allocator) !*Self {
-        var node = try allocator.create(Self);
-        node.* = .{ .allocator = allocator };
+    pub fn init() !*Self {
+        var node = try global_allocator.create(Self);
+        node.* = .{ };
         return node;
     }
 
@@ -63,15 +60,15 @@ const Node = struct {
         if (self.right != null) {
             self.right.?.deinit();
         }
-        self.allocator.destroy(self);
+        global_allocator.destroy(self);
     }
 
-    pub fn make(depth: usize, allocator: Allocator) ?*Self {
-        var node = Self.init(allocator) catch return null;
+    pub fn make(depth: usize) ?*Self {
+        var node = Self.init() catch return null;
         if (depth > 0) {
             const d = depth - 1;
-            node.left = Self.make(d, allocator);
-            node.right = Self.make(d, allocator);
+            node.left = Self.make(d);
+            node.right = Self.make(d);
         }
         return node;
     }
