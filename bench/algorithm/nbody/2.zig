@@ -6,20 +6,24 @@ const year = 365.24;
 
 const vec3 = std.meta.Vector(3, f64);
 
-fn dot(a: vec3, b: vec3) f64 {
+inline fn dot(a: vec3, b: vec3) f64 {
+    @setFloatMode(.Optimized);
     return @reduce(.Add, a * b);
 }
-fn scale(v: vec3, f: f64) vec3 {
-    return v * @splat(3, f);
+inline fn scale(v: vec3, f: f64) vec3 {
+    @setFloatMode(.Optimized);
+    return v * vec3{f, f, f};
 }
-fn length_sq(v: vec3) f64 {
+inline fn length_sq(v: vec3) f64 {
+    @setFloatMode(.Optimized);
     return dot(v, v);
 }
-fn length(v: vec3) f64 {
+inline fn length(v: vec3) f64 {
+    @setFloatMode(.Optimized);
     return math.sqrt(length_sq(v));
 }
 
-fn range(len: usize) []void {
+inline fn range(len: usize) []void {
     var res: []void = &.{};
     res.len = len;
     return res;
@@ -41,7 +45,7 @@ fn offset_momentum(bodies: []Body) void {
 
 fn advance(bodies: []Body, dt: f64) void {
     @setFloatMode(.Optimized);
-    for (bodies[0..], 0..) |*bi, i| {
+    for (bodies[0..]) |*bi, i| {
         var vel = bi.vel;
         var mi = bi.mass;
         for (bodies[i + 1 ..]) |*bj| {
@@ -62,7 +66,7 @@ fn advance(bodies: []Body, dt: f64) void {
 fn energy(bodies: []const Body) f64 {
     @setFloatMode(.Optimized);
     var e: f64 = 0.0;
-    for (bodies, 0..) |bi, i| {
+    for (bodies) |bi, i| {
         e += 0.5 * length_sq(bi.vel) * bi.mass;
         for (bodies[i + 1 ..]) |bj| {
             e -= bi.mass * bj.mass / length(bi.pos - bj.pos);
