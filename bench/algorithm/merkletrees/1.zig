@@ -12,12 +12,12 @@ pub fn main() !void {
     const max_depth = math.max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = Node.make(stretch_depth, global_allocator).?;
+        const stretch_tree = Node.make(stretch_depth).?;
         defer stretch_tree.deinit();
         stretch_tree.cal_hash();
         try stdout.print("stretch tree of depth {d}\t root hash: {d} check: {!}\n", .{ stretch_depth, stretch_tree.get_hash(), stretch_tree.check() });
     }
-    const long_lived_tree = Node.make(max_depth, global_allocator).?;
+    const long_lived_tree = Node.make(max_depth).?;
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -26,7 +26,7 @@ pub fn main() !void {
         var sum: i64 = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, global_allocator).?;
+            const tree = Node.make(depth).?;
             defer tree.deinit();
             tree.cal_hash();
             sum += tree.get_hash();
@@ -45,44 +45,40 @@ fn get_n() !usize {
 }
 
 const Node = struct {
-    const Self = @This();
-
-    allocator: Allocator,
-
     hash: ?i64 = null,
     value: ?i64 = null,
-    left: ?*Self = null,
-    right: ?*Self = null,
+    left: ?*Node = null,
+    right: ?*Node = null,
 
-    pub fn init(allocator: Allocator) !*Self {
-        var node = try allocator.create(Self);
-        node.* = .{ .allocator = allocator };
+    pub fn init() !*Node {
+        var node = try global_allocator.create(Node);
+        node.* = .{ };
         return node;
     }
 
-    pub fn deinit(self: *Self) void {
+    pub fn deinit(self: *Node) void {
         if (self.left != null) {
             self.left.?.deinit();
         }
         if (self.right != null) {
             self.right.?.deinit();
         }
-        self.allocator.destroy(self);
+        global_allocator.destroy(self);
     }
 
-    pub fn make(depth: usize, allocator: Allocator) ?*Self {
-        var node = Self.init(allocator) catch return null;
+    pub fn make(depth: usize) ?*Node {
+        var node = Node.init() catch return null;
         if (depth > 0) {
             const d = depth - 1;
-            node.left = Self.make(d, allocator);
-            node.right = Self.make(d, allocator);
+            node.left = Node.make(d);
+            node.right = Node.make(d);
         } else {
             node.value = 1;
         }
         return node;
     }
 
-    pub fn check(self: *Self) bool {
+    pub fn check(self: *Node) bool {
         if (self.hash == null) {
             return false;
         }
@@ -92,7 +88,7 @@ const Node = struct {
         return self.left.?.check() and self.right.?.check();
     }
 
-    pub fn cal_hash(self: *Self) void {
+    pub fn cal_hash(self: *Node) void {
         if (self.hash != null) {
             return;
         }
@@ -105,7 +101,7 @@ const Node = struct {
         }
     }
 
-    pub fn get_hash(self: *Self) i64 {
+    pub fn get_hash(self: *Node) i64 {
         if (self.hash == null) {
             return 0;
         }
