@@ -1,6 +1,5 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const math = std.math;
 const Allocator = std.mem.Allocator;
 const MIN_DEPTH = 4;
 
@@ -9,14 +8,14 @@ const global_allocator = std.heap.c_allocator;
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
     const n = try get_n();
-    const max_depth = math.max(MIN_DEPTH + 2, n);
+    const max_depth = @max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = Node.make(stretch_depth, global_allocator).?;
+        const stretch_tree = Node.make(stretch_depth).?;
         defer stretch_tree.deinit();
         try stdout.print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
     }
-    const long_lived_tree = Node.make(max_depth, global_allocator).?;
+    const long_lived_tree = Node.make(max_depth).?;
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -25,7 +24,7 @@ pub fn main() !void {
         var sum: usize = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, global_allocator).?;
+            const tree = Node.make(depth).?;
             defer tree.deinit();
             sum += tree.check();
         }
@@ -43,40 +42,36 @@ fn get_n() !usize {
 }
 
 const Node = struct {
-    const Self = @This();
+    left: ?*Node = null,
+    right: ?*Node = null,
 
-    allocator: Allocator,
-
-    left: ?*Self = null,
-    right: ?*Self = null,
-
-    pub fn init(allocator: Allocator) !*Self {
-        var node = try allocator.create(Self);
-        node.* = .{ .allocator = allocator };
+    pub fn init() !*Node {
+        var node = try global_allocator.create(Node);
+        node.* = .{ };
         return node;
     }
 
-    pub fn deinit(self: *Self) void {
+    pub fn deinit(self: *Node) void {
         if (self.left != null) {
             self.left.?.deinit();
         }
         if (self.right != null) {
             self.right.?.deinit();
         }
-        self.allocator.destroy(self);
+        global_allocator.destroy(self);
     }
 
-    pub fn make(depth: usize, allocator: Allocator) ?*Self {
-        var node = Self.init(allocator) catch return null;
+    pub fn make(depth: usize) ?*Node {
+        var node = Node.init() catch return null;
         if (depth > 0) {
             const d = depth - 1;
-            node.left = Self.make(d, allocator);
-            node.right = Self.make(d, allocator);
+            node.left = Node.make(d);
+            node.right = Node.make(d);
         }
         return node;
     }
 
-    pub fn check(self: *Self) usize {
+    pub fn check(self: *Node) usize {
         var sum: usize = 1;
         if (self.left != null) {
             sum += self.left.?.check();
