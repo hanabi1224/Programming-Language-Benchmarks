@@ -75,7 +75,7 @@ inline fn reverse_array(array: u128, n: u4) u128 {
         0x0F_00_01_02_03_04_05_06_07_08_09_0A_0B_0C_0D_0E,
         0x00_01_02_03_04_05_06_07_08_09_0A_0B_0C_0D_0E_0F,
     };
-    return @bitCast(u128, shuffle_epi8(@bitCast(u8x16, array), @bitCast(u8x16, MASK[n])));
+    return @bitCast(shuffle_epi8(@bitCast(array), @bitCast(MASK[n])));
 }
 
 inline fn rotate_array(array: u128, n: u4) u128 {
@@ -97,7 +97,7 @@ inline fn rotate_array(array: u128, n: u4) u128 {
         0x0F_00_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01,
         0x00_0F_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01,
     };
-    return @bitCast(u128, shuffle_epi8(@bitCast(u8x16, array), @bitCast(u8x16, MASK[n])));
+    return @bitCast(shuffle_epi8(@bitCast(array), @bitCast(MASK[n])));
 }
 
 inline fn advance_array(_array: u128, count: *[16]u8) u128 {
@@ -156,11 +156,11 @@ fn fannkuchRedux(n: u4) [2]i32 {
             while (count2[n - 2] == rotate_count2) {
                 var tmp = current2;
                 var rev_count: i32 = 0;
-                var first = @bitCast(u8x16, tmp)[0];
+                var first = @as(u8x16, @bitCast(tmp))[0];
                 if (first > 0) {
                     while (first > 0) {
-                        const next = @bitCast(u8x16, tmp)[first];
-                        tmp = reverse_array(tmp, @truncate(u4, first));
+                        const next = @as(u8x16, @bitCast(tmp))[first];
+                        tmp = reverse_array(tmp, @as(u4, @truncate(first)));
                         first = next;
                         rev_count += 1;
                     }

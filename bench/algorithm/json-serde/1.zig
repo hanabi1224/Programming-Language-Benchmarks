@@ -22,9 +22,9 @@ pub fn main() !void {
     const json_str = try file.readToEndAlloc(global_allocator, std.math.maxInt(u32));
     defer global_allocator.free(json_str);
     {
-        var tokens = json.TokenStream.init(json_str);
-        const data = try json.parse(GeoData, &tokens, .{ .allocator = global_allocator });
-        defer json.parseFree(GeoData, data, .{ .allocator = global_allocator });
+        const parsed = try json.parseFromSlice(GeoData, global_allocator, json_str, .{});
+        defer parsed.deinit();
+        const data = parsed.value;
         var json_str_des = std.ArrayList(u8).init(global_allocator);
         defer json_str_des.deinit();
         try json.stringify(data, .{}, json_str_des.writer());
@@ -32,16 +32,11 @@ pub fn main() !void {
     }
     {
         var array = std.ArrayList(GeoData).init(global_allocator);
-        defer {
-            for (array.items) |data|
-                json.parseFree(GeoData, data, .{ .allocator = global_allocator });
-            array.deinit();
-        }
         var i: usize = 0;
         while (i < n) : (i += 1) {
-            var tokens = json.TokenStream.init(json_str);
-            const data = try json.parse(GeoData, &tokens, .{ .allocator = global_allocator });
-            try array.append(data);
+            const parsed = try json.parseFromSlice(GeoData, global_allocator, json_str, .{});
+            // defer parsed.deinit();
+            try array.append(parsed.value);
         }
         var json_str_des = std.ArrayList(u8).init(global_allocator);
         defer json_str_des.deinit();

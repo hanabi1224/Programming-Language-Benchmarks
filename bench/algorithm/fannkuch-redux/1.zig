@@ -51,11 +51,11 @@ pub fn main() !void {
                 flips_count += 1;
             }
 
-            max_flips_count = std.math.max(max_flips_count, flips_count);
+            max_flips_count = @max(max_flips_count, flips_count);
             if (perm_count % 2 == 0) {
-                checksum += @intCast(isize, flips_count);
+                checksum += @intCast(flips_count);
             } else {
-                checksum -= @intCast(isize, flips_count);
+                checksum -= @intCast(flips_count);
             }
 
             while (true) : (r += 1) {

@@ -1,7 +1,7 @@
 const std = @import("std");
 
 const max_n = 12;
-const Vec = std.meta.Vector(max_n, u8);
+const Vec = @Vector(max_n, u8);
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
     const len_per_task = @divTrunc(len, tasks.len + 1);
@@ -73,7 +73,7 @@ fn countAtPos(n: u8, start: usize) [max_n]u8 {
     while (i > 0) {
         i -= 1;
         const total_perms = factorialComptime(i);
-        count[i] = i + 1 - @intCast(u8, r / total_perms);
+        count[i] = i + 1 - @as(u8, @intCast(r / total_perms));
         r %= total_perms;
     }
     return count;
@@ -94,11 +94,11 @@ const Stats = struct {
 
 fn nextPermutation(perm: Vec, count: []u8) ?Vec {
     const r = for (count, 0..) |v, i| {
-        if (v != 1) break @intCast(u8, i);
+        if (v != 1) break @as(u8, @intCast(i));
     } else return null;
     const next_perm = applyMask(perm, r + 1, nextPermMask);
     count[r] -= 1;
-    for (count[0..r], 0..) |*v, i| v.* = @intCast(u8, i + 1);
+    for (count[0..r], 0..) |*v, i| v.* = @intCast(i + 1);
     return next_perm;
 }
 
@@ -109,9 +109,9 @@ fn pfannkuchenStats(first: usize, last: usize, n: u8, res: *Stats) void {
     var i = first;
     while (i < last) : (i += 1) {
         const flips = pfannkuchen(perm);
-        const parity = 1 - @intCast(i32, i % 2) * 2;
-        stats.max_flips = std.math.max(stats.max_flips, flips);
-        stats.checksum += @intCast(i32, flips) * parity;
+        const parity = 1 - @as(i32, @intCast(i % 2)) * 2;
+        stats.max_flips = @max(stats.max_flips, flips);
+        stats.checksum += @as(i32, @intCast(flips)) * parity;
         perm = nextPermutation(perm, count[0..n]) orelse break;
     }
     _ = @atomicRmw(u32, &res.max_flips, .Max, stats.max_flips, .SeqCst);

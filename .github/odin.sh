@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-VERSION=dev-2023-04
+VERSION=dev-2023-05
 FILE_NAME=odin-ubuntu-amd64-$VERSION.zip
 sudo apt-get install -y aria2
 mkdir /tmp/odin

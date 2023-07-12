@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const vec4 = std.meta.Vector(4, f64);
+const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
     return @splat(4, f);
 }
@@ -19,7 +19,7 @@ fn multAvGeneric(comptime transpose: bool, dst: []vec4, src: []const vec4) void 
         var sum = vec1to4(0);
         for (srcVals, 0..) |u, j| {
             sum += vec1to4(u) / idx;
-            idx += ti + vec1to4(@intToFloat(f64, j + 1));
+            idx += ti + vec1to4(@as(f64, @floatFromInt(j + 1)));
         }
         res.* = sum;
         ti += vec1to4(4);
