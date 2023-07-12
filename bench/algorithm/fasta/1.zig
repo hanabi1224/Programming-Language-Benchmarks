@@ -10,7 +10,7 @@ const ic = 29573;
 var seed: u32 = 42;
 fn nextRandom(max: f64) f64 {
     seed = (seed * ia + ic) % im;
-    return max * @intToFloat(f64, seed) / @intToFloat(f64, im);
+    return max * @as(f64, @floatFromInt(seed)) / @as(f64, @floatFromInt(im));
 }
 
 const AminoAcid = struct {
@@ -28,7 +28,7 @@ fn repeatAndWrap(out: anytype, comptime sequence: []const u8, count: usize) void
     var idx: usize = 0;
     while (idx < count) {
         const rem = count - idx;
-        const line_length = std.math.min(@as(usize, max_line_length), rem);
+        const line_length = @min(@as(usize, max_line_length), rem);
 
         _ = out.write(padded_sequence[off .. off + line_length]) catch unreachable;
         _ = out.writeByte('\n') catch unreachable;
@@ -55,7 +55,7 @@ fn generateAndWrap(out: anytype, comptime nucleotides: []const AminoAcid, count:
     var idx: usize = 0;
     while (idx < count) {
         const rem = count - idx;
-        const line_length = std.math.min(@as(usize, max_line_length), rem);
+        const line_length = @min(@as(usize, max_line_length), rem);
 
         for (line[0..line_length]) |*col| {
             const r = nextRandom(im);

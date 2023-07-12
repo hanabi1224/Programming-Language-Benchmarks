@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const vec4 = std.meta.Vector(4, f64);
+const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
     return @splat(4, f);
 }
@@ -24,13 +24,13 @@ fn baseIdx(i: vec4) vec4 {
 fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
     @setFloatMode(.Optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
-    var ti = vec1to4(@intToFloat(f64, first * 4)) + if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
+    var ti = vec1to4(@as(f64, @floatFromInt(first * 4))) + if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
     for (dst) |*res| {
         var idx = if (transpose) baseIdx(ti - vec1to4(1)) else baseIdx(ti) + ti;
         var sum = vec1to4(0);
         for (srcVals, 0..) |u, j| {
             sum += vec1to4(u) / idx;
-            idx += ti + vec1to4(@intToFloat(f64, j + 1));
+            idx += ti + vec1to4(@as(f64, @floatFromInt(j + 1)));
         }
         res.* = sum;
         ti += vec1to4(4);
