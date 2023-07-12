@@ -10,53 +10,36 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-public static class regexredux
+public static partial class RegexRedux
 {
-    static regexredux()
-    {
-        Regex.CacheSize = 1024;
-    }
-
-    static Regex regex(string re)
-    {
-        // Not compiled on .Net Core, hence poor benchmark results.
-        return new Regex(re, RegexOptions.Compiled);
-    }
-
-    static string regexCount(string s, string r)
-    {
-        int c = 0;
-        var m = regex(r).Match(s);
-        while (m.Success) { c++; m = m.NextMatch(); }
-        return r + " " + c;
-    }
-
     public static async Task Main(string[] args)
     {
         var fileName = args.Length > 0 ? args[0] : "25000_in";
         var sequences = await File.ReadAllTextAsync(fileName).ConfigureAwait(false);
         var initialLength = sequences.Length;
-        sequences = Regex.Replace(sequences, ">.*\n|\n", "");
+        sequences = Regex.Replace(sequences, ">.*\n|\n", "", RegexOptions.Compiled);
 
         var magicTask = Task.Run(() =>
         {
-            var newseq = regex("tHa[Nt]").Replace(sequences, "<4>");
-            newseq = regex("aND|caN|Ha[DS]|WaS").Replace(newseq, "<3>");
-            newseq = regex("a[NSt]|BY").Replace(newseq, "<2>");
-            newseq = regex("<[^>]*>").Replace(newseq, "|");
-            newseq = regex("\\|[^|][^|]*\\|").Replace(newseq, "-");
+            var newseq = Regex.Replace(sequences, "tHa[Nt]", "<4>", RegexOptions.Compiled);
+            newseq = Regex.Replace(newseq, "aND|caN|Ha[DS]|WaS", "<3>", RegexOptions.Compiled);
+            newseq = Regex.Replace(newseq, "a[NSt]|BY", "<2>", RegexOptions.Compiled);
+            newseq = Regex.Replace(newseq, "<[^>]*>", "|", RegexOptions.Compiled);
+            newseq = Regex.Replace(newseq, "\\|[^|][^|]*\\|", "-", RegexOptions.Compiled);
             return newseq.Length;
         });
 
-        var variant2 = Task.Run(() => regexCount(sequences, "[cgt]gggtaaa|tttaccc[acg]"));
-        var variant3 = Task.Run(() => regexCount(sequences, "a[act]ggtaaa|tttacc[agt]t"));
-        var variant7 = Task.Run(() => regexCount(sequences, "agggt[cgt]aa|tt[acg]accct"));
-        var variant6 = Task.Run(() => regexCount(sequences, "aggg[acg]aaa|ttt[cgt]ccct"));
-        var variant4 = Task.Run(() => regexCount(sequences, "ag[act]gtaaa|tttac[agt]ct"));
-        var variant5 = Task.Run(() => regexCount(sequences, "agg[act]taaa|ttta[agt]cct"));
-        var variant1 = Task.Run(() => regexCount(sequences, "agggtaaa|tttaccct"));
-        var variant9 = Task.Run(() => regexCount(sequences, "agggtaa[cgt]|[acg]ttaccct"));
-        var variant8 = Task.Run(() => regexCount(sequences, "agggta[cgt]a|t[acg]taccct"));
+        var variant2 = Task.Run(() => "[cgt]gggtaaa|tttaccc[acg] " + Regex.Count(sequences, "[cgt]gggtaaa|tttaccc[acg]", RegexOptions.Compiled));
+        var variant3 = Task.Run(() => "a[act]ggtaaa|tttacc[agt]t " + Regex.Count(sequences, "a[act]ggtaaa|tttacc[agt]t", RegexOptions.Compiled));
+        var variant7 = Task.Run(() => "agggt[cgt]aa|tt[acg]accct " + Regex.Count(sequences, "agggt[cgt]aa|tt[acg]accct", RegexOptions.Compiled));
+        var variant6 = Task.Run(() => "aggg[acg]aaa|ttt[cgt]ccct " + Regex.Count(sequences, "aggg[acg]aaa|ttt[cgt]ccct", RegexOptions.Compiled));
+        var variant4 = Task.Run(() => "ag[act]gtaaa|tttac[agt]ct " + Regex.Count(sequences, "ag[act]gtaaa|tttac[agt]ct", RegexOptions.Compiled));
+        var variant5 = Task.Run(() => "agg[act]taaa|ttta[agt]cct " + Regex.Count(sequences, "agg[act]taaa|ttta[agt]cct", RegexOptions.Compiled));
+        var variant1 = Task.Run(() => "agggtaaa|tttaccct " + Regex.Count(sequences, "agggtaaa|tttaccct", RegexOptions.Compiled));
+        var variant9 = Task.Run(() => "agggtaa[cgt]|[acg]ttaccct " + Regex.Count(sequences, "agggtaa[cgt]|[acg]ttaccct", RegexOptions.Compiled));
+        var variant8 = Task.Run(() => "agggta[cgt]a|t[acg]taccct " + Regex.Count(sequences, "agggta[cgt]a|t[acg]taccct", RegexOptions.Compiled));
+
+        Task.WaitAll(variant1, variant2, variant3, variant4, variant5, variant6, variant7, variant8, variant9);
 
         await Console.Out.WriteLineAsync(await variant1.ConfigureAwait(false)).ConfigureAwait(false);
         await Console.Out.WriteLineAsync(await variant2.ConfigureAwait(false)).ConfigureAwait(false);
