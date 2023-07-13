@@ -11,24 +11,57 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+}
+
+func run() error {
 	fileName := "sample"
 	n := 10
 	if len(os.Args) > 1 {
+
 		fileName = os.Args[1]
 	}
 	if len(os.Args) > 2 {
-		n, _ = strconv.Atoi(os.Args[2])
+		var err error
+		n, err = strconv.Atoi(os.Args[2])
+		if err != nil {
+			return err
+		}
 	}
+
+	jsonStr, err := ioutil.ReadFile(fileName + ".json")
+	if err != nil {
+		return err
+	}
+
 	var data GeoData
-	jsonStr, _ := ioutil.ReadFile(fileName + ".json")
-	json.Unmarshal([]byte(jsonStr), &data)
-	printHash(data.ToJsonString())
+	if err := json.Unmarshal(jsonStr, &data); err != nil {
+		return err
+	}
+
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	printHash(bytes)
+
 	array := make([]GeoData, 0, n)
 	for i := 0; i < n; i++ {
-		json.Unmarshal([]byte(jsonStr), &data)
+		if err := json.Unmarshal(jsonStr, &data); err != nil {
+			return err
+		}
 		array = append(array, data)
 	}
-	printHash(ToJsonString(array))
+
+	bytes, err = json.Marshal(array)
+	if err != nil {
+		return err
+	}
+	printHash(bytes)
+
+	return nil
 }
 
 func printHash(json []byte) {
@@ -40,20 +73,6 @@ func printHash(json []byte) {
 type GeoData struct {
 	Type     string    `json:"type"`
 	Features []Feature `json:"features"`
-}
-
-func ToJsonString(array []GeoData) []byte {
-	if bytes, err := json.Marshal(array); err == nil {
-		return bytes
-	}
-	return []byte{}
-}
-
-func (data *GeoData) ToJsonString() []byte {
-	if bytes, err := json.Marshal(data); err == nil {
-		return bytes
-	}
-	return []byte{}
 }
 
 type Feature struct {

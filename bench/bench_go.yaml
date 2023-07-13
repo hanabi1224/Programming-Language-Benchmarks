@@ -42,6 +42,7 @@ problems:
   - name: json-serde
     source:
       - 1.go
+      - 3-streaming.go
   - name: coro-prime-sieve
     source:
       - 1.go

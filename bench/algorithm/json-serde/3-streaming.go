@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -30,43 +31,60 @@ func run() error {
 		}
 	}
 
+	var data GeoData
 	jsonStr, err := ioutil.ReadFile(fileName + ".json")
 	if err != nil {
 		return err
 	}
 
-	var data GeoData
 	if err := json.Unmarshal([]byte(jsonStr), &data); err != nil {
 		return err
 	}
-
-	bytes, err := json.Marshal(data)
-	if err != nil {
+	if err := encodeHash(data); err != nil {
 		return err
 	}
-	printHash(bytes)
 
 	array := make([]GeoData, 0, n)
 	for i := 0; i < n; i++ {
+		var data GeoData
 		if err := json.Unmarshal([]byte(jsonStr), &data); err != nil {
 			return err
 		}
 		array = append(array, data)
 	}
 
-	bytes, err = json.Marshal(array)
-	if err != nil {
+	if err := encodeHash(array); err != nil {
 		return err
 	}
-	printHash(bytes)
-
 	return nil
 }
 
-func printHash(json []byte) {
+type lastNewlineIgnorerWriter struct {
+	w io.Writer
+}
+
+func (w lastNewlineIgnorerWriter) Write(b []byte) (int, error) {
+	if b[len(b)-1] != '\n' {
+		return w.w.Write(b)
+	}
+
+	_, err := w.w.Write(b[:len(b)-1])
+	if err != nil {
+		return 0, err
+	}
+	return len(b), nil
+}
+
+func encodeHash(data any) error {
 	hasher := md5.New()
-	hasher.Write(json)
+	// Ignore the last byte if it is a newline character, streaming encoder
+	// adds it to the end of the json.
+	encoder := json.NewEncoder(lastNewlineIgnorerWriter{w: hasher})
+	if err := encoder.Encode(data); err != nil {
+		return err
+	}
 	fmt.Printf("%x\n", hasher.Sum(nil))
+	return nil
 }
 
 type GeoData struct {
