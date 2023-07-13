@@ -13,7 +13,7 @@ fn main() {
 		n = strconv.atoi(os.args[1]) or { 10 }
 	}
 	port := int(rand.u32_in_range(20000, 50000) or { 23333 })
-	spawn vweb.run(&App{}, port)
+	spawn vweb.run_at(&App{}, port: port, show_startup_message: false)
 	url := 'http://localhost:${port}/api'
 	mut ch := chan int{cap: n}
 	for i in 1 .. (n + 1) {

@@ -3,7 +3,7 @@ const ArrayList = std.ArrayList;
 const md5 = std.crypto.hash.Md5;
 
 const VEC_SIZE = 8;
-const Vec = std.meta.Vector(VEC_SIZE, f64);
+const Vec = @Vector(VEC_SIZE, f64);
 
 const global_allocator = std.heap.c_allocator;
 
@@ -11,7 +11,7 @@ pub fn main() !void {
     const n = try get_n();
     const size = (n + VEC_SIZE - 1) / VEC_SIZE * VEC_SIZE;
     const chunk_size = size / VEC_SIZE;
-    const inv = 2.0 / @intToFloat(f64, size);
+    const inv = 2.0 / @as(f64, @floatFromInt(size));
     var xloc = ArrayList(Vec).init(global_allocator);
     try xloc.ensureTotalCapacityPrecise(chunk_size);
     var i: usize = 0;
@@ -37,7 +37,7 @@ pub fn main() !void {
     try pixels.ensureTotalCapacityPrecise(size * chunk_size);
     var y: usize = 0;
     while (y < size) : (y += 1) {
-        const ci = @intToFloat(f64, y) * inv - 1.0;
+        const ci = @as(f64, @floatFromInt(y)) * inv - 1.0;
         var x: usize = 0;
         while (x < chunk_size) : (x += 1) {
             const r = mbrot8(xloc.items[x], ci);
@@ -87,14 +87,14 @@ fn mbrot8(cr: Vec, civ: f64) u8 {
     while (i < VEC_SIZE) : (i += 1) {
         if (absz[i] <= 4.0) {
             const lhs: u8 = 0x80;
-            accu |= (lhs >> @intCast(u3, i));
+            accu |= (lhs >> @as(u3, @intCast(i)));
         }
     }
     return accu;
 }
 
 fn init_xloc(i: usize, inv: f64) f64 {
-    return @intToFloat(f64, i) * inv - 1.5;
+    return @as(f64, @floatFromInt(i)) * inv - 1.5;
 }
 
 fn get_n() !usize {

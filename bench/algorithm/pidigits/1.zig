@@ -29,7 +29,7 @@ pub fn main() !void {
         // v = &n2 / &d;
         try bigint.Managed.divFloor(&v, &tmp, &n2, &d);
         // if u == v
-        if (bigint.Managed.eq(u, v)) {
+        if (bigint.Managed.eql(u, v)) {
             const rem = @rem(digits_printed, 10);
             _ = u.toConst().toString(sb[rem..], 10, .lower, &lbuf);
             digits_printed += 1;
@@ -38,7 +38,7 @@ pub fn main() !void {
 
             if (digits_printed >= n) {
                 if (rem != 9) {
-                    std.mem.set(u8, sb[rem + 1 ..], ' ');
+                    @memset(sb[rem + 1 ..], ' ');
                     try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
                 }
                 break;

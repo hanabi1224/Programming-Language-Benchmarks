@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const Vec = std.meta.Vector(16, u8);
+const Vec = @Vector(16, u8);
 
 fn reverse_mask(n: u8) Vec {
     // global constant is not used to workaround a compiler bug
@@ -52,14 +52,14 @@ pub fn main() !void {
     var parity: u1 = 0;
     while (true) : (parity +%= 1) {
         const flip_count = pfannkuchen(perm);
-        max_flip_count = std.math.max(max_flip_count, flip_count);
-        checksum += @intCast(i32, flip_count) * (1 - @intCast(i32, parity) * 2);
+        max_flip_count = @max(max_flip_count, flip_count);
+        checksum += @as(i32, @intCast(flip_count)) * (1 - @as(i32, @intCast(parity)) * 2);
         const r = for (count[0..n], 0..) |v, i| {
-            if (v != 1) break @intCast(u8, i);
+            if (v != 1) break @as(u8, @intCast(i));
         } else break;
         perm = apply_mask(perm, r + 1, next_perm_mask);
         count[r] -= 1;
-        for (count[1..r], 0..) |*v, i| v.* = @intCast(u8, i + 2);
+        for (count[1..r], 0..) |*v, i| v.* = @intCast(i + 2);
     }
 
     const stdout = std.io.getStdOut().writer();

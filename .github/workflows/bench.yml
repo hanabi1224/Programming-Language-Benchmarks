@@ -1,10 +1,14 @@
 name: bench
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
+  merge_group:
   schedule:
     - cron: "0 0 1 * *"
 env:
@@ -159,8 +163,7 @@ jobs:
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with:
-          # compiler: ldc-latest
-          compiler: ldc-1.31.0
+          compiler: ldc-latest
       - name: Install nim
         if: matrix.lang == 'nim'
         run: ./.github/nim.sh
@@ -329,7 +332,7 @@ jobs:
           node-version: 14.x
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 7
       - uses: actions/download-artifact@v3
         with:
           # Artifact name

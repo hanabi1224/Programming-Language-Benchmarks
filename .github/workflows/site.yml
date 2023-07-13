@@ -1,11 +1,14 @@
 name: site
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   # push:
   #   branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
+  merge_group:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -19,7 +22,7 @@ jobs:
           node-version: 14.x
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
+          version: 7
       - run: pnpm --version
       - run: vercel --version
       - name: Build
