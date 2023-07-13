@@ -4,7 +4,7 @@ const math = std.math;
 const solar_mass = 4.0 * math.pi * math.pi;
 const year = 365.24;
 
-const vec3 = std.meta.Vector(3, f64);
+const vec3 = @Vector(3, f64);
 
 fn dot(a: vec3, b: vec3) f64 {
     return @reduce(.Add, a * b);

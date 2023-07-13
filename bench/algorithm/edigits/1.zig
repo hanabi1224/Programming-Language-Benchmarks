@@ -28,14 +28,14 @@ pub fn main() !void {
     defer a.deinit();
     var ten = try bigint.Managed.initSet(global_allocator, 10);
     defer ten.deinit();
-    try bigint.Managed.pow(&a, &ten, @bitCast(u32, n - 1));
+    try bigint.Managed.pow(&a, &ten, @as(u32, @bitCast(n - 1)));
     var tmp = try bigint.Managed.init(global_allocator);
     defer tmp.deinit();
     try bigint.Managed.mul(&tmp, &answer, &a);
     try bigint.Managed.divFloor(&answer, &a, &tmp, &q);
     var str = try answer.toString(global_allocator, 10, std.fmt.Case.lower);
     var i: usize = 0;
-    var n_usize = @as(usize, @bitCast(u32, n));
+    var n_usize = @as(usize, @as(u32, @bitCast(n)));
     while (i < n_usize) {
         var sb = [10:0]u8{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
         var j: usize = i;
@@ -99,8 +99,8 @@ fn test_k(n: i32, k: i32) bool {
     if (k < 0) {
         return false;
     }
-    var float_k = @intToFloat(f64, k);
-    var float_n = @intToFloat(f64, n);
+    var float_k: f64 = @floatFromInt(k);
+    var float_n: f64 = @floatFromInt(n);
     var ln_k_factorial = float_k * (math.ln(float_k) - 1.0) + 0.5 * math.ln(math.tau);
     var log_10_k_factorial = ln_k_factorial / math.ln10;
     return log_10_k_factorial >= float_n + 50.0;

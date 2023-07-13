@@ -1,4 +1,5 @@
 lang: julia
+enabled: false
 problems:
   - name: helloworld
     source:

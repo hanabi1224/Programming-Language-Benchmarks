@@ -9,7 +9,7 @@ const global_allocator = std.heap.c_allocator;
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
     const n = try get_n();
-    const max_depth = math.max(MIN_DEPTH + 2, n);
+    const max_depth = @max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
         const stretch_tree = Node.make(stretch_depth, global_allocator).?;
@@ -21,7 +21,7 @@ pub fn main() !void {
 
     var depth: usize = MIN_DEPTH;
     while (depth <= max_depth) : (depth += 2) {
-        const iterations = @intCast(usize, 1) << @intCast(u6, max_depth - depth + MIN_DEPTH);
+        const iterations = @as(usize, 1) << @as(u6, @intCast(max_depth - depth + MIN_DEPTH));
         var sum: usize = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {

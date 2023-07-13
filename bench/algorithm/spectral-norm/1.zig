@@ -5,7 +5,7 @@ const std = @import("std");
 const global_allocator = std.heap.c_allocator;
 
 fn eval_a(i: usize, j: usize) f64 {
-    return 1.0 / @intToFloat(f64, (i + j) * (i + j + 1) / 2 + i + 1);
+    return 1.0 / @as(f64, @floatFromInt((i + j) * (i + j + 1) / 2 + i + 1));
 }
 
 fn eval_a_times_u(comptime transpose: bool, au: []f64, u: []const f64) void {

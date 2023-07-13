@@ -11,7 +11,7 @@ const Code = struct {
     }
 
     pub inline fn makeMask(frame: usize) u64 {
-        return (@as(u64, 1) << @intCast(u6, (2 * frame))) - 1;
+        return (@as(u64, 1) << @as(u6, @intCast(2 * frame))) - 1;
     }
 
     pub inline fn push(self: *Code, c: u8, mask: u64) void {
@@ -32,7 +32,7 @@ const Code = struct {
         var code = self.data;
         var i: usize = 0;
         while (i < frame) : (i += 1) {
-            const c: u8 = switch (@truncate(u8, code) & 0b11) {
+            const c: u8 = switch (@as(u8, @truncate(code)) & 0b11) {
                 Code.encodeByte('A') => 'A',
                 Code.encodeByte('T') => 'T',
                 Code.encodeByte('G') => 'G',
@@ -141,13 +141,13 @@ fn printMap(self: usize, map: Map) !void {
         try v.append(.{ .count = count, .code = it.key_ptr.* });
     }
 
-    std.sort.sort(CountCode, v.items, {}, comptime CountCode.asc);
+    std.mem.sort(CountCode, v.items, {}, comptime CountCode.asc);
     var i = v.items.len - 1;
     while (true) : (i -= 1) {
         const cc = v.items[i];
         try stdout.print("{!s} {d:.3}\n", .{
             cc.code.toString(self),
-            @intToFloat(f32, cc.count) / @intToFloat(f32, total) * 100.0,
+            @as(f32, @floatFromInt(cc.count)) / @as(f32, @floatFromInt(total)) * 100.0,
         });
         if (i == 0) break;
     }
