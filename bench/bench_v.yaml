@@ -57,7 +57,7 @@ environments:
     compiler: v/clang+gc
     version: latest
     include:
-    build: v -prod -gc boehm_full_opt -cc clang -cflags "-march=broadwell" -stats -showcc -no-rsp app.v
+    build: v -prod -gc boehm_full_opt -skip-unused -cc clang -cflags "-march=broadwell" -stats -showcc -no-rsp app.v
     after_build:
       - mv app out
     out_dir: out
