@@ -57,7 +57,7 @@ environments:
     compiler: v/clang
     version: latest
     include:
-    build: v -prod -autofree -cc clang -cflags "-march=broadwell" -stats -showcc -no-rsp app.v
+    build: v -prod -autofree -skip-unused -cc clang -cflags "-march=broadwell" -stats -showcc -no-rsp app.v
     after_build:
       - mv app out
     out_dir: out
