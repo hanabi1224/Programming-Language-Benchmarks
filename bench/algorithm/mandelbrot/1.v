@@ -33,7 +33,7 @@ fn main() {
 }
 
 [direct_array_access]
-fn mbrot8(cr [8]f64, civ f64) byte {
+fn mbrot8(cr [8]f64, civ f64) u8 {
 	ci := [8]f64{init: civ}
 	mut zr := [8]f64{init: 0.0}
 	mut zi := [8]f64{init: 0.0}
