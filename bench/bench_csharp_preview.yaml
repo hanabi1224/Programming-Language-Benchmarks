@@ -77,7 +77,7 @@ environments:
     compiler: dotnet
     version: 7
     compiler_version_command: dotnet --version
-    docker: mcr.microsoft.com/dotnet/sdk:8.0-preview
+    docker: mcr.microsoft.com/dotnet/sdk:8.0
     # docker_volumns:
     #   - /tmp/.nuget/packages:/root/.nuget/packages
     include: dotnet_preview
