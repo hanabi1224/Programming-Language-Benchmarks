@@ -1,27 +1,31 @@
 #!/usr/bin/bash
 
+set -euo pipefail
+
+LUA_VERSION="5.4.6"
 # https://www.lua.org/ftp/#
 pushd /tmp
-curl -R -O http://www.lua.org/ftp/lua-5.4.4.tar.gz
-tar zxf lua-5.4.4.tar.gz
-pushd lua-5.4.4
+curl -L -R -O http://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz
+tar zxf lua-$LUA_VERSION.tar.gz
+pushd lua-$LUA_VERSION
 make all test
 # sudo ln -sf $PWD/src/luac /usr/bin/luac
 # sudo ln -sf $PWD/src/lua /usr/bin/lua
 sudo make install
 popd
 popd
-# cp /tmp/lua-5.4.4/src/lua ./bench/include/lua/out
+# cp /tmp/lua-$LUA_VERSION/src/lua ./bench/include/lua/out
 luac -v
 lua -v
 # ./bench/include/lua/out/lua -v
 
-git clone https://github.com/LuaJIT/LuaJIT.git /tmp/LuaJIT
+LUAJIT_VERSION=2.1.0-beta3
+git clone --branch v$LUAJIT_VERSION https://github.com/LuaJIT/LuaJIT.git /tmp/LuaJIT
 pushd /tmp/LuaJIT
 make
 sudo make install
-luajit-2.1.0-beta3 -v
-sudo ln -sf luajit-2.1.0-beta3 /usr/local/bin/luajit
+luajit-$LUAJIT_VERSION -v
+sudo ln -sf luajit-$LUAJIT_VERSION /usr/local/bin/luajit
 popd
 luajit -v
 # cp /tmp/LuaJIT/src/luajit ./bench/include/lua/out

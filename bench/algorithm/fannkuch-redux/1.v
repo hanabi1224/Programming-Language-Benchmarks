@@ -14,7 +14,7 @@ fn main() {
 	println('${sum}\nPfannkuchen(${n}) = ${flips}')
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn fannkuchredux(n int) (int, int) {
 	mut perm1 := [32]int{}
 	for i in 0 .. perm1.len {
@@ -77,7 +77,7 @@ fn fannkuchredux(n int) (int, int) {
 	return n, n
 }
 
-[direct_array_access; inline]
+@[direct_array_access; inline]
 fn swap(mut array [32]int, i int, j int) {
 	tmp := array[i]
 	array[i] = array[j]

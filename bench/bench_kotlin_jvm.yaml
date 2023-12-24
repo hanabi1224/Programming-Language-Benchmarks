@@ -44,8 +44,8 @@ source_rename_to: main.kt
 environments:
   - os: linux
     compiler: kotlin/jvm
-    version: 17
-    docker: openjdk:17-slim
+    version: 21
+    docker: openjdk:21-slim
     docker_runtime_dir: /usr/local/openjdk-*
     docker_runtime_dir_rename_to: openjdk
     include: kotlin-jvm

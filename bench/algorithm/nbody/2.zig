@@ -10,7 +10,7 @@ fn dot(a: vec3, b: vec3) f64 {
     return @reduce(.Add, a * b);
 }
 fn scale(v: vec3, f: f64) vec3 {
-    return v * @splat(3, f);
+    return v * @as(vec3, @splat(f));
 }
 fn length_sq(v: vec3) f64 {
     return dot(v, v);
@@ -43,7 +43,7 @@ fn advance(bodies: []Body, dt: f64) void {
     @setFloatMode(.Optimized);
     for (bodies[0..], 0..) |*bi, i| {
         var vel = bi.vel;
-        var mi = bi.mass;
+        const mi = bi.mass;
         for (bodies[i + 1 ..]) |*bj| {
             var d = bi.pos - bj.pos;
             const dsq = length_sq(d);

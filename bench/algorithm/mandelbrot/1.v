@@ -4,7 +4,7 @@ import os
 import strconv
 import crypto.md5
 
-[direct_array_access]
+@[direct_array_access]
 fn main() {
 	mut n := 1
 	if os.args.len > 1 {
@@ -32,7 +32,7 @@ fn main() {
 	println(md5.sum(rows).hex())
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn mbrot8(cr [8]f64, civ f64) byte {
 	ci := [8]f64{init: civ}
 	mut zr := [8]f64{init: 0.0}
@@ -74,21 +74,21 @@ fn mbrot8(cr [8]f64, civ f64) byte {
 	return accu
 }
 
-[direct_array_access; inline]
+@[direct_array_access; inline]
 fn add(a [8]f64, b [8]f64, mut r [8]f64) {
 	for i in 0 .. 8 {
 		r[i] = a[i] + b[i]
 	}
 }
 
-[direct_array_access; inline]
+@[direct_array_access; inline]
 fn minus(a [8]f64, b [8]f64, mut r [8]f64) {
 	for i in 0 .. 8 {
 		r[i] = a[i] - b[i]
 	}
 }
 
-[direct_array_access; inline]
+@[direct_array_access; inline]
 fn mul(a [8]f64, b [8]f64, mut r [8]f64) {
 	for i in 0 .. 8 {
 		r[i] = a[i] * b[i]
