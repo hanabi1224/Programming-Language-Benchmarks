@@ -14,7 +14,7 @@
 #![feature(portable_simd)]
 
 use std::ops::*;
-use std::simd::{Simd, SimdFloat};
+use std::simd::{Simd, prelude::*};
 
 const LANES: usize = 4;
 type IntType = i32;

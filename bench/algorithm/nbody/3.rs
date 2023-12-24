@@ -8,7 +8,7 @@
 #![feature(portable_simd)]
 
 use std::f64::consts::PI;
-use std::simd::{f64x4, SimdFloat};
+use std::simd::{f64x4, prelude::*};
 
 const SOLAR_MASS: f64 = 4.0 * PI * PI;
 const YEAR: f64 = 365.24;

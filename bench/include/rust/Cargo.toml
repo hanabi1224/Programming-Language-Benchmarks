@@ -44,17 +44,17 @@ serde = {version = "1", features = ["derive"]}
 serde_json = {version = "1", features = ["float_roundtrip", "preserve_order"]}
 static-rc = "0"
 
-async-channel = {version = "1", optional = true}
+async-channel = {version = "2", optional = true}
 async-executor = {version = "1", optional = true}
 async-std = {version = "1", optional = true}
 axum = {version = "0.6", optional = true, features = ["http1", "http2"]}
 axum-server = {version = "0.4", optional = true, features = ["tls-rustls"]}
 flume = {version = "0", optional = true}
-futures-lite = {version = "1", optional = true}
+futures-lite = {version = "2", optional = true}
 hyper = {version = "0.14", optional = true, default-features = false, features = ["client", "http1", "http2"]}
-hyper-rustls = {version = "0.23", optional = true, default-features = false, features = ["native-tokio", "http2"]}
-rustls = {version = "0.20", optional = true}
-tokio = {version = "1.22", optional = true}
+hyper-rustls = {version = "0.24", optional = true, default-features = false, features = ["native-tokio", "http2"]}
+rustls = {version = "0.21", optional = true, features = ["dangerous_configuration"]}
+tokio = {version = "1.35", optional = true}
 warp = {version = "0.3", optional = true, features = ["tls"]}
 
 [profile.release]

@@ -9,7 +9,6 @@ default = []
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 anyhow = "1"
-generic-array = "0"
 lazy_static = "1"
 md5 = "0"
 num-traits = "0"
