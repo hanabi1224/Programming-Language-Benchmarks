@@ -15,7 +15,7 @@ fn main() {
 	}
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn nsieve(n int) {
 	mut flags := bitfield.new(n)
 	defer {

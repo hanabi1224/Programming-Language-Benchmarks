@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 static class Program
@@ -75,21 +76,27 @@ static class Program
         }
     }
 
-    private static IWebHostBuilder CreateWebHostBuilder(int port)
-    {
-        return WebHost.CreateDefaultBuilder()
-            .SuppressStatusMessages(true)
-            .ConfigureLogging((context, logging) =>
+    private static IHostBuilder CreateWebHostBuilder(int port) =>
+         Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((hostingContext, config) =>
             {
-                logging.ClearProviders();
+                config.AddJsonFile("appsettings.json",
+                    optional: true,
+                    reloadOnChange: false);
             })
-            .UseKestrel(options =>
+            .ConfigureWebHostDefaults(webBuilder =>
             {
-                options.Limits.MaxRequestBodySize = null;
-                options.ListenLocalhost(port);
-            })
-            .UseStartup<Startup>();
-    }
+                webBuilder.SuppressStatusMessages(true).ConfigureLogging((context, logging) =>
+                {
+                    logging.ClearProviders();
+                })
+                .UseKestrel(options =>
+                {
+                    options.Limits.MaxRequestBodySize = null;
+                    options.ListenLocalhost(port);
+                })
+                .UseStartup<Startup>();
+            });
 }
 
 public sealed class MyController : Controller

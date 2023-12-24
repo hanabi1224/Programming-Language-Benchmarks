@@ -38,7 +38,7 @@ struct App {
 	vweb.Context
 }
 
-['/api'; post]
+@['/api'; post]
 pub fn (mut app App) api() vweb.Result {
 	data := json.decode(Payload, app.req.data) or {
 		Payload{
@@ -49,5 +49,5 @@ pub fn (mut app App) api() vweb.Result {
 }
 
 struct Payload {
-	value int [json: 'value']
+	value int @[json: 'value']
 }

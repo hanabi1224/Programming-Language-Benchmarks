@@ -55,7 +55,7 @@ const Node = struct {
     right: ?*Self = null,
 
     pub fn init(allocator: Allocator) !*Self {
-        var node = try allocator.create(Self);
+        const node = try allocator.create(Self);
         node.* = .{ .allocator = allocator };
         return node;
     }

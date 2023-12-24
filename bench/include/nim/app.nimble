@@ -9,4 +9,4 @@ bin           = @["app"]
 
 # Dependencies
 
-requires "nim >= 1.6.0", "nimbitarray", "https://github.com/nim-lang/bigints"
+requires "nim >= 2.0.0"

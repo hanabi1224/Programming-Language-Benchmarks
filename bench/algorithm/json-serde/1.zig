@@ -8,7 +8,7 @@ pub fn main() !void {
     defer std.process.argsFree(global_allocator, args);
 
     const file = if (args.len > 1) blk: {
-        var file_name = try std.mem.concat(global_allocator, u8, &.{ args[1], ".json" });
+        const file_name = try std.mem.concat(global_allocator, u8, &.{ args[1], ".json" });
         defer global_allocator.free(file_name);
         break :blk try std.fs.cwd().openFile(file_name, .{});
     } else try std.fs.cwd().openFile("sample.json", .{});
@@ -70,9 +70,8 @@ const Geometry = struct {
     //   and end up with the correct md5 (compared with 1.js)
     pub fn jsonStringify(
         value: Geometry,
-        _: json.StringifyOptions,
         out_stream: anytype,
-    ) @TypeOf(out_stream).Error!void {
+    ) !void {
         const typestr =
             \\{"type":"
         ;

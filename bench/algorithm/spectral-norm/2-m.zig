@@ -2,7 +2,7 @@ const std = @import("std");
 
 const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
-    return @splat(4, f);
+    return @splat(f);
 }
 
 fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: anytype) !void {
@@ -72,11 +72,11 @@ pub fn main() !void {
     const len = n / @typeInfo(vec4).Vector.len;
 
     const allocator = std.heap.c_allocator;
-    var u = try allocator.alloc(vec4, len);
+    const u = try allocator.alloc(vec4, len);
     defer allocator.free(u);
-    var v = try allocator.alloc(vec4, len);
+    const v = try allocator.alloc(vec4, len);
     defer allocator.free(v);
-    var temp = try allocator.alloc(vec4, len);
+    const temp = try allocator.alloc(vec4, len);
     defer allocator.free(temp);
 
     const task_count = try std.Thread.getCpuCount();

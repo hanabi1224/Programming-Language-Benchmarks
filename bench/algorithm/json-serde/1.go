@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strconv"
 )
@@ -19,7 +18,7 @@ func main() {
 		n, _ = strconv.Atoi(os.Args[2])
 	}
 	var data GeoData
-	jsonStr, _ := ioutil.ReadFile(fileName + ".json")
+	jsonStr, _ := os.ReadFile(fileName + ".json")
 	json.Unmarshal([]byte(jsonStr), &data)
 	printHash(data.ToJsonString())
 	array := make([]GeoData, 0, n)

@@ -20,7 +20,7 @@ pub mut:
 	m  f64
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn advance(sys []&Body, dt f64) {
 	for i in 0 .. c_n {
 		mut bi := sys[i]
@@ -61,7 +61,7 @@ fn advance(sys []&Body, dt f64) {
 	}
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn offsetmomentum(sys []&Body) {
 	mut px := f64(0)
 	mut py := f64(0)
@@ -77,7 +77,7 @@ fn offsetmomentum(sys []&Body) {
 	sol.vz = pz / solar_mass
 }
 
-[direct_array_access]
+@[direct_array_access]
 fn energy(sys []&Body) f64 {
 	mut e := f64(0)
 	for i := 0; i < c_n; i++ {

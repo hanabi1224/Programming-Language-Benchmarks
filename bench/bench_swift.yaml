@@ -5,7 +5,7 @@ problems:
       - 1.swift
   - name: binarytrees
     source:
-      - 1.swift      
+      - 1.swift
   - name: nbody
     source:
       - 7.swift
@@ -30,10 +30,10 @@ environments:
   - os: linux
     compiler: swift
     version: latest
-    docker: swift:focal
+    docker: swift:jammy
     include: swift
     include_sub_dir: Sources/app
-    build: swift build -c release -v -Xswiftc -static-executable -Xswiftc -Ounchecked
+    build: swift build --static-swift-stdlib -c release -v -Xswiftc -Ounchecked
     after_build:
       - cp .build/release/app out
     out_dir: out

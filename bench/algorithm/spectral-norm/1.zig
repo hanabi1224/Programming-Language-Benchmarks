@@ -39,9 +39,9 @@ pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
     const n = try get_n();
 
-    var u = try global_allocator.alloc(f64, n);
-    var v = try global_allocator.alloc(f64, n);
-    var scratch = try global_allocator.alloc(f64, n);
+    const u = try global_allocator.alloc(f64, n);
+    const v = try global_allocator.alloc(f64, n);
+    const scratch = try global_allocator.alloc(f64, n);
 
     for (u) |*e| {
         e.* = 1;

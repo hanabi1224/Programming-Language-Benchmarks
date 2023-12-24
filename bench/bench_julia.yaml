@@ -42,7 +42,7 @@ environments:
   - os: linux
     compiler: julia
     version: latest
-    docker: julia
+    docker: julia:1.9.2
     docker_runtime_dir: /usr/local/julia
     include: julia
     build: cp c.jl out/App/src
