@@ -54,7 +54,7 @@ static class Program
 
         using var serverTask = app.RunAsync();
         var sum = 0;
-        var api = $"https://localhost:{port}/";
+        var api = $"http://localhost:{port}/";
         var tasks = new List<Task<int>>(n);
         for (var i = 1; i <= n; i++)
         {
@@ -100,7 +100,6 @@ static class Program
             options.ListenLocalhost(port, listenOptions =>
             {
                 listenOptions.Protocols = HttpProtocols.Http2;
-                listenOptions.UseHttps();
             });
         });
         return builder.Build();
