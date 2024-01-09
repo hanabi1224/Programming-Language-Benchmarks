@@ -59,6 +59,7 @@ problems:
       - 1.rs
       - 2.rs
       - 3.rs
+      - 4.rs
   - name: coro-prime-sieve
     source:
       - 1.rs
