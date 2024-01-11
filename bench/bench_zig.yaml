@@ -45,7 +45,7 @@ problems:
       - 1.zig
   - name: json-serde
     source:
-      - 1.zig
+      # - 1.zig
   # - name: coro-prime-sieve
   #   source:
   #     - 1.zig

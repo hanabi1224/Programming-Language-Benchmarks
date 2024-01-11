@@ -103,7 +103,7 @@ environments:
       CXX: clang++
     include: rust
     include_sub_dir: src
-    build: cargo build --release --target-dir /tmp/rs/target -v
+    build: cargo build --release --target-dir /tmp/rs/target
     after_build:
       - sudo mv /tmp/rs/target/release/_app out
     out_dir: out

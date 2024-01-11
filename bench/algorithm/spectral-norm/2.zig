@@ -2,7 +2,7 @@ const std = @import("std");
 
 const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
-    return @splat(4, f);
+    return @splat(f);
 }
 
 fn baseIdx(i: vec4) vec4 {
@@ -57,15 +57,15 @@ pub fn main() !void {
 
     const allocator = std.heap.c_allocator;
 
-    var u = try allocator.alloc(vec4, len);
+    const u = try allocator.alloc(vec4, len);
     defer allocator.free(u);
     for (u) |*i| i.* = vec1to4(1);
 
-    var v = try allocator.alloc(vec4, len);
+    const v = try allocator.alloc(vec4, len);
     defer allocator.free(v);
     for (v) |*i| i.* = vec1to4(1);
 
-    var temp = try allocator.alloc(vec4, len);
+    const temp = try allocator.alloc(vec4, len);
     defer allocator.free(temp);
 
     const task_count = try std.Thread.getCpuCount();

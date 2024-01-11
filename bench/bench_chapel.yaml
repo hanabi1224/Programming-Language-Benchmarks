@@ -45,7 +45,7 @@ environments:
     compiler: chpl
     compiler_version_command: chpl --version
     version: latest
-    docker: chapel/chapel
+    docker: chapel/chapel:1.31.0
     include: chapel
     include_sub_dir: src
     build: mason build --release --show -- --static --ccflags -march=broadwell

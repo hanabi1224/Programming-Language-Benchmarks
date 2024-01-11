@@ -15,7 +15,7 @@ const Pair = struct {
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
     const n = try get_n();
-    var k = binary_search(n);
+    const k = binary_search(n);
     var pair = try sum_terms(0, k - 1);
     defer pair.deinit();
     var p = pair.p;
@@ -33,9 +33,9 @@ pub fn main() !void {
     defer tmp.deinit();
     try bigint.Managed.mul(&tmp, &answer, &a);
     try bigint.Managed.divFloor(&answer, &a, &tmp, &q);
-    var str = try answer.toString(global_allocator, 10, std.fmt.Case.lower);
+    const str = try answer.toString(global_allocator, 10, std.fmt.Case.lower);
     var i: usize = 0;
-    var n_usize = @as(usize, @as(u32, @bitCast(n)));
+    const n_usize = @as(usize, @as(u32, @bitCast(n)));
     while (i < n_usize) {
         var sb = [10:0]u8{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' };
         var j: usize = i;
@@ -54,14 +54,14 @@ pub fn main() !void {
 
 fn sum_terms(a: i32, b: i32) anyerror!Pair {
     if (b == a + 1) {
-        var p = try bigint.Managed.initSet(global_allocator, 1);
-        var q = try bigint.Managed.initSet(global_allocator, b);
+        const p = try bigint.Managed.initSet(global_allocator, 1);
+        const q = try bigint.Managed.initSet(global_allocator, b);
         return Pair{
             .p = p,
             .q = q,
         };
     }
-    var mid: i32 = @divFloor((a + b), 2);
+    const mid: i32 = @divFloor((a + b), 2);
     var pair_left: Pair = try sum_terms(a, mid);
     defer pair_left.deinit();
     var pair_right: Pair = try sum_terms(mid, b);
@@ -85,7 +85,7 @@ fn binary_search(n: i32) i32 {
         b *= 2;
     }
     while (b - a > 1) {
-        var m: i32 = @divFloor(a + b, 2);
+        const m: i32 = @divFloor(a + b, 2);
         if (test_k(n, m)) {
             b = m;
         } else {
@@ -99,10 +99,10 @@ fn test_k(n: i32, k: i32) bool {
     if (k < 0) {
         return false;
     }
-    var float_k: f64 = @floatFromInt(k);
-    var float_n: f64 = @floatFromInt(n);
-    var ln_k_factorial = float_k * (math.ln(float_k) - 1.0) + 0.5 * math.ln(math.tau);
-    var log_10_k_factorial = ln_k_factorial / math.ln10;
+    const float_k: f64 = @floatFromInt(k);
+    const float_n: f64 = @floatFromInt(n);
+    const ln_k_factorial = float_k * (math.log(f64, math.e, float_k) - 1.0) + 0.5 * math.log(f64, math.e, math.tau);
+    const log_10_k_factorial = ln_k_factorial / math.ln10;
     return log_10_k_factorial >= float_n + 50.0;
 }
 

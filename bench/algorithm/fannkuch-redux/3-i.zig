@@ -114,7 +114,7 @@ inline fn advance_array(_array: u128, count: *[16]u8) u128 {
 
 fn fannkuchRedux(n: u4) [2]i32 {
     var _current: u128 = 0x0F_0E_0D_0C_0B_0A_09_08_07_06_05_04_03_02_01_00;
-    var _count = [1]u8{0} ** 16;
+    const _count = [1]u8{0} ** 16;
     var max_rev: i32 = 0;
 
     // Trivial cases, not implemented

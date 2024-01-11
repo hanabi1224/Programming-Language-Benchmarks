@@ -1,4 +1,6 @@
-#!/usr/bin/sh
+#!/usr/bin/bash
+
+set -euo pipefail
 
 VERSION=dev-2023-05
 FILE_NAME=odin-ubuntu-amd64-$VERSION.zip

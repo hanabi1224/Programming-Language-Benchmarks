@@ -9,7 +9,7 @@
 
 #![feature(portable_simd)]
 
-use std::simd::{f64x8, SimdFloat, StdFloat};
+use std::simd::{f64x8, prelude::*, StdFloat};
 
 const MAX_ITER: usize = 50;
 const VLEN: usize = 8;

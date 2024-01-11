@@ -52,13 +52,13 @@ pub fn main() !void {
 }
 
 fn mbrot8(cr: Vec, civ: f64) u8 {
-    const ci = @splat(VEC_SIZE, civ);
+    const ci = @as(Vec, @splat(civ));
     const zero: f64 = 0.0;
-    var zr = @splat(VEC_SIZE, zero);
-    var zi = @splat(VEC_SIZE, zero);
-    var tr = @splat(VEC_SIZE, zero);
-    var ti = @splat(VEC_SIZE, zero);
-    var absz = @splat(VEC_SIZE, zero);
+    var zr = @as(Vec, @splat(zero));
+    var zi = @as(Vec, @splat(zero));
+    var tr = @as(Vec, @splat(zero));
+    var ti = @as(Vec, @splat(zero));
+    var absz = @as(Vec, @splat(zero));
 
     var _i: u8 = 0;
     while (_i < 10) : (_i += 1) {

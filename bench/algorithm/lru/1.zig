@@ -74,7 +74,7 @@ fn LinkedList(comptime T: type) type {
         const Self = @This();
 
         pub fn init(allocator: Allocator) !*Self {
-            var list = try allocator.create(Self);
+            const list = try allocator.create(Self);
             list.* = .{ .allocator = allocator };
             return list;
         }
@@ -82,7 +82,7 @@ fn LinkedList(comptime T: type) type {
         pub fn deinit(self: *Self) void {
             var ptr = self.head;
             while (ptr != null) {
-                var tmp = ptr.?;
+                const tmp = ptr.?;
                 ptr = tmp.next;
                 self.allocator.destroy(tmp);
             }
@@ -90,7 +90,7 @@ fn LinkedList(comptime T: type) type {
         }
 
         pub fn add(self: *Self, data: T) !*Node {
-            var node = try self.allocator.create(Node);
+            const node = try self.allocator.create(Node);
             node.* = .{ .data = data };
             self.__add_node(node);
             self.len += 1;
@@ -172,7 +172,7 @@ fn LRU(
         }
 
         pub fn get(self: *Self, key: K) ?V {
-            var node = self.keys.get(key);
+            const node = self.keys.get(key);
             if (node == null) {
                 return null;
             }
