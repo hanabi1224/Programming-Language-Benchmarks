@@ -42,6 +42,7 @@ rayon = "1"
 regex = "1"
 serde = {version = "1", features = ["derive"]}
 serde_json = {version = "1", features = ["float_roundtrip", "preserve_order"]}
+simd-json = "0.13.6"
 static-rc = "0"
 
 async-channel = {version = "2", optional = true}
