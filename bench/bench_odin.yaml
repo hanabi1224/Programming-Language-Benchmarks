@@ -38,4 +38,4 @@ environments:
     build: odin build . -o:speed -disable-assert -no-bounds-check -microarch:broadwell -show-timings -out:out/app
     out_dir: out
     run_cmd: app
-    allow_failure: true
+    # allow_failure: true

@@ -1,4 +1,4 @@
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use serde::{Deserialize, Serialize, Serializer};
 use std::fs;
 
 fn main() -> anyhow::Result<()> {
@@ -12,7 +12,7 @@ fn main() -> anyhow::Result<()> {
         .and_then(|s| s.parse().ok())
         .unwrap_or(10);
     let mut json_str = fs::read(format!("{}.json", file_name))?;
-    let json: GeoData =  simd_json::from_slice(&mut json_str)?;
+    let json: GeoData = simd_json::from_slice(&mut json_str)?;
 
     print_hash(simd_json::to_vec(&json)?);
     let mut array = Vec::with_capacity(n);
@@ -34,8 +34,8 @@ struct MyF64(f64);
 
 impl Serialize for MyF64 {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         if self.0.fract() == 0.0 {
             serializer.serialize_i64(self.0 as i64)

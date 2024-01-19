@@ -1,6 +1,6 @@
 package main
 
-import "core:crypto/md5"
+import "core:crypto/legacy/md5"
 import "core:fmt"
 import "core:runtime"
 import "core:strconv"
