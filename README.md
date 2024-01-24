@@ -65,6 +65,8 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 [podman](https://podman.io/getting-started/installation) (or [docker](https://www.docker.com/) by changing `docker_cmd: podman` to `docker_cmd: docker` in `bench/bench.yaml`)
 
+unzip
+
 ## Build
 
 _The 1st step is to build source code from various of lanuages_
@@ -72,9 +74,9 @@ _The 1st step is to build source code from various of lanuages_
 ```bash
 cd bench
 # To build a subset
-dotnet run -p tool -- --task build --langs lisp go --problems nbody helloworld --force-rebuild
+dotnet run --project tool -- --task build --langs lisp go --problems nbody helloworld --force-rebuild
 # To build all
-dotnet run -p tool -- --task build
+dotnet run --project tool -- --task build
 ```
 
 ## Test
@@ -84,9 +86,9 @@ _The 2nd step is to test built binaries to ensure the correctness of their imple
 ```bash
 cd bench
 # To test a subset
-dotnet run -p tool -- --task test --langs lisp go --problems nbody helloworld
+dotnet run --project tool -- --task test --langs lisp go --problems nbody helloworld
 # To test all
-dotnet run -p tool -- --task test
+dotnet run --project tool -- --task test
 ```
 
 ## Bench
@@ -96,16 +98,16 @@ _The 3rd step is to generate benchmarks_
 ```bash
 cd bench
 # To bench a subset
-dotnet run -p tool -- --task bench --langs lisp go --problems nbody helloworld
+dotnet run --project tool -- --task bench --langs lisp go --problems nbody helloworld
 # To bench all
-dotnet run -p tool -- --task bench
+dotnet run --project tool -- --task bench
 ```
 
 _For usage_
 
 ```bash
 cd bench
-dotnet run -p tool -- -h
+dotnet run --project tool -- -h
 
 BenchTool
   Main function
