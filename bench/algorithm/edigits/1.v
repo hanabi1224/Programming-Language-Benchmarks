@@ -5,10 +5,8 @@ import strconv
 import math.big
 import math
 
-const (
-	one = big.integer_from_int(1)
-	ten = big.integer_from_int(10)
-)
+const one = big.integer_from_int(1)
+const ten = big.integer_from_int(10)
 
 fn main() {
 	mut n := 27

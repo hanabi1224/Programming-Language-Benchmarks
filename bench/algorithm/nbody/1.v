@@ -3,11 +3,9 @@ import math
 import strconv
 import os
 
-const (
-	solar_mass    = 4.0 * math.pi * math.pi
-	days_per_year = 365.24
-	c_n           = 5
-)
+const solar_mass = 4.0 * math.pi * math.pi
+const days_per_year = 365.24
+const c_n = 5
 
 struct Body {
 pub mut:

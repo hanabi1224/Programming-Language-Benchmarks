@@ -5,14 +5,12 @@ import strconv
 import math.big
 import strings
 
-const (
-	zero  = big.integer_from_int(0)
-	one   = big.integer_from_int(1)
-	two   = big.integer_from_int(2)
-	three = big.integer_from_int(3)
-	four  = big.integer_from_int(4)
-	ten   = big.integer_from_int(10)
-)
+const zero = big.integer_from_int(0)
+const one = big.integer_from_int(1)
+const two = big.integer_from_int(2)
+const three = big.integer_from_int(3)
+const four = big.integer_from_int(4)
+const ten = big.integer_from_int(10)
 
 fn main() {
 	mut n := 27
