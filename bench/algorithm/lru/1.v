@@ -3,11 +3,9 @@ module main
 import os
 import strconv
 
-const (
-	a = u32(1103515245)
-	c = u32(12345)
-	m = u32(1) << 31
-)
+const a = u32(1103515245)
+const c = u32(12345)
+const m = u32(1) << 31
 
 struct LCG {
 mut:
