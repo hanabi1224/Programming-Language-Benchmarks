@@ -19,7 +19,7 @@ fn main() {
 	}
 	println('P4\n${n} ${n}')
 
-	mut rows := []byte{len: n * chunk_size, cap: n * chunk_size, init: 0}
+	mut rows := []u8{len: n * chunk_size, cap: n * chunk_size, init: 0}
 	for chunk_id := 0; chunk_id < n; chunk_id++ {
 		ci := f64(chunk_id) * inv - 1.0
 		for i := 0; i < chunk_size; i++ {
@@ -33,7 +33,7 @@ fn main() {
 }
 
 @[direct_array_access]
-fn mbrot8(cr [8]f64, civ f64) byte {
+fn mbrot8(cr [8]f64, civ f64) u8 {
 	ci := [8]f64{init: civ}
 	mut zr := [8]f64{init: 0.0}
 	mut zi := [8]f64{init: 0.0}
