@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-VERSION=dev-2023-05
+VERSION=dev-2024-01
 FILE_NAME=odin-ubuntu-amd64-$VERSION.zip
 sudo apt-get install -y aria2
 mkdir /tmp/odin

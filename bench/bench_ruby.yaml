@@ -71,7 +71,7 @@ environments:
   - os: linux
     compiler: truffleruby
     version: latest
-    docker: ghcr.io/graalvm/truffleruby
+    docker: ghcr.io/graalvm/truffleruby-community
     docker_runtime_dir: /opt/truffleruby-*
     docker_runtime_dir_rename_to: truffleruby
     include:

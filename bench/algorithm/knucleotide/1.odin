@@ -102,7 +102,7 @@ read_lines_with_buffering :: proc() ->(string,io.Error){
    return "",io.Error(err)
  }
  defer os.close(f)
- bufio.reader_init_with_buf(&r, {os.stream_from_handle(f)}, buffer[:])
+ bufio.reader_init_with_buf(&r, os.stream_from_handle(f), buffer[:])
  defer bufio.reader_destroy(&r)
 
  linerc:strings.Builder;
