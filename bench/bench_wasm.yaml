@@ -80,11 +80,12 @@ environments:
       - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
     build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
     out_dir: out
-    run_cmd: wasmtime run --wasm-features all _app.wasm
+    run_cmd: wasmtime run _app.wasm
     runtime_included: false
   - os: linux
     compiler: node
     version: latest
+    enabled: false
     compiler_version_command:
     runtime_version_parameter: --version
     include: rust-wasm
@@ -99,6 +100,7 @@ environments:
     enabled: false
     compiler: deno
     version: latest
+    enabled: false
     compiler_version_command: deno --version
     runtime_version_parameter:
     env:

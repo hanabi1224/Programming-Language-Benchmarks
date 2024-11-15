@@ -71,12 +71,12 @@ source_rename_to: app.cs
 environments:
   - os: linux
     compiler: dotnet
-    version: 7
+    version: 10
     compiler_version_command: dotnet --version
-    docker: mcr.microsoft.com/dotnet/sdk:7.0
+    docker: mcr.microsoft.com/dotnet/sdk:10.0
     # docker_volumns:
     #   - /tmp/.nuget/packages:/root/.nuget/packages
     include: dotnet_preview
-    build: dotnet publish -c Release -r linux-x64 -f net7 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
+    build: dotnet publish -c Release -r linux-x64 -f net10 --self-contained true -p:PublishSingleFile=true -o out # -p:PublishReadyToRun=true
     out_dir: out
     run_cmd: app
