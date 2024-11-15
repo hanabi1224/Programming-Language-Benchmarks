@@ -1,1 +1,15 @@
-{"orgId":"N3lT7bk6DOGBLai0GrO3LsvY","projectId":"prj_BYr2s2qxwbH9R3ZjnezuhBzlXln6"}
+{
+  "projectId": "prj_BYr2s2qxwbH9R3ZjnezuhBzlXln6",
+  "orgId": "N3lT7bk6DOGBLai0GrO3LsvY",
+  "settings": {
+    "createdAt": 1617492873130,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": "echo \"install\"",
+    "buildCommand": null,
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "18.x"
+  }
+}
