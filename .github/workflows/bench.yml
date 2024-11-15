@@ -67,7 +67,7 @@ jobs:
       - run: dotnet --info
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.x"
+          dotnet-version: "9.x"
       - name: Install
         run: |
           echo '# placeholder' > $PROFILE
@@ -254,7 +254,7 @@ jobs:
       - run: lscpu
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.x"
+          dotnet-version: "9.x"
       - name: Install
         run: |
           dotnet --info

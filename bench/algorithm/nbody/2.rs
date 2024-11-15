@@ -5,7 +5,7 @@
 // contributed by TeXitoi
 // modified by hanabi1224 to use numeric_array, remove borrow checker hack, do not derive copy, more compile time calculation
 
-use generic_array::{arr, typenum::consts::U4};
+use generic_array::typenum::consts::U4;
 use numeric_array::{geometry::Geometric, narr, NumericArray, NumericConstant};
 use std::f64::consts::PI;
 
@@ -18,19 +18,17 @@ const N_BODIES: usize = 5;
 const ADVANCE_DT: F64c = NumericConstant(0.01);
 
 macro_rules! planet {
-    ($x:expr, $y:expr, $z:expr, $vx:expr, $vy:expr, $vz:expr, $mass_ratio:expr) => {
-        {
-            let mass = $mass_ratio * SOLAR_MASS;
-            Planet {
-                position: narr![f64; $x, $y, $z, 0.0],
-                velocity: narr![f64; $vx, $vy, $vz, 0.0],
-                mass_ratio: NumericConstant($mass_ratio),
-                mass,
-                massc: NumericConstant(mass),
-                mass_half: mass * 0.5,
-            }
+    ($x:expr, $y:expr, $z:expr, $vx:expr, $vy:expr, $vz:expr, $mass_ratio:expr) => {{
+        let mass = $mass_ratio * SOLAR_MASS;
+        Planet {
+            position: narr![$x, $y, $z, 0.0],
+            velocity: narr![$vx, $vy, $vz, 0.0],
+            mass_ratio: NumericConstant($mass_ratio),
+            mass,
+            massc: NumericConstant(mass),
+            mass_half: mass * 0.5,
         }
-    };
+    }};
 }
 
 lazy_static::lazy_static! {
@@ -132,7 +130,7 @@ fn energy(bodies: &[Planet; N_BODIES]) -> f64 {
 
 #[inline]
 fn offset_momentum(bodies: &mut [Planet; N_BODIES]) {
-    let mut p = narr!(f64; 0, 0, 0, 0);
+    let mut p = narr!(0_f64, 0_f64, 0_f64, 0_f64);
     for bi in bodies.iter() {
         p -= bi.velocity * bi.mass_ratio;
     }

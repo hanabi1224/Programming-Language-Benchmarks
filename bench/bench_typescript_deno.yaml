@@ -52,7 +52,7 @@ environments:
     include: typescript
     include_sub_dir:
     # before_build:
-    build: deno bundle --unstable c.ts app.ts && deno compile --no-check --allow-all --unsafely-ignore-certificate-errors=localhost --unstable -o out/app app.ts
+    build: deno run --allow-all esbuild.mjs && deno compile --no-check --allow-all --unsafely-ignore-certificate-errors=localhost --unstable -o out/app app.ts
     after_build:
       - cp testcert.pem out
       - cp testkey.pem out
