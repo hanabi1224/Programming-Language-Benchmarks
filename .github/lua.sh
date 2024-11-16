@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-LUA_VERSION="5.4.6"
+LUA_VERSION="5.4.7"
 # https://www.lua.org/ftp/#
 pushd /tmp
 curl -L -R -O http://www.lua.org/ftp/lua-$LUA_VERSION.tar.gz

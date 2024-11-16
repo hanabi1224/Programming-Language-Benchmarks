@@ -17,12 +17,12 @@ fn runInParallel(tasks: []std.Thread, len: usize, comptime f: anytype, args: any
 }
 
 fn baseIdx(i: vec4) vec4 {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     return i * (i + vec1to4(1)) * vec1to4(0.5) + vec1to4(1);
 }
 
 fn multAvGeneric(comptime transpose: bool, first: usize, dst: []vec4, src: []const vec4) void {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
     var ti = vec1to4(@as(f64, @floatFromInt(first * 4))) + if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
     for (dst) |*res| {
@@ -56,15 +56,15 @@ fn setOnes(first: usize, last: usize, dst: []vec4) void {
 }
 
 fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4, total_vbv: *f64, total_vv: *f64) void {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
     for (v[first..last], 0..) |f, i| {
         vbv += u[first + i] * f;
         vv += f * f;
     }
-    _ = @atomicRmw(f64, total_vbv, .Add, @reduce(.Add, vbv), .SeqCst);
-    _ = @atomicRmw(f64, total_vv, .Add, @reduce(.Add, vv), .SeqCst);
+    _ = @atomicRmw(f64, total_vbv, .Add, @reduce(.Add, vbv), .seq_cst);
+    _ = @atomicRmw(f64, total_vv, .Add, @reduce(.Add, vv), .seq_cst);
 }
 
 pub fn main() !void {
