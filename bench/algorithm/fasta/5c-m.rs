@@ -11,8 +11,6 @@
 //     * cleaned up code a bit (reordering, renaming, formatting, etc.)
 // add compile-time calculation by hanabi1224
 
-#![feature(const_fn_floating_point_arithmetic)]
-
 use std::cmp::min;
 use std::io;
 use std::io::{BufWriter, ErrorKind, Write};

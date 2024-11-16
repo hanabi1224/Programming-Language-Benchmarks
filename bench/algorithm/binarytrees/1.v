@@ -22,12 +22,12 @@ fn check(node &Node) int {
 fn create(n int) &Node {
 	if n == 0 {
 		return &Node{
-			left: 0
-			right: 0
+			left:  unsafe { nil }
+			right: unsafe { nil }
 		}
 	}
 	return &Node{
-		left: create(n - 1)
+		left:  create(n - 1)
 		right: create(n - 1)
 	}
 }
