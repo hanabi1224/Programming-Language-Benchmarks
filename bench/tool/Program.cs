@@ -111,13 +111,13 @@ namespace BenchTool
             if (s_cpuInfo != null)
             {
                 Logger.Info($"CPU: {s_cpuInfo}");
-                if (task == TASK_CHECK_CPU && s_cpuInfo.Model < 80)
-                {
-                    // To print cpu features, use
-                    // either: 'rustc +nightly --print=cfg -C target-cpu=broadwell' (features like avx512 are missing from stable)
-                    // or 'zig build -Dcpu=broadwell --verbose-llvm-cpu-features'
-                    throw new Exception("[github action] Fail intentionally on old cpu model prior to broadwell, please retry.");
-                }
+                // if (task == TASK_CHECK_CPU && s_cpuInfo.Model < 80)
+                // {
+                //     // To print cpu features, use
+                //     // either: 'rustc +nightly --print=cfg -C target-cpu=broadwell' (features like avx512 are missing from stable)
+                //     // or 'zig build -Dcpu=broadwell --verbose-llvm-cpu-features'
+                //     throw new Exception("[github action] Fail intentionally on old cpu model prior to broadwell, please retry.");
+                // }
             }
             if (task == TASK_CHECK_CPU)
             {

@@ -43,8 +43,8 @@ async function main() {
     const server = Deno.listenTls({
         hostname: hostname,
         port: port,
-        certFile: "testcert.pem",
-        keyFile: "testkey.pem",
+        cert: Deno.readTextFileSync("testcert.pem"),
+        key: Deno.readTextFileSync("testkey.pem"),
         alpnProtocols: ["h2"],
     });
     runServerAsync(server);

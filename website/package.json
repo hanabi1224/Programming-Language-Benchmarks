@@ -7,8 +7,8 @@
   },
   "scripts": {
     "build": "nuxt generate --force-build",
-    "vercel-build": "tar -xvf content.tar.gz && pnpm build",
-    "vercel-publish": "pnpm archive-content && vc --prod",
+    "vercel-build": "tar -xvf dist.tar.gz",
+    "vercel-publish": "pnpm archive-dist && vc --prod",
     "dev": "nuxt dev -s -t server -o",
     "start": "nuxt start -H 0.0.0.0",
     "generate": "nuxt generate --force-build",
@@ -22,6 +22,7 @@
     "content:rm": "rm -r content",
     "content:cp": "cp -a ./../bench/build/_results content",
     "archive-content": "tar -czvf content.tar.gz content/**",
+    "archive-dist": "tar -czvf dist.tar.gz dist/**",
     "content": "pnpm content:rm && pnpm content:cp && pnpm archive-content",
     "update-db": "npx browserslist@latest --update-db"
   },
@@ -61,7 +62,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^28.1.3",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.1",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -71,7 +72,7 @@
     "postcss-html": "^1.5.0",
     "prettier": "^2.8.8",
     "sass": "^1.69.5",
-    "sass-loader": "^10.5.1",
+    "sass-loader": "^10.5.2",
     "stylelint": "^14.16.1",
     "stylelint-config-prettier": "^9.0.5",
     "stylelint-config-recommended-vue": "^1.5.0",
@@ -79,5 +80,6 @@
     "stylelint-scss": "^4.7.0",
     "ts-jest": "^28.0.8",
     "vue-jest": "^3.0.7"
-  }
+  },
+  "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a"
 }

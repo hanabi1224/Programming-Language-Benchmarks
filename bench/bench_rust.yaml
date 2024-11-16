@@ -29,7 +29,9 @@ problems:
   - name: fasta
     source:
       - 1.rs
+      - 1c.rs
       - 5-m.rs
+      - 5c-m.rs
   - name: knucleotide
     source:
       - 8.rs

@@ -21,7 +21,7 @@ fn main() {
 		'agggta[cgt]a|t[acg]taccct',
 		'agggtaa[cgt]|[acg]ttaccct',
 	] {
-		println('${p} ${var_find(content, p)?}')
+		println('${p} ${var_find(content, p)!}')
 	}
 	for p, r in {
 		'tHa[Nt]':                    '<4>'
