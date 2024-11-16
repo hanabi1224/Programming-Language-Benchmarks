@@ -45,6 +45,7 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.go
+      - 2.go
   - name: http-server
     source:
       - 1.go
