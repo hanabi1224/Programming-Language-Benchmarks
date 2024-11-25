@@ -73,4 +73,4 @@ def mtree(n):
 actor main(env):
     n = int(env.argv[1]) if len(env.argv) > 1 else 6
     mtree(n)
-    await async env.exit(0)
+    env.exit(0)

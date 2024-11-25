@@ -20,4 +20,4 @@ actor main(env):
     n = 4 if len(env.argv) < 2 else int(env.argv[1])
     for i in range(0, 3, 1):
         nsieve(10000 << (n - i))
-    await async env.exit(0)
+    env.exit(0)

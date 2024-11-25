@@ -45,4 +45,4 @@ def binary_tree(n: int):
 actor main(env):
     n = int(env.argv[1]) if len(env.argv) > 1 else 6
     binary_tree(n)
-    await async env.exit(0)
+    env.exit(0)
