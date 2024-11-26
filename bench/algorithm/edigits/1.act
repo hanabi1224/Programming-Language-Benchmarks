@@ -1,4 +1,7 @@
+#!/usr/bin/env runacton
+
 # port of 1.py
+
 import math
 
 ln_tau = math.log(6.283185307179586)
@@ -53,4 +56,4 @@ actor main(env):
                 spaces += " "
             print(s[i:] + spaces + "\t:" + str(n))
             #print(f'{s[i:]}{" "*(10-n%10)}\t:{n}')
-    await async env.exit(0)
+    env.exit(0)
