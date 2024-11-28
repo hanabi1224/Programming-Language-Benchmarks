@@ -349,6 +349,8 @@ jobs:
           pnpm content
           pnpm build
           pnpm archive-dist
+        env:
+          GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
       - name: Site Publish
         if: github.ref == 'refs/heads/main'
         env:
