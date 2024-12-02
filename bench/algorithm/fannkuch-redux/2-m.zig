@@ -114,8 +114,8 @@ fn pfannkuchenStats(first: usize, last: usize, n: u8, res: *Stats) void {
         stats.checksum += @as(i32, @intCast(flips)) * parity;
         perm = nextPermutation(perm, count[0..n]) orelse break;
     }
-    _ = @atomicRmw(u32, &res.max_flips, .Max, stats.max_flips, .SeqCst);
-    _ = @atomicRmw(i32, &res.checksum, .Add, stats.checksum, .SeqCst);
+    _ = @atomicRmw(u32, &res.max_flips, .Max, stats.max_flips, .seq_cst);
+    _ = @atomicRmw(i32, &res.checksum, .Add, stats.checksum, .seq_cst);
 }
 
 pub fn main() !void {

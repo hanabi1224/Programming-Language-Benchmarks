@@ -8,7 +8,7 @@ problems:
       - 1.odin
   - name: knucleotide
     source:
-      - 1.odin
+      # - 1.odin
   - name: nsieve
     source:
       - 1.odin

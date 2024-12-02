@@ -54,4 +54,4 @@ actor main(env):
         for j in range(0, (10-(len(res))), 1):
             spaces += " "
         print("%s%s\t:%d" % (res, spaces, i))
-    await async env.exit(0)
+    env.exit(0)

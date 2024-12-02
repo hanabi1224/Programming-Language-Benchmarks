@@ -54,7 +54,6 @@ runtime_version_parameter:
 environments:
   - os: linux
     compiler: wasmer/llvm
-    enabled: false
     version: latest
     compiler_version_command: wasmer --version
     runtime_version_parameter:
@@ -63,10 +62,27 @@ environments:
     include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
-    build: wasmer create-exe --llvm --enable-all -o out/app /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm
+      - cargo build --release --target wasm32-wasip1 --target-dir /tmp/rustwasm/target
+    build: wasmer compile --llvm --enable-all -o out/app.wasmu /tmp/rustwasm/target/wasm32-wasip1/release/_app.wasm
     out_dir: out
-    run_cmd: app
+    run_cmd: wasmer run app.wasmu
+    runtime_included: false
+  - os: linux
+    compiler: wasmer/cranelift
+    version: latest
+    enabled: false
+    compiler_version_command: wasmer --version
+    runtime_version_parameter:
+    env:
+      RUSTFLAGS: -C target-feature=+simd128
+    include: rust-wasm
+    include_sub_dir: src
+    before_build:
+      - cargo build --release --target wasm32-wasip1 --target-dir /tmp/rustwasm/target
+    build: wasmer compile --cranelift --enable-all -o out/app.wasmu /tmp/rustwasm/target/wasm32-wasip1/release/_app.wasm
+    out_dir: out
+    run_cmd: wasmer run app.wasmu
+    runtime_included: false
   - os: linux
     compiler: wasmtime
     version: latest
@@ -77,21 +93,22 @@ environments:
     include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
-    build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
+      - cargo build --release --target wasm32-wasip1 --target-dir /tmp/rustwasm/target
+    build: mv /tmp/rustwasm/target/wasm32-wasip1/release/_app.wasm out
     out_dir: out
-    run_cmd: wasmtime run --wasm-features all _app.wasm
+    run_cmd: wasmtime run _app.wasm
     runtime_included: false
   - os: linux
     compiler: node
     version: latest
+    enabled: false
     compiler_version_command:
     runtime_version_parameter: --version
     include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
-    build: mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out && cp wrapper.js out
+      - cargo build --release --target wasm32-wasip1 --target-dir /tmp/rustwasm/target
+    build: mv /tmp/rustwasm/target/wasm32-wasip1/release/_app.wasm out && cp wrapper.js out
     out_dir: out
     run_cmd: node --experimental-wasi-unstable-preview1 --experimental-wasm-modules wrapper.js
     runtime_included: false
@@ -99,6 +116,7 @@ environments:
     enabled: false
     compiler: deno
     version: latest
+    enabled: false
     compiler_version_command: deno --version
     runtime_version_parameter:
     env:
@@ -106,10 +124,10 @@ environments:
     include: rust-wasm
     include_sub_dir: src
     before_build:
-      - cargo build --release --target wasm32-wasi --target-dir /tmp/rustwasm/target
+      - cargo build --release --target wasm32-wasip1 --target-dir /tmp/rustwasm/target
       - deno bundle --unstable wrapper.ts app.ts
     build: deno compile --no-check --unstable --allow-env --allow-read -o out/app app.ts
     after_build:
-      - mv /tmp/rustwasm/target/wasm32-wasi/release/_app.wasm out
+      - mv /tmp/rustwasm/target/wasm32-wasip1/release/_app.wasm out
     out_dir: out
     run_cmd: app --
