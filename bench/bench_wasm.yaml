@@ -55,6 +55,7 @@ environments:
   - os: linux
     compiler: wasmer/llvm
     version: latest
+    enabled: false
     compiler_version_command: wasmer --version
     runtime_version_parameter:
     env:
