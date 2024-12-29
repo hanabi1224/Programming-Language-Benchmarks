@@ -1,0 +1,44 @@
+lang: c
+problems:
+  - name: mandelbrot
+    source:
+      - 1-ffi.c
+      - 1-mffi.c
+compiler_version_command:
+compiler_version_regex:
+runtime_version_parameter:
+runtime_version_regex:
+source_rename_to: app.c
+environments:
+  - os: linux
+    compiler: clang
+    compiler_version_command: clang --version
+    version: latest
+    docker:
+    include: c
+    build: clang @app_ffi.rsp
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app
+  - os: linux
+    compiler: gcc
+    compiler_version_command: gcc --version
+    version: latest
+    docker: gcc
+    include: c
+    build: gcc @app_ffi.rsp
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app
+  - os: linux
+    compiler: zigcc
+    version: latest
+    docker:
+    include: c
+    build: zig cc  -pipe -O3 -fomit-frame-pointer -march=native -Wno-deprecated-declarations -mno-fma -o app app.c -lm -lcrypto
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app

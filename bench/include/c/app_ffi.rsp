@@ -1,0 +1,1 @@
+ -pipe -O3 -fomit-frame-pointer -march=broadwell -fopenmp -pthread -Wno-deprecated-declarations -mno-fma -o app app.c -lm -lcrypto
