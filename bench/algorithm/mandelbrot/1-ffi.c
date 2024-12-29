@@ -130,7 +130,7 @@ int main(int argc, char **argv)
             xloc[i].x[j]=init_xloc(offset+j, inv);
         }
     }
-    printf("P4\n %d %d\n",size,size);
+    printf("P4\n%d %d\n",size,size);
 
     unsigned char* pixels = (unsigned char*)malloc(size*chunk_size*sizeof(unsigned char));
 
@@ -149,7 +149,6 @@ int main(int argc, char **argv)
        {
           printf("%d, ",pixels[x]);
        }// */
-       printf("\n");
     unsigned char *output = MD5(pixels, size*chunk_size,NULL);
     for(int i=0;i<16;++i)
     {
