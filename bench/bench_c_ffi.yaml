@@ -36,7 +36,7 @@ environments:
     version: latest
     docker:
     include: c
-    build: zig cc @app.rsp
+    build: zig cc @app_ffi.rsp
     after_build:
       - mv app out
     out_dir: out
