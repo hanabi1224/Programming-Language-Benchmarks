@@ -31,3 +31,13 @@ environments:
       - mv app out
     out_dir: out
     run_cmd: app
+  - os: linux
+    compiler: zigcc
+    version: latest
+    docker:
+    include: c
+    build: zig cc @app.rsp
+    after_build:
+      - mv app out
+    out_dir: out
+    run_cmd: app
