@@ -3,6 +3,7 @@ problems:
   - name: mandelbrot
     source:
       - 1-ffi.c
+      - 1-mffi.c
 compiler_version_command:
 compiler_version_regex:
 runtime_version_parameter:
