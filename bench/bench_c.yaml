@@ -20,9 +20,6 @@ problems:
       - 4.c
       - 5-im.c
       - 6-im.c
-  - name: mandelbrot
-    source:
-      - 1-ffi.c
   - name: nsieve
     source:
       - 1.c
