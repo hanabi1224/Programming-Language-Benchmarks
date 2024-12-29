@@ -37,7 +37,7 @@ environments:
     version: latest
     docker:
     include: c
-    build: zig cc @app_ffi.rsp
+    build: zig cc  -pipe -O3 -fomit-frame-pointer -march=native -Wno-deprecated-declarations -mno-fma -o app app.c -lm -lcrypto
     after_build:
       - mv app out
     out_dir: out
