@@ -35,9 +35,10 @@ environments:
   - os: linux
     compiler: zigcc
     version: latest
+    compiler_version_command: zig version
     docker:
     include: c
-    build: zig cc  -pipe -O3 -fomit-frame-pointer -march=native -Wno-deprecated-declarations -mno-fma -o app app.c -lm -lcrypto
+    build: zig cc  -pipe -O3 -fomit-frame-pointer -march=broadwell -Wno-deprecated-declarations -mno-fma -o app app.c -lm -lcrypto
     after_build:
       - mv app out
     out_dir: out
