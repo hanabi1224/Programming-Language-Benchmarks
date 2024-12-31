@@ -40,6 +40,7 @@ problems:
   - name: coro-prime-sieve
     source:
       - 1.go
+      - 2.go
   # - name: json-serde
   #   source:
   #     - 1.go
