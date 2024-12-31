@@ -1,0 +1,153 @@
+name: bench_test
+on:
+  push:
+    branches: [ci]
+  pull_request:
+    branches: [ci]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    env:
+      PROFILE: /tmp/.tmpprofile
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-20.04]
+        lang:
+          [
+            # c,
+            # cpp,
+            # csharp,
+            # crystal,
+            # d,
+            # dart,
+            # elixir,
+            # fortran,
+            go,
+            # haskell,
+            # haxe,
+            # java,
+            # javascript,
+            # julia,
+            # kotlin,
+            # lisp,
+            # lua,
+            # nim,
+            # ocaml,
+            # perl,
+            # python,
+            # racket,
+            # ruby,
+            # rust,
+            # swift,
+            # typescript,
+            # v,
+            # wasm,
+            # wren,
+            # zig,
+          ]
+    steps:
+      - uses: actions/checkout@v2
+      - run: lscpu
+      - name: Install
+        run: |    
+          echo '# placeholder' > $PROFILE
+          sudo apt-get update -y
+          sudo apt-get install -y dotnet-sdk-6.0
+      - name: Install rust stable
+        uses: actions-rs/toolchain@v1
+        if: matrix.lang == 'rust' || matrix.lang == 'wasm'
+        with:
+          toolchain: stable
+          override: true
+      - name: Install rust nightly
+        if: matrix.lang == 'rust'
+        run: |
+          # https://github.com/rust-lang/portable-simd/issues/156
+          # rustup update nightly-2021-08-28
+          # sudo ln -sf $HOME/.rustup/toolchains/nightly-2021-08-28-x86_64-unknown-linux-gnu $HOME/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu
+          rustup update nightly
+          cargo +nightly --version
+      - name: Install graal
+        if: matrix.lang == 'java' || matrix.lang == 'javascript' || matrix.lang == 'python' || matrix.lang == 'ruby' || matrix.lang == 'wasm'
+        run: ./.github/graalvm.sh
+      - name: Install c deps
+        if: matrix.lang == 'c'
+        run: ./.github/c.sh
+      - name: Install cpp deps
+        if: matrix.lang == 'cpp'
+        run: ./.github/cpp.sh
+      - name: Install lisp
+        if: matrix.lang == 'lisp'
+        env:
+          LISP: sbcl-bin
+        run: ./.github/lisp.sh
+      - name: Install racket
+        if: matrix.lang == 'racket'
+        run: ./.github/racket.sh
+      - name: Install fortran
+        if: matrix.lang == 'fortran'
+        run: ./.github/fortran.sh
+      - name: Install loom
+        if: matrix.lang == 'java' || matrix.lang == 'kotlin'
+        run: ./.github/loom.sh
+      - name: Install graalvm native-image
+        if: matrix.lang == 'java'
+        run: ./.github/graalvm-native-image.sh
+      - name: Install graalnode
+        if: matrix.lang == 'javascript'
+        run: ./.github/graalvm-node.sh
+      - name: Install zig
+        if: matrix.lang == 'zig' || matrix.lang == 'c' || matrix.lang == 'cpp'
+        run: ./.github/zig.sh
+      - name: Install crystal
+        if: matrix.lang == 'crystal'
+        run: ./.github/crystal.sh
+      - uses: shogo82148/actions-setup-perl@v1
+        if: matrix.lang == 'perl'
+        with:
+          perl-version: "5"
+          multi-thread: true
+      - name: Install python
+        if: matrix.lang == 'python'
+        run: ./.github/python.sh
+      - name: Install ruby
+        if: matrix.lang == 'ruby'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install truffleruby
+        if: matrix.lang == 'ruby'
+        run: ./.github/truffleruby.sh
+      # - name: Install dart
+      #   if: matrix.lang == 'dart'
+      #   run: sudo ./.github/dart.sh
+      - name: Install v
+        if: matrix.lang == 'v'
+        run: ./.github/v.sh
+      - name: Install deno
+        if: matrix.lang == 'typescript' || matrix.lang == 'wasm'
+        run: ./.github/deno.sh
+      - name: Install wasm
+        if: matrix.lang == 'wasm'
+        run: ./.github/wasm.sh
+      - name: Build
+        run: |
+          source $PROFILE
+          pushd bench
+          dotnet run -c Release -p tool -- --task build --langs ${{ matrix.lang }} 
+          popd
+      - name: Test
+        run: |
+          source $PROFILE
+          pushd bench
+          dotnet run -c Release -p tool -- --task test --langs ${{ matrix.lang }} 
+          popd
+      - name: Bench
+        run: |
+          source $PROFILE
+          pushd bench
+          dotnet run -c Release -p tool -- --task bench --langs ${{ matrix.lang }} 
+          popd
