@@ -3,6 +3,9 @@ using System.Numerics;
 
 class DigitsOfE
 {
+    private static readonly double LogOfTau = Math.Log(Math.Tau);
+    private static readonly double LogOfTen = Math.Log(10);
+
     public static void Main(string[] args)
     {
         int n;
@@ -45,7 +48,7 @@ class DigitsOfE
     {
         if (b == a + 1)
         {
-            return (new BigInteger(1), new BigInteger(b));
+            return (BigInteger.One, new BigInteger(b));
         }
         var mid = (a + b) / 2;
         var (pLeft, qLeft) = SumTerms(a, mid);
@@ -79,12 +82,12 @@ class DigitsOfE
 
     static bool TestK(int n, int k)
     {
-        if (k < 0)
+        if (k <= 0)
         {
             return false;
         }
-        var lnKFactorial = k * (Math.Log((double)k) - 1) + 0.5 * Math.Log(Math.PI * 2);
-        var log10KFactorial = lnKFactorial / Math.Log(10);
+        var lnKFactorial = k * (Math.Log((double)k) - 1) + 0.5 * LogOfTau;
+        var log10KFactorial = lnKFactorial / LogOfTen;
         return log10KFactorial >= (double)(n + 50);
     }
 }
