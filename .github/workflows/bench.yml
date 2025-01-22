@@ -355,4 +355,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         env:
           VERCEL_PUBLISH_TOKEN: ${{ secrets.VERCEL_PUBLISH_TOKEN }}
-        run: vercel website --prod --yes -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'
+        run: |
+          npm i -g vercel
+          vercel --version
+          vercel website --prod --yes -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'
