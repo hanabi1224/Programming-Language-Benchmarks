@@ -21,11 +21,6 @@ repositories {
     gradlePluginPortal()
 }
 
-application {
-    // Define the main class for the application.
-    mainClassName = "MainKt"
-}
-
 dependencies {
     // implementation(kotlin("stdlib"))
     // implementation("org.slf4j:slf4j-api:1.7.36")
