@@ -69,7 +69,7 @@ jobs:
       - run: dotnet --info
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.x"
+          dotnet-version: "9.x"
       - name: Install
         run: |
           echo '# placeholder' > $PROFILE
@@ -256,7 +256,7 @@ jobs:
       - run: lscpu
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "8.x"
+          dotnet-version: "9.x"
       - name: Install
         run: |
           dotnet --info
@@ -334,7 +334,7 @@ jobs:
           node-version: 18.x
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
       - uses: actions/download-artifact@v3
         with:
           # Artifact name
@@ -349,8 +349,15 @@ jobs:
           pushd website
           pnpm i
           pnpm content
+          pnpm build
+          pnpm archive-dist
+        env:
+          GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
       - name: Site Publish
         if: github.ref == 'refs/heads/main'
         env:
           VERCEL_PUBLISH_TOKEN: ${{ secrets.VERCEL_PUBLISH_TOKEN }}
-        run: vercel website --prod --confirm -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'
+        run: |
+          npm i -g vercel
+          vercel --version
+          vercel website --prod --yes -t $VERCEL_PUBLISH_TOKEN || echo 'ignore errors'

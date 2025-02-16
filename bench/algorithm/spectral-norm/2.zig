@@ -6,12 +6,12 @@ fn vec1to4(f: f64) vec4 {
 }
 
 fn baseIdx(i: vec4) vec4 {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     return i * (i + vec1to4(1)) * vec1to4(0.5) + vec1to4(1);
 }
 
 fn multAvGeneric(comptime transpose: bool, dst: []vec4, src: []const vec4) void {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     const srcVals = std.mem.bytesAsSlice(f64, std.mem.sliceAsBytes(src));
     var ti = if (transpose) vec4{ 1, 2, 3, 4 } else vec4{ 0, 1, 2, 3 };
     for (dst) |*res| {
@@ -41,7 +41,7 @@ fn multAtAv(dest: []vec4, src: []const vec4, temp: []vec4) void {
 }
 
 fn aggregateResults(u: []const vec4, v: []const vec4) f64 {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     var vbv = vec1to4(0);
     var vv = vec1to4(0);
     for (v, 0..) |f, i| {

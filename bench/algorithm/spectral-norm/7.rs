@@ -11,8 +11,6 @@
 // removed parallelization
 
 #[macro_use]
-extern crate generic_array;
-#[macro_use]
 extern crate numeric_array;
 
 use generic_array::typenum::consts::U4;
@@ -76,7 +74,7 @@ where
         let ix4 = I32x4::splat(4 * i + k);
 
         // column indices of A (equivarent to indices of v)
-        let mut jx4 = narr![i32; 0, 1, 2, 3];
+        let mut jx4 = narr![0, 1, 2, 3];
         let mut sum = F64x4::default();
 
         // Each slot in the pair gets its own sum, which is further computed in
@@ -98,7 +96,12 @@ fn inv_a(i: I32x4, j: I32x4) -> F64x4 {
     let one = nconstant!(1);
     let two = nconstant!(2);
     let a_ij = (i + j) * (i + j + one) / two + i + one;
-    narr![f64; a_ij[0] as f64, a_ij[1] as f64, a_ij[2] as f64, a_ij[3] as f64]
+    narr![
+        a_ij[0] as f64,
+        a_ij[1] as f64,
+        a_ij[2] as f64,
+        a_ij[3] as f64
+    ]
 }
 
 /// Vectorised form of inner product
