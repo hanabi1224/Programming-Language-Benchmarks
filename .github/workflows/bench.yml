@@ -227,7 +227,7 @@ jobs:
           pushd bench
           dotnet run -c Release --project tool -- --task test --langs ${{ matrix.lang }} 
           popd
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: github.ref == 'refs/heads/main'
         with:
           name: build
@@ -313,7 +313,7 @@ jobs:
           dotnet run -c Release --project tool -- --task test --ignore-missing
           dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: log
           path: bench/build/_results/**/*
