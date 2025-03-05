@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -63,14 +64,13 @@ static class Program
     private static async Task<int> SendAsync(string api, int value)
     {
         // await Task.Yield();
-        var payload = JsonSerializer.Serialize(new Payload { Value = value });
+        var payload = new Payload { Value = value };
         while (true)
         {
             try
             {
-                var content = new StringContent(payload, Encoding.UTF8);
-                var response = await s_client.PostAsync(api, content).ConfigureAwait(false);
-                return int.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                var response = await s_client.PostAsJsonAsync(api, payload).ConfigureAwait(false);
+                return int.Parse(await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
             }
             catch { }
         }
@@ -102,11 +102,8 @@ static class Program
 public sealed class MyController : Controller
 {
     [Route("/")]
-    public async Task<int> PostAsync()
+    public int Post([FromBody] Payload payload)
     {
-        using var sr = new StreamReader(Request.Body);
-        var bodyText = await sr.ReadToEndAsync().ConfigureAwait(false);
-        var payload = JsonSerializer.Deserialize<Payload>(bodyText);
         return payload.Value;
     }
 }
