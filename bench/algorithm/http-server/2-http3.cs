@@ -89,7 +89,7 @@ static class Program
             try
             {
                 var response = await s_client.PostAsJsonAsync(api, payload).ConfigureAwait(false);
-                return int.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                return int.Parse(await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
             }
             catch (Exception e)
             {
