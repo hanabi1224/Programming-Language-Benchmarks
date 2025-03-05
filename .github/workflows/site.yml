@@ -22,11 +22,12 @@ jobs:
           node-version: 18.x
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
-      - run: pnpm --version
+          version: 9
+      - run: npm i -g vercel
       - run: vercel --version
       - name: Build
         run: |
           cd website
           pnpm i
           pnpm build
+          pnpm archive-dist

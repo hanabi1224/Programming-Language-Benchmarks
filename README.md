@@ -19,12 +19,12 @@ _Once a change is merged into main branch, the CI job will re-generate and publi
 
 ## Main Goals
 
-- Compare performance differences between different languages. Note that implementations might be using different optimizations, e.g. with or w/o multithreading, please do read the source code to check if it's a fair comparision or not.
+- Compare performance differences between different languages. Note that implementations might be using different optimizations, e.g. with or w/o multithreading, please do read the source code to check if it's a fair comparison or not.
 - Compare performance differences between different compilers or runtimes of the same language with the same source code.
 - Facilitate benchmarking on real server environments as nowadays more and more applications are deployed with docker/k8s. It's likely to get a very different result from what you get on your dev machine.
 - A reference for CI setup / Dev environment setup / package management setup for different languages. Refer to [Github action](https://github.com/hanabi1224/Programming-Language-Benchmarks/blob/main/.github/workflows/bench.yml)
 - It focuses more on new programming languages, classic
-  programming languages that are covered by [CLBG](https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html) receive limited or no maintainence, based on their popularity.
+  programming languages that are covered by [CLBG](https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html) receive limited or no maintenance, based on their popularity.
 
 # [Website](https://programming-language-benchmarks.vercel.app/)
 
@@ -67,7 +67,7 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 ## Build
 
-_The 1st step is to build source code from various of lanuages_
+_The 1st step is to build source code from various of languages_
 
 ```bash
 cd bench
@@ -123,16 +123,16 @@ Options:
   --force-rebuild                A flag that indicates whether to force rebuild [default: False]
   --fail-fast                    A Flag that indicates whether to fail fast when error occurs [default: False]
   --build-pool                   A flag that indicates whether builds that can run in parallel [default: False]
-  --verbose                      A Flag that indicates whether to print verbose infomation [default: False]
+  --verbose                      A Flag that indicates whether to print verbose information [default: False]
   --no-docker                    A Flag that forces disabling docker [default: False]
-  --langs <langs>                Languages to incldue, e.g. --langs go csharp [default: ]
-  --problems <problems>          Problems to incldue, e.g. --problems binarytrees nbody [default: ]
-  --environments <environments>  OS environments to incldue, e.g. --environments linux windows [default: ]
+  --langs <langs>                Languages to include, e.g. --langs go csharp [default: ]
+  --problems <problems>          Problems to include, e.g. --problems binarytrees nbody [default: ]
+  --environments <environments>  OS environments to include, e.g. --environments linux windows [default: ]
   --version                      Show version information
   -?, -h, --help                 Show help and usage information
 ```
 
-## Referesh website
+## Refresh website
 
 _Lastly you can re-generate website with latest benchmark numbers_
 
@@ -146,9 +146,9 @@ serve dist
 
 # TODOs
 
-Intergrate test environment info into website
+Integrate test environment info into website
 
-Intergrate build / test / benchmark infomation into website
+Integrate build / test / benchmark information into website
 
 ...
 

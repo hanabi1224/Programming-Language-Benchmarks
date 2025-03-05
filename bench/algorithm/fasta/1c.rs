@@ -5,8 +5,6 @@
 // contributed by TeXitoi
 // add compile-time calculation by hanabi1224
 
-#![feature(const_fn_floating_point_arithmetic)]
-
 use std::cmp::min;
 use std::io::{self, BufWriter, Write};
 

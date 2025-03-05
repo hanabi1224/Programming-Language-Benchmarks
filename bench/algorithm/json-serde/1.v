@@ -19,12 +19,12 @@ fn main() {
 }
 
 struct GeoData {
-	t        string    [json: 'type']
+	t        string @[json: 'type']
 	features []Feature
 }
 
 struct Feature {
-	t          string     [json: 'type']
+	t          string @[json: 'type']
 	properties Properties
 	geometry   Geometry
 }
@@ -34,6 +34,6 @@ struct Properties {
 }
 
 struct Geometry {
-	t           string    [json: 'type']
+	t           string @[json: 'type']
 	coordinates [][][]f64
 }
