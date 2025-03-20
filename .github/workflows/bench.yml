@@ -227,10 +227,10 @@ jobs:
           pushd bench
           dotnet run -c Release --project tool -- --task test --langs ${{ matrix.lang }} 
           popd
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: github.ref == 'refs/heads/main'
         with:
-          name: build
+          name: build-${{ matrix.lang }}
           path: bench/build/**/*
           if-no-files-found: error
   gate:
@@ -302,9 +302,10 @@ jobs:
         with:
           ruby-version: 3 # Not needed with a .ruby-version file
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: build
+          pattern: build-*
+          merge-multiple: true
           path: bench/build/
       - name: Bench
         run: |
@@ -313,7 +314,7 @@ jobs:
           dotnet run -c Release --project tool -- --task test --ignore-missing
           dotnet run -c Release --project tool -- --task bench --ignore-missing
           popd
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: log
           path: bench/build/_results/**/*
@@ -333,7 +334,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 9
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           # Artifact name
           name: log
