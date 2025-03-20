@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 static class Program
@@ -34,13 +38,22 @@ static class Program
 
         var port = 30000 + new Random().Next(10000);
         var app = CreateWebApplication(port);
-        app.MapPost("/", async ctx =>
+        app.MapPost("/", async(HttpResponse response, [FromBody] Payload payload) =>
         {
-            using var sr = new StreamReader(ctx.Request.Body);
-            var bodyText = await sr.ReadToEndAsync().ConfigureAwait(false);
-            var payload = JsonSerializer.Deserialize<Payload>(bodyText);
-            ctx.Response.StatusCode = 200;
-            await ctx.Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes(payload.Value.ToString())).ConfigureAwait(false);
+
+            if (payload.Value.TryFormat(response.BodyWriter.GetSpan(16), out n))
+            {
+                response.StatusCode = StatusCodes.Status200OK;
+
+                response.BodyWriter.Advance(n);
+                await response.BodyWriter.FlushAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                throw new UnreachableException();
+            }
+
+
         });
 
         using var serverTask = app.RunAsync();
@@ -63,14 +76,13 @@ static class Program
     private static async Task<int> SendAsync(string api, int value)
     {
         // await Task.Yield();
-        var payload = JsonSerializer.Serialize(new Payload { Value = value });
+        var payload = new Payload { Value = value };
         while (true)
         {
             try
             {
-                var content = new StringContent(payload, Encoding.UTF8);
-                var response = await s_client.PostAsync(api, content).ConfigureAwait(false);
-                return int.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                var response = await s_client.PostAsJsonAsync(api, payload).ConfigureAwait(false);
+                return int.Parse(await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
             }
             catch { }
         }
