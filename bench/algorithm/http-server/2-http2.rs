@@ -19,8 +19,8 @@ fn main() -> anyhow::Result<()> {
         .and_then(|s| s.into_string().ok())
         .and_then(|s| s.parse().ok())
         .unwrap_or(10);
-    let mut rng = thread_rng();
-    let port = rng.gen_range(30000..40000);
+    let mut rng = rand::rng();
+    let port = rng.random_range(30000..40000);
     tokio_main(n, port)?;
     std::process::exit(0);
 }
