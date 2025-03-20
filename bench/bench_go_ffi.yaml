@@ -12,7 +12,7 @@ environments:
   - os: linux
     compiler: go
     version: latest
-    docker: golang:1.23
+    docker: golang:1.24
     env:
       GOAMD64: v3 # https://github.com/golang/go/wiki/MinimumRequirements#amd64
     include: go
