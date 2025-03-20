@@ -28,7 +28,7 @@ problems:
       - 2.nim
   - name: http-server
     source:
-      - 1.nim
+      # - 1.nim
   - name: coro-prime-sieve
     source:
       - 1.nim
