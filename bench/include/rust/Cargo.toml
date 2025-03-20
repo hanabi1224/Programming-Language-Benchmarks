@@ -3,6 +3,9 @@ edition = "2021"
 name = "_app"
 version = "0.1.0"
 
+[workspace]
+resolver = "3"
+
 [features]
 default = [
   "async-std",
@@ -42,8 +45,8 @@ rayon = "1"
 regex = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["float_roundtrip", "preserve_order"] }
-simd-json = "0.14"
-sonic-rs = "0.3"
+simd-json = "0.15"
+sonic-rs = "0.4"
 static-rc = "0"
 
 async-channel = { version = "2", optional = true }
