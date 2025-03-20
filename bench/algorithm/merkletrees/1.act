@@ -1,0 +1,76 @@
+
+class Node(object):
+    hash: ?int
+    def __init__(self, value: ?int, left: ?Node, right: ?Node):
+        self.value = value
+        self.left = left
+        self.right = right
+        self.hash = None
+
+    def check(self) -> bool:
+        h = self.hash
+        v = self.value
+        l = self.left
+        r = self.right
+        if h != None:
+            if v != None:
+                return True
+            elif l is not None and r is not None:
+                return l.check() and r.check()
+        return False
+
+    def calc_hash(self):
+        h = self.hash
+        v = self.value
+        if h is None:
+            l = self.left
+            r = self.right
+            if v is not None:
+                self.hash = self.value
+            elif l is not None and r is not None:
+                l.calc_hash()
+                r.calc_hash()
+                self.hash = l.get_hash() + r.get_hash()
+
+    def get_hash(self) -> int:
+        h = self.hash
+        if h is not None:
+            return h
+        else:
+            return -1
+
+def make(depth):
+    if depth == 0:
+        return Node(1, None, None)
+    else:
+        depth -= 1
+        return Node(None, make(depth), make(depth))
+
+def mtree(n):
+    min_depth=4
+    max_depth = max([min_depth + 2, n], 0)
+    stretch_depth = max_depth + 1
+    stretch_tree = make(stretch_depth)
+    stretch_tree.calc_hash()
+
+    print("stretch tree of depth %d\t root hash: %d check: %s" % (stretch_depth, stretch_tree.get_hash(), str(stretch_tree.check()).lower()))
+
+    long_lived_tree = make(max_depth)
+
+    mmd = max_depth + min_depth
+    for d in range(min_depth, stretch_depth, 2):
+        iterations = 2 ** (mmd - d)
+        sum = 0
+        for _ in range(0, iterations, 1):
+            tree = make(d)
+            tree.calc_hash()
+            sum += tree.get_hash()
+        print("%d\t trees of depth %d\t root hash sum: %d" % (iterations, d, sum))
+
+    long_lived_tree.calc_hash()
+    print("long lived tree of depth %d\t root hash: %d check: %s" % (max_depth, long_lived_tree.get_hash(), str(long_lived_tree.check()).lower()))
+
+actor main(env):
+    n = int(env.argv[1]) if len(env.argv) > 1 else 6
+    mtree(n)
+    env.exit(0)

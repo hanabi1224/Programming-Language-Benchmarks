@@ -32,7 +32,7 @@ const Body = struct {
 };
 
 fn offset_momentum(bodies: []Body) void {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     var pos = vec3{ 0, 0, 0 };
     for (bodies) |b| pos += scale(b.vel, b.mass);
     var sun = &bodies[0];
@@ -40,7 +40,7 @@ fn offset_momentum(bodies: []Body) void {
 }
 
 fn advance(bodies: []Body, dt: f64) void {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     for (bodies[0..], 0..) |*bi, i| {
         var vel = bi.vel;
         const mi = bi.mass;
@@ -60,7 +60,7 @@ fn advance(bodies: []Body, dt: f64) void {
 }
 
 fn energy(bodies: []const Body) f64 {
-    @setFloatMode(.Optimized);
+    @setFloatMode(.optimized);
     var e: f64 = 0.0;
     for (bodies, 0..) |bi, i| {
         e += 0.5 * length_sq(bi.vel) * bi.mass;

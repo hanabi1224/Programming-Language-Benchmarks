@@ -30,6 +30,7 @@ problems:
   - name: spectral-norm
     source:
       - 1.dart
+      - 2.dart
   - name: json-serde
     source:
       - 1.dart
