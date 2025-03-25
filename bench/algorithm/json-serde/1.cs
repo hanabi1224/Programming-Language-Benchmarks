@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 static class Program
 {
@@ -18,14 +19,16 @@ static class Program
         }
 
         var jsonStr = await File.ReadAllTextAsync($"{fileName}.json").ConfigureAwait(false);
-        var data = JsonConvert.DeserializeObject(jsonStr);
-        PrintHash(JsonConvert.SerializeObject(data));
+        var jti = JsonTypeInfo.CreateJsonTypeInfo<Object>(JsonSerializerOptions.Default);
+        var data = JsonSerializer.Deserialize(jsonStr, jti);
+        
+        PrintHash(JsonSerializer.Serialize(data));
         var list = new List<object>(n);
         for (var i = 0; i < n; i++)
         {
-            list.Add(JsonConvert.DeserializeObject(jsonStr));
+            list.Add(JsonSerializer.Deserialize(jsonStr, jti));
         }
-        PrintHash(JsonConvert.SerializeObject(list));
+        PrintHash(JsonSerializer.Serialize(list));
     }
 
     private static void PrintHash(string s)
