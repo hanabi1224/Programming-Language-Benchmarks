@@ -85,7 +85,13 @@ pub fn readInput() ![]const u8 {
     return buf;
 }
 
-const Map = std.AutoHashMapUnmanaged(Code, u32);
+const CodeContext = struct {
+    pub fn eql(_: CodeContext, a: Code, b: Code) bool { return a.data == b.data; }
+    pub fn hash(_: CodeContext, c: Code) u64 { return c.data ^ (c.data >> 7); }
+};
+
+const Map = std.HashMapUnmanaged(Code, u32, CodeContext, 45);
+
 const Iter = struct {
     i: usize = 0,
     input: []const u8,
@@ -102,6 +108,7 @@ const Iter = struct {
             .mask = mask,
         };
     }
+
     pub fn next(self: *Iter) ?Code {
         if (self.i >= self.input.len) return null;
         defer self.i += 1;
@@ -112,7 +119,7 @@ const Iter = struct {
 };
 
 fn genMap(seq: []const u8, n: usize, map: *Map) !void {
-    map.clearRetainingCapacity();
+    map.clearAndFree(global_allocator);
     var iter = Iter.init(seq, n);
     while (iter.next()) |code| {
         const gop = try map.getOrPut(global_allocator, code);
@@ -161,11 +168,11 @@ fn printOcc(s: []const u8, map: *Map) !void {
 
 pub fn main() !void {
     const occs = [_][]const u8{
-        "GGTATTTTAATTTATAGT",
-        "GGTATTTTAATT",
-        "GGTATT",
-        "GGTA",
         "GGT",
+        "GGTA",
+        "GGTATT",
+        "GGTATTTTAATT",
+        "GGTATTTTAATTTATAGT",
     };
     const input = try readInput();
     var map: Map = .{};
@@ -174,11 +181,8 @@ pub fn main() !void {
     try genMap(input, 2, &map);
     try printMap(2, map);
 
-    var i = occs.len - 1;
-    while (true) : (i -= 1) {
-        const occ = occs[i];
+    for (occs) |occ| {
         try genMap(input, occ.len, &map);
         try printOcc(occ, &map);
-        if (i == 0) break;
     }
 }
