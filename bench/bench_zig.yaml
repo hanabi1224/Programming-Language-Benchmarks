@@ -13,6 +13,7 @@ problems:
     source:
       - 1.zig
       - 2.zig
+      - 3.zig
   - name: spectral-norm
     source:
       - 1.zig
