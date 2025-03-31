@@ -32,6 +32,7 @@ problems:
       - 1c.rs
       - 5-m.rs
       - 5c-m.rs
+      - 6.rs
   - name: knucleotide
     source:
       - 8.rs
