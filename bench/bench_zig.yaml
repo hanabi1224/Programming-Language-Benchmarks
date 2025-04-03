@@ -53,6 +53,7 @@ problems:
   - name: knucleotide
     source:
       - 1.zig
+      - 1-m.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:
