@@ -83,17 +83,7 @@ public class MandelBrot
             }
             using var hasher = MD5.Create();
             var hash = hasher.ComputeHash(data);
-            Console.WriteLine(ToHexString(hash));
+            Console.WriteLine(Convert.ToHexStringLower(hash));
         }
-    }
-
-    static string ToHexString(byte[] ba)
-    {
-        StringBuilder hex = new StringBuilder(ba.Length * 2);
-        foreach (byte b in ba)
-        {
-            hex.AppendFormat("{0:x2}", b);
-        }
-        return hex.ToString();
     }
 }
