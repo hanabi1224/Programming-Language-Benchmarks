@@ -1,5 +1,10 @@
 using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
+
+// change-log:
+// 2022-10-22: Don't rely on BigInteger, it's slow as dirt (@jjxtra)
 
 static class Program
 {
@@ -7,59 +12,82 @@ static class Program
     {
         var digitsToPrint = args.Length > 0 ? int.Parse(args[0]) : 27;
         var digitsPrinted = 0;
-
-        var k = new BigInteger(1);
-        var n1 = new BigInteger(4);
-        var n2 = new BigInteger(3);
-        var d = new BigInteger(1);
-
-        BigInteger u, v, w;
-
-        while (true)
+        var piEnum = EnumeratePi((uint)digitsToPrint);
+        while (piEnum.MoveNext())
         {
-            u = n1 / d;
-            v = n2 / d;
-
-            if (u == v)
+            var u = piEnum.Current;
+            Console.Write(u);
+            digitsPrinted += 1;
+            var digitsPrintedModTen = digitsPrinted % 10;
+            if (digitsPrintedModTen == 0)
             {
-                Console.Write(u);
-                digitsPrinted += 1;
-                var digitsPrintedModTen = digitsPrinted % 10;
-                if (digitsPrintedModTen == 0)
+                Console.WriteLine($"\t:{digitsPrinted}");
+            }
+
+            if (digitsPrinted >= digitsToPrint)
+            {
+                if (digitsPrintedModTen > 0)
                 {
+                    for (var i = 0; i < 10 - digitsPrintedModTen; i++)
+                    {
+                        Console.Write(' ');
+                    }
                     Console.WriteLine($"\t:{digitsPrinted}");
                 }
 
-                if (digitsPrinted >= digitsToPrint)
-                {
-                    if (digitsPrintedModTen > 0)
-                    {
-                        for (var i = 0; i < 10 - digitsPrintedModTen; i++)
-                        {
-                            Console.Write(' ');
-                        }
-                        Console.WriteLine($"\t:{digitsPrinted}");
-                    }
-
-                    return;
-                }
-
-                var toMinus = u * 10 * d;
-                n1 = n1 * 10 - toMinus;
-                n2 = n2 * 10 - toMinus;
+                return;
             }
-            else
+        }
+    }
+
+	// note that this enumerator will introduce some overhead but it is good enough without making the code too messy to read
+    private static IEnumerator<uint> EnumeratePi(uint n)
+    {
+        uint LEN = (n / 4 + 1) * 14;
+        uint[] a = new uint[LEN];      //array of 4-digit-decimals
+        uint b;                        //nominator prev. base
+        uint c = LEN;                  //index
+        uint d = 0;                    //accumulator and carry
+        uint e = 0;                    //save previous 4 digits
+        uint f = 10000;                //new base, 4 decimal digits
+        uint g;                        //denom previous base
+        uint h;
+        uint hCopy;
+
+        // initialize state
+        for (var idx = 0; idx < a.Length; idx++)
+        {
+            a[idx] = 2000;
+        }
+
+        //outer loop: 4 digits per loop
+        for (; (b = c -= 14) != 0;)
+        {
+            //inner loop: radix conv
+            for (; --b > 0;)
             {
-                var k2 = k * 2;
-                u = n1 * (k2 - 1);
-                v = n2 * 2;
-                w = n1 * (k - 1);
-                n1 = u + v;
-                u = n2 * (k + 2);
-                n2 = w + u;
-                d = d * (k2 + 1);
-                k = k + 1;
+                d *= b; // acc *= nom prev base
+                d += a[b] * f;
+                g = b + b - 1; // denom prev base
+                a[b] = d % g;
+                d /= g; // save carry
             }
+
+            h = e + d / f;
+
+            // return 0's as if h was a string and padded left with 0's to 4 digits
+            hCopy = h;
+            hCopy /= 1000;
+            yield return hCopy;
+            hCopy = h;
+            hCopy /= 100;
+            yield return hCopy % 10;
+            hCopy = h;
+            hCopy /= 10;
+            yield return hCopy % 10;
+            yield return h % 10;
+
+            d = e = d % f; // save currently 4 digits, assure a small enough d
         }
     }
 }
