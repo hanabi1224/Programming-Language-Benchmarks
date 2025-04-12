@@ -71,7 +71,7 @@ void main(string[] args) {
     immutable uint n = args.length > 1 ? args[1].to!uint : 100;
     
     static immutable(ubyte[72*3 + 71]) homoSapiensAlu = cast(immutable(ubyte[287]))"GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
-    write(">ONE Homo sapiens alu\n");
+    writeln(">ONE Homo sapiens alu");
     repeatAndWrap(homoSapiensAlu, 2 * n);
 
     static immutable AminoAcid[15] iubNucleotideInfo = [
@@ -91,7 +91,7 @@ void main(string[] args) {
         { l:'W', p: 0.02 },
         { l:'Y', p: 0.02 },
     ];
-    write(">TWO IUB ambiguity codes\n");
+    writeln(">TWO IUB ambiguity codes");
     generateAndWrap(iubNucleotideInfo, 3 * n);
 
     static immutable AminoAcid[4] homoSapienNucleotideInfo = [
@@ -100,6 +100,6 @@ void main(string[] args) {
         { l:'g', p: 0.1975473066391 },
         { l:'t', p: 0.3015094502008 },
     ];
-    write(">THREE Homo sapiens frequency\n");
+    writeln(">THREE Homo sapiens frequency");
     generateAndWrap(homoSapienNucleotideInfo, 5 * n);
 }
