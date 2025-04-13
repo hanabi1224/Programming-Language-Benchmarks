@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
-  val kotlinVersion = "1.8.21"
+  val kotlinVersion = "2.1.20"
   kotlin("multiplatform").version(kotlinVersion)
   kotlin("plugin.serialization").version(kotlinVersion)
   id("com.github.ben-manes.versions").version("0.46.0")
@@ -24,8 +24,8 @@ kotlin {
         implementation(libs.bignum)
         implementation(libs.kbignum)
         // implementation("com.ionspin.kotlin:bignum:0.3.1")
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
       }
     }
   }
