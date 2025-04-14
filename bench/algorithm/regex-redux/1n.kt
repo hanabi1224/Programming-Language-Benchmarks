@@ -37,6 +37,7 @@ fun main(args: Array<String>) {
     println("\n$ilen\n$clen\n${content.length}")
 }
 
+@OptIn(ExperimentalForeignApi::class)
 fun readAllText(filePath: String): String {
     val returnBuffer = StringBuilder()
     val file = fopen(filePath, "r")?: 
