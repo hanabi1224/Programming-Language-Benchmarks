@@ -1,7 +1,4 @@
-// translation from zig version. From https://github.com/cyrusmsk/lang_benchmark
-
 import std;
-import std.outbuffer: OutBuffer;
 
 immutable maxLine = 60;
 immutable im = 139_968;
@@ -11,29 +8,28 @@ immutable ic = 29_573;
 uint seed = 42;
 
 static struct AminoAcid {
-    char l;
+    ubyte l;
     double p;
 }
 
 double nextRandom(double max) {
     seed = (seed * ia + ic) % im;
-    return max * seed/im;
+    return max * seed / im;
 }
 
-void repeatAndWrap (OutBuffer b, immutable char[] seq, size_t count) {
+void repeatAndWrap (immutable ubyte[] seq, size_t count) {
     uint len = cast(uint) seq.length;
-    char[] paddedSeq = new char[](len + maxLine);
+    ubyte[] paddedSeq = new ubyte[](len + maxLine);
     foreach (i, ref e; paddedSeq)
         e = seq[i % len];
 
     size_t off, idx;
+    size_t rem, lineLength;
     while (idx < count) {
-        immutable rem = count - idx;
-        immutable size_t lineLength = min(maxLine, rem);
+        rem = count - idx;
+        lineLength = min(maxLine, rem);
 
-        // speed up the writeln with lockWriter
-        b.write(paddedSeq[off .. off + lineLength]);
-        b.write("\n");
+        writeln(cast(string)paddedSeq[off .. off + lineLength]);
         
         off += lineLength;
         if (off > len)
@@ -42,7 +38,7 @@ void repeatAndWrap (OutBuffer b, immutable char[] seq, size_t count) {
     }
 }
 
-void generateAndWrap (OutBuffer b, immutable AminoAcid[] nucleotides, size_t count) {
+void generateAndWrap (immutable AminoAcid[] nucleotides, size_t count) {
     double cumProb = 0.0;
     double[] cumProbTotal = new double[](nucleotides.length);
     foreach(i, e; nucleotides) {
@@ -50,12 +46,12 @@ void generateAndWrap (OutBuffer b, immutable AminoAcid[] nucleotides, size_t cou
         cumProbTotal[i] = cumProb * im;
     }
 
-    char[] line = new char[](maxLine+1);
-    line[maxLine] = '\n';
-    size_t idx;
+    ubyte[maxLine+1] line; // was new before
+    line[maxLine] = cast(ubyte)'\n';
+    size_t idx, rem, lineLength;
     while (idx < count) {
-        immutable rem = count - idx;
-        immutable size_t lineLength = min(maxLine, rem);
+        rem = count - idx;
+        lineLength = min(maxLine, rem);
         foreach (ref col; line[0 .. lineLength]) {
             immutable r = nextRandom(im);
             size_t c;
@@ -65,7 +61,7 @@ void generateAndWrap (OutBuffer b, immutable AminoAcid[] nucleotides, size_t cou
             col = nucleotides[c].l;
         }
         line[lineLength] = '\n';
-        b.write(line[0 .. lineLength + 1]);
+        write(cast(string)line[0 .. lineLength + 1]);
 
         idx += lineLength;
     }
@@ -73,13 +69,10 @@ void generateAndWrap (OutBuffer b, immutable AminoAcid[] nucleotides, size_t cou
 
 void main(string[] args) {
     immutable uint n = args.length > 1 ? args[1].to!uint : 100;
-    OutBuffer b = new OutBuffer();
     
-    static immutable char[72*3 + 71] homoSapiensAlu = "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
-    write(">ONE Homo sapiens alu\n");
-    repeatAndWrap(b, homoSapiensAlu, 2 * n);
-    write(b);
-    b.clear();
+    static immutable(ubyte[72*3 + 71]) homoSapiensAlu = cast(immutable(ubyte[287]))"GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
+    writeln(">ONE Homo sapiens alu");
+    repeatAndWrap(homoSapiensAlu, 2 * n);
 
     static immutable AminoAcid[15] iubNucleotideInfo = [
         { l:'a', p: 0.27 },
@@ -98,10 +91,8 @@ void main(string[] args) {
         { l:'W', p: 0.02 },
         { l:'Y', p: 0.02 },
     ];
-    write(">TWO IUB ambiguity codes\n");
-    generateAndWrap(b, iubNucleotideInfo, 3 * n);
-    write(b);
-    b.clear();
+    writeln(">TWO IUB ambiguity codes");
+    generateAndWrap(iubNucleotideInfo, 3 * n);
 
     static immutable AminoAcid[4] homoSapienNucleotideInfo = [
         { l:'a', p: 0.3029549426680 },
@@ -109,7 +100,6 @@ void main(string[] args) {
         { l:'g', p: 0.1975473066391 },
         { l:'t', p: 0.3015094502008 },
     ];
-    write(">THREE Homo sapiens frequency\n");
-    generateAndWrap(b, homoSapienNucleotideInfo, 5 * n);
-    write(b);
+    writeln(">THREE Homo sapiens frequency");
+    generateAndWrap(homoSapienNucleotideInfo, 5 * n);
 }
