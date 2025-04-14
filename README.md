@@ -65,6 +65,8 @@ _Current benchmarks problems and their implementations are from [The Computer La
 
 [podman](https://podman.io/getting-started/installation) (or [docker](https://www.docker.com/) by changing `docker_cmd: podman` to `docker_cmd: docker` in `bench/bench.yaml`)
 
+unzip
+
 ## Build
 
 _The 1st step is to build source code from various of languages_
