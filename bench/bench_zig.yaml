@@ -13,6 +13,7 @@ problems:
     source:
       - 1.zig
       - 2.zig
+      - 3.zig
   - name: spectral-norm
     source:
       - 1.zig
@@ -52,6 +53,7 @@ problems:
   - name: knucleotide
     source:
       - 1.zig
+      - 1-m.zig
 compiler_version_command: zig version
 compiler_version_regex:
 runtime_version_parameter:
