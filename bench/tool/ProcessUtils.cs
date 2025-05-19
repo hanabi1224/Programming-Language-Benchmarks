@@ -215,12 +215,12 @@ namespace BenchTool
                         long totalMemoryBytes = 0;
                         if (s_isLinux)
                         {
-                            if (procfs.TryReadStatFile(pid, out procfs.ParsedStat stat))
+                            if (ProcFs.TryReadStatFile(pid, out ProcFs.ParsedStat stat))
                             {
                                 m.CpuTimeUser = TicksToTimeSpanLinux(stat.utime + stat.cutime);
                                 m.CpuTimeKernel = TicksToTimeSpanLinux(stat.stime + stat.cstime);
                                 isChildProcessCpuTimeCounted = stat.cutime > 0 || stat.cstime > 0;
-                                if (procfs.TryReadStatusFile(pid, out procfs.ParsedStatus status))
+                                if (ProcFs.TryReadStatusFile(pid, out ProcFs.ParsedStatus status))
                                 {
                                     totalMemoryBytes = (long)status.VmRSS;
                                 }
@@ -276,14 +276,14 @@ namespace BenchTool
                                             m.CpuTimeKernel += cp.PrivilegedProcessorTime;
                                             totalMemoryBytes += cp.WorkingSet64;
                                         }
-                                        else if (procfs.TryReadStatFile(cp.Id, out procfs.ParsedStat cpstat))
+                                        else if (ProcFs.TryReadStatFile(cp.Id, out ProcFs.ParsedStat cpstat))
                                         {
                                             if (!isChildProcessCpuTimeCounted)
                                             {
                                                 m.CpuTimeUser += TicksToTimeSpanLinux(cpstat.utime);
                                                 m.CpuTimeKernel += TicksToTimeSpanLinux(cpstat.stime);
                                             }
-                                            if (procfs.TryReadStatusFile(cp.Id, out procfs.ParsedStatus cpstatus))
+                                            if (ProcFs.TryReadStatusFile(cp.Id, out ProcFs.ParsedStatus cpstatus))
                                             {
                                                 totalMemoryBytes += (long)cpstatus.VmRSS;
                                             }
