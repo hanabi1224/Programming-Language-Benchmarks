@@ -7,16 +7,21 @@ const MIN_DEPTH = 4;
 const global_allocator = std.heap.c_allocator;
 
 pub fn main() !void {
+    var arena = std.heap.ArenaAllocator.init(global_allocator);
+    defer arena.deinit();
+
+    var allocator = arena.allocator();
+
     const stdout = std.io.getStdOut().writer();
     const n = try get_n();
     const max_depth = @max(MIN_DEPTH + 2, n);
     {
         const stretch_depth = max_depth + 1;
-        const stretch_tree = Node.make(stretch_depth, global_allocator).?;
+        const stretch_tree = Node.make(stretch_depth, allocator).?;
         defer stretch_tree.deinit();
         try stdout.print("stretch tree of depth {d}\t check: {d}\n", .{ stretch_depth, stretch_tree.check() });
     }
-    const long_lived_tree = Node.make(max_depth, global_allocator).?;
+    const long_lived_tree = Node.make(max_depth, allocator).?;
     defer long_lived_tree.deinit();
 
     var depth: usize = MIN_DEPTH;
@@ -25,7 +30,7 @@ pub fn main() !void {
         var sum: usize = 0;
         var i: usize = 0;
         while (i < iterations) : (i += 1) {
-            const tree = Node.make(depth, global_allocator).?;
+            const tree = Node.make(depth, allocator).?;
             defer tree.deinit();
             sum += tree.check();
         }
