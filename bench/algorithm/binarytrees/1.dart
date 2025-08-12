@@ -3,11 +3,11 @@ const int minDepth = 4;
 class Node {
   final Node? left;
   final Node? right;
-  Node._(this.left, this.right);
+  const Node._(this.left, this.right);
 
   factory Node.create(int depth) => depth > 0
       ? Node._(Node.create(depth - 1), Node.create(depth - 1))
-      : Node._(null, null);
+      : const Node._(null, null);
 
   int check() {
     var r = 1;
