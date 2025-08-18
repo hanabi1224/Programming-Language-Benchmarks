@@ -43,6 +43,7 @@ problems:
     source:
       # - 1.nim
       - 2.nim
+      - 3.nim
   - name: merkletrees
     source:
       - 1.nim
