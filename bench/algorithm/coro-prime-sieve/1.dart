@@ -1,27 +1,26 @@
+// Based on a version by hanabi1224 and kevmoo
+// Modified by Christian Kleineidam
+
 import 'dart:async';
 
 Future<void> main(List<String> arguments) async {
-  final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 5;
-  var stream = StreamIterator(generate());
-  for (var i = 0; i < n; i++) {
+  final n = arguments.isNotEmpty ? int.parse(arguments[0]) : 20;
+  StreamIterator<int> stream = StreamIterator(generate());
+  for (int i = 0; i < n; i++) {
     await stream.moveNext();
-    final prime = stream.current;
-    print(prime);
-    stream = StreamIterator(filter(stream, prime));
+    print(stream.current);
+    stream = StreamIterator(filter(stream, stream.current));
   }
 }
 
 Stream<int> generate() async* {
-  for (var i = 2;; i++) {
-    yield await Future.microtask(() => i);
-  }
+  for (int i = 2;; i++) {yield i;}
 }
 
 Stream<int> filter(StreamIterator<int> input, int prime) async* {
   while (await input.moveNext()) {
-    final i = input.current;
-    if (i % prime != 0) {
-      yield await Future.microtask(() => i);
+    if (input.current % prime != 0) {
+      yield input.current;
     }
   }
 }
