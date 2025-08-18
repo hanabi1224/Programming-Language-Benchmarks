@@ -66,6 +66,6 @@ environments:
     include_sub_dir: src
     before_build:
       - shards install
-    build: shards build --release --mcpu=broadwell --verbose
+    build: shards build --release --no-debug --mcpu=native --verbose
     out_dir: bin
     run_cmd: app
