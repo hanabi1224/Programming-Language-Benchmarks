@@ -30,10 +30,10 @@ problems:
       - 1.v
   - name: json-serde
     source:
-      # - 1.v
+      - 1.v
   - name: mandelbrot
     source:
-      # - 1.v
+      - 1.v
   - name: nsieve
     source:
       - 1.v
