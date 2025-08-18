@@ -21,6 +21,9 @@ problems:
   - name: knucleotide
     source:
       - 2.swift
+  - name: http-server
+    source:
+      - 1.swift
 compiler_version_command: swift --version
 compiler_version_regex:
 runtime_version_parameter:
