@@ -1,3 +1,6 @@
+// Based on OCaml (1.ml) and Zig implementation.
+// It timeouts on bigger data 
+
 use "collections"
 
 class LCG
