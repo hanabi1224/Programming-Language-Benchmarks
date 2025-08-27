@@ -7,16 +7,16 @@ pub fn build(b: *std.Build) void {
     // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
     // Standard optimization options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
-    // set a preferred release mode, allowing the user to decide how to optimize.
-    // const optimize = b.standardOptimizeOption(.{});
+    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we default
+    // to ReleaseFast for benchmark performance.
+    const optimize = b.standardOptimizeOption(.{ .preferred_optimize_mode = .ReleaseFast });
 
     const exe = b.addExecutable(.{
         .name = "app",
-        .root_source_file = b.path("app.zig"),
-        .target = target,
-        .optimize = std.builtin.Mode.ReleaseFast,
+        .root_module = b.createModule(.{ .root_source_file = b.path("app.zig") }),
     });
+    exe.setTarget(target);
+    exe.setOptimizeMode(optimize);
     exe.linkLibC();
     b.installArtifact(exe);
 

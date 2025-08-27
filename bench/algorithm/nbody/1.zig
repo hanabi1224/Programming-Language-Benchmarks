@@ -1,6 +1,7 @@
 // From https://github.com/tiehuis/zig-benchmarks-game/blob/master/src/n-body.zig
 
 const std = @import("std");
+const print = @import("print.zig");
 const builtin = @import("builtin");
 const math = std.math;
 
@@ -149,18 +150,18 @@ var fixed_allocator = std.heap.FixedBufferAllocator.init(buffer[0..]);
 var allocator = &fixed_allocator.allocator;
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
     var bodies = solar_bodies;
 
     offset_momentum(bodies[0..]);
     var ret = energy(bodies[0..]);
-    try stdout.print("{d:.9}\n", .{ret});
+    try print.printFmt("{d:.9}\n", .{ret});
 
     advance(bodies[0..], 0.01, n);
     ret = energy(bodies[0..]);
-    try stdout.print("{d:.9}\n", .{ret});
+    try print.printFmt("{d:.9}\n", .{ret});
 }
+
 
 fn get_n() !usize {
     var arg_it = std.process.args();

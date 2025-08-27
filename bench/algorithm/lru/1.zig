@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 const builtin = @import("builtin");
 const Allocator = std.mem.Allocator;
 const HashMap = std.HashMap;
@@ -6,8 +7,8 @@ const AutoContext = std.hash_map.AutoContext;
 
 const global_allocator = std.heap.c_allocator;
 
+
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const args = try get_args();
     const size = args[0];
     const n = args[1];
@@ -29,7 +30,7 @@ pub fn main() !void {
             hit += 1;
         }
     }
-    try stdout.print("{d}\n{d}\n", .{ hit, missed });
+    try print.printFmt("{d}\n{d}\n", .{ hit, missed });
 }
 
 fn get_args() ![2]u32 {

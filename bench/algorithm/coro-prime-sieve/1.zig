@@ -2,6 +2,7 @@
 // https://gist.github.com/SpexGuy/953e5780cd2d2c524cba6a79f13076e6
 
 const std = @import("std");
+const print = @import("print.zig");
 
 const Channel = struct {
     value: u32,
@@ -34,7 +35,7 @@ fn filter(out_channel: *Channel, in_channel: *Channel, prime: u32) void {
 
 var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
 const global_allocator = arena.allocator();
-const stdout = std.io.getStdOut().writer();
+
 
 pub fn main() !void {
     defer arena.deinit();
@@ -52,7 +53,7 @@ pub fn main() !void {
     while (i < n) : (i += 1) {
         resume ch.frame;
         const prime = ch.value;
-        try stdout.print("{}\n", .{prime});
+        try print.printFmt("{}\n", .{prime});
         if (i >= n - 1) break;
         const ch1 = try global_allocator.create(Channel);
         const frame = try global_allocator.create(@Frame(filter));

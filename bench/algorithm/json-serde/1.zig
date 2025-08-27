@@ -1,7 +1,9 @@
 const std = @import("std");
+const print = @import("print.zig");
 const json = std.json;
 
 const global_allocator = std.heap.c_allocator;
+
 
 pub fn main() !void {
     const args = try std.process.argsAlloc(global_allocator);
@@ -17,7 +19,6 @@ pub fn main() !void {
     if (args.len > 2) {
         n = try std.fmt.parseInt(usize, args[2], 10);
     }
-    const stdout = std.io.getStdOut().writer();
 
     const json_str = try file.readToEndAlloc(global_allocator, std.math.maxInt(u32));
     defer global_allocator.free(json_str);
@@ -25,31 +26,31 @@ pub fn main() !void {
         const parsed = try json.parseFromSlice(GeoData, global_allocator, json_str, .{});
         defer parsed.deinit();
         const data = parsed.value;
-        var json_str_des = std.ArrayList(u8).init(global_allocator);
-        defer json_str_des.deinit();
-        try json.stringify(data, .{}, json_str_des.writer());
-        try printHash(json_str_des.items, stdout);
+        var json_str_des: std.ArrayList(u8) = .{};
+        defer json_str_des.deinit(global_allocator);
+        try json.stringify(data, .{}, json_str_des.writer(global_allocator));
+        try printHash(json_str_des.items);
     }
     {
-        var array = std.ArrayList(GeoData).init(global_allocator);
+        var array: std.ArrayList(GeoData) = .{};
         var i: usize = 0;
         while (i < n) : (i += 1) {
             const parsed = try json.parseFromSlice(GeoData, global_allocator, json_str, .{});
             // defer parsed.deinit();
-            try array.append(parsed.value);
+            try array.append(global_allocator, parsed.value);
         }
-        var json_str_des = std.ArrayList(u8).init(global_allocator);
-        defer json_str_des.deinit();
-        try json.stringify(array.items, .{}, json_str_des.writer());
-        try printHash(json_str_des.items, stdout);
+        var json_str_des: std.ArrayList(u8) = .{};
+        defer json_str_des.deinit(global_allocator);
+        try json.stringify(array.items, .{}, json_str_des.writer(global_allocator));
+        try printHash(json_str_des.items);
     }
 }
 
-fn printHash(bytes: []const u8, stdout: anytype) !void {
+fn printHash(bytes: []const u8) !void {
     const Md5 = std.crypto.hash.Md5;
     var hash: [Md5.digest_length]u8 = undefined;
     Md5.hash(bytes, &hash, .{});
-    try stdout.print("{s}\n", .{std.fmt.fmtSliceHexLower(&hash)});
+    try print.printFmt("{s}\n", .{std.fmt.fmtSliceHexLower(&hash)});
 }
 
 const GeoData = struct {

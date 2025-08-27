@@ -1,7 +1,8 @@
 const std = @import("std");
+const print = @import("print.zig");
 
 const global_allocator = std.heap.c_allocator;
-const stdout = std.io.getStdOut().writer();
+
 
 const Code = struct {
     data: u64,
@@ -28,7 +29,7 @@ const Code = struct {
     }
 
     pub fn toString(self: Code, frame: usize) ![]const u8 {
-        var result = std.ArrayList(u8).init(global_allocator);
+        var result: std.ArrayList(u8) = .{};
         var code = self.data;
         var i: usize = 0;
         while (i < frame) : (i += 1) {
@@ -39,11 +40,11 @@ const Code = struct {
                 Code.encodeByte('C') => 'C',
                 else => unreachable,
             };
-            try result.append(c);
+            try result.append(global_allocator, c);
             code >>= 2;
         }
         std.mem.reverse(u8, result.items);
-        return result.toOwnedSlice();
+        return result.toOwnedSlice(global_allocator);
     }
 };
 
@@ -51,36 +52,33 @@ pub fn readInput() ![]const u8 {
     const args = try std.process.argsAlloc(global_allocator);
     defer std.process.argsFree(global_allocator, args);
     const file_name = if (args.len > 1) args[1] else "25000_in";
-    const file = try std.fs.cwd().openFile(file_name, .{});
-    var buffered_reader = std.io.bufferedReader(file.reader());
-    const reader = buffered_reader.reader();
-    { // skip past first lines starting with '>'
-        var i: u8 = 0;
-        while (i < 3) : (i += 1) {
-            while (true) {
-                const c = try reader.readByte();
-                if (c == '>') break;
-            }
-        }
-        while (true) {
-            const c = try reader.readByte();
-            if (c == '\n') break;
+    var file = try std.fs.cwd().openFile(file_name, .{});
+    defer file.close();
+    var whole = try file.readToEndAlloc(global_allocator, std.math.maxInt(u32));
+    // find after third header line starting with '>' then the end of that line
+    var gt_count: u8 = 0;
+    var i: usize = 0;
+    while (i < whole.len and gt_count < 3) : (i += 1) {
+        if (whole[i] == '>') {
+            gt_count += 1;
         }
     }
-
-    var buf = try reader.readAllAlloc(global_allocator, std.math.maxInt(u32));
+    // move i to end of current line
+    while (i < whole.len and whole[i] != '\n') : (i += 1) {}
+    if (i < whole.len) i += 1; // skip newline
+    var buf = whole[i..];
     // In place, remove all newlines from buf and encode nucleotides
     // using only the last 2 bits in each byte.
     {
-        var i: usize = 0;
+        var j: usize = 0;
         for (buf) |c| {
             if (c != '\n') {
                 // Gives a -> 0x00, c -> 0x01, g -> 0x03, t -> 0x02
-                buf[i] = (c >> 1) & 0x03;
-                i += 1;
+                buf[j] = (c >> 1) & 0x03;
+                j += 1;
             }
         }
-        buf.len = i;
+        buf.len = j;
     }
     return buf;
 }
@@ -138,32 +136,32 @@ const CountCode = struct {
 };
 
 fn printMap(self: usize, map: Map) !void {
-    var v = std.ArrayList(CountCode).init(global_allocator);
-    defer v.deinit();
+    var v: std.ArrayList(CountCode) = .{};
+    defer v.deinit(global_allocator);
     var iter = map.iterator();
     var total: u64 = 0;
     while (iter.next()) |it| {
         const count = it.value_ptr.*;
         total += count;
-        try v.append(.{ .count = count, .code = it.key_ptr.* });
+    try v.append(global_allocator, .{ .count = count, .code = it.key_ptr.* });
     }
 
     std.mem.sort(CountCode, v.items, {}, comptime CountCode.asc);
     var i = v.items.len - 1;
     while (true) : (i -= 1) {
         const cc = v.items[i];
-        try stdout.print("{!s} {d:.3}\n", .{
+        try print.printFmt("{!s} {d:.3}\n", .{
             cc.code.toString(self),
             @as(f32, @floatFromInt(cc.count)) / @as(f32, @floatFromInt(total)) * 100.0,
         });
         if (i == 0) break;
     }
-    try stdout.print("\n", .{});
+    try print.printFmt("\n", .{});
 }
 
 fn printOcc(s: []const u8, map: *Map) !void {
     const count = if (map.get(Code.fromStr(s))) |x| x else 0;
-    try stdout.print("{}\t{s}\n", .{ count, s });
+    try print.printFmt("{}\t{s}\n", .{ count, s });
 }
 
 pub fn main() !void {

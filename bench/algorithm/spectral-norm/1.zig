@@ -1,8 +1,10 @@
 // From https://github.com/tiehuis/zig-benchmarks-game/blob/master/src/spectral-norm.zig
 
 const std = @import("std");
+const print = @import("print.zig");
 
 const global_allocator = std.heap.c_allocator;
+
 
 fn eval_a(i: usize, j: usize) f64 {
     return 1.0 / @as(f64, @floatFromInt((i + j) * (i + j + 1) / 2 + i + 1));
@@ -36,7 +38,6 @@ fn eval_ata_times_u(atau: []f64, u: []const f64, scratch: []f64) void {
 }
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
 
     const u = try global_allocator.alloc(f64, n);
@@ -58,11 +59,11 @@ pub fn main() !void {
 
     var j: usize = 0;
     while (j < n) : (j += 1) {
-        vbv += u[i] * v[i];
-        vv += v[i] * v[i];
+        vbv += u[j] * v[j];
+        vv += v[j] * v[j];
     }
 
-    try stdout.print("{d:.9}\n", .{std.math.sqrt(vbv / vv)});
+    try print.printFmt("{d:.9}\n", .{std.math.sqrt(vbv / vv)});
 }
 
 fn get_n() !usize {

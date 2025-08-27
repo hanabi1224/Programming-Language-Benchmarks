@@ -1,4 +1,6 @@
 const std = @import("std");
+const print = @import("print.zig");
+
 
 const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
@@ -80,8 +82,7 @@ pub fn main() !void {
 
     const res = aggregateResults(u, v);
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("{d:.9}\n", .{res});
+    try print.printFmt("{d:.9}\n", .{res});
 }
 
 fn get_n() !usize {

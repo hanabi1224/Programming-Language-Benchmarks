@@ -30,8 +30,8 @@ fn repeatAndWrap(out: anytype, comptime sequence: []const u8, count: usize) void
         const rem = count - idx;
         const line_length = @min(@as(usize, max_line_length), rem);
 
-        _ = out.write(padded_sequence[off .. off + line_length]) catch unreachable;
-        _ = out.writeByte('\n') catch unreachable;
+    _ = out.write(padded_sequence[off .. off + line_length]) catch unreachable;
+    _ = out.writeByte('\n') catch unreachable;
 
         off += line_length;
         if (off > sequence.len) {
@@ -71,19 +71,22 @@ fn generateAndWrap(out: anytype, comptime nucleotides: []const AminoAcid, count:
         }
 
         line[line_length] = '\n';
-        _ = out.write(line[0 .. line_length + 1]) catch unreachable;
+    _ = out.write(line[0 .. line_length + 1]) catch unreachable;
         idx += line_length;
     }
 }
 
-var buffer: [256]u8 = undefined;
-var fixed_allocator = std.heap.FixedBufferAllocator.init(buffer[0..]);
-var allocator = &fixed_allocator.allocator;
+const Out = struct {
+    pub fn write(_: Out, bytes: []const u8) !usize {
+        return try std.posix.write(std.posix.STDOUT_FILENO, bytes);
+    }
+    pub fn writeByte(self: Out, b: u8) !void {
+        _ = try self.write(&[_]u8{b});
+    }
+};
 
 pub fn main() !void {
-    var buffered_stdout = std.io.bufferedWriter(std.io.getStdOut().writer());
-    defer buffered_stdout.flush() catch unreachable;
-    const stdout = buffered_stdout.writer();
+    const stdout = Out{};
     const n = try get_n();
     const homo_sapiens_alu = "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTC" ++
         "AGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCG" ++

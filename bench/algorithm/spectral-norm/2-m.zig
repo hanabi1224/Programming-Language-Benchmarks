@@ -1,4 +1,6 @@
 const std = @import("std");
+const print = @import("print.zig");
+
 
 const vec4 = @Vector(4, f64);
 fn vec1to4(f: f64) vec4 {
@@ -69,7 +71,7 @@ fn aggregateResults(first: usize, last: usize, u: []const vec4, v: []const vec4,
 
 pub fn main() !void {
     const n = try get_n();
-    const len = n / @typeInfo(vec4).Vector.len;
+    const len = n / @typeInfo(vec4).vector.len;
 
     const allocator = std.heap.c_allocator;
     const u = try allocator.alloc(vec4, len);
@@ -96,8 +98,7 @@ pub fn main() !void {
     try runInParallel(tasks, u.len, aggregateResults, .{ u, v, &vbv, &vv });
     const res = std.math.sqrt(vbv / vv);
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("{d:.9}\n", .{res});
+    try print.printFmt("{d:.9}\n", .{res});
 }
 
 fn get_n() !usize {

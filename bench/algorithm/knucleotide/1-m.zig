@@ -1,7 +1,8 @@
 const std = @import("std");
+const print = @import("print.zig");
 
 const gpa = std.heap.c_allocator;
-const stdout = std.io.getStdOut().writer();
+
 
 const Code = struct {
     data: u64,
@@ -28,7 +29,7 @@ const Code = struct {
     }
 
     pub fn toString(self: Code, frame: usize) ![]const u8 {
-        var result = std.ArrayList(u8).init(gpa);
+        var result: std.ArrayList(u8) = .{};
         var code = self.data;
         for (0..frame) |_| {
             const c: u8 = switch (@as(u2, @truncate(code))) {
@@ -37,11 +38,11 @@ const Code = struct {
                 Code.encodeByte('G') => 'G',
                 Code.encodeByte('C') => 'C',
             };
-            try result.append(c);
+            try result.append(gpa, c);
             code >>= 2;
         }
         std.mem.reverse(u8, result.items);
-        return result.toOwnedSlice();
+        return result.toOwnedSlice(gpa);
     }
 };
 
@@ -49,36 +50,30 @@ pub fn readInput() ![]const u8 {
     const args = try std.process.argsAlloc(gpa);
     defer std.process.argsFree(gpa, args);
     const file_name = if (args.len > 1) args[1] else "25000_in";
-    const file = try std.fs.cwd().openFile(file_name, .{});
-    var buffered_reader = std.io.bufferedReader(file.reader());
-    const reader = buffered_reader.reader();
-    { // skip past first lines starting with '>'
-        var i: u8 = 0;
-        while (i < 3) : (i += 1) {
-            while (true) {
-                const c = try reader.readByte();
-                if (c == '>') break;
-            }
+    var file = try std.fs.cwd().openFile(file_name, .{});
+        defer file.close();
+        var whole = try file.readToEndAlloc(gpa, std.math.maxInt(u32));
+        // find after third header line starting with '>' then the end of that line
+        var gt_count: u8 = 0;
+        var i: usize = 0;
+        while (i < whole.len and gt_count < 3) : (i += 1) {
+            if (whole[i] == '>') gt_count += 1;
         }
-        while (true) {
-            const c = try reader.readByte();
-            if (c == '\n') break;
-        }
-    }
-
-    var buf = try reader.readAllAlloc(gpa, std.math.maxInt(u32));
+        while (i < whole.len and whole[i] != '\n') : (i += 1) {}
+        if (i < whole.len) i += 1;
+        var buf = whole[i..];
     // In place, remove all newlines from buf and encode nucleotides
     // using only the last 2 bits in each byte.
     {
-        var i: usize = 0;
-        for (buf) |c| {
+            var j: usize = 0;
+            for (buf) |c| {
             if (c != '\n') {
                 // Gives a -> 0x00, c -> 0x01, g -> 0x03, t -> 0x02
-                buf[i] = (c >> 1) & 0x03;
-                i += 1;
+                    buf[j] = (c >> 1) & 0x03;
+                    j += 1;
             }
         }
-        buf.len = i;
+            buf.len = j;
     }
     return buf;
 }
@@ -126,19 +121,21 @@ fn printMap(frame: usize, maps: []const Map) !void {
         }
     }
 
-    var cc: std.BoundedArray(CountCode, code_limit) = .{};
+    var cc_storage: [code_limit]CountCode = undefined;
+    var cc_len: usize = 0;
     for (counts, 0..) |count, code_data| if (count > 0) {
-        cc.appendAssumeCapacity(.{ .count = count, .code = .{ .data = @intCast(code_data) } });
+        cc_storage[cc_len] = .{ .count = count, .code = .{ .data = @intCast(code_data) } };
+        cc_len += 1;
     };
-    std.mem.sort(CountCode, cc.slice(), {}, CountCode.dsc);
+    std.mem.sort(CountCode, cc_storage[0..cc_len], {}, CountCode.dsc);
 
-    for (cc.slice()) |c| {
-        try stdout.print("{!s} {d:.3}\n", .{
+    for (cc_storage[0..cc_len]) |c| {
+        try print.printFmt("{!s} {d:.3}\n", .{
             c.code.toString(frame),
             @as(f32, @floatFromInt(c.count)) / @as(f32, @floatFromInt(total)) * 100.0,
         });
     }
-    try stdout.print("\n", .{});
+    try print.printFmt("\n", .{});
 }
 
 fn printOcc(occ: []const u8, maps: []const Map) !void {
@@ -147,7 +144,7 @@ fn printOcc(occ: []const u8, maps: []const Map) !void {
     for (maps) |m| {
         if (m.get(code)) |count| total += count;
     }
-    try stdout.print("{}\t{s}\n", .{ total, occ });
+    try print.printFmt("{}\t{s}\n", .{ total, occ });
 }
 
 fn runInParallel(task_count: usize, len: usize, comptime f: anytype, args: anytype) !void {

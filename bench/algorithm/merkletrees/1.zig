@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 const builtin = @import("builtin");
 const math = std.math;
 const Allocator = std.mem.Allocator;
@@ -6,8 +7,8 @@ const MIN_DEPTH = 4;
 
 const global_allocator = std.heap.c_allocator;
 
+
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
     const max_depth = @max(MIN_DEPTH + 2, n);
     {
@@ -15,7 +16,7 @@ pub fn main() !void {
         const stretch_tree = Node.make(stretch_depth, global_allocator).?;
         defer stretch_tree.deinit();
         stretch_tree.cal_hash();
-        try stdout.print("stretch tree of depth {d}\t root hash: {d} check: {!}\n", .{ stretch_depth, stretch_tree.get_hash(), stretch_tree.check() });
+        try print.printFmt("stretch tree of depth {d}\t root hash: {d} check: {}\n", .{ stretch_depth, stretch_tree.get_hash(), stretch_tree.check() });
     }
     const long_lived_tree = Node.make(max_depth, global_allocator).?;
     defer long_lived_tree.deinit();
@@ -31,10 +32,10 @@ pub fn main() !void {
             tree.cal_hash();
             sum += tree.get_hash();
         }
-        try stdout.print("{d}\t trees of depth {d}\t root hash sum: {d}\n", .{ iterations, depth, sum });
+        try print.printFmt("{d}\t trees of depth {d}\t root hash sum: {d}\n", .{ iterations, depth, sum });
     }
     long_lived_tree.cal_hash();
-    try stdout.print("long lived tree of depth {d}\t root hash: {d} check: {!}\n", .{ max_depth, long_lived_tree.get_hash(), long_lived_tree.check() });
+    try print.printFmt("long lived tree of depth {d}\t root hash: {d} check: {}\n", .{ max_depth, long_lived_tree.get_hash(), long_lived_tree.check() });
 }
 
 fn get_n() !usize {

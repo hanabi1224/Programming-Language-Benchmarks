@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 
 const max_n = 12;
 const Vec = @Vector(max_n, u8);
@@ -128,9 +129,9 @@ pub fn main() !void {
     const perms_count = factorialComptime(n);
     try runInParallel(tasks, perms_count, pfannkuchenStats, .{ n, &stats });
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("{d}\nPfannkuchen({d}) = {d}\n", .{ stats.checksum, n, stats.max_flips });
+    try print.printFmt("{d}\nPfannkuchen({d}) = {d}\n", .{ stats.checksum, n, stats.max_flips });
 }
+
 
 fn get_n() !u8 {
     var arg_it = std.process.args();

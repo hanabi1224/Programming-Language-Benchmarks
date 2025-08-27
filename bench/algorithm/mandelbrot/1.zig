@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 const ArrayList = std.ArrayList;
 const md5 = std.crypto.hash.Md5;
 
@@ -7,13 +8,14 @@ const Vec = @Vector(VEC_SIZE, f64);
 
 const global_allocator = std.heap.c_allocator;
 
+
 pub fn main() !void {
     const n = try get_n();
     const size = (n + VEC_SIZE - 1) / VEC_SIZE * VEC_SIZE;
     const chunk_size = size / VEC_SIZE;
     const inv = 2.0 / @as(f64, @floatFromInt(size));
-    var xloc = ArrayList(Vec).init(global_allocator);
-    try xloc.ensureTotalCapacityPrecise(chunk_size);
+    var xloc: ArrayList(Vec) = .{};
+    try xloc.ensureTotalCapacityPrecise(global_allocator, chunk_size);
     var i: usize = 0;
     while (i < chunk_size) : (i += 1) {
         const offset = i * VEC_SIZE;
@@ -27,28 +29,35 @@ pub fn main() !void {
             init_xloc(offset + 6, inv),
             init_xloc(offset + 7, inv),
         };
-        try xloc.append(v);
+        try xloc.append(global_allocator, v);
     }
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("P4\n{d} {d}\n", .{ size, size });
+    try print.printFmt("P4\n{d} {d}\n", .{ size, size });
 
-    var pixels = ArrayList(u8).init(global_allocator);
-    try pixels.ensureTotalCapacityPrecise(size * chunk_size);
+    var pixels: ArrayList(u8) = .{};
+    try pixels.ensureTotalCapacityPrecise(global_allocator, size * chunk_size);
     var y: usize = 0;
     while (y < size) : (y += 1) {
         const ci = @as(f64, @floatFromInt(y)) * inv - 1.0;
         var x: usize = 0;
         while (x < chunk_size) : (x += 1) {
             const r = mbrot8(xloc.items[x], ci);
-            try pixels.append(r);
+            try pixels.append(global_allocator, r);
         }
     }
 
     // try stdout.print("{}\n", .{pixels});
     var hash: [16]u8 = undefined;
     md5.hash(pixels.items, &hash, .{});
-    try stdout.print("{}\n", .{std.fmt.fmtSliceHexLower(&hash)});
+    var hex: [32]u8 = undefined;
+    inline for (hash, 0..) |b, idx| {
+    const j = idx * 2;
+    const hi = (b >> 4) & 0x0F;
+    const lo = b & 0x0F;
+    hex[j] = if (hi < 10) '0' + hi else 'a' + (hi - 10);
+    hex[j + 1] = if (lo < 10) '0' + lo else 'a' + (lo - 10);
+    }
+    try print.printFmt("{s}\n", .{hex});
 }
 
 fn mbrot8(cr: Vec, civ: f64) u8 {

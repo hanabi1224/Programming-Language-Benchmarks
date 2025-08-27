@@ -65,6 +65,8 @@ environments:
     version: latest
     docker:
     include: zig
-    build: zig build -Dcpu=broadwell # --verbose-llvm-cpu-features
-    out_dir: zig-out/bin
+    build: zig build-exe app.zig -OReleaseFast -mcpu=ivybridge -lc
+    after_build:
+      - mv app out
+    out_dir: out
     run_cmd: app

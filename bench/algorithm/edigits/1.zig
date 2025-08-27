@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 const bigint = std.math.big.int;
 const math = std.math;
 const global_allocator = std.heap.c_allocator;
@@ -13,7 +14,6 @@ const Pair = struct {
 };
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
     const k = binary_search(n);
     var pair = try sum_terms(0, k - 1);
@@ -44,13 +44,14 @@ pub fn main() !void {
             j += 1;
         }
         if (i + 10 <= n_usize) {
-            try stdout.print("{s}\t:{d}\n", .{ sb, i + 10 });
+            try print.printFmt("{s}\t:{d}\n", .{ sb, i + 10 });
         } else {
-            try stdout.print("{s}\t:{d}\n", .{ sb, n });
+            try print.printFmt("{s}\t:{d}\n", .{ sb, n });
         }
         i += 10;
     }
 }
+
 
 fn sum_terms(a: i32, b: i32) anyerror!Pair {
     if (b == a + 1) {

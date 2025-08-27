@@ -1,6 +1,7 @@
 // From https://github.com/tiehuis/zig-benchmarks-game/blob/master/src/fannkuch-redux.zig
 
 const std = @import("std");
+const print = @import("print.zig");
 
 const global_allocator = std.heap.c_allocator;
 
@@ -8,8 +9,8 @@ var buffer: [1024]u8 = undefined;
 var fixed_allocator = std.heap.FixedBufferAllocator.init(buffer[0..]);
 var allocator = fixed_allocator.allocator();
 
+
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
 
     var perm = try allocator.alloc(usize, n);
@@ -83,7 +84,7 @@ pub fn main() !void {
         }
     }
 
-    try stdout.print("{d}\nPfannkuchen({d}) = {d}\n", .{ checksum, n, max_flips_count });
+    try print.printFmt("{d}\nPfannkuchen({d}) = {d}\n", .{ checksum, n, max_flips_count });
 }
 
 fn get_n() !usize {

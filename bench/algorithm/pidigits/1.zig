@@ -1,9 +1,10 @@
 const std = @import("std");
+const print = @import("print.zig");
 const bigint = std.math.big.int;
 const global_allocator = std.heap.c_allocator;
 
+
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
     const n = try get_n();
 
     const one = (try bigint.Managed.initSet(global_allocator, 1));
@@ -34,12 +35,12 @@ pub fn main() !void {
             _ = u.toConst().toString(sb[rem..], 10, .lower, &lbuf);
             digits_printed += 1;
             if (rem == 9)
-                try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
+                try print.printFmt("{s}\t:{d}\n", .{ sb, digits_printed });
 
             if (digits_printed >= n) {
                 if (rem != 9) {
                     @memset(sb[rem + 1 ..], ' ');
-                    try stdout.print("{s}\t:{d}\n", .{ sb, digits_printed });
+                    try print.printFmt("{s}\t:{d}\n", .{ sb, digits_printed });
                 }
                 break;
             }

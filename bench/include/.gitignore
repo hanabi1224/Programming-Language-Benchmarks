@@ -5,3 +5,4 @@
 !kotlin-jvm/*
 !kotlin-native/*
 !nim.nimble
+!zig/*

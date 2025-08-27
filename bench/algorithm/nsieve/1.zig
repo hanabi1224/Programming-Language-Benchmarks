@@ -1,6 +1,8 @@
 const std = @import("std");
+const print = @import("print.zig");
 
 const global_allocator = std.heap.c_allocator;
+
 
 fn nsieve(n: usize) !void {
     var count: usize = 0;
@@ -17,8 +19,7 @@ fn nsieve(n: usize) !void {
             }
         }
     }
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("Primes up to {d:8} {d:8}\n", .{ n, count });
+    try print.printFmt("Primes up to {d:8} {d:8}\n", .{ n, count });
 }
 
 pub fn main() !void {

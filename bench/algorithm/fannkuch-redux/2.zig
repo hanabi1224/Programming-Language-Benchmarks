@@ -1,4 +1,5 @@
 const std = @import("std");
+const print = @import("print.zig");
 
 const Vec = @Vector(16, u8);
 
@@ -25,7 +26,7 @@ fn next_perm_mask(n: u8) Vec {
 }
 
 fn apply_mask(a: Vec, n: u8, comptime mask: anytype) Vec {
-    const len = @typeInfo(Vec).Vector.len;
+    const len = @typeInfo(Vec).vector.len;
     comptime var i: u8 = 0;
     inline while (i < len) : (i += 1) if (i == n) return @shuffle(u8, a, undefined, mask(i));
     unreachable;
@@ -62,9 +63,9 @@ pub fn main() !void {
         for (count[1..r], 0..) |*v, i| v.* = @intCast(i + 2);
     }
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("{d}\nPfannkuchen({d}) = {d}\n", .{ checksum, n, max_flip_count });
+    try print.printFmt("{d}\nPfannkuchen({d}) = {d}\n", .{ checksum, n, max_flip_count });
 }
+
 
 fn get_n() !u8 {
     var arg_it = std.process.args();
