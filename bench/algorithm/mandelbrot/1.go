@@ -18,18 +18,17 @@ func main() {
 	chunk_size := size / 8
 	inv := 2.0 / float64(size)
 	xloc := make([][8]float64, chunk_size)
-	for i := 0; i < size; i++ {
+	for i := range size {
 		xloc[i/8][i%8] = float64(i)*inv - 1.5
 	}
 	fmt.Printf("P4\n%d %d\n", size, size)
 
 	pixels := make([]byte, size*chunk_size)
-	for chunk_id := 0; chunk_id < size; chunk_id++ {
+	for chunk_id := range size {
 		ci := float64(chunk_id)*inv - 1.0
 		offset := chunk_id * chunk_size
-		for i := 0; i < chunk_size; i++ {
-			r := mbrot8(&xloc[i], ci)
-			if r > 0 {
+		for i := range chunk_size {
+			if r := mbrot8(&xloc[i], ci); r > 0 {
 				pixels[offset+i] = r
 			}
 		}
@@ -42,14 +41,9 @@ func main() {
 
 func mbrot8(cr *[8]float64, civ float64) byte {
 	ci := [8]float64{civ, civ, civ, civ, civ, civ, civ, civ}
-	zr := [8]float64{}
-	zi := [8]float64{}
-	tr := [8]float64{}
-	ti := [8]float64{}
-	absz := [8]float64{}
-	tmp := [8]float64{}
-	for _i := 0; _i < 10; _i++ {
-		for _j := 0; _j < 5; _j++ {
+	var zr, zi, tr, ti, absz, tmp [8]float64
+	for range 10 {
+		for range 5 {
 			add(&zr, &zr, &tmp)
 			mul(&tmp, &zi, &tmp)
 			add(&tmp, &ci, &zi)
@@ -61,19 +55,15 @@ func mbrot8(cr *[8]float64, civ float64) byte {
 			mul(&zi, &zi, &ti)
 		}
 		add(&tr, &ti, &absz)
-		terminate := true
-		for i := 0; i < 8; i++ {
-			if absz[i] <= 4.0 {
-				terminate = false
-				break
-			}
-		}
-		if terminate {
+		if !(absz[0] <= 4.0 || absz[1] <= 4.0 ||
+			absz[2] <= 4.0 || absz[3] <= 4.0 ||
+			absz[4] <= 4.0 || absz[5] <= 4.0 ||
+			absz[6] <= 4.0 || absz[7] <= 4.0) {
 			return 0
 		}
 	}
 	accu := byte(0)
-	for i := 0; i < 8; i++ {
+	for i := range 8 {
 		if absz[i] <= 4.0 {
 			accu |= byte(0x80) >> i
 		}
@@ -82,19 +72,21 @@ func mbrot8(cr *[8]float64, civ float64) byte {
 }
 
 func add(a, b, r *[8]float64) {
-	for i := 0; i < 8; i++ {
-		r[i] = a[i] + b[i]
-	}
+	r[0], r[1] = a[0]+b[0], a[1]+b[1]
+	r[2], r[3] = a[2]+b[2], a[3]+b[3]
+	r[4], r[5] = a[4]+b[4], a[5]+b[5]
+	r[6], r[7] = a[6]+b[6], a[7]+b[7]
 }
-
 func minus(a, b, r *[8]float64) {
-	for i := 0; i < 8; i++ {
-		r[i] = a[i] - b[i]
-	}
+	r[0], r[1] = a[0]-b[0], a[1]-b[1]
+	r[2], r[3] = a[2]-b[2], a[3]-b[3]
+	r[4], r[5] = a[4]-b[4], a[5]-b[5]
+	r[6], r[7] = a[6]-b[6], a[7]-b[7]
 }
 
 func mul(a, b, r *[8]float64) {
-	for i := 0; i < 8; i++ {
-		r[i] = a[i] * b[i]
-	}
+	r[0], r[1] = a[0]*b[0], a[1]*b[1]
+	r[2], r[3] = a[2]*b[2], a[3]*b[3]
+	r[4], r[5] = a[4]*b[4], a[5]*b[5]
+	r[6], r[7] = a[6]*b[6], a[7]*b[7]
 }
