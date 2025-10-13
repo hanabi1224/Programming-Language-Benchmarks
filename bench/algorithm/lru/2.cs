@@ -32,22 +32,21 @@ public class Program
     }
 }
 
-public class Pair<TK, TV>
-{
+public struct Pair<TK, TV>
+{    
     public TK Key;
-
-    public TV Value;
+	public TV Value;
 }
 
 public class LRU<TK, TV>
+    where TK : notnull
+    where TV : notnull
 {
     public int Size { get; private set; }
-
     private readonly Dictionary<TK, LinkedListNode<Pair<TK, TV>>> _key_lookup;
-
     private readonly LinkedList<Pair<TK, TV>> _entries;
 
-    public LRU(int size)
+    public LRU(int size)    
     {
         Size = size;
         _key_lookup = new Dictionary<TK, LinkedListNode<Pair<TK, TV>>>(size);
@@ -58,7 +57,11 @@ public class LRU<TK, TV>
     {
         if (_key_lookup.TryGetValue(key, out var node))
         {
+#if NET5_0_OR_GREATER
+            value = node.ValueRef.Value;
+#else
             value = node.Value.Value;
+#endif
             _entries.Remove(node);
             _entries.AddLast(node);
             return true;
@@ -71,17 +74,17 @@ public class LRU<TK, TV>
     {
         if (_key_lookup.TryGetValue(key, out var node))
         {
-            node.Value.Value = value;
+            node.ValueRef.Value = value;
             _entries.Remove(node);
             _entries.AddLast(node);
         }
         else if (_entries.Count == Size)
         {
             var first = _entries.First;
-            _key_lookup.Remove(first.Value.Key);
+            _key_lookup.Remove(first!.Value.Key);
             _entries.RemoveFirst();
-            first.Value.Key = key;
-            first.Value.Value = value;
+            first.ValueRef.Key = key;
+            first.ValueRef.Value = value;
             _entries.AddLast(first);
             _key_lookup[key] = first;
         }
