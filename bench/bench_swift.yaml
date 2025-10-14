@@ -31,7 +31,7 @@ environments:
   - os: linux
     compiler: swift
     version: latest
-    docker: swift:jammy
+    docker: swift:6.2.0-slim
     include: swift
     include_sub_dir: Sources/app
     build: swift build --static-swift-stdlib -c release -v -Xswiftc -Ounchecked
