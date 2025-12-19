@@ -61,7 +61,7 @@ class BinaryTrees
         for (int i = 0; i < nResults; i++)
         {
             var depth = i * 2 + MinDepth;
-            var n = (1 << maxDepth - depth + MinDepth);
+            var n = 1 << (maxDepth - depth + MinDepth);
 
             var check = 0;
             for (int j = 0; j < n; j++)
