@@ -61,10 +61,10 @@ source_rename_to: app.cs
 environments:
   - os: linux
     compiler: dotnet/aot
-    version: 9
+    version: 10
     compiler_version_command: dotnet --version
     include: dotnet
-    build: dotnet publish -c Release -r linux-x64 -f net9 -p:PublishAot=true -o pub
+    build: dotnet publish -c Release -r linux-x64 -f net10.0 -p:PublishAot=true -o pub
     after_build:
       - mv pub/app out
     out_dir: out
