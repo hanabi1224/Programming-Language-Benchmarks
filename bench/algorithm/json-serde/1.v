@@ -2,7 +2,7 @@ module main
 
 import os
 import strconv
-import json
+import json2 as json
 import crypto.md5
 
 fn main() {
@@ -12,9 +12,9 @@ fn main() {
 		n = strconv.atoi(os.args[2]) or { 3 }
 	}
 	json_str := os.read_file('${file_name}.json')!
-	data := json.decode(GeoData, json_str)!
+	data := json.decode[GeoData](json_str)!
 	println(md5.hexhash(json.encode(data)))
-	array := []GeoData{len: n, cap: n, init: json.decode(GeoData, json_str)!}
+	array := []GeoData{len: n, cap: n, init: json.decode[GeoData](json_str)!}
 	println(md5.hexhash(json.encode(array)))
 }
 
