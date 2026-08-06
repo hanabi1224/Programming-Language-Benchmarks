@@ -22,8 +22,13 @@ fn evala(i int, j int) int {
 fn times(mut v []f64, u []f64) {
 	for i in 0 .. v.len {
 		mut a := f64(0)
+		// evala(i, j+1) - evala(i, j) is i+j+1, itself growing by one per column
+		mut e := f64(evala(i, 0))
+		mut step := f64(i + 1)
 		for j in 0 .. u.len {
-			a += u[j] / f64(evala(i, j))
+			a += u[j] / e
+			e += step
+			step += 1.0
 		}
 		v[i] = a
 	}
@@ -33,8 +38,12 @@ fn times(mut v []f64, u []f64) {
 fn times_trans(mut v []f64, u []f64) {
 	for i in 0 .. v.len {
 		mut a := f64(0)
+		mut e := f64(evala(0, i))
+		mut step := f64(i + 2)
 		for j in 0 .. u.len {
-			a += u[j] / f64(evala(j, i))
+			a += u[j] / e
+			e += step
+			step += 1.0
 		}
 		v[i] = a
 	}

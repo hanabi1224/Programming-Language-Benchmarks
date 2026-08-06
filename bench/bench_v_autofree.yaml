@@ -25,15 +25,16 @@ problems:
   - name: fannkuch-redux
     source:
       - 1.v
+      - 1-m.v
   - name: coro-prime-sieve
     source:
       - 1.v
   - name: json-serde
     source:
-      # - 1.v
+      - 1.v
   - name: mandelbrot
     source:
-      # - 1.v
+      - 1.v
   - name: nsieve
     source:
       - 1.v
