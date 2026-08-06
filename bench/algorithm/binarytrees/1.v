@@ -2,34 +2,48 @@ import strconv
 import os
 
 struct Node {
-	left  &Node
-	right &Node
+	left  &Node = unsafe { nil }
+	right &Node = unsafe { nil }
 }
 
 fn check(node &Node) int {
 	mut ret := 1
-	unsafe {
-		if node.left != 0 {
-			ret += check(node.left)
-		}
-		if node.right != 0 {
-			ret += check(node.right)
-		}
+	if node.left != nil {
+		ret += check(node.left)
+	}
+	if node.right != nil {
+		ret += check(node.right)
 	}
 	return ret
 }
 
-fn create(n int) &Node {
-	if n == 0 {
-		return &Node{
-			left:  unsafe { nil }
-			right: unsafe { nil }
+// Nodes are carved out of one block per tree; the block is reset and reused
+// between trees of the same depth.
+struct Arena {
+mut:
+	nodes []Node
+	pos   int
+}
+
+fn new_arena(depth int) Arena {
+	return Arena{
+		nodes: []Node{len: (1 << (depth + 1)) - 1}
+	}
+}
+
+@[direct_array_access]
+fn (mut a Arena) create(depth int) &Node {
+	i := a.pos
+	a.pos++
+	a.nodes[i] = if depth == 0 {
+		Node{}
+	} else {
+		Node{
+			left:  a.create(depth - 1)
+			right: a.create(depth - 1)
 		}
 	}
-	return &Node{
-		left:  create(n - 1)
-		right: create(n - 1)
-	}
+	return unsafe { &a.nodes[i] }
 }
 
 const min_depth = 4
@@ -41,10 +55,12 @@ fn main() {
 	}
 
 	stretch_depth := max_depth + 1
-	stretch_tree := create(stretch_depth)
+	mut stretch_arena := new_arena(stretch_depth)
+	stretch_tree := stretch_arena.create(stretch_depth)
 	println('stretch tree of depth ${stretch_depth}\t check: ${check(stretch_tree)}')
 
-	long_lived_tree := create(max_depth)
+	mut long_lived_arena := new_arena(max_depth)
+	long_lived_tree := long_lived_arena.create(max_depth)
 
 	n_results := (max_depth - min_depth) / 2 + 1
 
@@ -52,9 +68,11 @@ fn main() {
 		depth := i * 2 + min_depth
 		n := 1 << (max_depth - depth + min_depth)
 
+		mut arena := new_arena(depth)
 		mut check_result := 0
 		for _ in 0 .. n {
-			node := create(depth)
+			arena.pos = 0
+			node := arena.create(depth)
 			check_result += check(node)
 		}
 
