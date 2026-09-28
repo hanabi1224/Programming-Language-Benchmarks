@@ -81,6 +81,7 @@ problems:
     source:
       - 1.rs
       - 2.rs
+      - 3.rs
   - name: lru
     source:
       - 0-unsafe.rs
