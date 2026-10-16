@@ -36,6 +36,7 @@ jobs:
             # elixir,
             # fortran,
             go,
+            goose,
             # hacklang,
             # haskell,
             haxe,
@@ -157,6 +158,9 @@ jobs:
       - name: Install odin
         if: matrix.lang == 'odin'
         run: ./.github/odin.sh
+      - name: Install goose
+        if: matrix.lang == 'goose'
+        run: ./.github/goose.sh
       - uses: dlang-community/setup-dlang@v1
         if: matrix.lang == 'd'
         with:

@@ -1,0 +1,1 @@
+-pipe -w -O3 -fomit-frame-pointer -march=broadwell -DGS_SIMD=1 -pthread -o app app.c -lm
